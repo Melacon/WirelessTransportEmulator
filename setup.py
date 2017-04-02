@@ -2,11 +2,11 @@ from distutils.core import setup
 
 from os.path import join
 
-scripts = [ join( 'bin', filename ) for filename in [ 'openyumawe' ] ]
+scripts = [ join( 'bin', filename ) for filename in [ 'wtemulator' ] ]
 
 setup(
     # Application name:
-    name="OpenYumaWirelessEmulator",
+    name="WirelessTransportEmulator",
 
     # Version number (initial):
     version="0.1.0",
@@ -22,7 +22,7 @@ setup(
     #include_package_data=True,
 
     # Details
-    url="https://github.com/Melacon/OpenYuma_WE",
+    url="https://github.com/Melacon/WirelessTransportEmulator",
 
     #
     license="LICENSE",

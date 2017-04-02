@@ -15,7 +15,7 @@ class Singleton(type):
 
 def ensureRoot():
     if os.getuid() != 0:
-        print("##### OpenYumaWE should be run as root #####")
+        print("##### WirelessTransportEmulator should be run as root #####")
         exit(1)
 
 def printErrorAndExit():
