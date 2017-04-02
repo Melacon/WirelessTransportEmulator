@@ -1,0 +1,37 @@
+Source: openyuma
+Section: devel
+Priority: extra
+Maintainer: OpenClovis <info@openclovis.com>
+Build-Depends: debhelper (>= 7)
+Standards-Version: 3.8.1
+Homepage: https://github.com/OpenClovis/OpenYuma
+
+Package: openyuma
+Architecture: any
+Depends: libncurses5, libssh2-1, libxml2, ${shlibs:Depends}, ${misc:Depends}
+Description: YANG-based Unified Modular Automation tools
+ OpenYuma Tools is a YANG-based NETCONF-over-SSH client and server
+ development toolkit.  The netconfd server includes an automated
+ central NETCONF protocol stack, based directly on YANG modules.
+ The yangdump and yangdiff development tools are also
+ included, to compile and process YANG modules.
+
+Package: openyuma-dev
+Architecture: all
+Depends: OpenYuma, ${misc:Depends}
+Description: YANG-based Unified Modular Automation tools (dev)
+ OpenYuma Tools is a YANG-based NETCONF-over-SSH client and server
+ development toolkit.  This package contains H files, scripts,
+ and other files needed to create SIL code for use with
+ the netconfd server.
+
+Package: openyuma-doc
+Architecture: all
+Section: doc
+Depends: ${misc:Depends}
+Description: YANG-based Unified Modular Automation tools (doc)
+ OpenYuma Tools is a YANG-based NETCONF-over-SSH client and server
+ development toolkit.  This package contains the user and developer
+ manuals.
+
+

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<network-element>
+	<local-id key="value-name">
+      <value-name>vLocalId</value-name>
+      <value>Simulator-1</value>
+   </local-id>
+   <uuid>Simulator-1</uuid>
+   <name key="value-name">
+      <value-name>vName</value-name>
+      <value>Simulator-1</value>
+   </name>
+   <label key="value-name">
+      <value-name>vLabel</value-name>
+      <value>Simulator-1</value>
+   </label>
+   <extension key="value-name">
+      <value-name>vExtension</value-name>
+      <value>Simulator-1</value>
+   </extension>
+   <operational-state>ENABLED</operational-state>
+   <administrative-control>UNLOCK</administrative-control>
+   <administrative-state>UNLOCKED</administrative-state>
+   <lifecycle-state>INSTALLED</lifecycle-state>
+</network-element>
+
+
+<network-element>
+    <local-id>
+      <value-name>vName</value-name>
+      <value>Sim-1</value>
+    </local-id>
+    <uuid>Simulator-1</uuid>
+    <name>
+      <value-name>vName</value-name>
+      <value>Sim-1</value>
+    </name>
+    <label>
+      <value-name>vLabel</value-name>
+      <value>Sim-1</value>
+    </label>
+    <extension>
+      <value-name>vExt</value-name>
+      <value>Sim-1</value>
+    </extension>
+  </network-element>

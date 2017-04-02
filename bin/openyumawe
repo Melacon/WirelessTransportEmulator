@@ -1,0 +1,131 @@
+#!/usr/bin/python3.6
+
+import os, sys, logging
+from optparse import OptionParser
+
+from wireless_emulator.emulator import Emulator
+from wireless_emulator.utils import ensureRoot
+from wireless_emulator.clean import cleanup
+from wireless_emulator.utils import Singleton
+from wireless_emulator.cli import CLI
+
+logging.basicConfig(filename='debug.log', level=logging.DEBUG,
+                    format='%(asctime)s - [%(levelname)s] %(filename)s:%(lineno)d - %(message)s',
+                    datefmt='[%Y.%m.%d-%H:%M:%S]')
+logger = logging.getLogger(__name__)
+
+class EmulatorRunner():
+
+    def __init__( self ):
+        "Init."
+        self.options = None
+        self.args = None
+        self.validate = None
+        self.topologyJsonFile = None
+        self.xmlConfigFile = None
+        self.configJsonFile = None
+
+        self.parseArgs()
+        self.begin()
+
+    def saveTopoJsonFile(self, _option, _opt_str, value, _parser ):
+        if os.path.isfile(value):
+            self.topologyJsonFile = value
+        else:
+            raise Exception('could not find JSON topology file: %s' % value)
+
+    def saveXmlConfigFile(self, _option, _opt_str, value, _parser ):
+        if os.path.isfile(value):
+            self.xmlConfigFile = value
+        else:
+            raise Exception('could not find XML configuration file: %s' % value)
+
+    def saveConfigJsonFile(self, _option, _opt_str, value, _parser ):
+        if os.path.isfile(value):
+            self.configJsonFile = value
+        else:
+            raise Exception('could not find JSON configuration file: %s' % value)
+
+
+    def parseArgs(self):
+        desc = ("The %prog utility creates a wireless transport topology emulation from the JSON \n"
+                "configuration file passed as a parameter. Each NE emulated is a NETCONF server which provides\n"
+                "default values based on the XML startup file passed as a parameter.")
+
+        usage = ('%prog [options]\n'
+                 '(type %prog -h for details)')
+
+        opts = OptionParser(description=desc, usage=usage)
+
+        opts.add_option('--clean', '-c', action='store_true',
+                        default=False, help='clean and exit')
+        opts.add_option('--topo', '-t', action='callback',
+                        callback=self.saveTopoJsonFile,
+                        type='string',
+                        help='the file containig the JSON topology'
+                        )
+        opts.add_option('--xml', '-x', action='callback',
+                        callback=self.saveXmlConfigFile,
+                        type='string',
+                        help='the file containig the XML configuration for the NE'
+                        )
+        opts.add_option('--config', action='callback',
+                        callback=self.saveConfigJsonFile,
+                        type='string',
+                        help='the file containig the JSON configuration for the emulator'
+                        )
+
+        self.options, self.args = opts.parse_args()
+
+        # We don't accept extra arguments after the options
+        if self.args:
+            opts.print_help()
+            exit()
+
+    def begin(self):
+        opts = self.options
+
+        if self.configJsonFile is None:
+            print("Configuration JSON file not specified")
+            exit()
+
+        if opts.clean:
+            cleanup(configFileName = self.configJsonFile)
+            exit()
+
+        logger.debug("############ Starting emulator...############")
+        if self.xmlConfigFile is None:
+            print("XML configuration file not specified")
+            exit()
+
+        if self.topologyJsonFile is None:
+            print("JSON topology file not specified")
+            exit()
+
+        e = Emulator(topologyFileName = self.topologyJsonFile, xmlConfigFile = self.xmlConfigFile, configFileName = self.configJsonFile)
+        e.startEmulator()
+        print("Emulator started successfully!")
+        CLI(e)
+
+
+if __name__ == '__main__':
+    ensureRoot()
+    try:
+        EmulatorRunner()
+    except KeyboardInterrupt:
+        print( "\n\nKeyboard Interrupt. Shutting down and cleaning up...\n\n")
+        cleanup()
+    except Exception:
+        # Print exception
+        type_, val_, trace_ = sys.exc_info()
+        errorMsg = ( "-"*80 + "\n" +
+                     "Caught exception. Cleaning up...\n" +
+                     "Please check debug.log for more information\n" +
+                     "%s: %s\n" % ( type_.__name__, val_ ) +
+                     "-"*80 + "\n" )
+        print( errorMsg )
+        # Print stack trace to debug log
+        import traceback
+        stackTrace = traceback.format_exc()
+        logger.debug( stackTrace + "\n" )
+        cleanup()

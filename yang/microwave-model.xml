@@ -1,0 +1,827 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+<arp xmlns="http://netconfcentral.org/ns/yuma-arp"/>
+<nacm xmlns="urn:ietf:params:xml:ns:yang:ietf-netconf-acm"/>
+    <mw-air-interface-pac xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">
+       <layer-protocol xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel"/>
+       <air-interface-configuration xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">
+          <air-interface-name xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">Air interface ID not yet defined.</air-interface-name>
+          <radio-signal-id xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">Radio signal ID not yet defined.</radio-signal-id>
+          <tx-frequency xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">-1</tx-frequency>
+          <rx-frequency xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">-1</rx-frequency>
+          <tx-channel-bandwidth xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">-1</tx-channel-bandwidth>
+          <rx-channel-bandwidth xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">-1</rx-channel-bandwidth>
+          <polarization xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">not-specified</polarization>
+          <power-is-on xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">true</power-is-on>
+          <transmitter-is-on xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">false</transmitter-is-on>
+          <receiver-is-on xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">true</receiver-is-on>
+          <tx-power xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">99</tx-power>
+          <adaptive-modulation-is-on xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">false</adaptive-modulation-is-on>
+          <modulation-min xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">-1</modulation-min>
+          <modulation-max xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">-1</modulation-max>
+          <xpic-is-on xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">false</xpic-is-on>
+          <mimo-is-on xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">false</mimo-is-on>
+          <alic-is-on xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">false</alic-is-on>
+          <atpc-is-on xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">false</atpc-is-on>
+          <atpc-thresh-upper xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">99</atpc-thresh-upper>
+          <atpc-thresh-lower xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">99</atpc-thresh-lower>
+          <auto-freq-select-is-on xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">false</auto-freq-select-is-on>
+          <auto-freq-select-range xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">-1</auto-freq-select-range>
+          <modulation-is-on xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">true</modulation-is-on>
+          <encryption-is-on xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">false</encryption-is-on>
+          <cryptographic-key xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">Cryptographic key not yet defined.</cryptographic-key>
+          <loop-back-kind-on xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">non</loop-back-kind-on>
+          <maintenance-timer xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">-1</maintenance-timer>
+          <problem-kind-severity-list xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">
+             <problem-kind-name xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel"/>
+             <problem-kind-severity xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">warning</problem-kind-severity>
+          </problem-kind-severity-list>
+       </air-interface-configuration>
+    </mw-air-interface-pac>
+    <co-channel-group xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">
+       <co-channel-group-id xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel"/>
+       <air-interface-list xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel"/>
+       <sort-of-co-channel-group xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">Kind of co-channel group not specified.</sort-of-co-channel-group>
+       <logical-termination-point xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel"/>
+    </co-channel-group>
+    <mw-air-interface-hsb-end-point-pac xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">
+       <role xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">working</role>
+       <endpoint xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel"/>
+    </mw-air-interface-hsb-end-point-pac>
+    <mw-air-interface-hsb-fc-switch-pac xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">
+       <prot-type xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">hsb</prot-type>
+       <air-interface-hsb-configuration-is-faulty-severity xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">warning</air-interface-hsb-configuration-is-faulty-severity>
+       <air-interface-hsb-is-partly-down-severity xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">warning</air-interface-hsb-is-partly-down-severity>
+       <air-interface-hsb-is-down-severity xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">warning</air-interface-hsb-is-down-severity>
+       <fcswitch xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel"/>
+    </mw-air-interface-hsb-fc-switch-pac>
+    <mw-air-interface-diversity-pac xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">
+       <layer-protocol xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel"/>
+       <air-interface-diversity-configuration xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">
+          <air-interface-diversity xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">
+          </air-interface-diversity>
+          <air-interface-ltp-list xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel"/>
+          <problem-kind-severity-list xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">
+             <problem-kind-name xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel"/>
+             <problem-kind-severity xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">warning</problem-kind-severity>
+          </problem-kind-severity-list>
+       </air-interface-diversity-configuration>
+    </mw-air-interface-diversity-pac>
+    <mw-pure-ethernet-structure-pac xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">
+       <layer-protocol xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel"/>
+       <pure-ethernet-structure-configuration xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">
+          <problem-kind-severity-list xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">
+             <problem-kind-name xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel"/>
+             <problem-kind-severity xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">warning</problem-kind-severity>
+          </problem-kind-severity-list>
+       </pure-ethernet-structure-configuration>
+    </mw-pure-ethernet-structure-pac>
+    <mw-hybrid-mw-structure-pac xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">
+       <layer-protocol xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel"/>
+       <hybrid-mw-structure-configuration xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">
+          <structure-type xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">
+          </structure-type>
+          <number-of-tdm-segments-to-be-reserved xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">-1</number-of-tdm-segments-to-be-reserved>
+          <problem-kind-severity-list xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">
+             <problem-kind-name xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel"/>
+             <problem-kind-severity xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">warning</problem-kind-severity>
+          </problem-kind-severity-list>
+       </hybrid-mw-structure-configuration>
+    </mw-hybrid-mw-structure-pac>
+    <mw-ethernet-container-pac xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">
+       <layer-protocol xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel"/>
+       <ethernet-container-configuration xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">
+          <container-id xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">No Ethernet Flow associated yet.</container-id>
+          <segments-id-list xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">
+             <structure-id-ref xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel"/>
+             <segment-id-ref xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel"/>
+          </segments-id-list>
+          <packet-compression-is-on xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">false</packet-compression-is-on>
+          <layer2-compression-is-on xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">false</layer2-compression-is-on>
+          <vlan-compression-is-on xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">false</vlan-compression-is-on>
+          <q-in-q-compression-is-on xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">false</q-in-q-compression-is-on>
+          <mpls-compression-is-on xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">false</mpls-compression-is-on>
+          <ipv4-compression-is-on xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">false</ipv4-compression-is-on>
+          <ipv6-compression-is-on xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">false</ipv6-compression-is-on>
+          <layer4-compression-is-on xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">false</layer4-compression-is-on>
+          <encryption-is-on xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">false</encryption-is-on>
+          <cryptographic-key xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">Cryptographic key not yet defined.</cryptographic-key>
+          <problem-kind-severity-list xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">
+             <problem-kind-name xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel"/>
+             <problem-kind-severity xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">warning</problem-kind-severity>
+          </problem-kind-severity-list>
+       </ethernet-container-configuration>
+    </mw-ethernet-container-pac>
+    <mw-tdm-container-pac xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">
+       <layer-protocol xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel"/>
+       <tdm-container-configuration xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">
+          <container-id xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">No TDM Flow associated yet.</container-id>
+          <container-type xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">
+          </container-type>
+          <segment-id xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">
+             <structure-id-ref xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel"/>
+             <segment-id-ref xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel"/>
+          </segment-id>
+          <problem-kind-severity-list xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">
+             <problem-kind-name xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel"/>
+             <problem-kind-severity xmlns="urn:onf:params:xml:ns:yang:MicrowaveModel">warning</problem-kind-severity>
+          </problem-kind-severity-list>
+       </tdm-container-configuration>
+    </mw-tdm-container-pac>
+    <network-element xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+       <fd xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          <layer-protocol-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <lower-level-fd xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <fc xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <ltp xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <lower-level-link xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <local-id xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </local-id>
+          <uuid xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <name xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </name>
+          <label xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </label>
+          <extension xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </extension>
+          <administrative-control xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <lifecycle-state xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       </fd>
+       <ltp xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          <server-ltp xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <client-ltp xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <lp xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <layer-protocol-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <configured-client-capacity xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <lp-direction xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <termination-state xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <config-and-switch-controller xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                <switch-rule xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <fc-switch xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <control-parameters xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                   <reversion-mode xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   <wait-to-revert-time xmlns="urn:onf:params:xml:ns:yang:CoreModel">15</wait-to-revert-time>
+                   <prot-type xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   <hold-off-time xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   <network-scheme-specification xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                </control-parameters>
+                <profile-proxy xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <local-pac xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                   <local-id xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                      <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                      <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   </local-id>
+                   <uuid xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   <name xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                      <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                      <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   </name>
+                   <label xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                      <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                      <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   </label>
+                   <extension xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                      <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                      <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   </extension>
+                   <administrative-control xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   <lifecycle-state xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                </local-pac>
+                <global-pac xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                   <local-id xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                      <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                      <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   </local-id>
+                   <uuid xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   <name xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                      <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                      <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   </name>
+                   <label xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                      <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                      <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   </label>
+                   <extension xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                      <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                      <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   </extension>
+                   <administrative-control xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   <lifecycle-state xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                </global-pac>
+                <is-frozen xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <is-coordinated-switching-both-ends xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <subordinate-controller xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             </config-and-switch-controller>
+             <is-protection-lock-out xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <fc-blocks-signal-to-lp xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <local-id xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             </local-id>
+             <uuid xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <name xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             </name>
+             <label xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             </label>
+             <extension xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             </extension>
+             <administrative-control xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <lifecycle-state xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </lp>
+          <connected-ltp xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <peer-ltp xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <physical-port-reference xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <ltp-in-other-view xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <ltp-direction xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <local-id xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </local-id>
+          <uuid xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <name xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </name>
+          <label xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </label>
+          <extension xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </extension>
+          <administrative-control xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <lifecycle-state xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       </ltp>
+       <local-id xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       </local-id>
+       <uuid xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       <name xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       </name>
+       <label xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       </label>
+       <extension xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       </extension>
+       <administrative-control xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       <lifecycle-state xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+    </network-element>
+    <forwarding-construct xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+       <layer-protocol-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       <lower-level-fc xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       <fc-route xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       <fc-port xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          <ltp xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <role xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <fc-port-direction xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <is-protection-lock-out xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <selection-priority xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <fc-route-feeds-fc-port-egress xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <local-id xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </local-id>
+          <uuid xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <name xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </name>
+          <label xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </label>
+          <extension xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </extension>
+          <administrative-control xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <lifecycle-state xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       </fc-port>
+       <fc-switch xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          <hold-off-time xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <prot-type xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <reversion-mode xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <selected-fc-port xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <profile-proxy xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <internal-configuration-and-switch-control xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <switch-rule xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <fc-switch xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <control-parameters xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                <reversion-mode xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <wait-to-revert-time xmlns="urn:onf:params:xml:ns:yang:CoreModel">15</wait-to-revert-time>
+                <prot-type xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <hold-off-time xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <network-scheme-specification xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             </control-parameters>
+             <profile-proxy xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <local-pac xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                <local-id xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                   <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                </local-id>
+                <uuid xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <name xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                   <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                </name>
+                <label xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                   <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                </label>
+                <extension xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                   <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                </extension>
+                <administrative-control xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <lifecycle-state xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             </local-pac>
+             <global-pac xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                <local-id xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                   <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                </local-id>
+                <uuid xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <name xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                   <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                </name>
+                <label xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                   <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                </label>
+                <extension xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                   <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                </extension>
+                <administrative-control xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <lifecycle-state xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             </global-pac>
+             <is-frozen xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <is-coordinated-switching-both-ends xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <subordinate-controller xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </internal-configuration-and-switch-control>
+          <switch-control xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <switch-selects-ports xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <control-parameters xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <reversion-mode xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <wait-to-revert-time xmlns="urn:onf:params:xml:ns:yang:CoreModel">15</wait-to-revert-time>
+             <prot-type xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <hold-off-time xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <network-scheme-specification xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </control-parameters>
+          <wait-to-restore-time xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <local-id xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </local-id>
+          <uuid xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <name xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </name>
+          <label xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </label>
+          <extension xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </extension>
+          <administrative-control xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <lifecycle-state xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       </fc-switch>
+       <forwarding-direction xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       <is-protection-lock-out xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       <service-priority xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       <supported-link xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       <local-id xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       </local-id>
+       <uuid xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       <name xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       </name>
+       <label xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       </label>
+       <extension xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       </extension>
+       <administrative-control xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       <lifecycle-state xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+    </forwarding-construct>
+    <operation-envelope xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+       <operation-set xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          <after-operation-set xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <before-operation-set xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <effort-and-action xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <pause-resume-rule xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <operationset xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <is-short-lived xmlns="urn:onf:params:xml:ns:yang:CoreModel">true</is-short-lived>
+          <operation-details xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <action-verb xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <necessary-initialcondition-constraints xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                <is-not xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             </necessary-initialcondition-constraints>
+          </operation-details>
+       </operation-set>
+       <generaldirectives xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+       </generaldirectives>
+       <operationidentifiers xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+       </operationidentifiers>
+    </operation-envelope>
+    <equipment xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+       <connector xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          <connector xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <pin xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <position xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <orientation xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </pin>
+          <orientation xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <manufactured-thing xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <manufacturer-properties xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                <manufacturer-identifier xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <manufacturer-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             </manufacturer-properties>
+             <equipment-type xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                <description xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <model-identifier xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <part-type-identifier xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <type-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <version xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             </equipment-type>
+             <equipment-instance xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                <manufacture-date xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <serial-number xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <asset-instance-identifier xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             </equipment-instance>
+             <operator-augmented-equipment-type xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                <asset-type-identifier xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             </operator-augmented-equipment-type>
+          </manufactured-thing>
+          <position xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <relative-position xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </position>
+          <mechanical-features xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          </mechanical-features>
+          <pin-layout xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <position xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                <relative-position xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             </position>
+          </pin-layout>
+          <connector-type xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <local-id xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </local-id>
+          <uuid xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <name xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </name>
+          <label xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </label>
+          <extension xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </extension>
+          <administrative-control xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <lifecycle-state xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       </connector>
+       <contained-holder xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          <connector xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <occupying-fru xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <spatial-properties-of-type xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <height xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <width xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <length xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </spatial-properties-of-type>
+          <holder-monitors xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <is-active xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <is-actual-mismatch-with-expected xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <aggregate-function xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </holder-monitors>
+          <holder-location xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <address-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <address-element xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                <address-element-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <local-id xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                   <class-of-instance xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   <local-id xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                      <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                      <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   </local-id>
+                </local-id>
+                <uuid xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <name xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                   <class-of-instance xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   <name xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                      <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                      <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   </name>
+                </name>
+                <arbitrary-element xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             </address-element>
+          </holder-location>
+          <position xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <relative-position xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </position>
+          <holder-structure xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <holder-category xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <is-captive xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <is-guided xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <is-quantized-space xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </holder-structure>
+          <physical-rating xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <thermal-rating xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <power-rating xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </physical-rating>
+          <supported-equipment xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <expected-holder xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          </expected-holder>
+          <actual-holder xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          </actual-holder>
+          <local-id xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </local-id>
+          <uuid xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <name xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </name>
+          <label xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </label>
+          <extension xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </extension>
+          <administrative-control xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <lifecycle-state xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       </contained-holder>
+       <exposed-cable xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          <connector xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <connector xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <pin xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                <position xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <orientation xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             </pin>
+             <orientation xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <manufactured-thing xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                <manufacturer-properties xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                   <manufacturer-identifier xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   <manufacturer-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                </manufacturer-properties>
+                <equipment-type xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                   <description xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   <model-identifier xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   <part-type-identifier xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   <type-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   <version xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                </equipment-type>
+                <equipment-instance xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                   <manufacture-date xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   <serial-number xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   <asset-instance-identifier xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                </equipment-instance>
+                <operator-augmented-equipment-type xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                   <asset-type-identifier xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                </operator-augmented-equipment-type>
+             </manufactured-thing>
+             <position xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                <relative-position xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             </position>
+             <mechanical-features xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             </mechanical-features>
+             <pin-layout xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                <position xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                   <relative-position xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                </position>
+             </pin-layout>
+             <connector-type xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <local-id xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             </local-id>
+             <uuid xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <name xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             </name>
+             <label xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             </label>
+             <extension xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             </extension>
+             <administrative-control xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <lifecycle-state xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </connector>
+          <manufactured-thing xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <manufacturer-properties xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                <manufacturer-identifier xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <manufacturer-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             </manufacturer-properties>
+             <equipment-type xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                <description xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <model-identifier xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <part-type-identifier xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <type-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <version xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             </equipment-type>
+             <equipment-instance xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                <manufacture-date xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <serial-number xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <asset-instance-identifier xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             </equipment-instance>
+             <operator-augmented-equipment-type xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                <asset-type-identifier xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             </operator-augmented-equipment-type>
+          </manufactured-thing>
+          <physical-characteristics xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <weight-characteristics xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <fire-characteristics xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <materials xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </physical-characteristics>
+          <mechanical-features xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          </mechanical-features>
+          <spatial-properties-of-type xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <height xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <width xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <length xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </spatial-properties-of-type>
+          <local-id xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </local-id>
+          <uuid xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <name xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </name>
+          <label xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </label>
+          <extension xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </extension>
+          <administrative-control xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <lifecycle-state xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       </exposed-cable>
+       <manufactured-thing xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          <manufacturer-properties xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <manufacturer-identifier xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <manufacturer-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </manufacturer-properties>
+          <equipment-type xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <description xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <model-identifier xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <part-type-identifier xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <type-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <version xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </equipment-type>
+          <equipment-instance xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <manufacture-date xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <serial-number xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <asset-instance-identifier xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </equipment-instance>
+          <operator-augmented-equipment-type xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <asset-type-identifier xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          </operator-augmented-equipment-type>
+       </manufactured-thing>
+       <spatial-properties-of-type xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          <height xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <width xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <length xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       </spatial-properties-of-type>
+       <mechanical-features xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+       </mechanical-features>
+       <physical-properties xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          <temperature xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       </physical-properties>
+       <function-enablers xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          <power-state xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       </function-enablers>
+       <mechanical-functions xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          <rotation-speed xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       </mechanical-functions>
+       <physical-characteristics xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          <weight-characteristics xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <fire-characteristics xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <materials xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       </physical-characteristics>
+       <swapability xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          <is-hot-swappable xmlns="urn:onf:params:xml:ns:yang:CoreModel">true</is-hot-swappable>
+       </swapability>
+       <category xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          <category xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       </category>
+       <physical-rating xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          <thermal-rating xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <power-rating xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       </physical-rating>
+       <function-block xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       <expected-equipment xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+       </expected-equipment>
+       <actual-equipment xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+       </actual-equipment>
+       <location xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          <equipment-location xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <address-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <address-element xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                <address-element-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <local-id xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                   <class-of-instance xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   <local-id xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                      <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                      <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   </local-id>
+                </local-id>
+                <uuid xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <name xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                   <class-of-instance xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   <name xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                      <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                      <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   </name>
+                </name>
+                <arbitrary-element xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             </address-element>
+          </equipment-location>
+          <geographical-location xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+             <address-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             <address-element xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                <address-element-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <local-id xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                   <class-of-instance xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   <local-id xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                      <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                      <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   </local-id>
+                </local-id>
+                <uuid xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                <name xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                   <class-of-instance xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   <name xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+                      <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                      <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+                   </name>
+                </name>
+                <arbitrary-element xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+             </address-element>
+          </geographical-location>
+       </location>
+       <local-id xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       </local-id>
+       <uuid xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       <name xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       </name>
+       <label xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       </label>
+       <extension xmlns="urn:onf:params:xml:ns:yang:CoreModel">
+          <value-name xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+          <value xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       </extension>
+       <administrative-control xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+       <lifecycle-state xmlns="urn:onf:params:xml:ns:yang:CoreModel"/>
+    </equipment>
+</config>
