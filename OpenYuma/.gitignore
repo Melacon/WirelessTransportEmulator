@@ -13,7 +13,5 @@
 *.a
 
 *.D
-libtecla/*
-libtoaster/*
 netconf/src/*/dependencies
 netconf/target
