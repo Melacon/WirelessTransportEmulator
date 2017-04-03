@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN ["apt-get", "update"]
 RUN ["apt-get", "install", "-y", "git", "autoconf", "gcc", "libtool", "libxml2-dev", "libssl-dev", "make", "libncurses5-dev", "libssh2-1-dev", "openssh-server"]
 RUN ["apt-get", "update"]
-RUN ["apt-get", "install", "-y", "iptables", "tcpdump", "ifenslave"]
+RUN ["apt-get", "install", "-y", "iptables", "tcpdump"]
 
 # setup admin user that openyuma will use
 RUN set -x -e; \
