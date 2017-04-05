@@ -50,6 +50,9 @@ class Link:
 
         return True
 
+    def isIntfPartOfLink(self, intfObj):
+        return (intfObj in self.interfacesObj)
+
     def addLink(self):
         print("Adding link between NE %s interface %s and NE %s interface %s..." %
               (self.interfacesObj[0].getNeName(), self.interfacesObj[0].getInterfaceUuid(),
@@ -116,3 +119,58 @@ class Link:
         #              secondIpOfLink)
         logger.debug("Added port for interface %s from NE=%s",
                      self.interfacesObj[1].getInterfaceName(), self.interfacesObj[1].getNeName())
+
+    def addLinkWithIp(self):
+        print("Adding link between NE %s interface %s and NE %s interface %s..." %
+              (self.interfacesObj[0].getNeName(), self.interfacesObj[0].getInterfaceUuid(),
+               self.interfacesObj[1].getNeName(), self.interfacesObj[0].getInterfaceUuid()))
+        logger.debug("Adding link between interfaces %s and %s",
+                     self.interfacesObj[0].getInterfaceUuid(), self.interfacesObj[1].getInterfaceUuid())
+
+        ipInterfaceNetwork = self.emEnv.intfIpFactory.getFreeInterfaceIp()
+
+        firstIpOfLink = str(ipInterfaceNetwork[1])
+        secondIpOfLink = str(ipInterfaceNetwork[2])
+
+        self.interfacesObj[0].setIpAddress(firstIpOfLink)
+        self.interfacesObj[1].setIpAddress(secondIpOfLink)
+
+        self.bridgeName = "oywe-br-" + str(Link.linkNumber)
+
+        stringCmd = "ovs-vsctl add-br %s" % (self.bridgeName)
+        cmd = subprocess.Popen(stringCmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        for line in cmd.stderr:
+            strLine = line.decode("utf-8").rstrip('\n')
+            logger.critical("Could not add bridge for link. Stderr: %s", strLine)
+            raise RuntimeError
+        logger.debug("Added bridge %s for link.", self.bridgeName)
+
+        self.linkId = Link.linkNumber
+        Link.linkNumber += 1
+
+        stringCmd = "ovs-docker add-port %s %s %s --ipaddress=%s/30 --macaddress=%s" % \
+                    (self.bridgeName, self.interfacesObj[0].getInterfaceName(), self.interfacesObj[0].getNeName(),
+                     firstIpOfLink, self.interfacesObj[0].getMacAddress())
+        cmd = subprocess.Popen(stringCmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        for line in cmd.stderr:
+            strLine = line.decode("utf-8").rstrip('\n')
+            logger.critical("Could not add interface. Stderr: %s", strLine)
+            raise RuntimeError
+        logger.debug("Added port for interface %s from NE=%s having IP=%s ",
+                     self.interfacesObj[0].getInterfaceName(), self.interfacesObj[0].getNeName(),
+                     firstIpOfLink)
+
+        stringCmd = "ovs-docker add-port %s %s %s --ipaddress=%s/30 --macaddress=%s" % \
+                    (self.bridgeName, self.interfacesObj[1].getInterfaceName(), self.interfacesObj[1].getNeName(),
+                     secondIpOfLink, self.interfacesObj[1].getMacAddress())
+        cmd = subprocess.Popen(stringCmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        for line in cmd.stderr:
+            strLine = line.decode("utf-8").rstrip('\n')
+            logger.critical("Could not add interface. Stderr: %s", strLine)
+            raise RuntimeError
+        logger.debug("Added port for interface %s from NE=%s having IP=%s ",
+                     self.interfacesObj[1].getInterfaceName(), self.interfacesObj[1].getNeName(),
+                     secondIpOfLink)

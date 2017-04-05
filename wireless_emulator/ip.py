@@ -32,6 +32,9 @@ class InterfaceIPFactory:
             logger.critical("No more free Interface IP addresses left!")
             return None
 
+    def returnBackUnusedIp(self, ipNetworkAddress):
+        self.freeInterfaceIpList.append(ipNetworkAddress)
+
     def getNumberOfFreeInterfaceIpAddresses(self):
         return len(self.freeInterfaceIpList)
 

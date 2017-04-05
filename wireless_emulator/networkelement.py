@@ -241,11 +241,15 @@ class NetworkElement:
             elif intf['layer'] == "ETH":
 
                 for port in intf['LTPs']:
-                    intfObj = Intf.EthInterface(port['id'], portNumId, ofPort, self, port['supportedAlarms'], port['serverLTPs'])
+                    if port.get('serverLTPs') is not None:
+                        intfObj = Intf.EthInterface(port['id'], portNumId, ofPort, self, port['supportedAlarms'], port['serverLTPs'])
+                    else:
+                        intfObj = Intf.PhyEthInterface(port['id'], portNumId, ofPort, self, port['physical-port-reference'])
                     ofPort += 1
                     portNumId += 1
                     intfObj.buildXmlFiles()
                     self.interfaceList.append(intfObj)
+
             else:
                 logger.critical("Illegal layer value %s found in JSON configuration file for NE=%s",
                                 intf['layer'], self.uuid)
@@ -386,6 +390,7 @@ class NetworkElement:
 
     def addMwsInterface(self, interfaceObj):
         logger.debug("Adding MWS interface %s to docker container %s", interfaceObj.getInterfaceName(), self.uuid)
+        print("Adding MWS interface %s to docker container %s" % (interfaceObj.getInterfaceName(), self.uuid))
 
         command = "ip link add name %s type bond" % interfaceObj.getInterfaceName()
         self.executeCommand(command)
@@ -403,7 +408,15 @@ class NetworkElement:
         self.executeCommand(command)
 
     def addEthInterface(self, interfaceObj):
+        if interfaceObj.type is None:
+            self.addEthContInterface(interfaceObj)
+        else:
+            self.addPhyEthInterface(interfaceObj)
+
+    def addEthContInterface(self, interfaceObj):
+
         logger.debug("Adding ETH interface %s to docker container %s", interfaceObj.getInterfaceName(), self.uuid)
+        print("Adding ETH interface %s to docker container %s" % (interfaceObj.getInterfaceName(), self.uuid))
 
         command = "ip link add name %s type bond" % interfaceObj.getInterfaceName()
         self.executeCommand(command)
@@ -427,6 +440,26 @@ class NetworkElement:
 
         command = "ip link set %s up" % interfaceObj.getInterfaceName()
         self.executeCommand(command)
+
+    def addPhyEthInterface(self, interfaceObj):
+        if self.emEnv.isInterfaceObjPartOfLink(interfaceObj) is True:
+            logger.debug("NOT adding PHY-ETH interface %s to docker container %s because it was already added by the link", interfaceObj.getInterfaceName(), self.uuid)
+        else:
+            logger.debug(
+                "Adding PHY-ETH interface %s to docker container %s...",
+                interfaceObj.getInterfaceName(), self.uuid)
+            print(
+                "Adding PHY-ETH interface %s to docker container %s..." %
+                (interfaceObj.getInterfaceName(), self.uuid))
+
+            command = "ip link add name %s type dummy" % interfaceObj.getInterfaceName()
+            self.executeCommand(command)
+
+            command = "ip address add %s/30 dev %s" % (interfaceObj.getIpAddress(), interfaceObj.getInterfaceName())
+            self.executeCommand(command)
+
+            command = "ip link set %s up" % interfaceObj.getInterfaceName()
+            self.executeCommand(command)
 
     def executeCommand(self, command):
         stringCmd = "docker exec -it %s %s" % (self.dockerName, command)

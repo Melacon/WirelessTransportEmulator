@@ -108,11 +108,18 @@ class Emulator(metaclass=Singleton):
 
     def createTopologiesList(self):
 
-        logger.debug("Creating topologies list...")
+        logger.debug("Creating topologies list mwps...")
 
         mwpsTopo = self.topoJson['topologies']['mwps']
 
         topoObj = Topology(mwpsTopo, "mwps")
+        self.topologies.append(topoObj)
+
+        logger.debug("Creating topologies list eth...")
+
+        mwpsTopo = self.topoJson['topologies']['eth']
+
+        topoObj = Topology(mwpsTopo, "eth")
         self.topologies.append(topoObj)
 
     def buildTopologies(self):
@@ -124,9 +131,16 @@ class Emulator(metaclass=Singleton):
         self.createTopologiesList()
         self.buildTopologies()
 
+    def isInterfaceObjPartOfLink(self, intfObj):
+        for topo in self.topologies:
+            if topo.isInterfaceObjPartOfLink(intfObj) is True:
+                return True
+
+        return False
+
     def addInterfacesInDocker(self):
         for ne in self.networkElementList:
-            print("Adding relevant interfaces in docker container...")
+            print("Adding relevant interfaces in docker container %s..." % ne.uuid)
             ne.addInterfacesInDockerContainer()
 
     def startEmulator(self):

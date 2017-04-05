@@ -75,7 +75,7 @@ class MwpsInterface:
         lpUuid = "lp-" + self.interfaceName
         uuid.text = lpUuid
         layerProtocolName = lpNode.find('core-model:layer-protocol-name', self.neObj.namespaces)
-        layerProtocolName.text = self.prefixName[:-1]
+        layerProtocolName.text = self.prefixName[:-1].upper()
         addCoreDefaultValuesToNode(lpNode, lpUuid, self.neObj.namespaces)
 
         neNode.append(ltpNode)
@@ -124,6 +124,9 @@ class MwpsInterface:
             radioSignalId = airInterfaceConfig.find('microwave-model:radio-signal-id', self.neObj.namespaces)
             radioSignalId.text = self.radioSignalId
 
+        cryptoKey = airInterfaceConfig.find('microwave-model:cryptographic-key', self.neObj.namespaces)
+        cryptoKey.text = '********'
+
         problemKindSeverityList = airInterfaceConfig.find('microwave-model:problem-kind-severity-list', self.neObj.namespaces)
 
         problemKindNode = copy.deepcopy(problemKindSeverityList)
@@ -161,9 +164,12 @@ class MwpsInterface:
             'air-interface-capability/supported-channel-plan-list/transmission-mode-list/transmission-mode-id')
         trModeId.text = "transmission_mode_1"
 
-        seqNum = airInterface.find(
-            'air-interface-current-problems/current-problem-list/sequence-number')
+        seqNum = airInterface.find('air-interface-current-problems/current-problem-list/sequence-number')
         seqNum.text = "1"
+
+        problemName = airInterface.find('air-interface-current-problems/current-problem-list/problem-name')
+        alarm_list = self.supportedAlarms.split(",")
+        problemName.text = alarm_list[0]
 
         airInterfaceCurrentPerformance = airInterface.find('air-interface-current-performance')
         self.addCurrentPerformanceXmlValues(airInterfaceCurrentPerformance)
@@ -269,6 +275,9 @@ class MwsInterface:
         self.supportedAlarms = supportedAlarms
 
         alarm_list = supportedAlarms.split(",")
+        if len(alarm_list) < 1:
+            print("Interface %s does not supply at least 1 supported alarms!" % self.uuid)
+            raise RuntimeError
 
         self.neObj = neObj
         self.prefixName = 'mws-'
@@ -336,7 +345,7 @@ class MwsInterface:
         lpUuid = "lp-" + self.interfaceName
         uuid.text = lpUuid
         layerProtocolName = lpNode.find('core-model:layer-protocol-name', self.neObj.namespaces)
-        layerProtocolName.text = self.prefixName[:-1]
+        layerProtocolName.text = self.prefixName[:-1].upper()
         addCoreDefaultValuesToNode(lpNode, lpUuid, self.neObj.namespaces)
 
         neNode.append(ltpNode)
@@ -406,6 +415,9 @@ class MwsInterface:
         layerProtocol = pureEthernetStructure.find('layer-protocol')
         layerProtocol.text = lpUuid
 
+        structureId = pureEthernetStructure.find('pure-ethernet-structure-capability/structure-id')
+        structureId.text = lpUuid
+
         supportedAlarms = pureEthernetStructure.find(
             'pure-ethernet-structure-capability/supported-alarms')
         supportedAlarms.text = self.supportedAlarms
@@ -413,6 +425,10 @@ class MwsInterface:
         seqNum = pureEthernetStructure.find(
             'pure-ethernet-structure-current-problems/current-problem-list/sequence-number')
         seqNum.text = "1"
+
+        problemName = pureEthernetStructure.find('pure-ethernet-structure-current-problems/current-problem-list/problem-name')
+        alarm_list = self.supportedAlarms.split(",")
+        problemName.text = alarm_list[0]
 
         currentPerformance = pureEthernetStructure.find('pure-ethernet-structure-current-performance')
         self.addCurrentPerformanceXmlValues(currentPerformance)
@@ -508,10 +524,11 @@ class EthInterface:
         self.id = interfaceId
         self.ofPort = ofPort
         self.supportedAlarms = supportedAlarms
+        self.type = None
 
         alarm_list = supportedAlarms.split(",")
         if len(alarm_list) < 2:
-            print("Interface %s does not supply at least 6 supported alarms!" % self.uuid)
+            print("Interface %s does not supply at least 2 supported alarms!" % self.uuid)
             raise RuntimeError
 
         self.neObj = neObj
@@ -575,7 +592,7 @@ class EthInterface:
         lpUuid = "lp-" + self.interfaceName
         uuid.text = lpUuid
         layerProtocolName = lpNode.find('core-model:layer-protocol-name', self.neObj.namespaces)
-        layerProtocolName.text = self.prefixName[:-1]
+        layerProtocolName.text = self.prefixName[:-1].upper()
         addCoreDefaultValuesToNode(lpNode, lpUuid, self.neObj.namespaces)
 
         neNode.append(ltpNode)
@@ -608,6 +625,9 @@ class EthInterface:
 
         ethContainerConfig = ethernetContainer.find('microwave-model:ethernet-container-configuration', self.neObj.namespaces)
 
+        cryptoKey = ethContainerConfig.find('microwave-model:cryptographic-key', self.neObj.namespaces)
+        cryptoKey.text = '********'
+
         problemKindSeverityList = ethContainerConfig.find('microwave-model:problem-kind-severity-list', self.neObj.namespaces)
 
         problemKindNode = copy.deepcopy(problemKindSeverityList)
@@ -627,15 +647,13 @@ class EthInterface:
         segmentsIdListSaved = copy.deepcopy(segmentsIdList)
         ethContainerConfig.remove(segmentsIdList)
 
-        index = 1
         for struct in self.serverLtps:
             newSegmentsIdList = copy.deepcopy(segmentsIdListSaved)
             structureIdRef = newSegmentsIdList.find('microwave-model:structure-id-ref', self.neObj.namespaces)
             structureIdRef.text = 'lp-mws-' + struct
             segmentIdRef = newSegmentsIdList.find('microwave-model:segment-id-ref', self.neObj.namespaces)
-            segmentIdRef.text = str(index)
+            segmentIdRef.text = '1'
             ethContainerConfig.append(newSegmentsIdList)
-            index += 1
 
         parentNode.append(ethernetContainer)
 
@@ -655,6 +673,10 @@ class EthInterface:
         seqNum = ethernetContainer.find(
             'ethernet-container-current-problems/current-problem-list/sequence-number')
         seqNum.text = "1"
+
+        problemName = ethernetContainer.find('ethernet-container-current-problems/current-problem-list/problem-name')
+        alarm_list = self.supportedAlarms.split(",")
+        problemName.text = alarm_list[0]
 
         currentPerformance = ethernetContainer.find('ethernet-container-current-performance')
         self.addCurrentPerformanceXmlValues(currentPerformance)
@@ -740,3 +762,101 @@ class EthInterface:
 
         self.buildCoreModelStatusXml()
         self.buildMicrowaveModelStatusXml()
+
+
+class PhyEthInterface:
+
+    def __init__(self, intfUuid, interfaceId, ofPort, neObj, phyPortRef):
+        self.IP = None
+        self.uuid = intfUuid
+        self.id = interfaceId
+        self.ofPort = ofPort
+        self.type = 'phy'
+
+        self.neObj = neObj
+        self.prefixName = 'eth-'
+        self.interfaceName = self.prefixName + str(self.uuid)
+
+        self.emEnv = wireless_emulator.emulator.Emulator()
+
+        self.phyPortRef = phyPortRef
+
+        self.MAC = self.emEnv.macAddressFactory.generateMacAddress(self.neObj.getNeId(), self.id)
+        if self.MAC is None:
+            logger.critical("No MAC Address created for NE=%s and interface=%s",
+                            self.neObj.getNeUuid(), self.uuid)
+
+        self.ipInterfaceNetwork = self.emEnv.intfIpFactory.getFreeInterfaceIp()
+
+        firstIpOfLink = str(self.ipInterfaceNetwork[1])
+
+        self.IP = firstIpOfLink
+
+        logger.debug("PhyEthInterface object having name=%s, ofPort=%d and IP=%s was created",
+                     self.interfaceName, self.ofPort, self.IP)
+
+    def getIpAddress(self):
+        return self.IP
+
+    #maybe we should pass also the ipInterfaceNetwork ??
+    def setIpAddress(self, IP):
+        if self.IP is not None:
+            self.emEnv.intfIpFactory.returnBackUnusedIp(self.ipInterfaceNetwork)
+            self.IP = IP
+        else:
+            self.IP = IP
+
+    def getInterfaceUuid(self):
+        return self.uuid
+
+    def getInterfaceName(self):
+        return self.interfaceName
+
+    def getNeName(self):
+        return self.neObj.dockerName
+
+    def getMacAddress(self):
+        return self.MAC
+
+    def buildCoreModelConfigXml(self):
+        neNode = self.neObj.networkElementXmlNode
+        ltpNode = copy.deepcopy(self.neObj.ltpXmlNode)
+        uuid = ltpNode.find('core-model:uuid', self.neObj.namespaces)
+        ltpUuid = "ltp-" + self.interfaceName
+        uuid.text = ltpUuid
+        addCoreDefaultValuesToNode(ltpNode, ltpUuid, self.neObj.namespaces)
+
+        lpNode = ltpNode.find('core-model:lp', self.neObj.namespaces)
+        uuid = lpNode.find('core-model:uuid', self.neObj.namespaces)
+        lpUuid = "lp-" + self.interfaceName
+        uuid.text = lpUuid
+        layerProtocolName = lpNode.find('core-model:layer-protocol-name', self.neObj.namespaces)
+        layerProtocolName.text = self.prefixName[:-1].upper()
+        addCoreDefaultValuesToNode(lpNode, lpUuid, self.neObj.namespaces)
+
+        physicalPortRef = ltpNode.find('core-model:physical-port-reference', self.neObj.namespaces)
+        physicalPortRef.text = self.phyPortRef
+
+        neNode.append(ltpNode)
+
+    def buildCoreModelStatusXml(self):
+        neStatusNode = self.neObj.neStatusXmlNode
+
+        ltpNode = copy.deepcopy(self.neObj.ltpStatusXmlNode)
+        uuid = ltpNode.find('uuid')
+        ltpUuid = "ltp-" + self.interfaceName
+        uuid.text = ltpUuid
+        addCoreDefaultStatusValuesToNode(ltpNode)
+
+        lpNode = ltpNode.find('lp')
+        uuid = lpNode.find('uuid')
+        lpUuid = "lp-" + self.interfaceName
+        uuid.text = lpUuid
+        addCoreDefaultStatusValuesToNode(lpNode)
+
+        neStatusNode.append(ltpNode)
+
+    def buildXmlFiles(self):
+        self.buildCoreModelConfigXml()
+
+        self.buildCoreModelStatusXml()
