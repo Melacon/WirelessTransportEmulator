@@ -107,6 +107,6 @@ class CLI(Cmd):
             print('#################### %s #####################' % topo.topologyLayer)
             for link in topo.linkList:
                 print('## Link=%d ## \'%s\': \'%s\' <-------> \'%s\':\'%s\'' %
-                      (link.linkId, link.interfacesObj[0].getNeName(), link.interfacesObj[0].getInterfaceUuid(),
-                       link.interfacesObj[0].getInterfaceUuid(), link.interfacesObj[1].getNeName()))
+                      (link.linkId, link.interfacesObj[0].getNeName(), link.interfacesObj[0].getInterfaceName(),
+                       link.interfacesObj[1].getInterfaceName(), link.interfacesObj[1].getNeName()))
             print('#########################################')

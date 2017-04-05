@@ -26,12 +26,16 @@ class NetworkElement:
         self.ltpXmlNode = None
         self.microwaveModuleXmlNode = None
         self.airInterfacePacXmlNode = None
+        self.pureEthernetPacXmlNode = None
+        self.ethernetContainerPacXmlNode = None
 
         self.xmlStatusTree = None
         self.statusXmlNode = None
         self.airInterfaceStatusXmlNode = None
         self.neStatusXmlNode = None
         self.ltpStatusXmlNode = None
+        self.pureEthernetStatusXmlNode = None
+        self.ethernetContainerStatusXmlNode = None
 
         self.networkIPAddress = self.emEnv.mgmtIpFactory.getFreeManagementNetworkIP()
         if self.networkIPAddress is None:
@@ -84,6 +88,15 @@ class NetworkElement:
             intfId = intf.getInterfaceUuid()
             if intfId == reqIntfId:
                 return intf
+        logger.debug("Could not find interface having uuid=%s in ne=%s", reqIntfId, self.uuid)
+        return None
+
+    def getInterfaceFromInterfaceName(self, reqIntfName):
+        for intf in self.interfaceList:
+            intfId = intf.getInterfaceName()
+            if intfId == reqIntfName:
+                return intf
+        logger.debug("Could not find interface having name=%s in ne=%s", reqIntfName, self.uuid)
         return None
 
     def saveXmlTemplates(self):
@@ -103,6 +116,14 @@ class NetworkElement:
         self.ltpXmlNode = copy.deepcopy(ltp)
         self.networkElementXmlNode.remove(ltp)
 
+        pureEthernet = config.find('microwave-model:mw-pure-ethernet-structure-pac', self.namespaces)
+        self.pureEthernetPacXmlNode = copy.deepcopy(pureEthernet)
+        self.microwaveModuleXmlNode.remove(pureEthernet)
+
+        ethernetContainer = config.find('microwave-model:mw-ethernet-container-pac', self.namespaces)
+        self.ethernetContainerPacXmlNode = copy.deepcopy(ethernetContainer)
+        self.microwaveModuleXmlNode.remove(ethernetContainer)
+
         uselessNode = config.find('microwave-model:co-channel-group', self.namespaces)
         config.remove(uselessNode)
 
@@ -115,13 +136,7 @@ class NetworkElement:
         uselessNode = config.find('microwave-model:mw-air-interface-diversity-pac', self.namespaces)
         config.remove(uselessNode)
 
-        uselessNode = config.find('microwave-model:mw-pure-ethernet-structure-pac', self.namespaces)
-        config.remove(uselessNode)
-
         uselessNode = config.find('microwave-model:mw-hybrid-mw-structure-pac', self.namespaces)
-        config.remove(uselessNode)
-
-        uselessNode = config.find('microwave-model:mw-ethernet-container-pac', self.namespaces)
         config.remove(uselessNode)
 
         uselessNode = config.find('microwave-model:mw-tdm-container-pac', self.namespaces)
@@ -149,6 +164,14 @@ class NetworkElement:
         self.ltpStatusXmlNode = copy.deepcopy(ltp)
         self.neStatusXmlNode.remove(ltp)
 
+        pureEthernetStructure = status.find('mw-pure-ethernet-structure-pac')
+        self.pureEthernetStatusXmlNode = copy.deepcopy(pureEthernetStructure)
+        self.statusXmlNode.remove(pureEthernetStructure)
+
+        ethernetContainer = status.find('mw-ethernet-container-pac')
+        self.ethernetContainerStatusXmlNode = copy.deepcopy(ethernetContainer)
+        self.statusXmlNode.remove(ethernetContainer)
+
         uselessNode = status.find('co-channel-group')
         status.remove(uselessNode)
 
@@ -161,13 +184,7 @@ class NetworkElement:
         uselessNode = status.find('mw-air-interface-diversity-pac')
         status.remove(uselessNode)
 
-        uselessNode = status.find('mw-pure-ethernet-structure-pac')
-        status.remove(uselessNode)
-
         uselessNode = status.find('mw-hybrid-mw-structure-pac')
-        status.remove(uselessNode)
-
-        uselessNode = status.find('mw-ethernet-container-pac')
         status.remove(uselessNode)
 
         uselessNode = status.find('mw-tdm-container-pac')
@@ -215,7 +232,7 @@ class NetworkElement:
             elif intf['layer'] == "MWS":
 
                 for port in intf['LTPs']:
-                    intfObj = Intf.MwsInterface(port['id'], portNumId, ofPort, self, port['supportedAlarms'])
+                    intfObj = Intf.MwsInterface(port['id'], portNumId, ofPort, self, port['supportedAlarms'], port['serverLTPs'])
                     ofPort += 1
                     portNumId += 1
                     intfObj.buildXmlFiles()
@@ -224,7 +241,7 @@ class NetworkElement:
             elif intf['layer'] == "ETH":
 
                 for port in intf['LTPs']:
-                    intfObj = Intf.EthInterface(port['id'], portNumId, ofPort, self, port['supportedAlarms'])
+                    intfObj = Intf.EthInterface(port['id'], portNumId, ofPort, self, port['supportedAlarms'], port['serverLTPs'])
                     ofPort += 1
                     portNumId += 1
                     intfObj.buildXmlFiles()
@@ -350,14 +367,66 @@ class NetworkElement:
 
         self.startDockerContainer()
         if self.emEnv.registerToOdl == True:
-            try:
-                registerNeToOdl(self.emEnv.controllerInfo, self.uuid, self.managementIPAddressString)
-            except RuntimeError:
-                print("Failed to register NE=%s having IP=%s to the ODL controller" % (self.uuid, self.managementIPAddressString))
+           try:
+               registerNeToOdl(self.emEnv.controllerInfo, self.uuid, self.managementIPAddressString)
+           except RuntimeError:
+               print("Failed to register NE=%s having IP=%s to the ODL controller" % (self.uuid, self.managementIPAddressString))
 
         #debug
         self.xmlConfigurationTree.write('output-config-' + self.dockerName + '.xml')
         self.xmlStatusTree.write('output-status-' + self.dockerName + '.xml')
+
+    def addInterfacesInDockerContainer(self):
+
+        for intf in self.interfaceList:
+            if intf.prefixName == 'mws-':
+                self.addMwsInterface(intf)
+            elif intf.prefixName == 'eth-':
+                self.addEthInterface(intf)
+
+    def addMwsInterface(self, interfaceObj):
+        logger.debug("Adding MWS interface %s to docker container %s", interfaceObj.getInterfaceName(), self.uuid)
+
+        command = "ip link add name %s type bond" % interfaceObj.getInterfaceName()
+        self.executeCommand(command)
+
+        for serverLtp in interfaceObj.serverLtps:
+            serverObj = self.getInterfaceFromInterfaceUuid(serverLtp)
+            serverName = serverObj.getInterfaceName()
+            command = "ip link set %s down" % serverName
+            self.executeCommand(command)
+
+            command = "ip link set %s down master %s" % (serverName, interfaceObj.getInterfaceName())
+            self.executeCommand(command)
+
+        command = "ip link set %s up" % interfaceObj.getInterfaceName()
+        self.executeCommand(command)
+
+    def addEthInterface(self, interfaceObj):
+        logger.debug("Adding ETH interface %s to docker container %s", interfaceObj.getInterfaceName(), self.uuid)
+
+        command = "ip link add name %s type bond" % interfaceObj.getInterfaceName()
+        self.executeCommand(command)
+
+        for serverLtp in interfaceObj.serverLtps:
+            serverObj = self.getInterfaceFromInterfaceUuid(serverLtp)
+            serverName = serverObj.getInterfaceName()
+
+            command = "ip link set %s down" % serverName
+            self.executeCommand(command)
+
+            command = "ip link set %s down master %s" % (serverName, interfaceObj.getInterfaceName())
+            self.executeCommand(command)
+
+        ipIntfNetwork = self.emEnv.intfIpFactory.getFreeInterfaceIp()
+        interfaceIp = str(ipIntfNetwork[1])
+        command = "ip address add %s/30 dev %s" % (interfaceIp, interfaceObj.getInterfaceName())
+        self.executeCommand(command)
+
+        interfaceObj.setIpAddress(interfaceIp)
+
+        command = "ip link set %s up" % interfaceObj.getInterfaceName()
+        self.executeCommand(command)
 
     def executeCommand(self, command):
         stringCmd = "docker exec -it %s %s" % (self.dockerName, command)

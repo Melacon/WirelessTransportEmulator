@@ -7,18 +7,29 @@
         "interfaces" : [
           {
             "layer" : "MWPS",
-            "LTPs" : [{"id": "ifIndex1",
+            "LTPs" : [{"id": "airIntf1",
               "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted"},
-                      {"id": "ifIndex2",
+                      {"id": "airIntf2",
               "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted"}]
           },
           {
             "layer" : "MWS",
-            "LTPs" : []
+            "LTPs" : [{"id" : "pureEth1",
+            "supportedAlarms" : "structureAlarm",
+              "serverLTPs" : [{"id" : "airIntf1"}]},
+                      {"id" : "pureEth2",
+            "supportedAlarms" : "structureAlarm",
+              "serverLTPs" : [{"id" : "airIntf2"}]}]
           },
           {
             "layer" : "ETH",
-            "LTPs" : []
+            "LTPs" : [{"id" : "ethCont1",
+            "supportedAlarms" : "framingIsFaulty, containerIsDown",
+              "serverLTPs" : [{"id" : "pureEth1"}, {"id" : "pureEth2"}]},
+                      {"id" : "phyEth1", "physical-port-reference" : "shelf1:port1"},
+                      {"id" : "phyEth2", "physical-port-reference" : "shelf1:port2"},
+                      {"id" : "phyEth3", "physical-port-reference" : "shelf1:port3"},
+                      {"id" : "phyEth4", "physical-port-reference" : "shelf1:port4"}]
           }
         ]
       }
@@ -30,20 +41,37 @@
         "interfaces" : [
           {
             "layer" : "MWPS",
-            "LTPs" : [{"id": "ifIndex1",
+            "LTPs" : [{"id": "airIntf1",
             "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted"},
-              {"id" : "ifIndex2",
+              {"id" : "airIntf2",
               "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted"},
-              {"id": "ifIndex3",
+              {"id": "airIntf3",
               "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted"}]
           },
           {
             "layer" : "MWS",
-            "LTPs" : []
+            "LTPs" : [{"id" : "pureEth1",
+            "supportedAlarms" : "structureAlarm",
+              "serverLTPs" : [{"id" : "airIntf1"}]},
+                      {"id" : "pureEth2",
+            "supportedAlarms" : "structureAlarm",
+              "serverLTPs" : [{"id" : "airIntf2"}]},
+                      {"id" : "pureEth3",
+            "supportedAlarms" : "structureAlarm",
+              "serverLTPs" : [{"id" : "airIntf3"}]}]
           },
           {
             "layer" : "ETH",
-            "LTPs" : []
+            "LTPs" : [{"id" : "ethCont1",
+            "supportedAlarms" : "framingIsFaulty, containerIsDown",
+              "serverLTPs" : [{"id" : "pureEth1"}, {"id" : "pureEth2"}]},
+                      {"id" : "ethCont2",
+            "supportedAlarms" : "framingIsFaulty, containerIsDown",
+              "serverLTPs" : [{"id" : "pureEth3"}]},
+                      {"id" : "phyEth1", "physical-port-reference" : "shelf1:port1"},
+                      {"id" : "phyEth2", "physical-port-reference" : "shelf1:port2"},
+                      {"id" : "phyEth3", "physical-port-reference" : "shelf1:port3"},
+                      {"id" : "phyEth4", "physical-port-reference" : "shelf1:port4"}]
           }
           ]
       }
@@ -55,39 +83,24 @@
         "interfaces" : [
           {
             "layer" : "MWPS",
-            "LTPs" : [{"id": "ifIndex1",
-            "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted"},
-            {"id" : "ifIndex2",
+            "LTPs" : [{"id": "airIntf1",
             "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted"}]
           },
           {
             "layer" : "MWS",
-            "LTPs" : []
+            "LTPs" : [{"id" : "pureEth1",
+            "supportedAlarms" : "structureAlarm",
+              "serverLTPs" : [{"id" : "airIntf1"}]}]
           },
           {
             "layer" : "ETH",
-            "LTPs" : []
-          }
-          ]
-      }
-    },
-    {
-      "network-element" :
-      {
-        "uuid" : "Simulator-4",
-        "interfaces" : [
-          {
-            "layer" : "MWPS",
-            "LTPs" : [{"id": "ifIndex1",
-            "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted"}]
-          },
-          {
-            "layer" : "MWS",
-            "LTPs" : []
-          },
-          {
-            "layer" : "ETH",
-            "LTPs" : []
+            "LTPs" : [{"id" : "ethCont5",
+            "supportedAlarms" : "framingIsFaulty, containerIsDown",
+              "serverLTPs" : [{"id" : "pureEth1"}]},
+                      {"id" : "phyEth1", "physical-port-reference" : "shelf1:port1"},
+                      {"id" : "phyEth2", "physical-port-reference" : "shelf1:port2"},
+                      {"id" : "phyEth3", "physical-port-reference" : "shelf1:port3"},
+                      {"id" : "phyEth4", "physical-port-reference" : "shelf1:port4"}]
           }
           ]
       }
@@ -96,12 +109,15 @@
   "topologies" : {
     "mwps" : {
       "links" : [
-        [{"uuid" : "Simulator-1", "ltp" : "ifIndex1", "radio-signal-id" : "26"}, {"uuid" : "Simulator-2", "ltp" : "ifIndex1", "radio-signal-id" : "26"}],
-        [{"uuid" : "Simulator-1", "ltp" : "ifIndex2", "radio-signal-id" : "29"}, {"uuid" : "Simulator-2", "ltp" : "ifIndex2", "radio-signal-id" : "29"}],
-        [{"uuid" : "Simulator-2", "ltp" : "ifIndex3", "radio-signal-id" : "27"}, {"uuid" : "Simulator-3", "ltp" : "ifIndex1", "radio-signal-id" : "27"}],
-        [{"uuid" : "Simulator-3", "ltp" : "ifIndex2", "radio-signal-id" : "28"}, {"uuid" : "Simulator-4", "ltp" : "ifIndex1", "radio-signal-id" : "28"}]
+        [{"uuid" : "Simulator-1", "ltp" : "airIntf1", "radio-signal-id" : "26"}, {"uuid" : "Simulator-2", "ltp" : "airIntf1", "radio-signal-id" : "26"}],
+        [{"uuid" : "Simulator-1", "ltp" : "airIntf2", "radio-signal-id" : "29"}, {"uuid" : "Simulator-2", "ltp" : "airIntf2", "radio-signal-id" : "29"}],
+        [{"uuid" : "Simulator-2", "ltp" : "airIntf3", "radio-signal-id" : "27"}, {"uuid" : "Simulator-3", "ltp" : "airIntf1", "radio-signal-id" : "27"}]
         ]
     },
-    "mws" : {}
+    "eth" : {
+      "links" : [
+        [{"uuid" : "Simulator-1", "ltp" : "phyEth1", "vlan-id" : "0"}, {"uuid" : "Simulator-2", "ltp" : "phyEth1", "vlan-id" : "0"}]
+      ]
+    }
   }
 }

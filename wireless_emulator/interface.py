@@ -8,7 +8,8 @@ from wireless_emulator.utils import addCoreDefaultValuesToNode, addCoreDefaultSt
 
 logger = logging.getLogger(__name__)
 
-class Interface:
+
+class MwpsInterface:
 
     def __init__(self, intfUuid, interfaceId, ofPort, neObj, supportedAlarms):
         self.IP = None
@@ -23,8 +24,9 @@ class Interface:
             raise RuntimeError
 
         self.neObj = neObj
-        self.prefixName = None
-        self.interfaceName = None
+        self.prefixName = 'mwps-'
+        self.interfaceName = self.prefixName + str(self.uuid)
+        self.clientLtpNode = None
 
         self.emEnv = wireless_emulator.emulator.Emulator()
 
@@ -34,6 +36,9 @@ class Interface:
                             self.neObj.getNeUuid(), self.uuid)
 
         self.radioSignalId = self.findRadioSignalId()
+
+        logger.debug("MwpsInterface object having name=%s, ofPort=%d and IP=%s was created",
+                     self.interfaceName, self.ofPort, self.IP)
 
     def getIpAddress(self):
         return self.IP
@@ -61,6 +66,10 @@ class Interface:
         uuid.text = ltpUuid
         addCoreDefaultValuesToNode(ltpNode, ltpUuid, self.neObj.namespaces)
 
+        clientLtp = ltpNode.find('core-model:client-ltp', self.neObj.namespaces)
+        self.clientLtpNode = copy.deepcopy(clientLtp)
+        ltpNode.remove(clientLtp)
+
         lpNode = ltpNode.find('core-model:lp', self.neObj.namespaces)
         uuid = lpNode.find('core-model:uuid', self.neObj.namespaces)
         lpUuid = "lp-" + self.interfaceName
@@ -70,6 +79,18 @@ class Interface:
         addCoreDefaultValuesToNode(lpNode, lpUuid, self.neObj.namespaces)
 
         neNode.append(ltpNode)
+
+    def setCoreModelClientStateXml(self, clientLtpUuid):
+        neNode = self.neObj.networkElementXmlNode
+
+        for ltpNode in neNode.findall('core-model:ltp', self.neObj.namespaces):
+            uuid = ltpNode.find('core-model:uuid', self.neObj.namespaces)
+            logger.debug("Found ltp with ltp=%s", uuid.text)
+            if uuid.text == ('ltp-' + self.interfaceName):
+                if self.clientLtpNode is not None:
+                    newClient = copy.deepcopy(self.clientLtpNode)
+                    newClient.text = 'ltp-' + clientLtpUuid
+                    ltpNode.append(newClient)
 
     def buildCoreModelStatusXml(self):
         neStatusNode = self.neObj.neStatusXmlNode
@@ -238,29 +259,484 @@ class Interface:
         return None
 
 
-class MwpsInterface(Interface):
+class MwsInterface:
 
-    def __init__(self, intfUuid, interfaceId, ofPort, neObj, supportedAlarms):
-        Interface.__init__(self, intfUuid, interfaceId, ofPort, neObj, supportedAlarms)
-        self.prefixName = 'mwps-'
-        self.interfaceName = self.prefixName + str(self.uuid)
-        logger.debug("MwpsInterface object having name=%s, ofPort=%d and IP=%s was created",
-                     self.interfaceName, self.ofPort, self.IP)
+    def __init__(self, intfUuid, interfaceId, ofPort, neObj, supportedAlarms, serverLtps):
+        self.IP = None
+        self.uuid = intfUuid
+        self.id = interfaceId
+        self.ofPort = ofPort
+        self.supportedAlarms = supportedAlarms
 
-class MwsInterface(Interface):
+        alarm_list = supportedAlarms.split(",")
 
-    def __init__(self, intfUuid, interfaceId, ofPort, neObj, supportedAlarms):
-        Interface.__init__(self, intfUuid, interfaceId, ofPort, neObj, supportedAlarms)
+        self.neObj = neObj
         self.prefixName = 'mws-'
         self.interfaceName = self.prefixName + str(self.uuid)
+        self.clientLtpNode = None
+
+        self.emEnv = wireless_emulator.emulator.Emulator()
+
+        self.MAC = self.emEnv.macAddressFactory.generateMacAddress(self.neObj.getNeId(), self.id)
+        if self.MAC is None:
+            logger.critical("No MAC Address created for NE=%s and interface=%s",
+                            self.neObj.getNeUuid(), self.uuid)
+
+        self.serverLtps = []
+        for ltp in serverLtps:
+            self.serverLtps.append(ltp['id'])
+
         logger.debug("MwsInterface object having name=%s, ofPort=%d and IP=%s was created",
                      self.interfaceName, self.ofPort, self.IP)
 
-class EthInterface(Interface):
+    def getIpAddress(self):
+        return self.IP
 
-    def __init__(self, intfUuid, interfaceId, ofPort, neObj, supportedAlarms):
-        Interface.__init__(self, intfUuid, interfaceId, ofPort, neObj, supportedAlarms)
+    def setIpAddress(self, IP):
+        self.IP = IP
+
+    def getInterfaceUuid(self):
+        return self.uuid
+
+    def getInterfaceName(self):
+        return self.interfaceName
+
+    def getNeName(self):
+        return self.neObj.dockerName
+
+    def getMacAddress(self):
+        return self.MAC
+
+    def buildCoreModelConfigXml(self):
+        neNode = self.neObj.networkElementXmlNode
+        ltpNode = copy.deepcopy(self.neObj.ltpXmlNode)
+        uuid = ltpNode.find('core-model:uuid', self.neObj.namespaces)
+        ltpUuid = "ltp-" + self.interfaceName
+        uuid.text = ltpUuid
+        addCoreDefaultValuesToNode(ltpNode, ltpUuid, self.neObj.namespaces)
+
+        clientLtp = ltpNode.find('core-model:client-ltp', self.neObj.namespaces)
+        self.clientLtpNode = copy.deepcopy(clientLtp)
+        ltpNode.remove(clientLtp)
+
+        serverLtp = ltpNode.find('core-model:server-ltp', self.neObj.namespaces)
+        serverLtpNode = copy.deepcopy(serverLtp)
+        ltpNode.remove(serverLtp)
+
+        for ltp in self.serverLtps:
+            server = copy.deepcopy(serverLtpNode)
+            server.text = 'ltp-mwps-' + ltp
+            ltpNode.append(server)
+
+            serverInterface = self.neObj.getInterfaceFromInterfaceUuid(ltp)
+            serverInterface.setCoreModelClientStateXml(self.interfaceName)
+
+        lpNode = ltpNode.find('core-model:lp', self.neObj.namespaces)
+        uuid = lpNode.find('core-model:uuid', self.neObj.namespaces)
+        lpUuid = "lp-" + self.interfaceName
+        uuid.text = lpUuid
+        layerProtocolName = lpNode.find('core-model:layer-protocol-name', self.neObj.namespaces)
+        layerProtocolName.text = self.prefixName[:-1]
+        addCoreDefaultValuesToNode(lpNode, lpUuid, self.neObj.namespaces)
+
+        neNode.append(ltpNode)
+
+    def setCoreModelClientStateXml(self, clientLtpUuid):
+        neNode = self.neObj.networkElementXmlNode
+
+        for ltpNode in neNode.findall('core-model:ltp', self.neObj.namespaces):
+            uuid = ltpNode.find('core-model:uuid', self.neObj.namespaces)
+            logger.debug("Found ltp with ltp=%s", uuid.text)
+            if uuid.text == ('ltp-' + self.interfaceName):
+                if self.clientLtpNode is not None:
+                    newClient = copy.deepcopy(self.clientLtpNode)
+                    newClient.text = 'ltp-' + clientLtpUuid
+                    ltpNode.append(newClient)
+
+    def buildCoreModelStatusXml(self):
+        neStatusNode = self.neObj.neStatusXmlNode
+
+        ltpNode = copy.deepcopy(self.neObj.ltpStatusXmlNode)
+        uuid = ltpNode.find('uuid')
+        ltpUuid = "ltp-" + self.interfaceName
+        uuid.text = ltpUuid
+        addCoreDefaultStatusValuesToNode(ltpNode)
+
+        lpNode = ltpNode.find('lp')
+        uuid = lpNode.find('uuid')
+        lpUuid = "lp-" + self.interfaceName
+        uuid.text = lpUuid
+        addCoreDefaultStatusValuesToNode(lpNode)
+
+        neStatusNode.append(ltpNode)
+
+    def buildMicrowaveModelXml(self):
+        parentNode = self.neObj.microwaveModuleXmlNode
+
+        pureEthernetStructure = copy.deepcopy(self.neObj.pureEthernetPacXmlNode)
+        lpUuid = "lp-" + self.interfaceName
+
+        layerProtocol = pureEthernetStructure.find('microwave-model:layer-protocol', self.neObj.namespaces)
+        layerProtocol.text = lpUuid
+
+        pureEthConfig = pureEthernetStructure.find('microwave-model:pure-ethernet-structure-configuration', self.neObj.namespaces)
+
+        problemKindSeverityList = pureEthConfig.find('microwave-model:problem-kind-severity-list', self.neObj.namespaces)
+
+        problemKindNode = copy.deepcopy(problemKindSeverityList)
+        pureEthConfig.remove(problemKindSeverityList)
+
+        alarm_list = self.supportedAlarms.split(",")
+        for alarm in alarm_list:
+            newNode = copy.deepcopy(problemKindNode)
+            name = newNode.find('microwave-model:problem-kind-name', self.neObj.namespaces)
+            name.text = alarm
+            severity = newNode.find('microwave-model:problem-kind-severity', self.neObj.namespaces)
+            severity.text = "warning"
+            pureEthConfig.append(newNode)
+
+        parentNode.append(pureEthernetStructure)
+
+    def buildMicrowaveModelStatusXml(self):
+        parentNode = self.neObj.statusXmlNode
+
+        pureEthernetStructure = copy.deepcopy(self.neObj.pureEthernetStatusXmlNode)
+        lpUuid = "lp-" + self.interfaceName
+
+        layerProtocol = pureEthernetStructure.find('layer-protocol')
+        layerProtocol.text = lpUuid
+
+        supportedAlarms = pureEthernetStructure.find(
+            'pure-ethernet-structure-capability/supported-alarms')
+        supportedAlarms.text = self.supportedAlarms
+
+        seqNum = pureEthernetStructure.find(
+            'pure-ethernet-structure-current-problems/current-problem-list/sequence-number')
+        seqNum.text = "1"
+
+        currentPerformance = pureEthernetStructure.find('pure-ethernet-structure-current-performance')
+        self.addCurrentPerformanceXmlValues(currentPerformance)
+
+        historicalPerformances = pureEthernetStructure.find('pure-ethernet-structure-historical-performances')
+        self.addHistoricalPerformancesXmlValues(historicalPerformances)
+
+        parentNode.append(pureEthernetStructure)
+
+    def addCurrentPerformanceXmlValues(self, parentNode):
+        currentPerformanceDataList = parentNode.find('current-performance-data-list')
+        savedNode = copy.deepcopy(currentPerformanceDataList)
+        parentNode.remove(currentPerformanceDataList)
+
+        currentPerformanceDataList = copy.deepcopy(savedNode)
+        node = currentPerformanceDataList.find('scanner-id')
+        node.text = "1"
+        node = currentPerformanceDataList.find('granularity-period')
+        node.text = "period-15min"
+        node = currentPerformanceDataList.find('suspect-interval-flag')
+        node.text = "false"
+        node = currentPerformanceDataList.find('timestamp')
+        node.text = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-5] + "Z"
+        parentNode.append(currentPerformanceDataList)
+
+        currentPerformanceDataList = copy.deepcopy(savedNode)
+        node = currentPerformanceDataList.find('scanner-id')
+        node.text = "2"
+        node = currentPerformanceDataList.find('granularity-period')
+        node.text = "period-24hours"
+        node = currentPerformanceDataList.find('suspect-interval-flag')
+        node.text = "false"
+        node = currentPerformanceDataList.find('timestamp')
+        node.text = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-5] + "Z"
+        parentNode.append(currentPerformanceDataList)
+
+    def addHistoricalPerformancesXmlValues(self, parentNode):
+        histPerfDataList = parentNode.find('historical-performance-data-list')
+        savedNode = copy.deepcopy(histPerfDataList)
+        parentNode.remove(histPerfDataList)
+
+        for i in range(0,96):
+            self.addHistoricalPerformances15minutes(parentNode, savedNode, i)
+
+        for i in range(0,7):
+            self.addHistoricalPerformances24hours(parentNode, savedNode, i)
+
+    def addHistoricalPerformances15minutes(self, parentNode, savedNode, index):
+        histPerfDataList = copy.deepcopy(savedNode)
+        timeNow = datetime.datetime.utcnow()
+
+        node = histPerfDataList.find('history-data-id')
+        node.text = str(index)
+        node = histPerfDataList.find('granularity-period')
+        node.text = "period-15min"
+        node = histPerfDataList.find('suspect-interval-flag')
+        node.text = "false"
+        node = histPerfDataList.find('period-end-time')
+        timestamp = timeNow - datetime.timedelta(minutes=15*index)
+        node.text = timestamp.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-5] + "Z"
+
+        parentNode.append(histPerfDataList)
+
+    def addHistoricalPerformances24hours(self, parentNode, savedNode, index):
+        histPerfDataList = copy.deepcopy(savedNode)
+        timeNow = datetime.datetime.utcnow()
+
+        node = histPerfDataList.find('history-data-id')
+        node.text = str(index + 96)
+        node = histPerfDataList.find('granularity-period')
+        node.text = "period-24hours"
+        node = histPerfDataList.find('suspect-interval-flag')
+        node.text = "false"
+        node = histPerfDataList.find('period-end-time')
+        timestamp = timeNow - datetime.timedelta(days=1*index)
+        node.text = timestamp.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-5] + "Z"
+
+        parentNode.append(histPerfDataList)
+
+    def buildXmlFiles(self):
+        self.buildCoreModelConfigXml()
+        self.buildMicrowaveModelXml()
+
+        self.buildCoreModelStatusXml()
+        self.buildMicrowaveModelStatusXml()
+
+
+class EthInterface:
+
+    def __init__(self, intfUuid, interfaceId, ofPort, neObj, supportedAlarms, serverLtps):
+        self.IP = None
+        self.uuid = intfUuid
+        self.id = interfaceId
+        self.ofPort = ofPort
+        self.supportedAlarms = supportedAlarms
+
+        alarm_list = supportedAlarms.split(",")
+        if len(alarm_list) < 2:
+            print("Interface %s does not supply at least 6 supported alarms!" % self.uuid)
+            raise RuntimeError
+
+        self.neObj = neObj
         self.prefixName = 'eth-'
         self.interfaceName = self.prefixName + str(self.uuid)
+
+        self.emEnv = wireless_emulator.emulator.Emulator()
+
+        self.MAC = self.emEnv.macAddressFactory.generateMacAddress(self.neObj.getNeId(), self.id)
+        if self.MAC is None:
+            logger.critical("No MAC Address created for NE=%s and interface=%s",
+                            self.neObj.getNeUuid(), self.uuid)
+
+        self.serverLtps = []
+        for ltp in serverLtps:
+            self.serverLtps.append(ltp['id'])
+
         logger.debug("EthInterface object having name=%s, ofPort=%d and IP=%s was created",
                      self.interfaceName, self.ofPort, self.IP)
+
+    def getIpAddress(self):
+        return self.IP
+
+    def setIpAddress(self, IP):
+        self.IP = IP
+
+    def getInterfaceUuid(self):
+        return self.uuid
+
+    def getInterfaceName(self):
+        return self.interfaceName
+
+    def getNeName(self):
+        return self.neObj.dockerName
+
+    def getMacAddress(self):
+        return self.MAC
+
+    def buildCoreModelConfigXml(self):
+        neNode = self.neObj.networkElementXmlNode
+        ltpNode = copy.deepcopy(self.neObj.ltpXmlNode)
+        uuid = ltpNode.find('core-model:uuid', self.neObj.namespaces)
+        ltpUuid = "ltp-" + self.interfaceName
+        uuid.text = ltpUuid
+        addCoreDefaultValuesToNode(ltpNode, ltpUuid, self.neObj.namespaces)
+
+        serverLtp = ltpNode.find('core-model:server-ltp', self.neObj.namespaces)
+        serverLtpNode = copy.deepcopy(serverLtp)
+        ltpNode.remove(serverLtp)
+
+        for ltp in self.serverLtps:
+            server = copy.deepcopy(serverLtpNode)
+            server.text = 'ltp-mws-' + ltp
+            ltpNode.append(server)
+
+            serverInterface = self.neObj.getInterfaceFromInterfaceUuid(ltp)
+            serverInterface.setCoreModelClientStateXml(self.interfaceName)
+
+        lpNode = ltpNode.find('core-model:lp', self.neObj.namespaces)
+        uuid = lpNode.find('core-model:uuid', self.neObj.namespaces)
+        lpUuid = "lp-" + self.interfaceName
+        uuid.text = lpUuid
+        layerProtocolName = lpNode.find('core-model:layer-protocol-name', self.neObj.namespaces)
+        layerProtocolName.text = self.prefixName[:-1]
+        addCoreDefaultValuesToNode(lpNode, lpUuid, self.neObj.namespaces)
+
+        neNode.append(ltpNode)
+
+    def buildCoreModelStatusXml(self):
+        neStatusNode = self.neObj.neStatusXmlNode
+
+        ltpNode = copy.deepcopy(self.neObj.ltpStatusXmlNode)
+        uuid = ltpNode.find('uuid')
+        ltpUuid = "ltp-" + self.interfaceName
+        uuid.text = ltpUuid
+        addCoreDefaultStatusValuesToNode(ltpNode)
+
+        lpNode = ltpNode.find('lp')
+        uuid = lpNode.find('uuid')
+        lpUuid = "lp-" + self.interfaceName
+        uuid.text = lpUuid
+        addCoreDefaultStatusValuesToNode(lpNode)
+
+        neStatusNode.append(ltpNode)
+
+    def buildMicrowaveModelXml(self):
+        parentNode = self.neObj.microwaveModuleXmlNode
+
+        ethernetContainer = copy.deepcopy(self.neObj.ethernetContainerPacXmlNode)
+        lpUuid = "lp-" + self.interfaceName
+
+        layerProtocol = ethernetContainer.find('microwave-model:layer-protocol', self.neObj.namespaces)
+        layerProtocol.text = lpUuid
+
+        ethContainerConfig = ethernetContainer.find('microwave-model:ethernet-container-configuration', self.neObj.namespaces)
+
+        problemKindSeverityList = ethContainerConfig.find('microwave-model:problem-kind-severity-list', self.neObj.namespaces)
+
+        problemKindNode = copy.deepcopy(problemKindSeverityList)
+        ethContainerConfig.remove(problemKindSeverityList)
+
+        alarm_list = self.supportedAlarms.split(",")
+        for alarm in alarm_list:
+            newNode = copy.deepcopy(problemKindNode)
+            name = newNode.find('microwave-model:problem-kind-name', self.neObj.namespaces)
+            name.text = alarm
+            severity = newNode.find('microwave-model:problem-kind-severity', self.neObj.namespaces)
+            severity.text = "warning"
+            ethContainerConfig.append(newNode)
+
+        segmentsIdList = ethContainerConfig.find('microwave-model:segments-id-list',
+                                                          self.neObj.namespaces)
+        segmentsIdListSaved = copy.deepcopy(segmentsIdList)
+        ethContainerConfig.remove(segmentsIdList)
+
+        index = 1
+        for struct in self.serverLtps:
+            newSegmentsIdList = copy.deepcopy(segmentsIdListSaved)
+            structureIdRef = newSegmentsIdList.find('microwave-model:structure-id-ref', self.neObj.namespaces)
+            structureIdRef.text = 'lp-mws-' + struct
+            segmentIdRef = newSegmentsIdList.find('microwave-model:segment-id-ref', self.neObj.namespaces)
+            segmentIdRef.text = str(index)
+            ethContainerConfig.append(newSegmentsIdList)
+            index += 1
+
+        parentNode.append(ethernetContainer)
+
+    def buildMicrowaveModelStatusXml(self):
+        parentNode = self.neObj.statusXmlNode
+
+        ethernetContainer = copy.deepcopy(self.neObj.ethernetContainerStatusXmlNode)
+        lpUuid = "lp-" + self.interfaceName
+
+        layerProtocol = ethernetContainer.find('layer-protocol')
+        layerProtocol.text = lpUuid
+
+        supportedAlarms = ethernetContainer.find(
+            'ethernet-container-capability/supported-alarms')
+        supportedAlarms.text = self.supportedAlarms
+
+        seqNum = ethernetContainer.find(
+            'ethernet-container-current-problems/current-problem-list/sequence-number')
+        seqNum.text = "1"
+
+        currentPerformance = ethernetContainer.find('ethernet-container-current-performance')
+        self.addCurrentPerformanceXmlValues(currentPerformance)
+
+        historicalPerformances = ethernetContainer.find('ethernet-container-historical-performances')
+        self.addHistoricalPerformancesXmlValues(historicalPerformances)
+
+        parentNode.append(ethernetContainer)
+
+    def addCurrentPerformanceXmlValues(self, parentNode):
+        currentPerformanceDataList = parentNode.find('current-performance-data-list')
+        savedNode = copy.deepcopy(currentPerformanceDataList)
+        parentNode.remove(currentPerformanceDataList)
+
+        currentPerformanceDataList = copy.deepcopy(savedNode)
+        node = currentPerformanceDataList.find('scanner-id')
+        node.text = "1"
+        node = currentPerformanceDataList.find('granularity-period')
+        node.text = "period-15min"
+        node = currentPerformanceDataList.find('suspect-interval-flag')
+        node.text = "false"
+        node = currentPerformanceDataList.find('timestamp')
+        node.text = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-5] + "Z"
+        parentNode.append(currentPerformanceDataList)
+
+        currentPerformanceDataList = copy.deepcopy(savedNode)
+        node = currentPerformanceDataList.find('scanner-id')
+        node.text = "2"
+        node = currentPerformanceDataList.find('granularity-period')
+        node.text = "period-24hours"
+        node = currentPerformanceDataList.find('suspect-interval-flag')
+        node.text = "false"
+        node = currentPerformanceDataList.find('timestamp')
+        node.text = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-5] + "Z"
+        parentNode.append(currentPerformanceDataList)
+
+    def addHistoricalPerformancesXmlValues(self, parentNode):
+        histPerfDataList = parentNode.find('historical-performance-data-list')
+        savedNode = copy.deepcopy(histPerfDataList)
+        parentNode.remove(histPerfDataList)
+
+        for i in range(0,96):
+            self.addHistoricalPerformances15minutes(parentNode, savedNode, i)
+
+        for i in range(0,7):
+            self.addHistoricalPerformances24hours(parentNode, savedNode, i)
+
+    def addHistoricalPerformances15minutes(self, parentNode, savedNode, index):
+        histPerfDataList = copy.deepcopy(savedNode)
+        timeNow = datetime.datetime.utcnow()
+
+        node = histPerfDataList.find('history-data-id')
+        node.text = str(index)
+        node = histPerfDataList.find('granularity-period')
+        node.text = "period-15min"
+        node = histPerfDataList.find('suspect-interval-flag')
+        node.text = "false"
+        node = histPerfDataList.find('period-end-time')
+        timestamp = timeNow - datetime.timedelta(minutes=15*index)
+        node.text = timestamp.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-5] + "Z"
+
+        parentNode.append(histPerfDataList)
+
+    def addHistoricalPerformances24hours(self, parentNode, savedNode, index):
+        histPerfDataList = copy.deepcopy(savedNode)
+        timeNow = datetime.datetime.utcnow()
+
+        node = histPerfDataList.find('history-data-id')
+        node.text = str(index + 96)
+        node = histPerfDataList.find('granularity-period')
+        node.text = "period-24hours"
+        node = histPerfDataList.find('suspect-interval-flag')
+        node.text = "false"
+        node = histPerfDataList.find('period-end-time')
+        timestamp = timeNow - datetime.timedelta(days=1*index)
+        node.text = timestamp.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-5] + "Z"
+
+        parentNode.append(histPerfDataList)
+
+    def buildXmlFiles(self):
+        self.buildCoreModelConfigXml()
+        self.buildMicrowaveModelXml()
+
+        self.buildCoreModelStatusXml()
+        self.buildMicrowaveModelStatusXml()

@@ -124,9 +124,15 @@ class Emulator(metaclass=Singleton):
         self.createTopologiesList()
         self.buildTopologies()
 
+    def addInterfacesInDocker(self):
+        for ne in self.networkElementList:
+            print("Adding relevant interfaces in docker container...")
+            ne.addInterfacesInDockerContainer()
+
     def startEmulator(self):
         self.createNetworkElements()
         self.createTopologies()
+        self.addInterfacesInDocker()
 
     def getNeByName(self, name):
         for ne in self.networkElementList:
