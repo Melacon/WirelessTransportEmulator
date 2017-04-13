@@ -70,7 +70,7 @@
        <ns3:ltp>
           <ns3:server-ltp />
           <ns3:lp>
-             <ns3:layer-protocol-name>mwps</ns3:layer-protocol-name>
+             <ns3:layer-protocol-name>MWPS</ns3:layer-protocol-name>
              <ns3:configured-client-capacity />
              <ns3:lp-direction />
              <ns3:termination-state />
@@ -182,7 +182,7 @@
        <ns3:ltp>
           <ns3:server-ltp />
           <ns3:lp>
-             <ns3:layer-protocol-name>mwps</ns3:layer-protocol-name>
+             <ns3:layer-protocol-name>MWPS</ns3:layer-protocol-name>
              <ns3:configured-client-capacity />
              <ns3:lp-direction />
              <ns3:termination-state />
@@ -294,7 +294,7 @@
        <ns3:ltp>
           <ns3:server-ltp />
           <ns3:lp>
-             <ns3:layer-protocol-name>mwps</ns3:layer-protocol-name>
+             <ns3:layer-protocol-name>MWPS</ns3:layer-protocol-name>
              <ns3:configured-client-capacity />
              <ns3:lp-direction />
              <ns3:termination-state />
@@ -404,8 +404,120 @@
        <ns3:client-ltp>ltp-mws-pureEth3</ns3:client-ltp>
           </ns3:ltp>
        <ns3:ltp>
+          <ns3:server-ltp />
           <ns3:lp>
-             <ns3:layer-protocol-name>mws</ns3:layer-protocol-name>
+             <ns3:layer-protocol-name>MWPS</ns3:layer-protocol-name>
+             <ns3:configured-client-capacity />
+             <ns3:lp-direction />
+             <ns3:termination-state />
+             <ns3:config-and-switch-controller>
+                <ns3:switch-rule />
+                <ns3:fc-switch />
+                <ns3:control-parameters>
+                   <ns3:reversion-mode />
+                   <ns3:wait-to-revert-time>15</ns3:wait-to-revert-time>
+                   <ns3:prot-type />
+                   <ns3:hold-off-time />
+                   <ns3:network-scheme-specification />
+                </ns3:control-parameters>
+                <ns3:profile-proxy />
+                <ns3:local-pac>
+                   <ns3:local-id>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:local-id>
+                   <ns3:uuid />
+                   <ns3:name>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:name>
+                   <ns3:label>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:label>
+                   <ns3:extension>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:extension>
+                   <ns3:administrative-control />
+                   <ns3:lifecycle-state />
+                </ns3:local-pac>
+                <ns3:global-pac>
+                   <ns3:local-id>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:local-id>
+                   <ns3:uuid />
+                   <ns3:name>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:name>
+                   <ns3:label>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:label>
+                   <ns3:extension>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:extension>
+                   <ns3:administrative-control />
+                   <ns3:lifecycle-state />
+                </ns3:global-pac>
+                <ns3:is-frozen />
+                <ns3:is-coordinated-switching-both-ends />
+                <ns3:subordinate-controller />
+             </ns3:config-and-switch-controller>
+             <ns3:is-protection-lock-out />
+             <ns3:fc-blocks-signal-to-lp />
+             <ns3:local-id>
+                <ns3:value-name>vLocalId</ns3:value-name>
+                <ns3:value>lp-mwps-airIntf4</ns3:value>
+             </ns3:local-id>
+             <ns3:uuid>lp-mwps-airIntf4</ns3:uuid>
+             <ns3:name>
+                <ns3:value-name>vName</ns3:value-name>
+                <ns3:value>lp-mwps-airIntf4</ns3:value>
+             </ns3:name>
+             <ns3:label>
+                <ns3:value-name>vLabel</ns3:value-name>
+                <ns3:value>lp-mwps-airIntf4</ns3:value>
+             </ns3:label>
+             <ns3:extension>
+                <ns3:value-name>vExtension</ns3:value-name>
+                <ns3:value>lp-mwps-airIntf4</ns3:value>
+             </ns3:extension>
+             <ns3:administrative-control>UNLOCK</ns3:administrative-control>
+             <ns3:lifecycle-state>INSTALLED</ns3:lifecycle-state>
+          </ns3:lp>
+          <ns3:connected-ltp />
+          <ns3:peer-ltp />
+          <ns3:physical-port-reference />
+          <ns3:ltp-in-other-view />
+          <ns3:ltp-direction />
+          <ns3:local-id>
+             <ns3:value-name>vLocalId</ns3:value-name>
+             <ns3:value>ltp-mwps-airIntf4</ns3:value>
+          </ns3:local-id>
+          <ns3:uuid>ltp-mwps-airIntf4</ns3:uuid>
+          <ns3:name>
+             <ns3:value-name>vName</ns3:value-name>
+             <ns3:value>ltp-mwps-airIntf4</ns3:value>
+          </ns3:name>
+          <ns3:label>
+             <ns3:value-name>vLabel</ns3:value-name>
+             <ns3:value>ltp-mwps-airIntf4</ns3:value>
+          </ns3:label>
+          <ns3:extension>
+             <ns3:value-name>vExtension</ns3:value-name>
+             <ns3:value>ltp-mwps-airIntf4</ns3:value>
+          </ns3:extension>
+          <ns3:administrative-control>UNLOCK</ns3:administrative-control>
+          <ns3:lifecycle-state>INSTALLED</ns3:lifecycle-state>
+       <ns3:client-ltp>ltp-mws-pureEth4</ns3:client-ltp>
+          </ns3:ltp>
+       <ns3:ltp>
+          <ns3:lp>
+             <ns3:layer-protocol-name>MWS</ns3:layer-protocol-name>
              <ns3:configured-client-capacity />
              <ns3:lp-direction />
              <ns3:termination-state />
@@ -517,7 +629,7 @@
           </ns3:ltp>
        <ns3:ltp>
           <ns3:lp>
-             <ns3:layer-protocol-name>mws</ns3:layer-protocol-name>
+             <ns3:layer-protocol-name>MWS</ns3:layer-protocol-name>
              <ns3:configured-client-capacity />
              <ns3:lp-direction />
              <ns3:termination-state />
@@ -629,7 +741,7 @@
           </ns3:ltp>
        <ns3:ltp>
           <ns3:lp>
-             <ns3:layer-protocol-name>mws</ns3:layer-protocol-name>
+             <ns3:layer-protocol-name>MWS</ns3:layer-protocol-name>
              <ns3:configured-client-capacity />
              <ns3:lp-direction />
              <ns3:termination-state />
@@ -740,9 +852,121 @@
           <ns3:client-ltp>ltp-eth-ethCont2</ns3:client-ltp>
           </ns3:ltp>
        <ns3:ltp>
+          <ns3:lp>
+             <ns3:layer-protocol-name>MWS</ns3:layer-protocol-name>
+             <ns3:configured-client-capacity />
+             <ns3:lp-direction />
+             <ns3:termination-state />
+             <ns3:config-and-switch-controller>
+                <ns3:switch-rule />
+                <ns3:fc-switch />
+                <ns3:control-parameters>
+                   <ns3:reversion-mode />
+                   <ns3:wait-to-revert-time>15</ns3:wait-to-revert-time>
+                   <ns3:prot-type />
+                   <ns3:hold-off-time />
+                   <ns3:network-scheme-specification />
+                </ns3:control-parameters>
+                <ns3:profile-proxy />
+                <ns3:local-pac>
+                   <ns3:local-id>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:local-id>
+                   <ns3:uuid />
+                   <ns3:name>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:name>
+                   <ns3:label>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:label>
+                   <ns3:extension>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:extension>
+                   <ns3:administrative-control />
+                   <ns3:lifecycle-state />
+                </ns3:local-pac>
+                <ns3:global-pac>
+                   <ns3:local-id>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:local-id>
+                   <ns3:uuid />
+                   <ns3:name>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:name>
+                   <ns3:label>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:label>
+                   <ns3:extension>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:extension>
+                   <ns3:administrative-control />
+                   <ns3:lifecycle-state />
+                </ns3:global-pac>
+                <ns3:is-frozen />
+                <ns3:is-coordinated-switching-both-ends />
+                <ns3:subordinate-controller />
+             </ns3:config-and-switch-controller>
+             <ns3:is-protection-lock-out />
+             <ns3:fc-blocks-signal-to-lp />
+             <ns3:local-id>
+                <ns3:value-name>vLocalId</ns3:value-name>
+                <ns3:value>lp-mws-pureEth4</ns3:value>
+             </ns3:local-id>
+             <ns3:uuid>lp-mws-pureEth4</ns3:uuid>
+             <ns3:name>
+                <ns3:value-name>vName</ns3:value-name>
+                <ns3:value>lp-mws-pureEth4</ns3:value>
+             </ns3:name>
+             <ns3:label>
+                <ns3:value-name>vLabel</ns3:value-name>
+                <ns3:value>lp-mws-pureEth4</ns3:value>
+             </ns3:label>
+             <ns3:extension>
+                <ns3:value-name>vExtension</ns3:value-name>
+                <ns3:value>lp-mws-pureEth4</ns3:value>
+             </ns3:extension>
+             <ns3:administrative-control>UNLOCK</ns3:administrative-control>
+             <ns3:lifecycle-state>INSTALLED</ns3:lifecycle-state>
+          </ns3:lp>
+          <ns3:connected-ltp />
+          <ns3:peer-ltp />
+          <ns3:physical-port-reference />
+          <ns3:ltp-in-other-view />
+          <ns3:ltp-direction />
+          <ns3:local-id>
+             <ns3:value-name>vLocalId</ns3:value-name>
+             <ns3:value>ltp-mws-pureEth4</ns3:value>
+          </ns3:local-id>
+          <ns3:uuid>ltp-mws-pureEth4</ns3:uuid>
+          <ns3:name>
+             <ns3:value-name>vName</ns3:value-name>
+             <ns3:value>ltp-mws-pureEth4</ns3:value>
+          </ns3:name>
+          <ns3:label>
+             <ns3:value-name>vLabel</ns3:value-name>
+             <ns3:value>ltp-mws-pureEth4</ns3:value>
+          </ns3:label>
+          <ns3:extension>
+             <ns3:value-name>vExtension</ns3:value-name>
+             <ns3:value>ltp-mws-pureEth4</ns3:value>
+          </ns3:extension>
+          <ns3:administrative-control>UNLOCK</ns3:administrative-control>
+          <ns3:lifecycle-state>INSTALLED</ns3:lifecycle-state>
+       <ns3:server-ltp>ltp-mwps-airIntf4</ns3:server-ltp>
+          <ns3:client-ltp>ltp-eth-ethCont2</ns3:client-ltp>
+          </ns3:ltp>
+       <ns3:ltp>
           <ns3:client-ltp />
           <ns3:lp>
-             <ns3:layer-protocol-name>eth</ns3:layer-protocol-name>
+             <ns3:layer-protocol-name>ETH</ns3:layer-protocol-name>
              <ns3:configured-client-capacity />
              <ns3:lp-direction />
              <ns3:termination-state />
@@ -855,7 +1079,7 @@
        <ns3:ltp>
           <ns3:client-ltp />
           <ns3:lp>
-             <ns3:layer-protocol-name>eth</ns3:layer-protocol-name>
+             <ns3:layer-protocol-name>ETH</ns3:layer-protocol-name>
              <ns3:configured-client-capacity />
              <ns3:lp-direction />
              <ns3:termination-state />
@@ -963,7 +1187,456 @@
           <ns3:administrative-control>UNLOCK</ns3:administrative-control>
           <ns3:lifecycle-state>INSTALLED</ns3:lifecycle-state>
        <ns3:server-ltp>ltp-mws-pureEth3</ns3:server-ltp>
+          <ns3:server-ltp>ltp-mws-pureEth4</ns3:server-ltp>
           </ns3:ltp>
+       <ns3:ltp>
+          <ns3:server-ltp />
+          <ns3:client-ltp />
+          <ns3:lp>
+             <ns3:layer-protocol-name>ETH</ns3:layer-protocol-name>
+             <ns3:configured-client-capacity />
+             <ns3:lp-direction />
+             <ns3:termination-state />
+             <ns3:config-and-switch-controller>
+                <ns3:switch-rule />
+                <ns3:fc-switch />
+                <ns3:control-parameters>
+                   <ns3:reversion-mode />
+                   <ns3:wait-to-revert-time>15</ns3:wait-to-revert-time>
+                   <ns3:prot-type />
+                   <ns3:hold-off-time />
+                   <ns3:network-scheme-specification />
+                </ns3:control-parameters>
+                <ns3:profile-proxy />
+                <ns3:local-pac>
+                   <ns3:local-id>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:local-id>
+                   <ns3:uuid />
+                   <ns3:name>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:name>
+                   <ns3:label>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:label>
+                   <ns3:extension>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:extension>
+                   <ns3:administrative-control />
+                   <ns3:lifecycle-state />
+                </ns3:local-pac>
+                <ns3:global-pac>
+                   <ns3:local-id>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:local-id>
+                   <ns3:uuid />
+                   <ns3:name>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:name>
+                   <ns3:label>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:label>
+                   <ns3:extension>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:extension>
+                   <ns3:administrative-control />
+                   <ns3:lifecycle-state />
+                </ns3:global-pac>
+                <ns3:is-frozen />
+                <ns3:is-coordinated-switching-both-ends />
+                <ns3:subordinate-controller />
+             </ns3:config-and-switch-controller>
+             <ns3:is-protection-lock-out />
+             <ns3:fc-blocks-signal-to-lp />
+             <ns3:local-id>
+                <ns3:value-name>vLocalId</ns3:value-name>
+                <ns3:value>lp-eth-phyEth1</ns3:value>
+             </ns3:local-id>
+             <ns3:uuid>lp-eth-phyEth1</ns3:uuid>
+             <ns3:name>
+                <ns3:value-name>vName</ns3:value-name>
+                <ns3:value>lp-eth-phyEth1</ns3:value>
+             </ns3:name>
+             <ns3:label>
+                <ns3:value-name>vLabel</ns3:value-name>
+                <ns3:value>lp-eth-phyEth1</ns3:value>
+             </ns3:label>
+             <ns3:extension>
+                <ns3:value-name>vExtension</ns3:value-name>
+                <ns3:value>lp-eth-phyEth1</ns3:value>
+             </ns3:extension>
+             <ns3:administrative-control>UNLOCK</ns3:administrative-control>
+             <ns3:lifecycle-state>INSTALLED</ns3:lifecycle-state>
+          </ns3:lp>
+          <ns3:connected-ltp />
+          <ns3:peer-ltp />
+          <ns3:physical-port-reference>shelf1:port1</ns3:physical-port-reference>
+          <ns3:ltp-in-other-view />
+          <ns3:ltp-direction />
+          <ns3:local-id>
+             <ns3:value-name>vLocalId</ns3:value-name>
+             <ns3:value>ltp-eth-phyEth1</ns3:value>
+          </ns3:local-id>
+          <ns3:uuid>ltp-eth-phyEth1</ns3:uuid>
+          <ns3:name>
+             <ns3:value-name>vName</ns3:value-name>
+             <ns3:value>ltp-eth-phyEth1</ns3:value>
+          </ns3:name>
+          <ns3:label>
+             <ns3:value-name>vLabel</ns3:value-name>
+             <ns3:value>ltp-eth-phyEth1</ns3:value>
+          </ns3:label>
+          <ns3:extension>
+             <ns3:value-name>vExtension</ns3:value-name>
+             <ns3:value>ltp-eth-phyEth1</ns3:value>
+          </ns3:extension>
+          <ns3:administrative-control>UNLOCK</ns3:administrative-control>
+          <ns3:lifecycle-state>INSTALLED</ns3:lifecycle-state>
+       </ns3:ltp>
+       <ns3:ltp>
+          <ns3:server-ltp />
+          <ns3:client-ltp />
+          <ns3:lp>
+             <ns3:layer-protocol-name>ETH</ns3:layer-protocol-name>
+             <ns3:configured-client-capacity />
+             <ns3:lp-direction />
+             <ns3:termination-state />
+             <ns3:config-and-switch-controller>
+                <ns3:switch-rule />
+                <ns3:fc-switch />
+                <ns3:control-parameters>
+                   <ns3:reversion-mode />
+                   <ns3:wait-to-revert-time>15</ns3:wait-to-revert-time>
+                   <ns3:prot-type />
+                   <ns3:hold-off-time />
+                   <ns3:network-scheme-specification />
+                </ns3:control-parameters>
+                <ns3:profile-proxy />
+                <ns3:local-pac>
+                   <ns3:local-id>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:local-id>
+                   <ns3:uuid />
+                   <ns3:name>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:name>
+                   <ns3:label>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:label>
+                   <ns3:extension>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:extension>
+                   <ns3:administrative-control />
+                   <ns3:lifecycle-state />
+                </ns3:local-pac>
+                <ns3:global-pac>
+                   <ns3:local-id>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:local-id>
+                   <ns3:uuid />
+                   <ns3:name>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:name>
+                   <ns3:label>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:label>
+                   <ns3:extension>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:extension>
+                   <ns3:administrative-control />
+                   <ns3:lifecycle-state />
+                </ns3:global-pac>
+                <ns3:is-frozen />
+                <ns3:is-coordinated-switching-both-ends />
+                <ns3:subordinate-controller />
+             </ns3:config-and-switch-controller>
+             <ns3:is-protection-lock-out />
+             <ns3:fc-blocks-signal-to-lp />
+             <ns3:local-id>
+                <ns3:value-name>vLocalId</ns3:value-name>
+                <ns3:value>lp-eth-phyEth2</ns3:value>
+             </ns3:local-id>
+             <ns3:uuid>lp-eth-phyEth2</ns3:uuid>
+             <ns3:name>
+                <ns3:value-name>vName</ns3:value-name>
+                <ns3:value>lp-eth-phyEth2</ns3:value>
+             </ns3:name>
+             <ns3:label>
+                <ns3:value-name>vLabel</ns3:value-name>
+                <ns3:value>lp-eth-phyEth2</ns3:value>
+             </ns3:label>
+             <ns3:extension>
+                <ns3:value-name>vExtension</ns3:value-name>
+                <ns3:value>lp-eth-phyEth2</ns3:value>
+             </ns3:extension>
+             <ns3:administrative-control>UNLOCK</ns3:administrative-control>
+             <ns3:lifecycle-state>INSTALLED</ns3:lifecycle-state>
+          </ns3:lp>
+          <ns3:connected-ltp />
+          <ns3:peer-ltp />
+          <ns3:physical-port-reference>shelf1:port2</ns3:physical-port-reference>
+          <ns3:ltp-in-other-view />
+          <ns3:ltp-direction />
+          <ns3:local-id>
+             <ns3:value-name>vLocalId</ns3:value-name>
+             <ns3:value>ltp-eth-phyEth2</ns3:value>
+          </ns3:local-id>
+          <ns3:uuid>ltp-eth-phyEth2</ns3:uuid>
+          <ns3:name>
+             <ns3:value-name>vName</ns3:value-name>
+             <ns3:value>ltp-eth-phyEth2</ns3:value>
+          </ns3:name>
+          <ns3:label>
+             <ns3:value-name>vLabel</ns3:value-name>
+             <ns3:value>ltp-eth-phyEth2</ns3:value>
+          </ns3:label>
+          <ns3:extension>
+             <ns3:value-name>vExtension</ns3:value-name>
+             <ns3:value>ltp-eth-phyEth2</ns3:value>
+          </ns3:extension>
+          <ns3:administrative-control>UNLOCK</ns3:administrative-control>
+          <ns3:lifecycle-state>INSTALLED</ns3:lifecycle-state>
+       </ns3:ltp>
+       <ns3:ltp>
+          <ns3:server-ltp />
+          <ns3:client-ltp />
+          <ns3:lp>
+             <ns3:layer-protocol-name>ETH</ns3:layer-protocol-name>
+             <ns3:configured-client-capacity />
+             <ns3:lp-direction />
+             <ns3:termination-state />
+             <ns3:config-and-switch-controller>
+                <ns3:switch-rule />
+                <ns3:fc-switch />
+                <ns3:control-parameters>
+                   <ns3:reversion-mode />
+                   <ns3:wait-to-revert-time>15</ns3:wait-to-revert-time>
+                   <ns3:prot-type />
+                   <ns3:hold-off-time />
+                   <ns3:network-scheme-specification />
+                </ns3:control-parameters>
+                <ns3:profile-proxy />
+                <ns3:local-pac>
+                   <ns3:local-id>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:local-id>
+                   <ns3:uuid />
+                   <ns3:name>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:name>
+                   <ns3:label>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:label>
+                   <ns3:extension>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:extension>
+                   <ns3:administrative-control />
+                   <ns3:lifecycle-state />
+                </ns3:local-pac>
+                <ns3:global-pac>
+                   <ns3:local-id>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:local-id>
+                   <ns3:uuid />
+                   <ns3:name>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:name>
+                   <ns3:label>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:label>
+                   <ns3:extension>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:extension>
+                   <ns3:administrative-control />
+                   <ns3:lifecycle-state />
+                </ns3:global-pac>
+                <ns3:is-frozen />
+                <ns3:is-coordinated-switching-both-ends />
+                <ns3:subordinate-controller />
+             </ns3:config-and-switch-controller>
+             <ns3:is-protection-lock-out />
+             <ns3:fc-blocks-signal-to-lp />
+             <ns3:local-id>
+                <ns3:value-name>vLocalId</ns3:value-name>
+                <ns3:value>lp-eth-phyEth3</ns3:value>
+             </ns3:local-id>
+             <ns3:uuid>lp-eth-phyEth3</ns3:uuid>
+             <ns3:name>
+                <ns3:value-name>vName</ns3:value-name>
+                <ns3:value>lp-eth-phyEth3</ns3:value>
+             </ns3:name>
+             <ns3:label>
+                <ns3:value-name>vLabel</ns3:value-name>
+                <ns3:value>lp-eth-phyEth3</ns3:value>
+             </ns3:label>
+             <ns3:extension>
+                <ns3:value-name>vExtension</ns3:value-name>
+                <ns3:value>lp-eth-phyEth3</ns3:value>
+             </ns3:extension>
+             <ns3:administrative-control>UNLOCK</ns3:administrative-control>
+             <ns3:lifecycle-state>INSTALLED</ns3:lifecycle-state>
+          </ns3:lp>
+          <ns3:connected-ltp />
+          <ns3:peer-ltp />
+          <ns3:physical-port-reference>shelf1:port3</ns3:physical-port-reference>
+          <ns3:ltp-in-other-view />
+          <ns3:ltp-direction />
+          <ns3:local-id>
+             <ns3:value-name>vLocalId</ns3:value-name>
+             <ns3:value>ltp-eth-phyEth3</ns3:value>
+          </ns3:local-id>
+          <ns3:uuid>ltp-eth-phyEth3</ns3:uuid>
+          <ns3:name>
+             <ns3:value-name>vName</ns3:value-name>
+             <ns3:value>ltp-eth-phyEth3</ns3:value>
+          </ns3:name>
+          <ns3:label>
+             <ns3:value-name>vLabel</ns3:value-name>
+             <ns3:value>ltp-eth-phyEth3</ns3:value>
+          </ns3:label>
+          <ns3:extension>
+             <ns3:value-name>vExtension</ns3:value-name>
+             <ns3:value>ltp-eth-phyEth3</ns3:value>
+          </ns3:extension>
+          <ns3:administrative-control>UNLOCK</ns3:administrative-control>
+          <ns3:lifecycle-state>INSTALLED</ns3:lifecycle-state>
+       </ns3:ltp>
+       <ns3:ltp>
+          <ns3:server-ltp />
+          <ns3:client-ltp />
+          <ns3:lp>
+             <ns3:layer-protocol-name>ETH</ns3:layer-protocol-name>
+             <ns3:configured-client-capacity />
+             <ns3:lp-direction />
+             <ns3:termination-state />
+             <ns3:config-and-switch-controller>
+                <ns3:switch-rule />
+                <ns3:fc-switch />
+                <ns3:control-parameters>
+                   <ns3:reversion-mode />
+                   <ns3:wait-to-revert-time>15</ns3:wait-to-revert-time>
+                   <ns3:prot-type />
+                   <ns3:hold-off-time />
+                   <ns3:network-scheme-specification />
+                </ns3:control-parameters>
+                <ns3:profile-proxy />
+                <ns3:local-pac>
+                   <ns3:local-id>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:local-id>
+                   <ns3:uuid />
+                   <ns3:name>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:name>
+                   <ns3:label>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:label>
+                   <ns3:extension>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:extension>
+                   <ns3:administrative-control />
+                   <ns3:lifecycle-state />
+                </ns3:local-pac>
+                <ns3:global-pac>
+                   <ns3:local-id>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:local-id>
+                   <ns3:uuid />
+                   <ns3:name>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:name>
+                   <ns3:label>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:label>
+                   <ns3:extension>
+                      <ns3:value-name />
+                      <ns3:value />
+                   </ns3:extension>
+                   <ns3:administrative-control />
+                   <ns3:lifecycle-state />
+                </ns3:global-pac>
+                <ns3:is-frozen />
+                <ns3:is-coordinated-switching-both-ends />
+                <ns3:subordinate-controller />
+             </ns3:config-and-switch-controller>
+             <ns3:is-protection-lock-out />
+             <ns3:fc-blocks-signal-to-lp />
+             <ns3:local-id>
+                <ns3:value-name>vLocalId</ns3:value-name>
+                <ns3:value>lp-eth-phyEth4</ns3:value>
+             </ns3:local-id>
+             <ns3:uuid>lp-eth-phyEth4</ns3:uuid>
+             <ns3:name>
+                <ns3:value-name>vName</ns3:value-name>
+                <ns3:value>lp-eth-phyEth4</ns3:value>
+             </ns3:name>
+             <ns3:label>
+                <ns3:value-name>vLabel</ns3:value-name>
+                <ns3:value>lp-eth-phyEth4</ns3:value>
+             </ns3:label>
+             <ns3:extension>
+                <ns3:value-name>vExtension</ns3:value-name>
+                <ns3:value>lp-eth-phyEth4</ns3:value>
+             </ns3:extension>
+             <ns3:administrative-control>UNLOCK</ns3:administrative-control>
+             <ns3:lifecycle-state>INSTALLED</ns3:lifecycle-state>
+          </ns3:lp>
+          <ns3:connected-ltp />
+          <ns3:peer-ltp />
+          <ns3:physical-port-reference>shelf1:port4</ns3:physical-port-reference>
+          <ns3:ltp-in-other-view />
+          <ns3:ltp-direction />
+          <ns3:local-id>
+             <ns3:value-name>vLocalId</ns3:value-name>
+             <ns3:value>ltp-eth-phyEth4</ns3:value>
+          </ns3:local-id>
+          <ns3:uuid>ltp-eth-phyEth4</ns3:uuid>
+          <ns3:name>
+             <ns3:value-name>vName</ns3:value-name>
+             <ns3:value>ltp-eth-phyEth4</ns3:value>
+          </ns3:name>
+          <ns3:label>
+             <ns3:value-name>vLabel</ns3:value-name>
+             <ns3:value>ltp-eth-phyEth4</ns3:value>
+          </ns3:label>
+          <ns3:extension>
+             <ns3:value-name>vExtension</ns3:value-name>
+             <ns3:value>ltp-eth-phyEth4</ns3:value>
+          </ns3:extension>
+          <ns3:administrative-control>UNLOCK</ns3:administrative-control>
+          <ns3:lifecycle-state>INSTALLED</ns3:lifecycle-state>
+       </ns3:ltp>
        </ns3:network-element>
     <ns4:mw-air-interface-pac>
        <ns4:layer-protocol>lp-mwps-airIntf1</ns4:layer-protocol>
@@ -992,7 +1665,7 @@
           <ns4:auto-freq-select-range>-1</ns4:auto-freq-select-range>
           <ns4:modulation-is-on>true</ns4:modulation-is-on>
           <ns4:encryption-is-on>false</ns4:encryption-is-on>
-          <ns4:cryptographic-key>Cryptographic key not yet defined.</ns4:cryptographic-key>
+          <ns4:cryptographic-key>********</ns4:cryptographic-key>
           <ns4:loop-back-kind-on>none</ns4:loop-back-kind-on>
           <ns4:maintenance-timer>-1</ns4:maintenance-timer>
           <ns4:problem-kind-severity-list>
@@ -1025,7 +1698,7 @@
        <ns4:layer-protocol>lp-mwps-airIntf2</ns4:layer-protocol>
        <ns4:air-interface-configuration>
           <ns4:air-interface-name>Air interface ID not yet defined.</ns4:air-interface-name>
-          <ns4:radio-signal-id>29</ns4:radio-signal-id>
+          <ns4:radio-signal-id>27</ns4:radio-signal-id>
           <ns4:tx-frequency>-1</ns4:tx-frequency>
           <ns4:rx-frequency>-1</ns4:rx-frequency>
           <ns4:tx-channel-bandwidth>-1</ns4:tx-channel-bandwidth>
@@ -1048,7 +1721,7 @@
           <ns4:auto-freq-select-range>-1</ns4:auto-freq-select-range>
           <ns4:modulation-is-on>true</ns4:modulation-is-on>
           <ns4:encryption-is-on>false</ns4:encryption-is-on>
-          <ns4:cryptographic-key>Cryptographic key not yet defined.</ns4:cryptographic-key>
+          <ns4:cryptographic-key>********</ns4:cryptographic-key>
           <ns4:loop-back-kind-on>none</ns4:loop-back-kind-on>
           <ns4:maintenance-timer>-1</ns4:maintenance-timer>
           <ns4:problem-kind-severity-list>
@@ -1081,7 +1754,7 @@
        <ns4:layer-protocol>lp-mwps-airIntf3</ns4:layer-protocol>
        <ns4:air-interface-configuration>
           <ns4:air-interface-name>Air interface ID not yet defined.</ns4:air-interface-name>
-          <ns4:radio-signal-id>27</ns4:radio-signal-id>
+          <ns4:radio-signal-id>28</ns4:radio-signal-id>
           <ns4:tx-frequency>-1</ns4:tx-frequency>
           <ns4:rx-frequency>-1</ns4:rx-frequency>
           <ns4:tx-channel-bandwidth>-1</ns4:tx-channel-bandwidth>
@@ -1104,7 +1777,63 @@
           <ns4:auto-freq-select-range>-1</ns4:auto-freq-select-range>
           <ns4:modulation-is-on>true</ns4:modulation-is-on>
           <ns4:encryption-is-on>false</ns4:encryption-is-on>
-          <ns4:cryptographic-key>Cryptographic key not yet defined.</ns4:cryptographic-key>
+          <ns4:cryptographic-key>********</ns4:cryptographic-key>
+          <ns4:loop-back-kind-on>none</ns4:loop-back-kind-on>
+          <ns4:maintenance-timer>-1</ns4:maintenance-timer>
+          <ns4:problem-kind-severity-list>
+             <ns4:problem-kind-name>signalIsLost</ns4:problem-kind-name>
+             <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
+          </ns4:problem-kind-severity-list>
+       <ns4:problem-kind-severity-list>
+             <ns4:problem-kind-name> rslIsExceeded</ns4:problem-kind-name>
+             <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
+          </ns4:problem-kind-severity-list>
+       <ns4:problem-kind-severity-list>
+             <ns4:problem-kind-name> temperatureIsExceeded</ns4:problem-kind-name>
+             <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
+          </ns4:problem-kind-severity-list>
+       <ns4:problem-kind-severity-list>
+             <ns4:problem-kind-name> modemIsFaulty</ns4:problem-kind-name>
+             <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
+          </ns4:problem-kind-severity-list>
+       <ns4:problem-kind-severity-list>
+             <ns4:problem-kind-name> radioIsFaulty</ns4:problem-kind-name>
+             <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
+          </ns4:problem-kind-severity-list>
+       <ns4:problem-kind-severity-list>
+             <ns4:problem-kind-name> modulationIsDownShifted</ns4:problem-kind-name>
+             <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
+          </ns4:problem-kind-severity-list>
+       </ns4:air-interface-configuration>
+    </ns4:mw-air-interface-pac>
+    <ns4:mw-air-interface-pac>
+       <ns4:layer-protocol>lp-mwps-airIntf4</ns4:layer-protocol>
+       <ns4:air-interface-configuration>
+          <ns4:air-interface-name>Air interface ID not yet defined.</ns4:air-interface-name>
+          <ns4:radio-signal-id>29</ns4:radio-signal-id>
+          <ns4:tx-frequency>-1</ns4:tx-frequency>
+          <ns4:rx-frequency>-1</ns4:rx-frequency>
+          <ns4:tx-channel-bandwidth>-1</ns4:tx-channel-bandwidth>
+          <ns4:rx-channel-bandwidth>-1</ns4:rx-channel-bandwidth>
+          <ns4:polarization>not-specified</ns4:polarization>
+          <ns4:power-is-on>true</ns4:power-is-on>
+          <ns4:transmitter-is-on>false</ns4:transmitter-is-on>
+          <ns4:receiver-is-on>true</ns4:receiver-is-on>
+          <ns4:tx-power>99</ns4:tx-power>
+          <ns4:adaptive-modulation-is-on>false</ns4:adaptive-modulation-is-on>
+          <ns4:modulation-min>-1</ns4:modulation-min>
+          <ns4:modulation-max>-1</ns4:modulation-max>
+          <ns4:xpic-is-on>false</ns4:xpic-is-on>
+          <ns4:mimo-is-on>false</ns4:mimo-is-on>
+          <ns4:alic-is-on>false</ns4:alic-is-on>
+          <ns4:atpc-is-on>false</ns4:atpc-is-on>
+          <ns4:atpc-thresh-upper>99</ns4:atpc-thresh-upper>
+          <ns4:atpc-thresh-lower>99</ns4:atpc-thresh-lower>
+          <ns4:auto-freq-select-is-on>false</ns4:auto-freq-select-is-on>
+          <ns4:auto-freq-select-range>-1</ns4:auto-freq-select-range>
+          <ns4:modulation-is-on>true</ns4:modulation-is-on>
+          <ns4:encryption-is-on>false</ns4:encryption-is-on>
+          <ns4:cryptographic-key>********</ns4:cryptographic-key>
           <ns4:loop-back-kind-on>none</ns4:loop-back-kind-on>
           <ns4:maintenance-timer>-1</ns4:maintenance-timer>
           <ns4:problem-kind-severity-list>
@@ -1137,27 +1866,7 @@
        <ns4:layer-protocol>lp-mws-pureEth1</ns4:layer-protocol>
        <ns4:pure-ethernet-structure-configuration>
           <ns4:problem-kind-severity-list>
-             <ns4:problem-kind-name>signalIsLost</ns4:problem-kind-name>
-             <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
-          </ns4:problem-kind-severity-list>
-       <ns4:problem-kind-severity-list>
-             <ns4:problem-kind-name> rslIsExceeded</ns4:problem-kind-name>
-             <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
-          </ns4:problem-kind-severity-list>
-       <ns4:problem-kind-severity-list>
-             <ns4:problem-kind-name> temperatureIsExceeded</ns4:problem-kind-name>
-             <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
-          </ns4:problem-kind-severity-list>
-       <ns4:problem-kind-severity-list>
-             <ns4:problem-kind-name> modemIsFaulty</ns4:problem-kind-name>
-             <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
-          </ns4:problem-kind-severity-list>
-       <ns4:problem-kind-severity-list>
-             <ns4:problem-kind-name> radioIsFaulty</ns4:problem-kind-name>
-             <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
-          </ns4:problem-kind-severity-list>
-       <ns4:problem-kind-severity-list>
-             <ns4:problem-kind-name> modulationIsDownShifted</ns4:problem-kind-name>
+             <ns4:problem-kind-name>structureAlarm</ns4:problem-kind-name>
              <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
           </ns4:problem-kind-severity-list>
        </ns4:pure-ethernet-structure-configuration>
@@ -1166,27 +1875,7 @@
        <ns4:layer-protocol>lp-mws-pureEth2</ns4:layer-protocol>
        <ns4:pure-ethernet-structure-configuration>
           <ns4:problem-kind-severity-list>
-             <ns4:problem-kind-name>signalIsLost</ns4:problem-kind-name>
-             <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
-          </ns4:problem-kind-severity-list>
-       <ns4:problem-kind-severity-list>
-             <ns4:problem-kind-name> rslIsExceeded</ns4:problem-kind-name>
-             <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
-          </ns4:problem-kind-severity-list>
-       <ns4:problem-kind-severity-list>
-             <ns4:problem-kind-name> temperatureIsExceeded</ns4:problem-kind-name>
-             <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
-          </ns4:problem-kind-severity-list>
-       <ns4:problem-kind-severity-list>
-             <ns4:problem-kind-name> modemIsFaulty</ns4:problem-kind-name>
-             <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
-          </ns4:problem-kind-severity-list>
-       <ns4:problem-kind-severity-list>
-             <ns4:problem-kind-name> radioIsFaulty</ns4:problem-kind-name>
-             <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
-          </ns4:problem-kind-severity-list>
-       <ns4:problem-kind-severity-list>
-             <ns4:problem-kind-name> modulationIsDownShifted</ns4:problem-kind-name>
+             <ns4:problem-kind-name>structureAlarm</ns4:problem-kind-name>
              <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
           </ns4:problem-kind-severity-list>
        </ns4:pure-ethernet-structure-configuration>
@@ -1195,27 +1884,16 @@
        <ns4:layer-protocol>lp-mws-pureEth3</ns4:layer-protocol>
        <ns4:pure-ethernet-structure-configuration>
           <ns4:problem-kind-severity-list>
-             <ns4:problem-kind-name>signalIsLost</ns4:problem-kind-name>
+             <ns4:problem-kind-name>structureAlarm</ns4:problem-kind-name>
              <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
           </ns4:problem-kind-severity-list>
-       <ns4:problem-kind-severity-list>
-             <ns4:problem-kind-name> rslIsExceeded</ns4:problem-kind-name>
-             <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
-          </ns4:problem-kind-severity-list>
-       <ns4:problem-kind-severity-list>
-             <ns4:problem-kind-name> temperatureIsExceeded</ns4:problem-kind-name>
-             <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
-          </ns4:problem-kind-severity-list>
-       <ns4:problem-kind-severity-list>
-             <ns4:problem-kind-name> modemIsFaulty</ns4:problem-kind-name>
-             <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
-          </ns4:problem-kind-severity-list>
-       <ns4:problem-kind-severity-list>
-             <ns4:problem-kind-name> radioIsFaulty</ns4:problem-kind-name>
-             <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
-          </ns4:problem-kind-severity-list>
-       <ns4:problem-kind-severity-list>
-             <ns4:problem-kind-name> modulationIsDownShifted</ns4:problem-kind-name>
+       </ns4:pure-ethernet-structure-configuration>
+    </ns4:mw-pure-ethernet-structure-pac>
+    <ns4:mw-pure-ethernet-structure-pac>
+       <ns4:layer-protocol>lp-mws-pureEth4</ns4:layer-protocol>
+       <ns4:pure-ethernet-structure-configuration>
+          <ns4:problem-kind-severity-list>
+             <ns4:problem-kind-name>structureAlarm</ns4:problem-kind-name>
              <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
           </ns4:problem-kind-severity-list>
        </ns4:pure-ethernet-structure-configuration>
@@ -1224,10 +1902,6 @@
        <ns4:layer-protocol>lp-eth-ethCont1</ns4:layer-protocol>
        <ns4:ethernet-container-configuration>
           <ns4:container-id>No Ethernet Flow associated yet.</ns4:container-id>
-          <ns4:segments-id-list>
-             <ns4:structure-id-ref />
-             <ns4:segment-id-ref />
-          </ns4:segments-id-list>
           <ns4:packet-compression-is-on>false</ns4:packet-compression-is-on>
           <ns4:layer2-compression-is-on>false</ns4:layer2-compression-is-on>
           <ns4:vlan-compression-is-on>false</ns4:vlan-compression-is-on>
@@ -1237,41 +1911,29 @@
           <ns4:ipv6-compression-is-on>false</ns4:ipv6-compression-is-on>
           <ns4:layer4-compression-is-on>false</ns4:layer4-compression-is-on>
           <ns4:encryption-is-on>false</ns4:encryption-is-on>
-          <ns4:cryptographic-key>Cryptographic key not yet defined.</ns4:cryptographic-key>
+          <ns4:cryptographic-key>********</ns4:cryptographic-key>
           <ns4:problem-kind-severity-list>
-             <ns4:problem-kind-name>signalIsLost</ns4:problem-kind-name>
+             <ns4:problem-kind-name>framingIsFaulty</ns4:problem-kind-name>
              <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
           </ns4:problem-kind-severity-list>
        <ns4:problem-kind-severity-list>
-             <ns4:problem-kind-name> rslIsExceeded</ns4:problem-kind-name>
+             <ns4:problem-kind-name> containerIsDown</ns4:problem-kind-name>
              <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
           </ns4:problem-kind-severity-list>
-       <ns4:problem-kind-severity-list>
-             <ns4:problem-kind-name> temperatureIsExceeded</ns4:problem-kind-name>
-             <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
-          </ns4:problem-kind-severity-list>
-       <ns4:problem-kind-severity-list>
-             <ns4:problem-kind-name> modemIsFaulty</ns4:problem-kind-name>
-             <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
-          </ns4:problem-kind-severity-list>
-       <ns4:problem-kind-severity-list>
-             <ns4:problem-kind-name> radioIsFaulty</ns4:problem-kind-name>
-             <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
-          </ns4:problem-kind-severity-list>
-       <ns4:problem-kind-severity-list>
-             <ns4:problem-kind-name> modulationIsDownShifted</ns4:problem-kind-name>
-             <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
-          </ns4:problem-kind-severity-list>
-       </ns4:ethernet-container-configuration>
+       <ns4:segments-id-list>
+             <ns4:structure-id-ref>lp-mws-pureEth1</ns4:structure-id-ref>
+             <ns4:segment-id-ref>1</ns4:segment-id-ref>
+          </ns4:segments-id-list>
+          <ns4:segments-id-list>
+             <ns4:structure-id-ref>lp-mws-pureEth2</ns4:structure-id-ref>
+             <ns4:segment-id-ref>1</ns4:segment-id-ref>
+          </ns4:segments-id-list>
+          </ns4:ethernet-container-configuration>
     </ns4:mw-ethernet-container-pac>
     <ns4:mw-ethernet-container-pac>
        <ns4:layer-protocol>lp-eth-ethCont2</ns4:layer-protocol>
        <ns4:ethernet-container-configuration>
           <ns4:container-id>No Ethernet Flow associated yet.</ns4:container-id>
-          <ns4:segments-id-list>
-             <ns4:structure-id-ref />
-             <ns4:segment-id-ref />
-          </ns4:segments-id-list>
           <ns4:packet-compression-is-on>false</ns4:packet-compression-is-on>
           <ns4:layer2-compression-is-on>false</ns4:layer2-compression-is-on>
           <ns4:vlan-compression-is-on>false</ns4:vlan-compression-is-on>
@@ -1281,31 +1943,23 @@
           <ns4:ipv6-compression-is-on>false</ns4:ipv6-compression-is-on>
           <ns4:layer4-compression-is-on>false</ns4:layer4-compression-is-on>
           <ns4:encryption-is-on>false</ns4:encryption-is-on>
-          <ns4:cryptographic-key>Cryptographic key not yet defined.</ns4:cryptographic-key>
+          <ns4:cryptographic-key>********</ns4:cryptographic-key>
           <ns4:problem-kind-severity-list>
-             <ns4:problem-kind-name>signalIsLost</ns4:problem-kind-name>
+             <ns4:problem-kind-name>framingIsFaulty</ns4:problem-kind-name>
              <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
           </ns4:problem-kind-severity-list>
        <ns4:problem-kind-severity-list>
-             <ns4:problem-kind-name> rslIsExceeded</ns4:problem-kind-name>
+             <ns4:problem-kind-name> containerIsDown</ns4:problem-kind-name>
              <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
           </ns4:problem-kind-severity-list>
-       <ns4:problem-kind-severity-list>
-             <ns4:problem-kind-name> temperatureIsExceeded</ns4:problem-kind-name>
-             <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
-          </ns4:problem-kind-severity-list>
-       <ns4:problem-kind-severity-list>
-             <ns4:problem-kind-name> modemIsFaulty</ns4:problem-kind-name>
-             <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
-          </ns4:problem-kind-severity-list>
-       <ns4:problem-kind-severity-list>
-             <ns4:problem-kind-name> radioIsFaulty</ns4:problem-kind-name>
-             <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
-          </ns4:problem-kind-severity-list>
-       <ns4:problem-kind-severity-list>
-             <ns4:problem-kind-name> modulationIsDownShifted</ns4:problem-kind-name>
-             <ns4:problem-kind-severity>warning</ns4:problem-kind-severity>
-          </ns4:problem-kind-severity-list>
-       </ns4:ethernet-container-configuration>
+       <ns4:segments-id-list>
+             <ns4:structure-id-ref>lp-mws-pureEth3</ns4:structure-id-ref>
+             <ns4:segment-id-ref>1</ns4:segment-id-ref>
+          </ns4:segments-id-list>
+          <ns4:segments-id-list>
+             <ns4:structure-id-ref>lp-mws-pureEth4</ns4:structure-id-ref>
+             <ns4:segment-id-ref>1</ns4:segment-id-ref>
+          </ns4:segments-id-list>
+          </ns4:ethernet-container-configuration>
     </ns4:mw-ethernet-container-pac>
     </ns0:config>

@@ -27,7 +27,7 @@ class Topology:
             for link in self.topologyDescription['links']:
                 logger.debug("Creating link...")
                 linkObj = Link(link)
-                linkObj.addLinkWithIp()
+                linkObj.addLink()
                 self.linkList.append(linkObj)
                 logger.debug("Link added to linkList...")
 

@@ -51,6 +51,7 @@
 
 #define XPATH_MAX_LENGTH 2048
 #define MAX_NUM_OF_ALARMS 2048
+#define MAX_NUM_OF_INTERFACES 50
 
 static obj_template_t *object_creation_notification_obj;
 static obj_template_t *object_deletion_notification_obj;
@@ -58,10 +59,36 @@ static obj_template_t *attribute_value_changed_notification_obj;
 static obj_template_t *problem_notification_obj;
 static int32 attribute_value_changed_counter = 0;
 static int32 problem_counter = 0;
-static uint32 channel_bandwidth = 26000;
-static uint32 modulation_current = 2;
-static bool capacity_set = FALSE;
+
+typedef struct
+{
+	uint32 channel_bandwidth;
+	uint32 modulation_current;
+	const xmlChar* layer_protocol_name;
+	bool capacity_set;
+} interfaceInfo;
+
+static interfaceInfo interfaces[MAX_NUM_OF_INTERFACES];
+
+static int num_of_air_interfaces = 0;
+
+struct problemAlarms
+{
+	xmlChar* problemName;
+	xmlChar* severity;
+	xmlChar* objIdRef;
+	bool 	cleared;
+} interface_alarms[MAX_NUM_OF_ALARMS];
+
+static int num_of_alarms = 0;
+
 static status_t set_capacity_for_interface(const xmlChar *k_mw_air_interface_pac_layer_protocol, const xmlChar* dateAndTime);
+static status_t set_interface_oper_status(const xmlChar *k_mw_air_interface_pac_layer_protocol, const xmlChar* dateAndTime, boolean enable);
+static status_t fill_interfaces_details(void);
+static interfaceInfo* get_interface_from_name(const xmlChar* layer_protocol_name);
+static status_t set_channel_bandwidth_for_interface(const xmlChar* layer_protocol_name, uint32 channel_bandwidth);
+static status_t set_modulation_for_interface(const xmlChar* layer_protocol_name, uint32 modulation);
+static uint32 get_channel_capacity_for_interface(const xmlChar* layer_protocol_name);
 
 /* put your static variables here */
 
@@ -1905,7 +1932,7 @@ status_t u_microwave_model_mw_air_interface_pac_air_interface_configuration_tx_c
             u_microwave_model_attribute_value_changed_notification_send(attribute_value_changed_counter++,
             dateAndTime, obj_id_ref, attr_name, new_value);
 
-            channel_bandwidth = VAL_INT32(newval);
+            res = set_channel_bandwidth_for_interface(k_mw_air_interface_pac_layer_protocol, VAL_INT32(newval));
 			res = set_capacity_for_interface(k_mw_air_interface_pac_layer_protocol, dateAndTime);
 
             break;
@@ -1913,7 +1940,7 @@ status_t u_microwave_model_mw_air_interface_pac_air_interface_configuration_tx_c
             u_microwave_model_attribute_value_changed_notification_send(attribute_value_changed_counter++,
             dateAndTime, obj_id_ref, attr_name, new_value);
 
-            channel_bandwidth = VAL_INT32(newval);
+            res = set_channel_bandwidth_for_interface(k_mw_air_interface_pac_layer_protocol, VAL_INT32(newval));
 			res = set_capacity_for_interface(k_mw_air_interface_pac_layer_protocol, dateAndTime);
 
             break;
@@ -2191,10 +2218,16 @@ status_t u_microwave_model_mw_air_interface_pac_air_interface_configuration_powe
         case OP_EDITOP_MERGE:
             u_microwave_model_attribute_value_changed_notification_send(attribute_value_changed_counter++,
             dateAndTime, obj_id_ref, attr_name, new_value);
+
+            res = set_interface_oper_status(k_mw_air_interface_pac_layer_protocol, dateAndTime, VAL_BOOL(newval));
+
             break;
         case OP_EDITOP_REPLACE:
             u_microwave_model_attribute_value_changed_notification_send(attribute_value_changed_counter++,
             dateAndTime, obj_id_ref, attr_name, new_value);
+
+            res = set_interface_oper_status(k_mw_air_interface_pac_layer_protocol, dateAndTime, VAL_BOOL(newval));
+
             break;
         case OP_EDITOP_CREATE:
             break;
@@ -2750,7 +2783,7 @@ status_t u_microwave_model_mw_air_interface_pac_air_interface_configuration_modu
             u_microwave_model_attribute_value_changed_notification_send(attribute_value_changed_counter++,
             dateAndTime, obj_id_ref, attr_name, new_value);
 
-            modulation_current = VAL_INT32(newval);
+            res = set_modulation_for_interface(k_mw_air_interface_pac_layer_protocol, VAL_INT32(newval));
             res = set_capacity_for_interface(k_mw_air_interface_pac_layer_protocol, dateAndTime);
 
             break;
@@ -2758,7 +2791,7 @@ status_t u_microwave_model_mw_air_interface_pac_air_interface_configuration_modu
             u_microwave_model_attribute_value_changed_notification_send(attribute_value_changed_counter++,
             dateAndTime, obj_id_ref, attr_name, new_value);
 
-            modulation_current = VAL_INT32(newval);
+            res = set_modulation_for_interface(k_mw_air_interface_pac_layer_protocol, VAL_INT32(newval));
 			res = set_capacity_for_interface(k_mw_air_interface_pac_layer_protocol, dateAndTime);
 
             break;
@@ -23929,13 +23962,17 @@ char* get_severity_for_problem(xmlChar* layer_protocol, xmlChar* problem_name)
 			val_value_t *air_interface_config_child = val_find_child(current_child,
 					y_microwave_model_M_microwave_model, y_microwave_model_N_air_interface_configuration);
 
-			YUMA_ASSERT(air_interface_config_child == NULL, return strdup("error"),
-					"Did not find an air_interface_config child for layer_protocol=%s!\n", layer_protocol);
+			val_value_t *problem_kind_severity_list_child = NULL;
 
-			val_value_t *problem_kind_severity_list_child = val_find_child(air_interface_config_child,
-							y_microwave_model_M_microwave_model, y_microwave_model_N_problem_kind_severity_list);
-			YUMA_ASSERT(problem_kind_severity_list_child == NULL, return strdup("error"),
-					"Did not find an problem_kind_severity_list_child child for layer_protocol=%s!\n", layer_protocol);
+			if (air_interface_config_child != NULL)
+			{
+				problem_kind_severity_list_child = val_find_child(air_interface_config_child,
+								y_microwave_model_M_microwave_model, y_microwave_model_N_problem_kind_severity_list);
+				YUMA_ASSERT(problem_kind_severity_list_child == NULL, return strdup("error"),
+						"Did not find an problem_kind_severity_list_child child for layer_protocol=%s!\n", layer_protocol);
+			}
+			else return strdup("error");
+
 			do
 			{
 				val_value_t *problem_kind_name_child = val_find_child(problem_kind_severity_list_child,
@@ -23954,10 +23991,11 @@ char* get_severity_for_problem(xmlChar* layer_protocol, xmlChar* problem_name)
 					return strdup(VAL_STR(problem_kind_severity_child));
 				}
 
-				problem_kind_severity_list_child = val_find_next_child(air_interface_config_child, y_microwave_model_M_microwave_model,
+				problem_kind_severity_list_child = val_find_next_child(problem_kind_severity_list_child->parent, y_microwave_model_M_microwave_model,
 						y_microwave_model_N_problem_kind_severity_list, problem_kind_severity_list_child);
 			}
 			while (problem_kind_severity_list_child != NULL);
+
 		}
 
 		current_child = val_find_next_child(runningcfg->root, y_microwave_model_M_microwave_model,
@@ -23965,7 +24003,113 @@ char* get_severity_for_problem(xmlChar* layer_protocol, xmlChar* problem_name)
 	}
 	while (current_child != NULL);
 
+	current_child = val_find_child(runningcfg->root, y_microwave_model_M_microwave_model,
+			y_microwave_model_N_mw_ethernet_container_pac);
 
+	do
+	{
+		val_value_t *layer_protocol_child = val_find_child(current_child, y_microwave_model_M_microwave_model,
+				y_microwave_model_N_layer_protocol);
+
+		if (strcmp(VAL_STR(layer_protocol_child), layer_protocol) == 0)
+		{
+			val_value_t *ethernet_container_config_child = val_find_child(current_child,
+					y_microwave_model_M_microwave_model, y_microwave_model_N_ethernet_container_configuration);
+
+			val_value_t *problem_kind_severity_list_child = NULL;
+
+			if (ethernet_container_config_child != NULL)
+			{
+				problem_kind_severity_list_child = val_find_child(ethernet_container_config_child,
+								y_microwave_model_M_microwave_model, y_microwave_model_N_problem_kind_severity_list);
+				YUMA_ASSERT(problem_kind_severity_list_child == NULL, return strdup("error"),
+						"Did not find an problem_kind_severity_list_child child for layer_protocol=%s!\n", layer_protocol);
+			}
+			else return strdup("error");
+
+			do
+			{
+				val_value_t *problem_kind_name_child = val_find_child(problem_kind_severity_list_child,
+									y_microwave_model_M_microwave_model, y_microwave_model_N_problem_kind_name);
+				YUMA_ASSERT(problem_kind_name_child == NULL, return strdup("error"),
+						"Did not find an problem_kind_name_child child for layer_protocol=%s!\n", layer_protocol);
+
+				if (strcmp(VAL_STR(problem_kind_name_child), problem_name) == 0)
+				{
+					val_value_t *problem_kind_severity_child = val_find_child(problem_kind_severity_list_child,
+										y_microwave_model_M_microwave_model, y_microwave_model_N_problem_kind_severity);
+					YUMA_ASSERT(problem_kind_severity_child == NULL, return strdup("error"),
+									"Did not find an problem_kind_severity_child child for layer_protocol=%s and problem_name=%s\n",
+									layer_protocol, VAL_STR(problem_kind_name_child));
+
+					return strdup(VAL_STR(problem_kind_severity_child));
+				}
+
+				problem_kind_severity_list_child = val_find_next_child(problem_kind_severity_list_child->parent, y_microwave_model_M_microwave_model,
+						y_microwave_model_N_problem_kind_severity_list, problem_kind_severity_list_child);
+			}
+			while (problem_kind_severity_list_child != NULL);
+
+		}
+
+		current_child = val_find_next_child(runningcfg->root, y_microwave_model_M_microwave_model,
+				y_microwave_model_N_mw_ethernet_container_pac, current_child);
+	}
+	while (current_child != NULL);
+
+	current_child = val_find_child(runningcfg->root, y_microwave_model_M_microwave_model,
+			y_microwave_model_N_mw_pure_ethernet_structure_pac);
+
+	do
+	{
+		val_value_t *layer_protocol_child = val_find_child(current_child, y_microwave_model_M_microwave_model,
+				y_microwave_model_N_layer_protocol);
+
+		if (strcmp(VAL_STR(layer_protocol_child), layer_protocol) == 0)
+		{
+			val_value_t *pure_ethernet_structure_config_child = val_find_child(current_child,
+					y_microwave_model_M_microwave_model, y_microwave_model_N_pure_ethernet_structure_configuration);
+
+			val_value_t *problem_kind_severity_list_child = NULL;
+
+			if (pure_ethernet_structure_config_child != NULL)
+			{
+				problem_kind_severity_list_child = val_find_child(pure_ethernet_structure_config_child,
+								y_microwave_model_M_microwave_model, y_microwave_model_N_problem_kind_severity_list);
+				YUMA_ASSERT(problem_kind_severity_list_child == NULL, return strdup("error"),
+						"Did not find an problem_kind_severity_list_child child for layer_protocol=%s!\n", layer_protocol);
+			}
+			else return strdup("error");
+
+			do
+			{
+				val_value_t *problem_kind_name_child = val_find_child(problem_kind_severity_list_child,
+									y_microwave_model_M_microwave_model, y_microwave_model_N_problem_kind_name);
+				YUMA_ASSERT(problem_kind_name_child == NULL, return strdup("error"),
+						"Did not find an problem_kind_name_child child for layer_protocol=%s!\n", layer_protocol);
+
+				if (strcmp(VAL_STR(problem_kind_name_child), problem_name) == 0)
+				{
+					val_value_t *problem_kind_severity_child = val_find_child(problem_kind_severity_list_child,
+										y_microwave_model_M_microwave_model, y_microwave_model_N_problem_kind_severity);
+					YUMA_ASSERT(problem_kind_severity_child == NULL, return strdup("error"),
+									"Did not find an problem_kind_severity_child child for layer_protocol=%s and problem_name=%s\n",
+									layer_protocol, VAL_STR(problem_kind_name_child));
+
+					return strdup(VAL_STR(problem_kind_severity_child));
+				}
+
+				problem_kind_severity_list_child = val_find_next_child(problem_kind_severity_list_child->parent, y_microwave_model_M_microwave_model,
+						y_microwave_model_N_problem_kind_severity_list, problem_kind_severity_list_child);
+			}
+			while (problem_kind_severity_list_child != NULL);
+
+		}
+
+		current_child = val_find_next_child(runningcfg->root, y_microwave_model_M_microwave_model,
+				y_microwave_model_N_mw_pure_ethernet_structure_pac, current_child);
+	}
+	while (current_child != NULL);
 
 	return strdup("error");
 }
@@ -23996,45 +24140,10 @@ static void generate_notifications()
 	if (freq == 0)
 		return;
 
-	struct problemAlarms
-	{
-		xmlChar* problemName;
-		xmlChar* severity;
-		xmlChar* objIdRef;
-		bool 	cleared;
-	} alarms[MAX_NUM_OF_ALARMS];
+
 
 	xmlChar *layer_protocol_keys[MAX_NUM_OF_ALARMS];
-	int num_of_keys, num_of_alarms = 0;
-
-
-	sprintf(evalPath, "/mw-air-interface-pac/layer-protocol");
-	res = get_list_from_xpath(evalPath, layer_protocol_keys, &num_of_keys);
-
-	for (int i = 0; i<num_of_keys; ++i)
-	{
-		char *supported_alarms;
-		sprintf(evalPath, "/mw-air-interface-pac[layer-protocol=\"%s\"]/air-interface-capability/supported-alarms",
-			layer_protocol_keys[i]);
-
-		supported_alarms = get_value_from_xpath(evalPath);
-
-		YUMA_ASSERT(supported_alarms == NULL, continue, "Could not retrieve supported alarms");
-
-		char *alarm = NULL;
-		alarm = strtok (supported_alarms, ", ");
-
-		while (alarm != NULL)
-		{
-			alarms[num_of_alarms].problemName = strdup(alarm);
-			alarms[num_of_alarms].objIdRef = strdup(layer_protocol_keys[i]);
-			alarms[num_of_alarms].cleared = true;
-			fprintf(stderr, "problem_name=%s for layerProtocol=%s\n",
-					alarms[num_of_alarms].problemName, alarms[num_of_alarms].objIdRef);
-			num_of_alarms++;
-			alarm = strtok (NULL, " ,.-");
-		}
-	}
+	int num_of_keys;
 
 	YUMA_ASSERT(num_of_alarms == 0, return, "Did not find any supported alarms for generating notifications");
 
@@ -24054,26 +24163,26 @@ static void generate_notifications()
 
 		int ran = (int) random_at_most(num_of_alarms-1);
 
-		if (alarms[ran].cleared == true)
+		if (interface_alarms[ran].cleared == true)
 		{
-			char* severity = get_severity_for_problem(alarms[ran].objIdRef, alarms[ran].problemName);
+			char* severity = get_severity_for_problem(interface_alarms[ran].objIdRef, interface_alarms[ran].problemName);
 
 			u_microwave_model_problem_notification_send(problem_counter++,
 					dateAndTime,
-					alarms[ran].objIdRef,
-					alarms[ran].problemName,
+					interface_alarms[ran].objIdRef,
+					interface_alarms[ran].problemName,
 					severity);
-			alarms[ran].cleared = false;
+			interface_alarms[ran].cleared = false;
 			free(severity);
 		}
 		else
 		{
 			u_microwave_model_problem_notification_send(problem_counter++,
 					dateAndTime,
-					alarms[ran].objIdRef,
-					alarms[ran].problemName,
+					interface_alarms[ran].objIdRef,
+					interface_alarms[ran].problemName,
 					"non-alarmed");
-			alarms[ran].cleared = true;
+			interface_alarms[ran].cleared = true;
 		}
 
 		sleep(freq);
@@ -24088,17 +24197,21 @@ static void generate_notifications()
  *
  *
 */
-static uint32 get_channel_capacity(void)
+static uint32 get_channel_capacity_for_interface(const xmlChar* layer_protocol_name)
 {
 	double code_rate = 0.9; //assuming a value of 90% code rate as default for the emulator
 	double capacity;
 	double constant = 1.15; //value from Thorsten's formula
 	uint32_t capacity_int = 0;
-	double modulation = log(modulation_current) / log(2); //log2(modulation_current)
+	interfaceInfo *interface = get_interface_from_name(layer_protocol_name);
+	YUMA_ASSERT(interface == NULL, return 0, "Could not find interface with name=%s", layer_protocol_name);
 
-	YUMA_ASSERT(TRUE, NOP, "Computing capacity for ch_bw=%d, modulation=%f, code_rate=%f", channel_bandwidth, modulation, code_rate);
+	double modulation = log(interface->modulation_current) / log(2); //log2(modulation_current)
 
-	capacity = ((channel_bandwidth / 1000) * modulation * code_rate) / constant;
+	YUMA_ASSERT(TRUE, NOP, "Computing capacity for ch_bw=%d, modulation=%f, code_rate=%f",
+			interface->channel_bandwidth, modulation, code_rate);
+
+	capacity = ((interface->channel_bandwidth / 1000) * modulation * code_rate) / constant;
 
 	YUMA_ASSERT(TRUE, NOP, "Got back capacity=%f and int_value=%d", capacity, (uint32)(floor(capacity)));
 
@@ -24111,10 +24224,12 @@ static status_t set_capacity_for_interface(const xmlChar *k_mw_air_interface_pac
 	xmlChar *xpathexpr[XPATH_MAX_LENGTH];
 	char interface_name[100], modulation_cur_str[100], channel_bandwidth_str[100], command[100];
 	int result;
+	interfaceInfo *interface = get_interface_from_name(k_mw_air_interface_pac_layer_protocol);
+	YUMA_ASSERT(interface == NULL, return NO_ERR, "Could not find interface with name=%s", k_mw_air_interface_pac_layer_protocol);
 
 	sscanf(k_mw_air_interface_pac_layer_protocol, "lp-%s", interface_name, &result);
 
-	sprintf(modulation_cur_str, "%d", modulation_current);
+	sprintf(modulation_cur_str, "%d", interface->modulation_current);
 
 	sprintf(xpathexpr, "/mw-air-interface-pac[layer-protocol=\"%s\"]/air-interface-status/modulation-cur",
 		k_mw_air_interface_pac_layer_protocol);
@@ -24124,26 +24239,192 @@ static status_t set_capacity_for_interface(const xmlChar *k_mw_air_interface_pac
 		k_mw_air_interface_pac_layer_protocol);
 	res = set_value_for_xpath(xpathexpr, dateAndTime);
 
-	uint32 channel_capacity = get_channel_capacity();
+	sprintf(xpathexpr, "/mw-air-interface-pac[layer-protocol=\"%s\"]/air-interface-status/code-rate-cur",
+			k_mw_air_interface_pac_layer_protocol);
+		res = set_value_for_xpath(xpathexpr, "90");
 
-	if (capacity_set == false)
+	uint32 channel_capacity = get_channel_capacity_for_interface(k_mw_air_interface_pac_layer_protocol);
+
+	if (interface->capacity_set == false)
 	{
-		sprintf(command, "tc qdisc add dev %s handle 1: root htb default 11", interface_name);
+		sprintf(command, "tc qdisc add dev %s root handle 5:0 hfsc default 1", interface_name);
 		result = system(command);
 		YUMA_ASSERT(TRUE, NOP, "%s", command);
-		sprintf(command, "tc class add dev %s parent 1: classid 1:1 htb rate 1000Mbps", interface_name);
+		sprintf(command, "tc class add dev %s parent 5:0 classid 5:1 hfsc sc rate %dMbit ul rate %dMbit",
+				interface_name, channel_capacity, channel_capacity);
 		result = system(command);
 		YUMA_ASSERT(TRUE, NOP, "%s", command);
-		sprintf(command, "tc class add dev %s parent 1:1 classid 1:11 htb rate %dMbit", interface_name, channel_capacity);
-		result = system(command);
-		YUMA_ASSERT(TRUE, NOP, "%s", command);
-		capacity_set = true;
+		interface->capacity_set = true;
 	}
 	else
 	{
-		sprintf(command, "tc class change dev %s parent 1:1 classid 1:11 htb rate %dMbit", interface_name, channel_capacity);
+		sprintf(command, "tc class change dev %s parent 5:0 classid 5:1 hfsc sc rate %dMbit ul rate %dMbit",
+				interface_name, channel_capacity, channel_capacity);
 		result = system(command);
 		YUMA_ASSERT(TRUE, NOP, "%s", command);
+	}
+
+	return NO_ERR;
+}
+
+static status_t set_interface_oper_status(const xmlChar *k_mw_air_interface_pac_layer_protocol, const xmlChar* dateAndTime, boolean enable)
+{
+	status_t res = NO_ERR;
+	xmlChar *xpathexpr[XPATH_MAX_LENGTH];
+	char interface_name[100], radio_power_str[100], command[100];
+	int result;
+
+	sscanf(k_mw_air_interface_pac_layer_protocol, "lp-%s", interface_name, &result);
+
+	sprintf(radio_power_str, "%s", (enable) ? "true" : "false");
+
+	sprintf(xpathexpr, "/mw-air-interface-pac[layer-protocol=\"%s\"]/air-interface-status/radio-power-is-up",
+		k_mw_air_interface_pac_layer_protocol);
+	res = set_value_for_xpath(xpathexpr, radio_power_str);
+
+	sprintf(xpathexpr, "/mw-air-interface-pac[layer-protocol=\"%s\"]/air-interface-status/last-status-change",
+		k_mw_air_interface_pac_layer_protocol);
+	res = set_value_for_xpath(xpathexpr, dateAndTime);
+
+	sprintf(command, "ip link set dev %s %s", interface_name, (enable == true) ? "up" : "down");
+	result = system(command);
+	YUMA_ASSERT(TRUE, NOP, "%s", command);
+
+	return NO_ERR;
+}
+
+interfaceInfo* get_interface_from_name(const xmlChar* layer_protocol_name)
+{
+	for (int i = 0; i < num_of_air_interfaces; ++i)
+	{
+		if (strcmp(interfaces[i].layer_protocol_name, layer_protocol_name) == 0)
+		{
+			return &interfaces[i];
+		}
+	}
+	return NULL;
+}
+
+status_t set_channel_bandwidth_for_interface(const xmlChar* layer_protocol_name, uint32 channel_bandwidth)
+{
+	for (int i = 0; i < num_of_air_interfaces; ++i)
+	{
+		if (strcmp(interfaces[i].layer_protocol_name, layer_protocol_name) == 0)
+		{
+			interfaces[i].channel_bandwidth = channel_bandwidth;
+		}
+	}
+	return NO_ERR;
+}
+
+status_t set_modulation_for_interface(const xmlChar* layer_protocol_name, uint32 modulation)
+{
+	for (int i = 0; i < num_of_air_interfaces; ++i)
+	{
+		if (strcmp(interfaces[i].layer_protocol_name, layer_protocol_name) == 0)
+		{
+			interfaces[i].modulation_current = modulation;
+		}
+	}
+	return NO_ERR;
+}
+
+status_t fill_interfaces_details()
+{
+	status_t res = NO_ERR;
+	const xmlChar evalPath[XPATH_MAX_LENGTH];
+	xmlChar *layer_protocol_keys[MAX_NUM_OF_INTERFACES];
+	int num_of_keys;
+
+
+	sprintf(evalPath, "/mw-air-interface-pac/layer-protocol");
+	res = get_list_from_xpath(evalPath, layer_protocol_keys, &num_of_keys);
+
+	for (int i = 0; i<num_of_keys; ++i)
+	{
+		interfaces[num_of_air_interfaces].layer_protocol_name = strdup(layer_protocol_keys[i]);
+		interfaces[num_of_air_interfaces].channel_bandwidth = 26000;
+		interfaces[num_of_air_interfaces].modulation_current = 2;
+		interfaces[num_of_air_interfaces].capacity_set = false;
+		num_of_air_interfaces++;
+
+		char *supported_alarms;
+		sprintf(evalPath, "/mw-air-interface-pac[layer-protocol=\"%s\"]/air-interface-capability/supported-alarms",
+			layer_protocol_keys[i]);
+
+		supported_alarms = get_value_from_xpath(evalPath);
+
+		YUMA_ASSERT(supported_alarms == NULL, continue, "Could not retrieve supported alarms");
+
+		char *alarm = NULL;
+		alarm = strtok (supported_alarms, ", ");
+
+		while (alarm != NULL)
+		{
+			interface_alarms[num_of_alarms].problemName = strdup(alarm);
+			interface_alarms[num_of_alarms].objIdRef = strdup(layer_protocol_keys[i]);
+			interface_alarms[num_of_alarms].cleared = true;
+			fprintf(stderr, "problem_name=%s for layerProtocol=%s\n",
+					interface_alarms[num_of_alarms].problemName, interface_alarms[num_of_alarms].objIdRef);
+			num_of_alarms++;
+			alarm = strtok (NULL, " ,.-");
+		}
+	}
+
+	sprintf(evalPath, "/mw-pure-ethernet-structure-pac/layer-protocol");
+	res = get_list_from_xpath(evalPath, layer_protocol_keys, &num_of_keys);
+
+	for (int i = 0; i<num_of_keys; ++i)
+	{
+		char *supported_alarms;
+		sprintf(evalPath, "/mw-pure-ethernet-structure-pac[layer-protocol=\"%s\"]/pure-ethernet-structure-capability/supported-alarms",
+			layer_protocol_keys[i]);
+
+		supported_alarms = get_value_from_xpath(evalPath);
+
+		YUMA_ASSERT(supported_alarms == NULL, continue, "Could not retrieve supported alarms");
+
+		char *alarm = NULL;
+		alarm = strtok (supported_alarms, ", ");
+
+		while (alarm != NULL)
+		{
+			interface_alarms[num_of_alarms].problemName = strdup(alarm);
+			interface_alarms[num_of_alarms].objIdRef = strdup(layer_protocol_keys[i]);
+			interface_alarms[num_of_alarms].cleared = true;
+			fprintf(stderr, "problem_name=%s for layerProtocol=%s\n",
+					interface_alarms[num_of_alarms].problemName, interface_alarms[num_of_alarms].objIdRef);
+			num_of_alarms++;
+			alarm = strtok (NULL, " ,.-");
+		}
+	}
+
+	sprintf(evalPath, "/mw-ethernet-container-pac/layer-protocol");
+	res = get_list_from_xpath(evalPath, layer_protocol_keys, &num_of_keys);
+
+	for (int i = 0; i<num_of_keys; ++i)
+	{
+		char *supported_alarms;
+		sprintf(evalPath, "/mw-ethernet-container-pac[layer-protocol=\"%s\"]/ethernet-container-capability/supported-alarms",
+			layer_protocol_keys[i]);
+
+		supported_alarms = get_value_from_xpath(evalPath);
+
+		YUMA_ASSERT(supported_alarms == NULL, continue, "Could not retrieve supported alarms");
+
+		char *alarm = NULL;
+		alarm = strtok (supported_alarms, ", ");
+
+		while (alarm != NULL)
+		{
+			interface_alarms[num_of_alarms].problemName = strdup(alarm);
+			interface_alarms[num_of_alarms].objIdRef = strdup(layer_protocol_keys[i]);
+			interface_alarms[num_of_alarms].cleared = true;
+			fprintf(stderr, "problem_name=%s for layerProtocol=%s\n",
+					interface_alarms[num_of_alarms].problemName, interface_alarms[num_of_alarms].objIdRef);
+			num_of_alarms++;
+			alarm = strtok (NULL, " ,.-");
+		}
 	}
 
 	return NO_ERR;
@@ -24161,6 +24442,8 @@ static status_t set_capacity_for_interface(const xmlChar *k_mw_air_interface_pac
 status_t u_microwave_model_init2 (void)
 {
     status_t res = NO_ERR;
+
+    res = fill_interfaces_details();
 
     pthread_t gen_notif_thread, update_status_values_thread;
 

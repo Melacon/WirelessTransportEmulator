@@ -12,7 +12,7 @@
  * UTILS
  */
 static const char *filename =  "/usr/src/OpenYuma/microwave-model-status.xml";
-//static const char *filename =  "/home/emulator/workspace/OpenYuma/microwave-model-status.xml";
+//static const char *filename =  "/home/emulator/workspace/WirelessTransportEmulator/OpenYuma/microwave-model-status.xml";
 
 static status_t
     get_object_string (const val_value_t *elem,

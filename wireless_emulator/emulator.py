@@ -95,9 +95,12 @@ class Emulator(metaclass=Singleton):
         for ne in self.topoJson['network-elements']:
             neUuid = ne['network-element']['uuid']
             interfaces = ne['network-element']['interfaces']
+            eth_x_conn = None
+            if ne['network-element'].get('eth-cross-connections') is not None:
+                eth_x_conn = ne['network-element']['eth-cross-connections']
             neObj = None
             try:
-                neObj = NE.NetworkElement(neUuid, neId, ofPortStart, interfaces)
+                neObj = NE.NetworkElement(neUuid, neId, ofPortStart, interfaces, eth_x_conn)
             except ValueError:
                 logger.critical("Could not create Network Element=%s", neUuid)
                 printErrorAndExit()
@@ -142,6 +145,7 @@ class Emulator(metaclass=Singleton):
         for ne in self.networkElementList:
             print("Adding relevant interfaces in docker container %s..." % ne.uuid)
             ne.addInterfacesInDockerContainer()
+            ne.addEthCrossConnects()
 
     def startEmulator(self):
         self.createNetworkElements()

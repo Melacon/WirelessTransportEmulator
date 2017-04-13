@@ -13,13 +13,14 @@ logger = logging.getLogger(__name__)
 
 class NetworkElement:
 
-    def __init__(self, neUuid, neId, ofPortStart, interfaces):
+    def __init__(self, neUuid, neId, ofPortStart, interfaces, eth_x_conn = None):
         self.uuid = neUuid
         self.id = neId
         self.OFPortStart = ofPortStart
         self.dockerName = self.uuid.replace(" ", "")
 
         self.emEnv = wireless_emulator.emulator.Emulator()
+        self.eth_x_connect = eth_x_conn
 
         self.xmlConfigurationTree = None
         self.networkElementXmlNode = None
@@ -28,6 +29,7 @@ class NetworkElement:
         self.airInterfacePacXmlNode = None
         self.pureEthernetPacXmlNode = None
         self.ethernetContainerPacXmlNode = None
+        self.forwardingConstructCfgXmlNode = None
 
         self.xmlStatusTree = None
         self.statusXmlNode = None
@@ -36,6 +38,9 @@ class NetworkElement:
         self.ltpStatusXmlNode = None
         self.pureEthernetStatusXmlNode = None
         self.ethernetContainerStatusXmlNode = None
+        self.forwardingConstructStatusXmlNode = None
+
+        self.networkNamespace = None
 
         self.networkIPAddress = self.emEnv.mgmtIpFactory.getFreeManagementNetworkIP()
         if self.networkIPAddress is None:
@@ -124,6 +129,10 @@ class NetworkElement:
         self.ethernetContainerPacXmlNode = copy.deepcopy(ethernetContainer)
         self.microwaveModuleXmlNode.remove(ethernetContainer)
 
+        forwardingConstruct = config.find('core-model:forwarding-construct', self.namespaces)
+        self.forwardingConstructCfgXmlNode = copy.deepcopy(forwardingConstruct)
+        config.remove(forwardingConstruct)
+
         uselessNode = config.find('microwave-model:co-channel-group', self.namespaces)
         config.remove(uselessNode)
 
@@ -140,9 +149,6 @@ class NetworkElement:
         config.remove(uselessNode)
 
         uselessNode = config.find('microwave-model:mw-tdm-container-pac', self.namespaces)
-        config.remove(uselessNode)
-
-        uselessNode = config.find('core-model:forwarding-construct', self.namespaces)
         config.remove(uselessNode)
 
         uselessNode = config.find('core-model:operation-envelope', self.namespaces)
@@ -172,6 +178,10 @@ class NetworkElement:
         self.ethernetContainerStatusXmlNode = copy.deepcopy(ethernetContainer)
         self.statusXmlNode.remove(ethernetContainer)
 
+        forwardingConstruct = status.find('forwarding-construct')
+        self.forwardingConstructStatusXmlNode = copy.deepcopy(forwardingConstruct)
+        status.remove(forwardingConstruct)
+
         uselessNode = status.find('co-channel-group')
         status.remove(uselessNode)
 
@@ -190,9 +200,6 @@ class NetworkElement:
         uselessNode = status.find('mw-tdm-container-pac')
         status.remove(uselessNode)
 
-        uselessNode = status.find('forwarding-construct')
-        status.remove(uselessNode)
-
         uselessNode = status.find('operation-envelope')
         status.remove(uselessNode)
 
@@ -204,16 +211,24 @@ class NetworkElement:
         uuid = node.find('core-model:uuid', self.namespaces)
         uuid.text = self.uuid
         addCoreDefaultValuesToNode(node,self.uuid, self.namespaces, self)
+        self.buildCoreModelForwardingConstructCfgXml()
 
     def buildCoreModelStatusXml(self):
         node = self.neStatusXmlNode
         addCoreDefaultStatusValuesToNode(node)
+        self.buildCoreModelForwardingConstructStatusXml()
 
     def buildNotificationStatusXml(self):
         node = self.statusXmlNode
         notif = ET.SubElement(node, "notifications")
         timeout = ET.SubElement(notif, "timeout")
         timeout.text = str(self.emEnv.configJson['notificationPeriod'])
+
+    def buildCoreModelForwardingConstructCfgXml(self):
+        pass
+
+    def buildCoreModelForwardingConstructStatusXml(self):
+        pass
 
     def createInterfaces(self):
         ofPort = self.OFPortStart
@@ -352,7 +367,17 @@ class NetworkElement:
                     logger.critical("Stderr: %s", strLine)
                     raise RuntimeError
 
+    def saveNetworkNamespace(self):
+        stringCmd = "docker inspect -f '{{.State.Pid}}' \"%s\"" % (self.dockerName)
+        cmd = subprocess.Popen(stringCmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
+        for line in cmd.stderr:
+            strLine = line.decode("utf-8").rstrip('\n')
+            logger.critical("Stderr: %s", strLine)
+            raise RuntimeError
+        for line in cmd.stdout:
+            print(line.decode("utf-8").rstrip('\n'))
+            self.networkNamespace = line.decode("utf-8").rstrip('\n')
 
     def addNetworkElement(self):
         print("Adding Network element %s..." % (self.uuid))
@@ -376,6 +401,8 @@ class NetworkElement:
            except RuntimeError:
                print("Failed to register NE=%s having IP=%s to the ODL controller" % (self.uuid, self.managementIPAddressString))
 
+        self.saveNetworkNamespace()
+
         #debug
         self.xmlConfigurationTree.write('output-config-' + self.dockerName + '.xml')
         self.xmlStatusTree.write('output-status-' + self.dockerName + '.xml')
@@ -395,13 +422,19 @@ class NetworkElement:
         command = "ip link add name %s type bond" % interfaceObj.getInterfaceName()
         self.executeCommand(command)
 
+        command = "/bin/bash -c \"echo 0 > /sys/class/net/%s/bonding/mode\"" % interfaceObj.getInterfaceName()
+        self.executeCommand(command)
+
+        command = "/bin/bash -c \"echo 100 > /sys/class/net/%s/bonding/miimon\"" % interfaceObj.getInterfaceName()
+        self.executeCommand(command)
+
         for serverLtp in interfaceObj.serverLtps:
             serverObj = self.getInterfaceFromInterfaceUuid(serverLtp)
             serverName = serverObj.getInterfaceName()
             command = "ip link set %s down" % serverName
             self.executeCommand(command)
 
-            command = "ip link set %s down master %s" % (serverName, interfaceObj.getInterfaceName())
+            command = "ip link set %s master %s" % (serverName, interfaceObj.getInterfaceName())
             self.executeCommand(command)
 
         command = "ip link set %s up" % interfaceObj.getInterfaceName()
@@ -421,6 +454,21 @@ class NetworkElement:
         command = "ip link add name %s type bond" % interfaceObj.getInterfaceName()
         self.executeCommand(command)
 
+        command = "/bin/bash -c \"echo 0 > /sys/class/net/%s/bonding/mode\"" % interfaceObj.getInterfaceName()
+        self.executeCommand(command)
+
+        command = "/bin/bash -c \"echo 100 > /sys/class/net/%s/bonding/miimon\"" % interfaceObj.getInterfaceName()
+        self.executeCommand(command)
+
+        # command = "/bin/bash -c \"echo 1 > /sys/class/net/%s/bonding/lacp_rate\"" % interfaceObj.getInterfaceName()
+        # self.executeCommand(command)
+
+        # command = "/bin/bash -c \"echo 1 > /sys/class/net/%s/bonding/xmit_hash_policy\"" % interfaceObj.getInterfaceName()
+        # self.executeCommand(command)
+
+        # command = "cat /sys/class/net/%s/bonding/mode" % interfaceObj.getInterfaceName()
+        # self.executeCommand(command)
+
         for serverLtp in interfaceObj.serverLtps:
             serverObj = self.getInterfaceFromInterfaceUuid(serverLtp)
             serverName = serverObj.getInterfaceName()
@@ -428,7 +476,7 @@ class NetworkElement:
             command = "ip link set %s down" % serverName
             self.executeCommand(command)
 
-            command = "ip link set %s down master %s" % (serverName, interfaceObj.getInterfaceName())
+            command = "ip link set %s master %s" % (serverName, interfaceObj.getInterfaceName())
             self.executeCommand(command)
 
         ipIntfNetwork = self.emEnv.intfIpFactory.getFreeInterfaceIp()
@@ -460,6 +508,58 @@ class NetworkElement:
 
             command = "ip link set %s up" % interfaceObj.getInterfaceName()
             self.executeCommand(command)
+
+    def validateEthCrossConnectEnds(self):
+        if self.eth_x_connect is None:
+            return True
+
+        for xconn in self.eth_x_connect:
+            if len(xconn) != 2:
+                return False
+
+            intfObj = self.getInterfaceFromInterfaceUuid(xconn[0]['ltp'])
+            if intfObj is None:
+                return False
+            elif intfObj.prefixName != 'eth-':
+                return False
+            intfObj = self.getInterfaceFromInterfaceUuid(xconn[1]['ltp'])
+            if intfObj is None:
+                return False
+            elif intfObj.prefixName != 'eth-':
+                return False
+
+        return True
+
+    def addEthCrossConnects(self):
+
+        if self.validateEthCrossConnectEnds() is False:
+            print("Incorrect eth cross connect defined in JSON config file for NE=%s", self.uuid)
+            raise ValueError("Incorrect eth cross connect defined in JSON config file for NE=%s" % self.uuid)
+
+        if self.eth_x_connect is not None:
+            index = 1
+            for xconn in self.eth_x_connect:
+
+                intfObj1 = self.getInterfaceFromInterfaceUuid(xconn[0]['ltp'])
+                intfObj2 = self.getInterfaceFromInterfaceUuid(xconn[1]['ltp'])
+
+                bridgeName = 'xconn_br' + str(index)
+                index += 1
+
+                print("Adding bridge interface %s to docker container %s..." % (bridgeName, self.uuid))
+
+                command = "ip link add name %s type bridge" % bridgeName
+                self.executeCommand(command)
+
+                command = "ip link set dev %s master %s" % (intfObj1.getInterfaceName(), bridgeName)
+                self.executeCommand(command)
+
+                command = "ip link set dev %s master %s" % (intfObj2.getInterfaceName(), bridgeName)
+                self.executeCommand(command)
+
+                command = "ip link set dev %s up" % bridgeName
+                self.executeCommand(command)
+
 
     def executeCommand(self, command):
         stringCmd = "docker exec -it %s %s" % (self.dockerName, command)
