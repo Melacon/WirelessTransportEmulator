@@ -50,14 +50,14 @@ class Emulator(metaclass=Singleton):
         self.mgmtIpFactory = None
         self.intfIpFactory = None
 
-        if self.configJson['managementIpNetwork'] is not None and self.configJson['linksIpNetwork'] is not None:
+        if self.configJson['managementIpNetwork'] is not None and self.configJson['hostIpNetwork'] is not None:
             if self.validatePreferedIpNetworks(self.configJson['managementIpNetwork'],
-                                            self.configJson['linksIpNetwork']) == False:
+                                            self.configJson['hostIpNetwork']) == False:
                 self.mgmtIpFactory = ManagementNetworkIPFactory(self.configJson['managementIpNetwork'])
-                self.intfIpFactory = InterfaceIPFactory(self.configJson['linksIpNetwork'])
+                self.intfIpFactory = InterfaceIPFactory(self.configJson['hostIpNetwork'])
             else:
-                logger.error("Management IP Network and Links IP Network overlap! Starting with default values!")
-                print("Management IP Network and Links IP Network overlap! Starting with default values!")
+                logger.error("Management IP Network and Host IP Network overlap! Starting with default values!")
+                print("Management IP Network and Host IP Network overlap! Starting with default values!")
                 self.mgmtIpFactory = ManagementNetworkIPFactory('192.168.0.0/16')
                 self.intfIpFactory = InterfaceIPFactory('10.10.0.0/16')
         else:
@@ -68,11 +68,11 @@ class Emulator(metaclass=Singleton):
 
         self.saveControllerInfo()
 
-    def validatePreferedIpNetworks(self, mngIpNetwork, linksIpNetwork):
+    def validatePreferedIpNetworks(self, mngIpNetwork, hostIpNetwork):
         mngNetwork = ipaddress.ip_network(mngIpNetwork)
-        linksNetwork = ipaddress.ip_network(linksIpNetwork)
+        hostNetwork = ipaddress.ip_network(hostIpNetwork)
 
-        return mngNetwork.overlaps(linksNetwork)
+        return mngNetwork.overlaps(hostNetwork)
 
     def saveControllerInfo(self):
         self.controllerInfo['ip-address'] = self.configJson['controller']['ip-address']
@@ -91,7 +91,6 @@ class Emulator(metaclass=Singleton):
         logger.debug("Creating Network Elements")
 
         neId = 1
-        ofPortStart = 1
         for ne in self.topoJson['network-elements']:
             neUuid = ne['network-element']['uuid']
             interfaces = ne['network-element']['interfaces']
@@ -100,7 +99,7 @@ class Emulator(metaclass=Singleton):
                 eth_x_conn = ne['network-element']['eth-cross-connections']
             neObj = None
             try:
-                neObj = NE.NetworkElement(neUuid, neId, ofPortStart, interfaces, eth_x_conn)
+                neObj = NE.NetworkElement(neUuid, neId, interfaces, eth_x_conn)
             except ValueError:
                 logger.critical("Could not create Network Element=%s", neUuid)
                 printErrorAndExit()
@@ -120,10 +119,10 @@ class Emulator(metaclass=Singleton):
 
         logger.debug("Creating topologies list eth...")
 
-        mwpsTopo = self.topoJson['topologies']['eth']
+        ethTopo = self.topoJson['topologies']['eth']
 
-        topoObj = Topology(mwpsTopo, "eth")
-        self.topologies.append(topoObj)
+        ethObj = Topology(ethTopo, "eth")
+        self.topologies.append(ethObj)
 
     def buildTopologies(self):
         logger.debug("Building topologies...")
@@ -135,6 +134,7 @@ class Emulator(metaclass=Singleton):
         self.buildTopologies()
 
     def isInterfaceObjPartOfLink(self, intfObj):
+        logger.debug("checking if interface is part of object for intf=%s", intfObj.uuid)
         for topo in self.topologies:
             if topo.isInterfaceObjPartOfLink(intfObj) is True:
                 return True
@@ -145,15 +145,31 @@ class Emulator(metaclass=Singleton):
         for ne in self.networkElementList:
             print("Adding relevant interfaces in docker container %s..." % ne.uuid)
             ne.addInterfacesInDockerContainer()
-            ne.addEthCrossConnects()
 
     def startEmulator(self):
         self.createNetworkElements()
         self.createTopologies()
-        self.addInterfacesInDocker()
+        # self.addInterfacesInDocker()
 
     def getNeByName(self, name):
         for ne in self.networkElementList:
             if ne.uuid == name:
                 return ne
         return None
+
+    def executeCommandInOS(self, command):
+        cmd = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        for line in cmd.stderr:
+            strLine = line.decode("utf-8").rstrip('\n')
+            logger.critical("Stderr: %s", strLine)
+            raise RuntimeError
+
+    def executeCommandAndGetResultInOS(self, command):
+        cmd = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        for line in cmd.stderr:
+            strLine = line.decode("utf-8").rstrip('\n')
+            logger.critical("Stderr: %s", strLine)
+            raise RuntimeError
+        return cmd.stdout

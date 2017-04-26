@@ -45,7 +45,7 @@ class CLI(Cmd):
 
         if node is not None:
             rest = args.split(' ')
-            node.executeCommand(args)
+            node.executeCommandInContainer(args)
         else:
             print('Node %s not found' % first)
 
@@ -83,8 +83,8 @@ class CLI(Cmd):
             print('#### Network Element management IP: %s' % node.managementIPAddressString)
             print('########### Interfaces: ###########')
             for intf in node.interfaceList:
-                print('Interface: UUID=\'%s\' having IP=%s and Linux Interface Name=\'%s\'' %
-                      (intf.uuid, intf.IP, intf.interfaceName))
+                print('Interface: UUID=\'%s\' having type=%s Linux Interface Name=\'%s\'' %
+                      (intf.uuid, intf.layer, intf.interfaceName))
             print('#########################################')
         else:
             print('Node %s not found' % args[0])
@@ -97,8 +97,8 @@ class CLI(Cmd):
             print('#### Network Element management IP: %s' % node.managementIPAddressString)
             print('########### Interfaces: ###########')
             for intf in node.interfaceList:
-                print('Interface: UUID=\'%s\' having IP=%s and Linux Interface Name=\'%s\'' %
-                      (intf.uuid, intf.IP, intf.interfaceName))
+                print('Interface: UUID=\'%s\' having type=%s Linux Interface Name=\'%s\'' %
+                      (intf.uuid, intf.layer, intf.interfaceName))
         print('#########################################')
 
     def do_dump_links(self, _line):

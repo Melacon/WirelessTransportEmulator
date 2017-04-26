@@ -7,34 +7,61 @@
         "interfaces" : [
           {
             "layer" : "MWPS",
-            "LTPs" : [{"id": "airIntf1",
-              "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted"},
-                      {"id": "airIntf2",
-              "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted"}]
+            "LTPs" : [
+                      { "id": "airIntf1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+			          { "id": "airIntf2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
           },
           {
             "layer" : "MWS",
-            "LTPs" : [{"id" : "pureEth1",
-            "supportedAlarms" : "structureAlarm",
-              "serverLTPs" : [{"id" : "airIntf1"}]},
-                      {"id" : "pureEth2",
-            "supportedAlarms" : "structureAlarm",
-              "serverLTPs" : [{"id" : "airIntf2"}]}]
+            "LTPs" : [
+                      { "id" : "pureEth1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "airIntf1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+			          { "id" : "pureEth2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "airIntf2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      { "id" : "mwEty1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pureEth1"}, {"id" : "pureEth2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"},
+                      {"id" : "ety3", "physical-port-reference" : "shelf1:slot1:card-type:port3"},
+                      {"id" : "ety4", "physical-port-reference" : "shelf1:slot1:card-type:port4"}
+                    ]
           },
           {
             "layer" : "ETH",
-            "LTPs" : [{"id" : "ethCont1",
-            "supportedAlarms" : "framingIsFaulty, containerIsDown",
-              "serverLTPs" : [{"id" : "pureEth1"}, {"id" : "pureEth2"}]},
-                      {"id" : "phyEth1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
-                      {"id" : "phyEth2", "physical-port-reference" : "shelf1:slot1:card-type:port2"},
-                      {"id" : "phyEth3", "physical-port-reference" : "shelf1:slot1:card-type:port3"},
-                      {"id" : "phyEth4", "physical-port-reference" : "shelf1:slot1:card-type:port4"}]
+            "LTPs" : [{"id" : "eth1", "serverLTPs" : [{"id" : "ety1"}], "conditional-package" : "ethernet-pac"},
+                      {"id" : "eth2", "serverLTPs" : [{"id" : "ety2"}], "conditional-package" : "ethernet-pac"},
+                      {"id" : "eth3", "serverLTPs" : [{"id" : "ety3"}], "conditional-package" : "ethernet-pac"},
+                      {"id" : "eth4", "serverLTPs" : [{"id" : "ety4"}], "conditional-package" : "ethernet-pac"},
+                      {"id" : "eth5", "serverLTPs" : [{"id" : "mwEty1"}], "conditional-package" : "ethernet-pac"}
+                    ]
           }
-        ],
+          ],
         "eth-cross-connections" : [
-          [{"ltp" : "ethCont1", "vlan-id" : "26"}, {"ltp" : "phyEth1", "vlan-id" : "26"}]
-        ]
+          {"fcPorts" : [{"ltp" : "eth1", "vlan-id" : "26"}, {"ltp" : "eth5", "vlan-id" : "26"}], "host" : true, "fcRoute" : "service1"}
+          ]
       }
     },
     {
@@ -44,47 +71,87 @@
         "interfaces" : [
           {
             "layer" : "MWPS",
-            "LTPs" : [{"id": "airIntf1",
-            "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted"},
-              {"id" : "airIntf2",
-              "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted"},
-              {"id": "airIntf3",
-              "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted"},
-			  {"id": "airIntf4",
-              "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted"}]
+            "LTPs" : [
+                      { "id": "airIntf1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+			          { "id": "airIntf2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "airIntf3",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot4:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+			          { "id": "airIntf4",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot5:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
           },
           {
             "layer" : "MWS",
-            "LTPs" : [{"id" : "pureEth1",
-            "supportedAlarms" : "structureAlarm",
-              "serverLTPs" : [{"id" : "airIntf1"}]},
-                      {"id" : "pureEth2",
-            "supportedAlarms" : "structureAlarm",
-              "serverLTPs" : [{"id" : "airIntf2"}]},
-                      {"id" : "pureEth3",
-            "supportedAlarms" : "structureAlarm",
-              "serverLTPs" : [{"id" : "airIntf3"}]},
-			  {"id" : "pureEth4",
-            "supportedAlarms" : "structureAlarm",
-              "serverLTPs" : [{"id" : "airIntf4"}]}]
+            "LTPs" : [
+                      { "id" : "pureEth1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "airIntf1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+			          { "id" : "pureEth2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "airIntf2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pureEth3",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "airIntf3"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+			          { "id" : "pureEth4",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "airIntf4"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      { "id" : "mwEty1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pureEth1"}, {"id" : "pureEth2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "mwEty2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pureEth3"}, {"id" : "pureEth4"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"},
+                      {"id" : "ety3", "physical-port-reference" : "shelf1:slot1:card-type:port3"},
+                      {"id" : "ety4", "physical-port-reference" : "shelf1:slot1:card-type:port4"}
+                    ]
           },
           {
             "layer" : "ETH",
-            "LTPs" : [{"id" : "ethCont1",
-            "supportedAlarms" : "framingIsFaulty, containerIsDown",
-              "serverLTPs" : [{"id" : "pureEth1"}, {"id" : "pureEth2"}]},
-                      {"id" : "ethCont2",
-            "supportedAlarms" : "framingIsFaulty, containerIsDown",
-              "serverLTPs" : [{"id" : "pureEth3"}, {"id" : "pureEth4"}]},
-                      {"id" : "phyEth1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
-                      {"id" : "phyEth2", "physical-port-reference" : "shelf1:slot1:card-type:port2"},
-                      {"id" : "phyEth3", "physical-port-reference" : "shelf1:slot1:card-type:port3"},
-                      {"id" : "phyEth4", "physical-port-reference" : "shelf1:slot1:card-type:port4"}]
+            "LTPs" : [{"id" : "eth1", "serverLTPs" : [{"id" : "ety1"}], "conditional-package" : "ethernet-pac"},
+                      {"id" : "eth2", "serverLTPs" : [{"id" : "ety2"}], "conditional-package" : "ethernet-pac"},
+                      {"id" : "eth3", "serverLTPs" : [{"id" : "ety3"}], "conditional-package" : "ethernet-pac"},
+                      {"id" : "eth4", "serverLTPs" : [{"id" : "ety4"}], "conditional-package" : "ethernet-pac"},
+                      {"id" : "eth5", "serverLTPs" : [{"id" : "mwEty1"}], "conditional-package" : "ethernet-pac"},
+                      {"id" : "eth6", "serverLTPs" : [{"id" : "mwEty2"}], "conditional-package" : "ethernet-pac"}
+                    ]
           }
           ],
         "eth-cross-connections" : [
-          [{"ltp" : "ethCont1", "vlan-id" : "26"}, {"ltp" : "ethCont2", "vlan-id" : "26"}]
-        ]
+          {"fcPorts" : [{"ltp" : "eth5", "vlan-id" : "26"}, {"ltp" : "eth6", "vlan-id" : "26"}], "host" : false, "fcRoute" : "service1"}
+          ]
       }
     },
     {
@@ -94,34 +161,61 @@
         "interfaces" : [
           {
             "layer" : "MWPS",
-            "LTPs" : [{"id": "airIntf1",
-            "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted"},
-			{"id": "airIntf2",
-            "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted"}]
+            "LTPs" : [
+                      { "id": "airIntf1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+			          { "id": "airIntf2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
           },
           {
             "layer" : "MWS",
-            "LTPs" : [{"id" : "pureEth1",
-            "supportedAlarms" : "structureAlarm",
-              "serverLTPs" : [{"id" : "airIntf1"}]},
-			  {"id" : "pureEth2",
-            "supportedAlarms" : "structureAlarm",
-              "serverLTPs" : [{"id" : "airIntf2"}]}]
+            "LTPs" : [
+                      { "id" : "pureEth1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "airIntf1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+			          { "id" : "pureEth2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "airIntf2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      { "id" : "mwEty1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pureEth1"}, {"id" : "pureEth2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"},
+                      {"id" : "ety3", "physical-port-reference" : "shelf1:slot1:card-type:port3"},
+                      {"id" : "ety4", "physical-port-reference" : "shelf1:slot1:card-type:port4"}
+                    ]
           },
           {
             "layer" : "ETH",
-            "LTPs" : [{"id" : "ethCont1",
-            "supportedAlarms" : "framingIsFaulty, containerIsDown",
-              "serverLTPs" : [{"id" : "pureEth1"}, {"id" : "pureEth2"}]},
-                      {"id" : "phyEth1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
-                      {"id" : "phyEth2", "physical-port-reference" : "shelf1:slot1:card-type:port2"},
-                      {"id" : "phyEth3", "physical-port-reference" : "shelf1:slot1:card-type:port3"},
-                      {"id" : "phyEth4", "physical-port-reference" : "shelf1:slot1:card-type:port4"}]
+            "LTPs" : [{"id" : "eth1", "serverLTPs" : [{"id" : "ety1"}], "conditional-package" : "ethernet-pac"},
+                      {"id" : "eth2", "serverLTPs" : [{"id" : "ety2"}], "conditional-package" : "ethernet-pac"},
+                      {"id" : "eth3", "serverLTPs" : [{"id" : "ety3"}], "conditional-package" : "ethernet-pac"},
+                      {"id" : "eth4", "serverLTPs" : [{"id" : "ety4"}], "conditional-package" : "ethernet-pac"},
+                      {"id" : "eth5", "serverLTPs" : [{"id" : "mwEty1"}], "conditional-package" : "ethernet-pac"}
+                    ]
           }
           ],
         "eth-cross-connections" : [
-          [{"ltp" : "ethCont1", "vlan-id" : "26"}, {"ltp" : "phyEth1", "vlan-id" : "26"}]
-        ]
+          {"fcPorts" : [{"ltp" : "eth1", "vlan-id" : "26"}, {"ltp" : "eth5", "vlan-id" : "26"}], "host" : true, "fcRoute" : "service1"}
+          ]
       }
     }
     ],
@@ -135,7 +229,9 @@
         ]
     },
     "eth" : {
-      "links" : []
+      "links" : [
+        [{"uuid" : "Simulator-1", "ltp" : "eth4", "vlan-id" : "30"}, {"uuid" : "Simulator-3", "ltp" : "eth4", "vlan-id" : "30"}]
+      ]
     }
   }
 }

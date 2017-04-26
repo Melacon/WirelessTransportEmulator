@@ -10,13 +10,12 @@ logger = logging.getLogger(__name__)
 
 
 class MwpsInterface:
-
-    def __init__(self, intfUuid, interfaceId, ofPort, neObj, supportedAlarms):
-        self.IP = None
+    def __init__(self, intfUuid, interfaceId, neObj, supportedAlarms, physicalPortRef, conditionalPackage):
         self.uuid = intfUuid
         self.id = interfaceId
-        self.ofPort = ofPort
         self.supportedAlarms = supportedAlarms
+        self.physicalPortRef = physicalPortRef
+        self.conditionalPackage = conditionalPackage
 
         alarm_list = supportedAlarms.split(",")
         if len(alarm_list) < 6:
@@ -24,27 +23,16 @@ class MwpsInterface:
             raise RuntimeError
 
         self.neObj = neObj
+        self.layer = 'MWPS'
         self.prefixName = 'mwps-'
         self.interfaceName = self.prefixName + str(self.uuid)
         self.clientLtpNode = None
 
         self.emEnv = wireless_emulator.emulator.Emulator()
 
-        self.MAC = self.emEnv.macAddressFactory.generateMacAddress(self.neObj.getNeId(), self.id)
-        if self.MAC is None:
-            logger.critical("No MAC Address created for NE=%s and interface=%s",
-                            self.neObj.getNeUuid(), self.uuid)
-
         self.radioSignalId = self.findRadioSignalId()
 
-        logger.debug("MwpsInterface object having name=%s, ofPort=%d and IP=%s was created",
-                     self.interfaceName, self.ofPort, self.IP)
-
-    def getIpAddress(self):
-        return self.IP
-
-    def setIpAddress(self, IP):
-        self.IP = IP
+        logger.debug("MwpsInterface object having name=%s created", self.interfaceName)
 
     def getInterfaceUuid(self):
         return self.uuid
@@ -55,12 +43,10 @@ class MwpsInterface:
     def getNeName(self):
         return self.neObj.dockerName
 
-    def getMacAddress(self):
-        return self.MAC
-
     def buildCoreModelConfigXml(self):
-        neNode = self.neObj.networkElementXmlNode
-        ltpNode = copy.deepcopy(self.neObj.ltpXmlNode)
+        neNode = self.neObj.networkElementConfigXmlNode
+
+        ltpNode = copy.deepcopy(self.neObj.ltpConfigXmlNode)
         uuid = ltpNode.find('core-model:uuid', self.neObj.namespaces)
         ltpUuid = "ltp-" + self.interfaceName
         uuid.text = ltpUuid
@@ -75,13 +61,47 @@ class MwpsInterface:
         lpUuid = "lp-" + self.interfaceName
         uuid.text = lpUuid
         layerProtocolName = lpNode.find('core-model:layer-protocol-name', self.neObj.namespaces)
-        layerProtocolName.text = self.prefixName[:-1].upper()
+        layerProtocolName.text = self.layer
+        terminationState = lpNode.find('core-model:termination-state', self.neObj.namespaces)
+        terminationState.text = 'terminated-bidirectional'
+
+        extension = lpNode.find('core-model:extension', self.neObj.namespaces)
+        extensionSaved = copy.deepcopy(extension)
+        lpNode.remove(extension)
+
         addCoreDefaultValuesToNode(lpNode, lpUuid, self.neObj.namespaces)
+
+        extension = copy.deepcopy(extensionSaved)
+        valName = extension.find('core-model:value-name', self.neObj.namespaces)
+        valName.text = "capability"
+        value = extension.find('core-model:value', self.neObj.namespaces)
+        value.text = "urn:onf:params:xml:ns:yang:microwave-model?module=microwave-model"
+        lpNode.append(extension)
+
+        extension = copy.deepcopy(extensionSaved)
+        valName = extension.find('core-model:value-name', self.neObj.namespaces)
+        valName.text = "revision"
+        value = extension.find('core-model:value', self.neObj.namespaces)
+        value.text = "2017-03-24"
+        lpNode.append(extension)
+
+        extension = copy.deepcopy(extensionSaved)
+        valName = extension.find('core-model:value-name', self.neObj.namespaces)
+        valName.text = "conditional-package"
+        value = extension.find('core-model:value', self.neObj.namespaces)
+        value.text = self.conditionalPackage
+        lpNode.append(extension)
+
+        ltpDirection = ltpNode.find('core-model:ltp-direction', self.neObj.namespaces)
+        ltpDirection.text = 'bidirectional'
+
+        physicalPortRef = ltpNode.find('core-model:physical-port-reference', self.neObj.namespaces)
+        physicalPortRef.text = self.physicalPortRef
 
         neNode.append(ltpNode)
 
     def setCoreModelClientStateXml(self, clientLtpUuid):
-        neNode = self.neObj.networkElementXmlNode
+        neNode = self.neObj.networkElementConfigXmlNode
 
         for ltpNode in neNode.findall('core-model:ltp', self.neObj.namespaces):
             uuid = ltpNode.find('core-model:uuid', self.neObj.namespaces)
@@ -93,7 +113,7 @@ class MwpsInterface:
                     ltpNode.append(newClient)
 
     def buildCoreModelStatusXml(self):
-        neStatusNode = self.neObj.neStatusXmlNode
+        neStatusNode = self.neObj.networkElementStatusXmlNode
 
         ltpNode = copy.deepcopy(self.neObj.ltpStatusXmlNode)
         uuid = ltpNode.find('uuid')
@@ -110,9 +130,9 @@ class MwpsInterface:
         neStatusNode.append(ltpNode)
 
     def buildMicrowaveModelXml(self):
-        parentNode = self.neObj.microwaveModuleXmlNode
+        parentNode = self.neObj.configRootXmlNode
 
-        airInterface = copy.deepcopy(self.neObj.airInterfacePacXmlNode)
+        airInterface = copy.deepcopy(self.neObj.airInterfacePacConfigXmlNode)
         lpUuid = "lp-" + self.interfaceName
 
         layerProtocol = airInterface.find('microwave-model:layer-protocol', self.neObj.namespaces)
@@ -144,7 +164,7 @@ class MwpsInterface:
         parentNode.append(airInterface)
 
     def buildMicrowaveModelStatusXml(self):
-        parentNode = self.neObj.statusXmlNode
+        parentNode = self.neObj.statusRootXmlNode
 
         airInterface = copy.deepcopy(self.neObj.airInterfaceStatusXmlNode)
         lpUuid = "lp-" + self.interfaceName
@@ -267,12 +287,11 @@ class MwpsInterface:
 
 class MwsInterface:
 
-    def __init__(self, intfUuid, interfaceId, ofPort, neObj, supportedAlarms, serverLtps):
-        self.IP = None
+    def __init__(self, intfUuid, interfaceId, neObj, supportedAlarms, serverLtps, conditionalPackage):
         self.uuid = intfUuid
         self.id = interfaceId
-        self.ofPort = ofPort
         self.supportedAlarms = supportedAlarms
+        self.conditionalPackage = conditionalPackage
 
         alarm_list = supportedAlarms.split(",")
         if len(alarm_list) < 1:
@@ -280,29 +299,18 @@ class MwsInterface:
             raise RuntimeError
 
         self.neObj = neObj
+        self.layer = 'MWS'
         self.prefixName = 'mws-'
         self.interfaceName = self.prefixName + str(self.uuid)
-        self.clientLtpNode = None
 
         self.emEnv = wireless_emulator.emulator.Emulator()
 
-        self.MAC = self.emEnv.macAddressFactory.generateMacAddress(self.neObj.getNeId(), self.id)
-        if self.MAC is None:
-            logger.critical("No MAC Address created for NE=%s and interface=%s",
-                            self.neObj.getNeUuid(), self.uuid)
-
-        self.serverLtps = []
+        self.clientLtpNode = None
+        self.serverLtpsList = []
         for ltp in serverLtps:
-            self.serverLtps.append(ltp['id'])
+            self.serverLtpsList.append(ltp['id'])
 
-        logger.debug("MwsInterface object having name=%s, ofPort=%d and IP=%s was created",
-                     self.interfaceName, self.ofPort, self.IP)
-
-    def getIpAddress(self):
-        return self.IP
-
-    def setIpAddress(self, IP):
-        self.IP = IP
+        logger.debug("MwsInterface object having name=%s was created", self.interfaceName)
 
     def getInterfaceUuid(self):
         return self.uuid
@@ -313,12 +321,9 @@ class MwsInterface:
     def getNeName(self):
         return self.neObj.dockerName
 
-    def getMacAddress(self):
-        return self.MAC
-
     def buildCoreModelConfigXml(self):
-        neNode = self.neObj.networkElementXmlNode
-        ltpNode = copy.deepcopy(self.neObj.ltpXmlNode)
+        neNode = self.neObj.networkElementConfigXmlNode
+        ltpNode = copy.deepcopy(self.neObj.ltpConfigXmlNode)
         uuid = ltpNode.find('core-model:uuid', self.neObj.namespaces)
         ltpUuid = "ltp-" + self.interfaceName
         uuid.text = ltpUuid
@@ -332,12 +337,14 @@ class MwsInterface:
         serverLtpNode = copy.deepcopy(serverLtp)
         ltpNode.remove(serverLtp)
 
-        for ltp in self.serverLtps:
+        for ltp in self.serverLtpsList:
             server = copy.deepcopy(serverLtpNode)
-            server.text = 'ltp-mwps-' + ltp
-            ltpNode.append(server)
 
             serverInterface = self.neObj.getInterfaceFromInterfaceUuid(ltp)
+            server.text = 'ltp-' + serverInterface.interfaceName
+
+            ltpNode.append(server)
+
             serverInterface.setCoreModelClientStateXml(self.interfaceName)
 
         lpNode = ltpNode.find('core-model:lp', self.neObj.namespaces)
@@ -345,13 +352,44 @@ class MwsInterface:
         lpUuid = "lp-" + self.interfaceName
         uuid.text = lpUuid
         layerProtocolName = lpNode.find('core-model:layer-protocol-name', self.neObj.namespaces)
-        layerProtocolName.text = self.prefixName[:-1].upper()
+        layerProtocolName.text = self.layer
+        terminationState = lpNode.find('core-model:termination-state', self.neObj.namespaces)
+        terminationState.text = 'terminated-bidirectional'
+
+        extension = lpNode.find('core-model:extension', self.neObj.namespaces)
+        extensionSaved = copy.deepcopy(extension)
+        lpNode.remove(extension)
+
         addCoreDefaultValuesToNode(lpNode, lpUuid, self.neObj.namespaces)
+
+        extension = copy.deepcopy(extensionSaved)
+        valName = extension.find('core-model:value-name', self.neObj.namespaces)
+        valName.text = "capability"
+        value = extension.find('core-model:value', self.neObj.namespaces)
+        value.text = "urn:onf:params:xml:ns:yang:microwave-model?module=microwave-model"
+        lpNode.append(extension)
+
+        extension = copy.deepcopy(extensionSaved)
+        valName = extension.find('core-model:value-name', self.neObj.namespaces)
+        valName.text = "revision"
+        value = extension.find('core-model:value', self.neObj.namespaces)
+        value.text = "2017-03-24"
+        lpNode.append(extension)
+
+        extension = copy.deepcopy(extensionSaved)
+        valName = extension.find('core-model:value-name', self.neObj.namespaces)
+        valName.text = "conditional-package"
+        value = extension.find('core-model:value', self.neObj.namespaces)
+        value.text = self.conditionalPackage
+        lpNode.append(extension)
+
+        ltpDirection = ltpNode.find('core-model:ltp-direction', self.neObj.namespaces)
+        ltpDirection.text = 'bidirectional'
 
         neNode.append(ltpNode)
 
     def setCoreModelClientStateXml(self, clientLtpUuid):
-        neNode = self.neObj.networkElementXmlNode
+        neNode = self.neObj.networkElementConfigXmlNode
 
         for ltpNode in neNode.findall('core-model:ltp', self.neObj.namespaces):
             uuid = ltpNode.find('core-model:uuid', self.neObj.namespaces)
@@ -363,7 +401,7 @@ class MwsInterface:
                     ltpNode.append(newClient)
 
     def buildCoreModelStatusXml(self):
-        neStatusNode = self.neObj.neStatusXmlNode
+        neStatusNode = self.neObj.networkElementStatusXmlNode
 
         ltpNode = copy.deepcopy(self.neObj.ltpStatusXmlNode)
         uuid = ltpNode.find('uuid')
@@ -380,9 +418,9 @@ class MwsInterface:
         neStatusNode.append(ltpNode)
 
     def buildMicrowaveModelXml(self):
-        parentNode = self.neObj.microwaveModuleXmlNode
+        parentNode = self.neObj.configRootXmlNode
 
-        pureEthernetStructure = copy.deepcopy(self.neObj.pureEthernetPacXmlNode)
+        pureEthernetStructure = copy.deepcopy(self.neObj.pureEthernetPacConfigXmlNode)
         lpUuid = "lp-" + self.interfaceName
 
         layerProtocol = pureEthernetStructure.find('microwave-model:layer-protocol', self.neObj.namespaces)
@@ -407,7 +445,7 @@ class MwsInterface:
         parentNode.append(pureEthernetStructure)
 
     def buildMicrowaveModelStatusXml(self):
-        parentNode = self.neObj.statusXmlNode
+        parentNode = self.neObj.statusRootXmlNode
 
         pureEthernetStructure = copy.deepcopy(self.neObj.pureEthernetStatusXmlNode)
         lpUuid = "lp-" + self.interfaceName
@@ -516,15 +554,14 @@ class MwsInterface:
         self.buildMicrowaveModelStatusXml()
 
 
-class EthInterface:
+class MwEthContainerInterface:
 
-    def __init__(self, intfUuid, interfaceId, ofPort, neObj, supportedAlarms, serverLtps):
-        self.IP = None
+    def __init__(self, intfUuid, interfaceId, neObj, supportedAlarms, serverLtps, conditionalPackage):
         self.uuid = intfUuid
         self.id = interfaceId
-        self.ofPort = ofPort
         self.supportedAlarms = supportedAlarms
         self.type = None
+        self.conditionalPackage = conditionalPackage
 
         alarm_list = supportedAlarms.split(",")
         if len(alarm_list) < 2:
@@ -532,28 +569,18 @@ class EthInterface:
             raise RuntimeError
 
         self.neObj = neObj
-        self.prefixName = 'eth-'
+        self.layer = 'ETY'
+        self.prefixName = 'ety-'
         self.interfaceName = self.prefixName + str(self.uuid)
 
         self.emEnv = wireless_emulator.emulator.Emulator()
 
-        self.MAC = self.emEnv.macAddressFactory.generateMacAddress(self.neObj.getNeId(), self.id)
-        if self.MAC is None:
-            logger.critical("No MAC Address created for NE=%s and interface=%s",
-                            self.neObj.getNeUuid(), self.uuid)
-
+        self.clientLtpNode = None
         self.serverLtps = []
         for ltp in serverLtps:
             self.serverLtps.append(ltp['id'])
 
-        logger.debug("EthInterface object having name=%s, ofPort=%d and IP=%s was created",
-                     self.interfaceName, self.ofPort, self.IP)
-
-    def getIpAddress(self):
-        return self.IP
-
-    def setIpAddress(self, IP):
-        self.IP = IP
+        logger.debug("MwEthContainerInterface object having name=%s was created", self.interfaceName)
 
     def getInterfaceUuid(self):
         return self.uuid
@@ -564,16 +591,17 @@ class EthInterface:
     def getNeName(self):
         return self.neObj.dockerName
 
-    def getMacAddress(self):
-        return self.MAC
-
     def buildCoreModelConfigXml(self):
-        neNode = self.neObj.networkElementXmlNode
-        ltpNode = copy.deepcopy(self.neObj.ltpXmlNode)
+        neNode = self.neObj.networkElementConfigXmlNode
+        ltpNode = copy.deepcopy(self.neObj.ltpConfigXmlNode)
         uuid = ltpNode.find('core-model:uuid', self.neObj.namespaces)
         ltpUuid = "ltp-" + self.interfaceName
         uuid.text = ltpUuid
         addCoreDefaultValuesToNode(ltpNode, ltpUuid, self.neObj.namespaces)
+
+        clientLtp = ltpNode.find('core-model:client-ltp', self.neObj.namespaces)
+        self.clientLtpNode = copy.deepcopy(clientLtp)
+        ltpNode.remove(clientLtp)
 
         serverLtp = ltpNode.find('core-model:server-ltp', self.neObj.namespaces)
         serverLtpNode = copy.deepcopy(serverLtp)
@@ -581,10 +609,12 @@ class EthInterface:
 
         for ltp in self.serverLtps:
             server = copy.deepcopy(serverLtpNode)
-            server.text = 'ltp-mws-' + ltp
-            ltpNode.append(server)
 
             serverInterface = self.neObj.getInterfaceFromInterfaceUuid(ltp)
+            server.text = 'ltp-' + serverInterface.interfaceName
+
+            ltpNode.append(server)
+
             serverInterface.setCoreModelClientStateXml(self.interfaceName)
 
         lpNode = ltpNode.find('core-model:lp', self.neObj.namespaces)
@@ -592,13 +622,56 @@ class EthInterface:
         lpUuid = "lp-" + self.interfaceName
         uuid.text = lpUuid
         layerProtocolName = lpNode.find('core-model:layer-protocol-name', self.neObj.namespaces)
-        layerProtocolName.text = self.prefixName[:-1].upper()
+        layerProtocolName.text = self.layer
+        terminationState = lpNode.find('core-model:termination-state', self.neObj.namespaces)
+        terminationState.text = 'terminated-bidirectional'
+
+        extension = lpNode.find('core-model:extension', self.neObj.namespaces)
+        extensionSaved = copy.deepcopy(extension)
+        lpNode.remove(extension)
+
         addCoreDefaultValuesToNode(lpNode, lpUuid, self.neObj.namespaces)
+
+        extension = copy.deepcopy(extensionSaved)
+        valName = extension.find('core-model:value-name', self.neObj.namespaces)
+        valName.text = "capability"
+        value = extension.find('core-model:value', self.neObj.namespaces)
+        value.text = "urn:onf:params:xml:ns:yang:microwave-model?module=microwave-model"
+        lpNode.append(extension)
+
+        extension = copy.deepcopy(extensionSaved)
+        valName = extension.find('core-model:value-name', self.neObj.namespaces)
+        valName.text = "revision"
+        value = extension.find('core-model:value', self.neObj.namespaces)
+        value.text = "2017-03-24"
+        lpNode.append(extension)
+
+        extension = copy.deepcopy(extensionSaved)
+        valName = extension.find('core-model:value-name', self.neObj.namespaces)
+        valName.text = "conditional-package"
+        value = extension.find('core-model:value', self.neObj.namespaces)
+        value.text = self.conditionalPackage
+        lpNode.append(extension)
+
+        ltpDirection = ltpNode.find('core-model:ltp-direction', self.neObj.namespaces)
+        ltpDirection.text = 'bidirectional'
 
         neNode.append(ltpNode)
 
+    def setCoreModelClientStateXml(self, clientLtpUuid):
+        neNode = self.neObj.networkElementConfigXmlNode
+
+        for ltpNode in neNode.findall('core-model:ltp', self.neObj.namespaces):
+            uuid = ltpNode.find('core-model:uuid', self.neObj.namespaces)
+            logger.debug("Found ltp with ltp=%s", uuid.text)
+            if uuid.text == ('ltp-' + self.interfaceName):
+                if self.clientLtpNode is not None:
+                    newClient = copy.deepcopy(self.clientLtpNode)
+                    newClient.text = 'ltp-' + clientLtpUuid
+                    ltpNode.append(newClient)
+
     def buildCoreModelStatusXml(self):
-        neStatusNode = self.neObj.neStatusXmlNode
+        neStatusNode = self.neObj.networkElementStatusXmlNode
 
         ltpNode = copy.deepcopy(self.neObj.ltpStatusXmlNode)
         uuid = ltpNode.find('uuid')
@@ -615,9 +688,9 @@ class EthInterface:
         neStatusNode.append(ltpNode)
 
     def buildMicrowaveModelXml(self):
-        parentNode = self.neObj.microwaveModuleXmlNode
+        parentNode = self.neObj.configRootXmlNode
 
-        ethernetContainer = copy.deepcopy(self.neObj.ethernetContainerPacXmlNode)
+        ethernetContainer = copy.deepcopy(self.neObj.ethernetContainerPacConfigXmlNode)
         lpUuid = "lp-" + self.interfaceName
 
         layerProtocol = ethernetContainer.find('microwave-model:layer-protocol', self.neObj.namespaces)
@@ -658,7 +731,7 @@ class EthInterface:
         parentNode.append(ethernetContainer)
 
     def buildMicrowaveModelStatusXml(self):
-        parentNode = self.neObj.statusXmlNode
+        parentNode = self.neObj.statusRootXmlNode
 
         ethernetContainer = copy.deepcopy(self.neObj.ethernetContainerStatusXmlNode)
         lpUuid = "lp-" + self.interfaceName
@@ -763,48 +836,26 @@ class EthInterface:
         self.buildCoreModelStatusXml()
         self.buildMicrowaveModelStatusXml()
 
+class ElectricalEtyInterface:
 
-class PhyEthInterface:
-
-    def __init__(self, intfUuid, interfaceId, ofPort, neObj, phyPortRef):
-        self.IP = None
+    def __init__(self, intfUuid, interfaceId, neObj, physicalPortRef):
         self.uuid = intfUuid
         self.id = interfaceId
-        self.ofPort = ofPort
-        self.type = 'phy'
 
         self.neObj = neObj
-        self.prefixName = 'eth-'
+        self.layer = 'ETY'
+        self.prefixName = 'ety-'
         self.interfaceName = self.prefixName + str(self.uuid)
 
         self.emEnv = wireless_emulator.emulator.Emulator()
 
-        self.phyPortRef = phyPortRef
+        self.physicalPortRef = physicalPortRef
+        self.clientLtpNode = None
+        self.serverLtpsList = []
 
-        self.MAC = self.emEnv.macAddressFactory.generateMacAddress(self.neObj.getNeId(), self.id)
-        if self.MAC is None:
-            logger.critical("No MAC Address created for NE=%s and interface=%s",
-                            self.neObj.getNeUuid(), self.uuid)
+        logger.debug("ElectricalEtyInterface object having name=%s was created",
+                     self.interfaceName)
 
-        self.ipInterfaceNetwork = self.emEnv.intfIpFactory.getFreeInterfaceIp()
-
-        firstIpOfLink = str(self.ipInterfaceNetwork[1])
-
-        self.IP = firstIpOfLink
-
-        logger.debug("PhyEthInterface object having name=%s, ofPort=%d and IP=%s was created",
-                     self.interfaceName, self.ofPort, self.IP)
-
-    def getIpAddress(self):
-        return self.IP
-
-    #maybe we should pass also the ipInterfaceNetwork ??
-    def setIpAddress(self, IP):
-        if self.IP is not None:
-            self.emEnv.intfIpFactory.returnBackUnusedIp(self.ipInterfaceNetwork)
-            self.IP = IP
-        else:
-            self.IP = IP
 
     def getInterfaceUuid(self):
         return self.uuid
@@ -815,32 +866,33 @@ class PhyEthInterface:
     def getNeName(self):
         return self.neObj.dockerName
 
-    def getMacAddress(self):
-        return self.MAC
-
     def buildCoreModelConfigXml(self):
-        neNode = self.neObj.networkElementXmlNode
-        ltpNode = copy.deepcopy(self.neObj.ltpXmlNode)
+        neNode = self.neObj.networkElementConfigXmlNode
+        ltpNode = copy.deepcopy(self.neObj.ltpConfigXmlNode)
         uuid = ltpNode.find('core-model:uuid', self.neObj.namespaces)
         ltpUuid = "ltp-" + self.interfaceName
         uuid.text = ltpUuid
         addCoreDefaultValuesToNode(ltpNode, ltpUuid, self.neObj.namespaces)
+
+        clientLtp = ltpNode.find('core-model:client-ltp', self.neObj.namespaces)
+        self.clientLtpNode = copy.deepcopy(clientLtp)
+        ltpNode.remove(clientLtp)
 
         lpNode = ltpNode.find('core-model:lp', self.neObj.namespaces)
         uuid = lpNode.find('core-model:uuid', self.neObj.namespaces)
         lpUuid = "lp-" + self.interfaceName
         uuid.text = lpUuid
         layerProtocolName = lpNode.find('core-model:layer-protocol-name', self.neObj.namespaces)
-        layerProtocolName.text = self.prefixName[:-1].upper()
+        layerProtocolName.text = self.layer
         addCoreDefaultValuesToNode(lpNode, lpUuid, self.neObj.namespaces)
 
         physicalPortRef = ltpNode.find('core-model:physical-port-reference', self.neObj.namespaces)
-        physicalPortRef.text = self.phyPortRef
+        physicalPortRef.text = self.physicalPortRef
 
         neNode.append(ltpNode)
 
     def buildCoreModelStatusXml(self):
-        neStatusNode = self.neObj.neStatusXmlNode
+        neStatusNode = self.neObj.networkElementStatusXmlNode
 
         ltpNode = copy.deepcopy(self.neObj.ltpStatusXmlNode)
         uuid = ltpNode.find('uuid')
@@ -856,7 +908,186 @@ class PhyEthInterface:
 
         neStatusNode.append(ltpNode)
 
-    def buildXmlFiles(self):
-        self.buildCoreModelConfigXml()
+    def setCoreModelClientStateXml(self, clientLtpUuid):
+        neNode = self.neObj.networkElementConfigXmlNode
 
+        for ltpNode in neNode.findall('core-model:ltp', self.neObj.namespaces):
+            uuid = ltpNode.find('core-model:uuid', self.neObj.namespaces)
+            logger.debug("Found ltp with ltp=%s", uuid.text)
+            if uuid.text == ('ltp-' + self.interfaceName):
+                if self.clientLtpNode is not None:
+                    newClient = copy.deepcopy(self.clientLtpNode)
+                    newClient.text = 'ltp-' + clientLtpUuid
+                    ltpNode.append(newClient)
+
+#TODO this interface does not have yet a model, it is only present in the Core Model
+
+    def buildXmlFiles(self):
+
+        self.buildCoreModelConfigXml()
         self.buildCoreModelStatusXml()
+
+
+class EthCtpInterface:
+
+    def __init__(self, intfUuid, interfaceId, neObj, serverLtps, conditionalPackage):
+        self.uuid = intfUuid
+        self.id = interfaceId
+        self.conditionalPackage = conditionalPackage
+
+        self.neObj = neObj
+        self.layer = 'ETH'
+        self.prefixName = 'eth-'
+        self.interfaceName = self.prefixName + str(self.uuid)
+
+        self.serverLtpsList = []
+        for ltp in serverLtps:
+            self.serverLtpsList.append(ltp['id'])
+
+        self.emEnv = wireless_emulator.emulator.Emulator()
+
+        self.vlanId = self.findVlanId()
+
+        logger.debug("EthCtpInterface object having name=%s was created", self.interfaceName)
+
+    def getInterfaceUuid(self):
+        return self.uuid
+
+    def getInterfaceName(self):
+        return self.interfaceName
+
+    def getNeName(self):
+        return self.neObj.dockerName
+
+    def findVlanId(self):
+        for link in self.emEnv.topoJson['topologies']['eth']['links']:
+            if self.neObj.getNeUuid() == link[0]['uuid'] and self.uuid == link[0]['ltp']:
+                return link[0]['vlan-id']
+            elif self.neObj.getNeUuid() == link[1]['uuid'] and self.uuid == link[1]['ltp']:
+                return link[1]['vlan-id']
+        for xconn in self.neObj.eth_x_connect:
+            if xconn['fcPorts'][0]['ltp'] == self.uuid:
+                return xconn['fcPorts'][0]['vlan-id']
+            elif xconn['fcPorts'][1]['ltp'] == self.uuid:
+                return xconn['fcPorts'][1]['vlan-id']
+        return None
+
+    def buildCoreModelConfigXml(self):
+        neNode = self.neObj.networkElementConfigXmlNode
+        ltpNode = copy.deepcopy(self.neObj.ltpConfigXmlNode)
+        uuid = ltpNode.find('core-model:uuid', self.neObj.namespaces)
+        ltpUuid = "ltp-" + self.interfaceName
+        uuid.text = ltpUuid
+        addCoreDefaultValuesToNode(ltpNode, ltpUuid, self.neObj.namespaces)
+
+        lpNode = ltpNode.find('core-model:lp', self.neObj.namespaces)
+        uuid = lpNode.find('core-model:uuid', self.neObj.namespaces)
+        lpUuid = "lp-" + self.interfaceName
+        uuid.text = lpUuid
+        layerProtocolName = lpNode.find('core-model:layer-protocol-name', self.neObj.namespaces)
+        layerProtocolName.text = self.layer
+        terminationState = lpNode.find('core-model:termination-state', self.neObj.namespaces)
+        terminationState.text = 'lp-can-never-terminate'
+
+        extension = lpNode.find('core-model:extension', self.neObj.namespaces)
+        extensionSaved = copy.deepcopy(extension)
+        lpNode.remove(extension)
+
+        addCoreDefaultValuesToNode(lpNode, lpUuid, self.neObj.namespaces)
+
+        extension = copy.deepcopy(extensionSaved)
+        valName = extension.find('core-model:value-name', self.neObj.namespaces)
+        valName.text = "capability"
+        value = extension.find('core-model:value', self.neObj.namespaces)
+        value.text = "urn:onf:params:xml:ns:yang:onf-ethernet-conditional-package?module=onf-ethernet-conditional-package"
+        lpNode.append(extension)
+
+        extension = copy.deepcopy(extensionSaved)
+        valName = extension.find('core-model:value-name', self.neObj.namespaces)
+        valName.text = "revision"
+        value = extension.find('core-model:value', self.neObj.namespaces)
+        value.text = "2017-04-02"
+        lpNode.append(extension)
+
+        extension = copy.deepcopy(extensionSaved)
+        valName = extension.find('core-model:value-name', self.neObj.namespaces)
+        valName.text = "conditional-package"
+        value = extension.find('core-model:value', self.neObj.namespaces)
+        value.text = self.conditionalPackage
+        lpNode.append(extension)
+
+        ltpDirection = ltpNode.find('core-model:ltp-direction', self.neObj.namespaces)
+        ltpDirection.text = 'bidirectional'
+
+        serverLtp = ltpNode.find('core-model:server-ltp', self.neObj.namespaces)
+        serverLtpNode = copy.deepcopy(serverLtp)
+        ltpNode.remove(serverLtp)
+
+        for ltp in self.serverLtpsList:
+            server = copy.deepcopy(serverLtpNode)
+
+            serverInterface = self.neObj.getInterfaceFromInterfaceUuid(ltp)
+            server.text = 'ltp-' + serverInterface.interfaceName
+            ltpNode.append(server)
+
+            serverInterface.setCoreModelClientStateXml(self.interfaceName)
+
+        neNode.append(ltpNode)
+
+    def buildCoreModelStatusXml(self):
+        neStatusNode = self.neObj.networkElementStatusXmlNode
+
+        ltpNode = copy.deepcopy(self.neObj.ltpStatusXmlNode)
+        uuid = ltpNode.find('uuid')
+        ltpUuid = "ltp-" + self.interfaceName
+        uuid.text = ltpUuid
+        addCoreDefaultStatusValuesToNode(ltpNode)
+
+        lpNode = ltpNode.find('lp')
+        uuid = lpNode.find('uuid')
+        lpUuid = "lp-" + self.interfaceName
+        uuid.text = lpUuid
+        addCoreDefaultStatusValuesToNode(lpNode)
+
+        neStatusNode.append(ltpNode)
+
+    def buildEthernetModelConfigXml(self):
+        parentNode = self.neObj.configRootXmlNode
+
+        ethernetPac = copy.deepcopy(self.neObj.ethernetPacConfigXmlNode)
+        lpUuid = "lp-" + self.interfaceName
+
+        layerProtocol = ethernetPac.find('onf-ethernet-conditional-packages:layer-protocol', self.neObj.namespaces)
+        layerProtocol.text = lpUuid
+
+        ethernetConfig = ethernetPac.find('onf-ethernet-conditional-packages:ethernet-configuration',
+                                          self.neObj.namespaces)
+        vlanId = ethernetConfig.find('onf-ethernet-conditional-packages:vlan-id', self.neObj.namespaces)
+        if self.vlanId is not None:
+            vlanId.text = self.vlanId
+        else:
+            vlanId.text = '0'
+
+        #TODO need to implement
+
+        parentNode.append(ethernetPac)
+
+    def buildEthernetModelStatusXml(self):
+        parentNode = self.neObj.statusRootXmlNode
+
+        ethernetPac = copy.deepcopy(self.neObj.ethernetPacStatusXmlNode)
+        lpUuid = "lp-" + self.interfaceName
+
+        layerProtocol = ethernetPac.find('layer-protocol')
+        layerProtocol.text = lpUuid
+
+        # TODO need to implement
+
+        parentNode.append(ethernetPac)
+
+    def buildXmlFiles(self):
+
+        self.buildCoreModelConfigXml()
+        self.buildCoreModelStatusXml()
+        self.buildEthernetModelConfigXml()
+        self.buildEthernetModelStatusXml()

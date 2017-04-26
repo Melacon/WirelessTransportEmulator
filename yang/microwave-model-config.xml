@@ -824,4 +824,10 @@
        <administrative-control xmlns="urn:onf:params:xml:ns:yang:core-model"/>
        <lifecycle-state xmlns="urn:onf:params:xml:ns:yang:core-model"/>
     </equipment>
+    <ethernet-pac xmlns="urn:onf:params:xml:ns:yang:onf-ethernet-conditional-packages">
+       <layer-protocol xmlns="urn:onf:params:xml:ns:yang:onf-ethernet-conditional-packages"/>
+       <ethernet-configuration xmlns="urn:onf:params:xml:ns:yang:onf-ethernet-conditional-packages">
+          <vlan-id xmlns="urn:onf:params:xml:ns:yang:onf-ethernet-conditional-packages"/>
+       </ethernet-configuration>
+    </ethernet-pac>
 </config>

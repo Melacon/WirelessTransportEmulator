@@ -51,7 +51,7 @@ def getDockerNames():
 def getDockerNetworks():
     dockerNetworksList = []
 
-    stringCmd = "docker network ls | grep oywe | awk '{print $2}'"
+    stringCmd = "docker network ls | grep wte_net | awk '{print $2}'"
 
     cmd = subprocess.Popen(stringCmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 

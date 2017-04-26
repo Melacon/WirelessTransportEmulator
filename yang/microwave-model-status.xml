@@ -982,4 +982,19 @@
        <operational-state/>
        <administrative-state/>
     </equipment>
+    <ethernet-pac>
+       <layer-protocol/>
+       <ethernet-capability>
+       </ethernet-capability>
+       <ethernet-configuration>
+       </ethernet-configuration>
+       <ethernet-status>
+       </ethernet-status>
+       <ethernet-current-problems>
+       </ethernet-current-problems>
+       <ethernet-current-performance>
+       </ethernet-current-performance>
+       <ethernet-historical-performances>
+       </ethernet-historical-performances>
+    </ethernet-pac>
 </status>

@@ -42,20 +42,22 @@ def addCoreDefaultValuesToNode(node, uuidValue, namespaces, neObj=None):
         addCustomNeExtensions(neObj, node, namespaces)
     else:
         elem = node.find('core-model:extension/core-model:value-name', namespaces)
-        elem.text = "vExtension"
+        if elem is not None:
+            elem.text = "vExtension"
         elem = node.find('core-model:extension/core-model:value', namespaces)
-        elem.text = uuidValue
+        if elem is not None:
+            elem.text = uuidValue
 
     elem = node.find('core-model:administrative-control', namespaces)
-    elem.text = "UNLOCK"
+    elem.text = "unlock"
     elem = node.find('core-model:lifecycle-state', namespaces)
-    elem.text = "INSTALLED"
+    elem.text = "installed"
 
 def addCoreDefaultStatusValuesToNode(node):
     operState = node.find('operational-state')
-    operState.text = "ENABLED"
+    operState.text = "enabled"
     adminState = node.find('administrative-state')
-    adminState.text = "UNLOCKED"
+    adminState.text = "unlocked"
 
 def addCustomNeExtensions(neObj, node, namespaces):
     extensionNode = node.find('core-model:extension', namespaces)
@@ -103,3 +105,4 @@ def addCustomNeExtensions(neObj, node, namespaces):
     value = extensionNode.find('core-model:value', namespaces)
     value.text = ""
     node.append(extensionNode)
+
