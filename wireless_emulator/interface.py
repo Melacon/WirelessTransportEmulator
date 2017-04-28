@@ -569,8 +569,8 @@ class MwEthContainerInterface:
             raise RuntimeError
 
         self.neObj = neObj
-        self.layer = 'ETY'
-        self.prefixName = 'ety-'
+        self.layer = 'ETC'
+        self.prefixName = 'etc-'
         self.interfaceName = self.prefixName + str(self.uuid)
 
         self.emEnv = wireless_emulator.emulator.Emulator()

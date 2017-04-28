@@ -260,14 +260,20 @@ class NetworkElement:
                     intfObj.buildXmlFiles()
                     self.interfaceList.append(intfObj)
 
-            elif intf['layer'] == "ETY":
+            elif intf['layer'] == "ETC":
 
                 for port in intf['LTPs']:
                     if port.get('serverLTPs') is not None:
                         intfObj = MwEthContainerInterface(port['id'], portNumId, self, port['supportedAlarms'],
                                                           port['serverLTPs'], port['conditional-package'])
-                    else:
-                        intfObj = ElectricalEtyInterface(port['id'], portNumId, self, port['physical-port-reference'])
+                    portNumId += 1
+                    intfObj.buildXmlFiles()
+                    self.interfaceList.append(intfObj)
+
+            elif intf['layer'] == "ETY":
+
+                for port in intf['LTPs']:
+                    intfObj = ElectricalEtyInterface(port['id'], portNumId, self, port['physical-port-reference'])
 
                     portNumId += 1
                     intfObj.buildXmlFiles()
@@ -490,6 +496,8 @@ class NetworkElement:
             self.executeCommandInContainer(command)
 
     def executeCommandInContainer(self, command):
+        if command == '' or command is None:
+            return
         stringCmd = "docker exec -it %s %s" % (self.dockerName, command)
         cmd = subprocess.Popen(stringCmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 

@@ -27,12 +27,13 @@ def registerNeToOdl(controllerInfo, neUuid, neManagementIp):
 
     response = requests.request("POST", url, data=payload, headers=headers, auth=(controllerInfo['username'], controllerInfo['password']))
 
-    if response.status_code == 204:
+    if response.status_code in range(200, 208):
         print("Successfully registered NE=%s to ODL controller" % neUuid)
         logger.info("Successfully registered NE=%s to ODL controller", neUuid)
     else:
         logger.error("Could not register NE=%s to ODL controller", neUuid)
-        logger.error(json.dumps(json.loads(response.text), indent=4))
+        if response.text is not None:
+            logger.error(json.dumps(json.loads(response.text), indent=4))
         raise RuntimeError
 
 def unregisterNeFromOdl(controllerInfo, neUuid):
@@ -48,12 +49,13 @@ def unregisterNeFromOdl(controllerInfo, neUuid):
     }
     response = requests.request("DELETE", url, headers=headers, auth=('admin', 'admin'))
 
-    if response.status_code == 200:
+    if response.status_code in range(200, 208):
         print("Successfully unregistered NE=%s from ODL controller" % neUuid)
         logger.info("Successfully unregistered NE=%s from ODL controller", neUuid)
     else:
         logger.error("Could not unregister NE=%s from ODL controller", neUuid)
-        logger.error(json.dumps(json.loads(response.text), indent=4))
+        if response.text is not None:
+            logger.error(json.dumps(json.loads(response.text), indent=4))
         raise RuntimeError
 
 def createXmlPayloadForOdl(neUuid, neManagementIp):
@@ -163,7 +165,8 @@ def registerNeToOdlNewVersion(controllerInfo, neUuid, neManagementIp):
         logger.info("Successfully registered NE=%s to ODL controller", neUuid)
     else:
         logger.error("Could not register NE=%s to ODL controller", neUuid)
-        logger.error(json.dumps(json.loads(response.text), indent=4))
+        if response.text is not None:
+            logger.error(json.dumps(json.loads(response.text), indent=4))
         raise RuntimeError
 
 def unregisterNeFromOdlNewVersion(controllerInfo, neUuid):
@@ -183,7 +186,8 @@ def unregisterNeFromOdlNewVersion(controllerInfo, neUuid):
         logger.info("Successfully unregistered NE=%s from ODL controller", neUuid)
     else:
         logger.error("Could not unregister NE=%s from ODL controller", neUuid)
-        logger.error(json.dumps(json.loads(response.text), indent=4))
+        if response.text is not None:
+            logger.error(json.dumps(json.loads(response.text), indent=4))
         raise RuntimeError
 
 def createNewXmlPayloadForOdl(neUuid, neManagementIp):

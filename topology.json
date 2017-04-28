@@ -4,6 +4,7 @@
       "network-element" :
       {
         "uuid" : "Simulator-1",
+        "type" : "OpenYuma",
         "interfaces" : [
           {
             "layer" : "MWPS",
@@ -36,13 +37,18 @@
                     ]
           },
           {
-            "layer" : "ETY",
+            "layer" : "ETC",
             "LTPs" : [
-                      { "id" : "mwEty1",
+                      { "id" : "mwEtc1",
                         "supportedAlarms" : "framingIsFaulty, containerIsDown",
                         "serverLTPs" : [{"id" : "pureEth1"}, {"id" : "pureEth2"}],
                         "conditional-package" : "mw-ethernet-container-pac"
-                      },
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
                       {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
                       {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"},
                       {"id" : "ety3", "physical-port-reference" : "shelf1:slot1:card-type:port3"},
@@ -55,19 +61,21 @@
                       {"id" : "eth2", "serverLTPs" : [{"id" : "ety2"}], "conditional-package" : "ethernet-pac"},
                       {"id" : "eth3", "serverLTPs" : [{"id" : "ety3"}], "conditional-package" : "ethernet-pac"},
                       {"id" : "eth4", "serverLTPs" : [{"id" : "ety4"}], "conditional-package" : "ethernet-pac"},
-                      {"id" : "eth5", "serverLTPs" : [{"id" : "mwEty1"}], "conditional-package" : "ethernet-pac"}
+                      {"id" : "eth5", "serverLTPs" : [{"id" : "mwEtc1"}], "conditional-package" : "ethernet-pac"}
                     ]
           }
           ],
         "eth-cross-connections" : [
           {"fcPorts" : [{"ltp" : "eth1", "vlan-id" : "26"}, {"ltp" : "eth5", "vlan-id" : "26"}], "host" : true, "fcRoute" : "service1"}
-          ]
+          ],
+        "ptp-clock" : [0]
       }
     },
     {
       "network-element" :
       {
         "uuid" : "Simulator-2",
+        "type" : "OpenYuma",
         "interfaces" : [
           {
             "layer" : "MWPS",
@@ -120,18 +128,23 @@
                     ]
           },
           {
-            "layer" : "ETY",
+            "layer" : "ETC",
             "LTPs" : [
-                      { "id" : "mwEty1",
+                      { "id" : "mwEtc1",
                         "supportedAlarms" : "framingIsFaulty, containerIsDown",
                         "serverLTPs" : [{"id" : "pureEth1"}, {"id" : "pureEth2"}],
                         "conditional-package" : "mw-ethernet-container-pac"
                       },
-                      { "id" : "mwEty2",
+                      { "id" : "mwEtc2",
                         "supportedAlarms" : "framingIsFaulty, containerIsDown",
                         "serverLTPs" : [{"id" : "pureEth3"}, {"id" : "pureEth4"}],
                         "conditional-package" : "mw-ethernet-container-pac"
-                      },
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
                       {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
                       {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"},
                       {"id" : "ety3", "physical-port-reference" : "shelf1:slot1:card-type:port3"},
@@ -144,8 +157,8 @@
                       {"id" : "eth2", "serverLTPs" : [{"id" : "ety2"}], "conditional-package" : "ethernet-pac"},
                       {"id" : "eth3", "serverLTPs" : [{"id" : "ety3"}], "conditional-package" : "ethernet-pac"},
                       {"id" : "eth4", "serverLTPs" : [{"id" : "ety4"}], "conditional-package" : "ethernet-pac"},
-                      {"id" : "eth5", "serverLTPs" : [{"id" : "mwEty1"}], "conditional-package" : "ethernet-pac"},
-                      {"id" : "eth6", "serverLTPs" : [{"id" : "mwEty2"}], "conditional-package" : "ethernet-pac"}
+                      {"id" : "eth5", "serverLTPs" : [{"id" : "mwEtc1"}], "conditional-package" : "ethernet-pac"},
+                      {"id" : "eth6", "serverLTPs" : [{"id" : "mwEtc2"}], "conditional-package" : "ethernet-pac"}
                     ]
           }
           ],
@@ -161,6 +174,7 @@
         "interfaces" : [
           {
             "layer" : "MWPS",
+            "type" : "OpenYuma",
             "LTPs" : [
                       { "id": "airIntf1",
                         "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
@@ -190,13 +204,18 @@
                     ]
           },
           {
-            "layer" : "ETY",
+            "layer" : "ETC",
             "LTPs" : [
-                      { "id" : "mwEty1",
+                      { "id" : "mwEtc1",
                         "supportedAlarms" : "framingIsFaulty, containerIsDown",
                         "serverLTPs" : [{"id" : "pureEth1"}, {"id" : "pureEth2"}],
                         "conditional-package" : "mw-ethernet-container-pac"
-                      },
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
                       {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
                       {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"},
                       {"id" : "ety3", "physical-port-reference" : "shelf1:slot1:card-type:port3"},
@@ -209,7 +228,7 @@
                       {"id" : "eth2", "serverLTPs" : [{"id" : "ety2"}], "conditional-package" : "ethernet-pac"},
                       {"id" : "eth3", "serverLTPs" : [{"id" : "ety3"}], "conditional-package" : "ethernet-pac"},
                       {"id" : "eth4", "serverLTPs" : [{"id" : "ety4"}], "conditional-package" : "ethernet-pac"},
-                      {"id" : "eth5", "serverLTPs" : [{"id" : "mwEty1"}], "conditional-package" : "ethernet-pac"}
+                      {"id" : "eth5", "serverLTPs" : [{"id" : "mwEtc1"}], "conditional-package" : "ethernet-pac"}
                     ]
           }
           ],
