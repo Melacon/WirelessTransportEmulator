@@ -7,7 +7,7 @@ import os
 import wireless_emulator.emulator
 from wireless_emulator.utils import addCoreDefaultValuesToNode, printErrorAndExit, addCoreDefaultStatusValuesToNode
 from wireless_emulator.interface import *
-from wireless_emulator.odlregistration import registerNeToOdl
+from wireless_emulator.odlregistration import registerNeToOdl, registerNeToOdlNewVersion
 import wireless_emulator.ethCrossConnect as EthXConn
 
 logger = logging.getLogger(__name__)
@@ -379,7 +379,8 @@ class NetworkElement:
         self.startDockerContainer()
         if self.emEnv.registerToOdl == True:
            try:
-               registerNeToOdl(self.emEnv.controllerInfo, self.uuid, self.managementIPAddressString)
+               # registerNeToOdl(self.emEnv.controllerInfo, self.uuid, self.managementIPAddressString)
+               registerNeToOdlNewVersion(self.emEnv.controllerInfo, self.uuid, self.managementIPAddressString)
            except RuntimeError:
                print("Failed to register NE=%s having IP=%s to the ODL controller" % (self.uuid, self.managementIPAddressString))
 

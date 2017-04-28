@@ -1,7 +1,7 @@
 import logging
 import subprocess
 import json
-from wireless_emulator.odlregistration import unregisterNeFromOdl
+from wireless_emulator.odlregistration import unregisterNeFromOdl, unregisterNeFromOdlNewVersion
 import wireless_emulator.emulator
 
 logger = logging.getLogger(__name__)
@@ -124,6 +124,7 @@ def unregisterNesFromOdl(controllerInfo, neNamesList):
 
     for uuid in neNamesList:
         try:
-            unregisterNeFromOdl(controllerInfo, uuid)
+            unregisterNeFromOdlNewVersion(controllerInfo, uuid)
+            # unregisterNeFromOdl(controllerInfo, uuid)
         except RuntimeError:
             print("Failed to unregister NE=%s from ODL controller" % uuid)

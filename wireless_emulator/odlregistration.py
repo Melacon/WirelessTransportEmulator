@@ -135,3 +135,86 @@ def createXmlPayloadForOdl(neUuid, neManagementIp):
     ET.SubElement(keepaliveExecutor, "name").text = "global-netconf-ssh-scheduled-executor"
 
     return ET.ElementTree(module)
+
+def registerNeToOdlNewVersion(controllerInfo, neUuid, neManagementIp):
+
+    print("Registering NE=%s having IP=%s to ODL controller" % (neUuid, neManagementIp))
+
+    xmlTree = createNewXmlPayloadForOdl(neUuid, neManagementIp)
+
+    root = xmlTree.getroot()
+
+    url = 'http://{}:{}/restconf/config/network-topology:network-topology/topology/topology-netconf/node/{}'.format(
+        controllerInfo['ip-address'], controllerInfo['port'], neUuid)
+    headers = {
+        'content-type': "application/xml",
+        'cache-control': "no-cache"
+    }
+
+    payload = ET.tostring(root)
+
+    #debug
+    xmlTree.write("odlNewRegistration.xml")
+
+    response = requests.request("PUT", url, data=payload, headers=headers, auth=(controllerInfo['username'], controllerInfo['password']))
+
+    if response.status_code == 200:
+        print("Successfully registered NE=%s to ODL controller" % neUuid)
+        logger.info("Successfully registered NE=%s to ODL controller", neUuid)
+    else:
+        logger.error("Could not register NE=%s to ODL controller", neUuid)
+        logger.error(json.dumps(json.loads(response.text), indent=4))
+        raise RuntimeError
+
+def unregisterNeFromOdlNewVersion(controllerInfo, neUuid):
+
+    print("Unregistering NE=%s from ODL controller" % neUuid)
+
+    url = "http://{}:{}/restconf/config/network-topology:network-topology/topology/topology-netconf/node/" \
+          "{}".format(controllerInfo['ip-address'], controllerInfo['port'], neUuid)
+    headers = {
+        'content-type': "application/xml",
+        'cache-control': "no-cache"
+    }
+    response = requests.request("DELETE", url, headers=headers, auth=('admin', 'admin'))
+
+    if response.status_code == 200:
+        print("Successfully unregistered NE=%s from ODL controller" % neUuid)
+        logger.info("Successfully unregistered NE=%s from ODL controller", neUuid)
+    else:
+        logger.error("Could not unregister NE=%s from ODL controller", neUuid)
+        logger.error(json.dumps(json.loads(response.text), indent=4))
+        raise RuntimeError
+
+def createNewXmlPayloadForOdl(neUuid, neManagementIp):
+    netconfNs = "urn:opendaylight:netconf-node-topology"
+
+    node = ET.Element("node", xmlns="urn:TBD:params:xml:ns:yang:network-topology")
+
+    ET.SubElement(node, "node-id").text = neUuid
+
+    host = ET.SubElement(node, "host")
+    host.text = neManagementIp
+    host.set('xmlns', netconfNs)
+
+    port = ET.SubElement(node, "port")
+    port.text = "8300"
+    port.set('xmlns', netconfNs)
+
+    username = ET.SubElement(node, "username")
+    username.text = "admin"
+    username.set('xmlns', netconfNs)
+
+    password = ET.SubElement(node, "password")
+    password.text = "admin"
+    password.set('xmlns', netconfNs)
+
+    tcponly = ET.SubElement(node, "tcp-only")
+    tcponly.text = "false"
+    tcponly.set('xmlns', netconfNs)
+
+    tcponly = ET.SubElement(node, "keepalive-delay")
+    tcponly.text = "120"
+    tcponly.set('xmlns', netconfNs)
+
+    return ET.ElementTree(node)

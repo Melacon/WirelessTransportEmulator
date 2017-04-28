@@ -1,13 +1,8 @@
 import logging
-import subprocess
-import xml.etree.ElementTree as ET
 import copy
-import os
 
-import wireless_emulator.emulator
 from wireless_emulator.utils import addCoreDefaultValuesToNode, printErrorAndExit, addCoreDefaultStatusValuesToNode
-import wireless_emulator.interface as Intf
-from wireless_emulator.odlregistration import registerNeToOdl
+
 
 logger = logging.getLogger(__name__)
 
