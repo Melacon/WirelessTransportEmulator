@@ -158,7 +158,7 @@ def registerNeToOdlNewVersion(controllerInfo, neUuid, neManagementIp):
 
     response = requests.request("PUT", url, data=payload, headers=headers, auth=(controllerInfo['username'], controllerInfo['password']))
 
-    if response.status_code == 200:
+    if response.status_code in range(200, 208):
         print("Successfully registered NE=%s to ODL controller" % neUuid)
         logger.info("Successfully registered NE=%s to ODL controller", neUuid)
     else:
@@ -178,7 +178,7 @@ def unregisterNeFromOdlNewVersion(controllerInfo, neUuid):
     }
     response = requests.request("DELETE", url, headers=headers, auth=('admin', 'admin'))
 
-    if response.status_code == 200:
+    if response.status_code in range(200, 208):
         print("Successfully unregistered NE=%s from ODL controller" % neUuid)
         logger.info("Successfully unregistered NE=%s from ODL controller", neUuid)
     else:
