@@ -884,6 +884,8 @@ class ElectricalEtyInterface:
         uuid.text = lpUuid
         layerProtocolName = lpNode.find('core-model:layer-protocol-name', self.neObj.namespaces)
         layerProtocolName.text = self.layer
+        terminationState = lpNode.find('core-model:termination-state', self.neObj.namespaces)
+        terminationState.text = 'terminated-bidirectional'
         addCoreDefaultValuesToNode(lpNode, lpUuid, self.neObj.namespaces)
 
         physicalPortRef = ltpNode.find('core-model:physical-port-reference', self.neObj.namespaces)

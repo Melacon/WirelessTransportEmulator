@@ -59,7 +59,7 @@ class EthCrossConnect:
     #TODO implement host functionality
     def addXConn(self):
 
-        bridgeName = 'xconn_br' + str(self.id)
+        bridgeName = 'xc_br' + str(self.id)
 
         print("Adding bridge interface %s to docker container %s..." % (bridgeName, self.neObj.uuid))
 
@@ -71,6 +71,14 @@ class EthCrossConnect:
 
         command = "ip link set dev %s master %s" % (self.interfacesObj[1].getInterfaceName(), bridgeName)
         self.neObj.executeCommandInContainer(command)
+
+        if self.hostAvailable is True:
+            ipAddress = str(self.neObj.emEnv.intfIpFactory.getFreeInterfaceIp())
+            mask = str(self.neObj.emEnv.intfIpFactory.netmask)
+
+            command = "ip address add %s/%s dev %s" % (ipAddress, mask, bridgeName)
+            self.neObj.executeCommandInContainer(command)
+            print("Adding IP address %s for host in bridge %s" % (ipAddress, bridgeName))
 
         command = "ip link set dev %s up" % bridgeName
         self.neObj.executeCommandInContainer(command)

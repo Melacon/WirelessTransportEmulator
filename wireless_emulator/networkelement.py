@@ -399,10 +399,14 @@ class NetworkElement:
     def addInterfacesInDockerContainer(self):
 
         for intf in self.interfaceList:
-            if intf.layer == 'MWS':
+            if intf.layer == 'MWPS':
+                self.addDummyEthInterface(intf)
+            elif intf.layer == 'MWS':
                 self.addMwsInterface(intf)
+            elif intf.layer == 'ETC':
+                self.addMwEthContInterface(intf)
             elif intf.layer == 'ETY':
-                self.addEthContInterface(intf)
+                self.addEtyEthInterface(intf)
             elif intf.layer == 'ETH':
                 self.addEthCtpInterface(intf)
         for xconn in self.ethCrossConnectList:
@@ -433,10 +437,10 @@ class NetworkElement:
         command = "ip link set %s up" % interfaceObj.getInterfaceName()
         self.executeCommandInContainer(command)
 
-    def addEthContInterface(self, interfaceObj):
+    def addMwEthContInterface(self, interfaceObj):
 
-        logger.debug("Adding ETY interface %s to docker container %s", interfaceObj.getInterfaceName(), self.uuid)
-        print("Adding ETY interface %s to docker container %s" % (interfaceObj.getInterfaceName(), self.uuid))
+        logger.debug("Adding ETC interface %s to docker container %s", interfaceObj.getInterfaceName(), self.uuid)
+        print("Adding ETC interface %s to docker container %s" % (interfaceObj.getInterfaceName(), self.uuid))
 
         command = "ip link add name %s type bond" % interfaceObj.getInterfaceName()
         self.executeCommandInContainer(command)
@@ -460,7 +464,24 @@ class NetworkElement:
         command = "ip link set %s up" % interfaceObj.getInterfaceName()
         self.executeCommandInContainer(command)
 
-#TODO need to clarify this for implementation
+    def addEtyEthInterface(self, interfaceObj):
+        if self.emEnv.isInterfaceObjPartOfLink(interfaceObj) is True:
+            logger.debug("NOT adding interface %s to docker container %s because it was already added by the link",
+                         interfaceObj.getInterfaceName(), self.uuid)
+        else:
+            logger.debug(
+                "Adding ETY interface %s to docker container %s...",
+                interfaceObj.getInterfaceName(), self.uuid)
+            print(
+                "Adding ETY interface %s to docker container %s..." %
+                (interfaceObj.getInterfaceName(), self.uuid))
+
+            command = "ip link add name %s type dummy" % interfaceObj.getInterfaceName()
+            self.executeCommandInContainer(command)
+
+            command = "ip link set dev %s up" % interfaceObj.getInterfaceName()
+            self.executeCommandInContainer(command)
+
     def addEthCtpInterface(self, interfaceObj):
         logger.debug(
             "Adding ETH interface %s to docker container %s...",
@@ -469,28 +490,37 @@ class NetworkElement:
             "Adding ETH interface %s to docker container %s..." %
             (interfaceObj.getInterfaceName(), self.uuid))
 
-        command = "ip link add name %s type dummy" % interfaceObj.getInterfaceName()
-        self.executeCommandInContainer(command)
+        if len(interfaceObj.serverLtpsList) != 1:
+            print("Could not add ETH interface, because it has more that one server LTP..")
+            return
 
-        command = "ip link set %s up" % interfaceObj.getInterfaceName()
-        self.executeCommandInContainer(command)
+        for serverLtp in interfaceObj.serverLtpsList:
+            serverObj = self.getInterfaceFromInterfaceUuid(serverLtp)
+            serverName = serverObj.getInterfaceName()
 
-    def addPhyEthInterface(self, interfaceObj):
+            command = "ip link add name %s link %s type vlan id 0" % (interfaceObj.getInterfaceName(), serverName)
+            self.executeCommandInContainer(command)
+
+            command = "ip link set dev %s up" % interfaceObj.getInterfaceName()
+            self.executeCommandInContainer(command)
+
+    def addDummyEthInterface(self, interfaceObj):
         if self.emEnv.isInterfaceObjPartOfLink(interfaceObj) is True:
-            logger.debug("NOT adding PHY-ETH interface %s to docker container %s because it was already added by the link", interfaceObj.getInterfaceName(), self.uuid)
+            logger.debug("NOT adding interface %s to docker container %s because it was already added by the link",
+                         interfaceObj.getInterfaceName(), self.uuid)
         else:
             logger.debug(
-                "Adding PHY-ETH interface %s to docker container %s...",
+                "Adding dummy interface %s to docker container %s...",
                 interfaceObj.getInterfaceName(), self.uuid)
             print(
-                "Adding PHY-ETH interface %s to docker container %s..." %
+                "Adding dummy interface %s to docker container %s..." %
                 (interfaceObj.getInterfaceName(), self.uuid))
 
             command = "ip link add name %s type dummy" % interfaceObj.getInterfaceName()
             self.executeCommandInContainer(command)
 
-            command = "ip address add %s/30 dev %s" % (interfaceObj.getIpAddress(), interfaceObj.getInterfaceName())
-            self.executeCommandInContainer(command)
+            # command = "ip address add %s/30 dev %s" % (interfaceObj.getIpAddress(), interfaceObj.getInterfaceName())
+            # self.executeCommandInContainer(command)
 
             command = "ip link set %s up" % interfaceObj.getInterfaceName()
             self.executeCommandInContainer(command)

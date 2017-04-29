@@ -249,7 +249,7 @@
     },
     "eth" : {
       "links" : [
-        [{"uuid" : "Simulator-1", "ltp" : "eth4", "vlan-id" : "30"}, {"uuid" : "Simulator-3", "ltp" : "eth4", "vlan-id" : "30"}]
+        [{"uuid" : "Simulator-2", "ltp" : "ety1", "vlan-id" : "30"}, {"uuid" : "Simulator-3", "ltp" : "ety1", "vlan-id" : "30"}]
       ]
     }
   }

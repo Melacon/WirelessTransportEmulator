@@ -149,7 +149,7 @@ class Emulator(metaclass=Singleton):
     def startEmulator(self):
         self.createNetworkElements()
         self.createTopologies()
-        # self.addInterfacesInDocker()
+        self.addInterfacesInDocker()
 
     def getNeByName(self, name):
         for ne in self.networkElementList:
@@ -173,3 +173,6 @@ class Emulator(metaclass=Singleton):
             logger.critical("Stderr: %s", strLine)
             raise RuntimeError
         return cmd.stdout
+
+    def executeCommandInOSNoReturn(self, command):
+        cmd = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)

@@ -110,3 +110,21 @@ class CLI(Cmd):
                       (link.linkId, link.interfacesObj[0].getNeName(), link.interfacesObj[0].getInterfaceName(),
                        link.interfacesObj[1].getInterfaceName(), link.interfacesObj[1].getNeName()))
             print('#########################################')
+
+    def do_xterm(self, line):
+        "Starts an xterm inside the specified Network Element"
+        args = line.split(' ')
+        if len(args) == 0:
+            print('ERROR: usage: xterm <list_of_ne_uuids>')
+            return
+
+        for arg in args:
+            node = self.emulator.getNeByName(arg)
+
+            if node is not None:
+                command = 'xterm -xrm \'XTerm.vt100.allowTitleOps: false\' -T %s -e \"docker exec -it %s /bin/bash\"' % \
+                          (node.dockerName, node.dockerName)
+                self.emulator.executeCommandInOSNoReturn(command)
+            else:
+                print('ERROR: Node %s not found' % arg)
+                print('Usage: xterm <list_of_ne_uuids>')

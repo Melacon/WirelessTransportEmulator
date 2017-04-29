@@ -21,7 +21,8 @@ class ManagementNetworkIPFactory:
 class InterfaceIPFactory:
 
     def __init__(self, preferedNetwork):
-        self.freeInterfaceIpList = list(ipaddress.ip_network(preferedNetwork).subnets(new_prefix=30))
+        self.freeInterfaceIpList = list(ipaddress.ip_network(preferedNetwork).hosts())
+        self.netmask = ipaddress.ip_network(preferedNetwork).netmask
         logger.debug("InterfaceIPFactory was initialized with Network IP %s "
                      "and has %d free management IP addresses", preferedNetwork, len(self.freeInterfaceIpList))
 
