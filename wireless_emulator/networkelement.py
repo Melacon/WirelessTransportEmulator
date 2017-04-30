@@ -224,6 +224,11 @@ class NetworkElement:
 
         uuid = node.find('core-model:uuid', self.namespaces)
         uuid.text = self.uuid
+        fd = node.find('core-model:fd', self.namespaces)
+        uuid = fd.find('core-model:uuid', self.namespaces)
+        uuid.text = 'eth-switch'
+        layerProtocol = fd.find('core-model:layer-protocol-name', self.namespaces)
+        layerProtocol.text = 'ETH'
         addCoreDefaultValuesToNode(node,self.uuid, self.namespaces, self)
 
     def buildCoreModelStatusXml(self):
