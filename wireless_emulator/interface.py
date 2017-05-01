@@ -1001,7 +1001,7 @@ class EthCtpInterface:
         valName = extension.find('core-model:value-name', self.neObj.namespaces)
         valName.text = "capability"
         value = extension.find('core-model:value', self.neObj.namespaces)
-        value.text = "urn:onf:params:xml:ns:yang:onf-ethernet-conditional-package?module=onf-ethernet-conditional-package"
+        value.text = "urn:onf:params:xml:ns:yang:onf-ethernet-conditional-packages?module=onf-ethernet-conditional-packages"
         lpNode.append(extension)
 
         extension = copy.deepcopy(extensionSaved)
