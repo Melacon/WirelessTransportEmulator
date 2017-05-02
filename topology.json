@@ -171,6 +171,7 @@
       "network-element" :
       {
         "uuid" : "Simulator-3",
+        "type" : "OpenYuma",
         "interfaces" : [
           {
             "layer" : "MWPS",

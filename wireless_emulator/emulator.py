@@ -95,11 +95,14 @@ class Emulator(metaclass=Singleton):
             neUuid = ne['network-element']['uuid']
             interfaces = ne['network-element']['interfaces']
             eth_x_conn = None
+            dockerType = None
             if ne['network-element'].get('eth-cross-connections') is not None:
                 eth_x_conn = ne['network-element']['eth-cross-connections']
+            if ne['network-element'].get('type') is not None:
+                dockerType = ne['network-element']['type']
             neObj = None
             try:
-                neObj = NE.NetworkElement(neUuid, neId, interfaces, eth_x_conn)
+                neObj = NE.NetworkElement(neUuid, neId, interfaces, eth_x_conn, dockerType)
             except ValueError:
                 logger.critical("Could not create Network Element=%s", neUuid)
                 printErrorAndExit()
@@ -158,6 +161,9 @@ class Emulator(metaclass=Singleton):
         return None
 
     def executeCommandInOS(self, command):
+        if command == '' or command is None:
+            return
+
         cmd = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         for line in cmd.stderr:
@@ -166,6 +172,9 @@ class Emulator(metaclass=Singleton):
             raise RuntimeError
 
     def executeCommandAndGetResultInOS(self, command):
+        if command == '' or command is None:
+            return
+
         cmd = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         for line in cmd.stderr:
@@ -175,4 +184,7 @@ class Emulator(metaclass=Singleton):
         return cmd.stdout
 
     def executeCommandInOSNoReturn(self, command):
+        if command == '' or command is None:
+            return
+
         cmd = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)

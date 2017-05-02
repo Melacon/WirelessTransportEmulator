@@ -9,7 +9,7 @@ WTE takes as input three files:
  * a JSON topology file, with a specific structure, describing the network 
 to be emulated.
  * a JSON configuration file giving details about the SDN controller information,
- ranges for the NEs management IP addresses and for the links between the NEs
+ ranges for the NEs management IP addresses and for the hosts connected to the NEs
  * the XML configuration file based on the YANG models 
 to be used by each emulated Network Element as a startup configuration and
 an XML file containing the status parameters of the model. These two files can 
@@ -17,9 +17,8 @@ be automatically generated using a custom version of the [pyang](https://github.
 that is available [here](https://github.com/Melacon/pyang-we).
 
 Each NE is emulated as a docker container and exposes a NETCONF server based on the OpenYuma
-framework, reflecting an information model based on TR-532 from ONF. All docker containers reside
-on top of an [Open vSwitch](http://openvswitch.org/) bridge, and links between different NEs, as 
-described in the JSON topology file, are emulated as connections through the OVS bridge. The 
+framework, reflecting an information model based on TR-532 from ONF. Links between different NEs, as 
+described in the JSON topology file, are emulated as connections through veth pairs. The 
 high-level architecture of the emulator is shown below.
 
 ![logo](./Architecture.png)
@@ -85,15 +84,6 @@ Log out and log back in so that your group membership is re-evaluated.
 docker run hello-world
 ```
 
-#### Open vSwitch
-
-Install Open VSwitch:
-
-Summary:
-```
-sudo apt-get install openvswitch-switch
-```
-
 #### Python 3.6
 
 Install version 3.6 for python:
@@ -135,43 +125,166 @@ looks like this:
       "network-element" :
       {
         "uuid" : "Simulator-1",
+        "type" : "OpenYuma",
         "interfaces" : [
           {
             "layer" : "MWPS",
-            "LTPs" : [{"id": "ifIndex1",
-              "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted"}]
+            "LTPs" : [
+                      { "id": "airIntf1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+			          { "id": "airIntf2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
           },
           {
             "layer" : "MWS",
-            "LTPs" : []
+            "LTPs" : [
+                      { "id" : "pureEth1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "airIntf1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+			          { "id" : "pureEth2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "airIntf2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "mwEtc1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pureEth1"}, {"id" : "pureEth2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"},
+                      {"id" : "ety3", "physical-port-reference" : "shelf1:slot1:card-type:port3"},
+                      {"id" : "ety4", "physical-port-reference" : "shelf1:slot1:card-type:port4"}
+                    ]
           },
           {
             "layer" : "ETH",
-            "LTPs" : []
+            "LTPs" : [{"id" : "eth1", "serverLTPs" : [{"id" : "ety1"}], "conditional-package" : "ethernet-pac"},
+                      {"id" : "eth2", "serverLTPs" : [{"id" : "ety2"}], "conditional-package" : "ethernet-pac"},
+                      {"id" : "eth3", "serverLTPs" : [{"id" : "ety3"}], "conditional-package" : "ethernet-pac"},
+                      {"id" : "eth4", "serverLTPs" : [{"id" : "ety4"}], "conditional-package" : "ethernet-pac"},
+                      {"id" : "eth5", "serverLTPs" : [{"id" : "mwEtc1"}], "conditional-package" : "ethernet-pac"}
+                    ]
           }
-        ]
+          ],
+        "eth-cross-connections" : [
+          {"fcPorts" : [{"ltp" : "eth1", "vlan-id" : "26"}, {"ltp" : "eth5", "vlan-id" : "26"}], "host" : true, "fcRoute" : "service1"}
+          ],
+        "ptp-clock" : [0]
       }
     },
     {
       "network-element" :
       {
         "uuid" : "Simulator-2",
+        "type" : "OpenYuma",
         "interfaces" : [
           {
             "layer" : "MWPS",
-            "LTPs" : [{"id": "ifIndex1",
-            "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted"},
-              {"id" : "ifIndex2",
-              "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted"}]
+            "LTPs" : [
+                      { "id": "airIntf1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+			          { "id": "airIntf2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "airIntf3",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot4:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+			          { "id": "airIntf4",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot5:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
           },
           {
             "layer" : "MWS",
-            "LTPs" : []
+            "LTPs" : [
+                      { "id" : "pureEth1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "airIntf1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+			          { "id" : "pureEth2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "airIntf2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pureEth3",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "airIntf3"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+			          { "id" : "pureEth4",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "airIntf4"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "mwEtc1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pureEth1"}, {"id" : "pureEth2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "mwEtc2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pureEth3"}, {"id" : "pureEth4"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"},
+                      {"id" : "ety3", "physical-port-reference" : "shelf1:slot1:card-type:port3"},
+                      {"id" : "ety4", "physical-port-reference" : "shelf1:slot1:card-type:port4"}
+                    ]
           },
           {
             "layer" : "ETH",
-            "LTPs" : []
+            "LTPs" : [{"id" : "eth1", "serverLTPs" : [{"id" : "ety1"}], "conditional-package" : "ethernet-pac"},
+                      {"id" : "eth2", "serverLTPs" : [{"id" : "ety2"}], "conditional-package" : "ethernet-pac"},
+                      {"id" : "eth3", "serverLTPs" : [{"id" : "ety3"}], "conditional-package" : "ethernet-pac"},
+                      {"id" : "eth4", "serverLTPs" : [{"id" : "ety4"}], "conditional-package" : "ethernet-pac"},
+                      {"id" : "eth5", "serverLTPs" : [{"id" : "mwEtc1"}], "conditional-package" : "ethernet-pac"},
+                      {"id" : "eth6", "serverLTPs" : [{"id" : "mwEtc2"}], "conditional-package" : "ethernet-pac"}
+                    ]
           }
+          ],
+        "eth-cross-connections" : [
+          {"fcPorts" : [{"ltp" : "eth5", "vlan-id" : "26"}, {"ltp" : "eth6", "vlan-id" : "26"}], "host" : false, "fcRoute" : "service1"}
           ]
       }
     },
@@ -179,20 +292,70 @@ looks like this:
       "network-element" :
       {
         "uuid" : "Simulator-3",
+        "type" : "OpenYuma",
         "interfaces" : [
           {
             "layer" : "MWPS",
-            "LTPs" : [{"id": "ifIndex1",
-            "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted"}]
+            "type" : "OpenYuma",
+            "LTPs" : [
+                      { "id": "airIntf1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+			          { "id": "airIntf2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
           },
           {
             "layer" : "MWS",
-            "LTPs" : []
+            "LTPs" : [
+                      { "id" : "pureEth1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "airIntf1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+			          { "id" : "pureEth2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "airIntf2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "mwEtc1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pureEth1"}, {"id" : "pureEth2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"},
+                      {"id" : "ety3", "physical-port-reference" : "shelf1:slot1:card-type:port3"},
+                      {"id" : "ety4", "physical-port-reference" : "shelf1:slot1:card-type:port4"}
+                    ]
           },
           {
             "layer" : "ETH",
-            "LTPs" : []
+            "LTPs" : [{"id" : "eth1", "serverLTPs" : [{"id" : "ety1"}], "conditional-package" : "ethernet-pac"},
+                      {"id" : "eth2", "serverLTPs" : [{"id" : "ety2"}], "conditional-package" : "ethernet-pac"},
+                      {"id" : "eth3", "serverLTPs" : [{"id" : "ety3"}], "conditional-package" : "ethernet-pac"},
+                      {"id" : "eth4", "serverLTPs" : [{"id" : "ety4"}], "conditional-package" : "ethernet-pac"},
+                      {"id" : "eth5", "serverLTPs" : [{"id" : "mwEtc1"}], "conditional-package" : "ethernet-pac"}
+                    ]
           }
+          ],
+        "eth-cross-connections" : [
+          {"fcPorts" : [{"ltp" : "eth1", "vlan-id" : "26"}, {"ltp" : "eth5", "vlan-id" : "26"}], "host" : true, "fcRoute" : "service1"}
           ]
       }
     }
@@ -200,11 +363,17 @@ looks like this:
   "topologies" : {
     "mwps" : {
       "links" : [
-        [{"uuid" : "Simulator-1", "ltp" : "ifIndex1", "radio-signal-id" : "26"}, {"uuid" : "Simulator-2", "ltp" : "ifIndex1", "radio-signal-id" : "26"}],
-        [{"uuid" : "Simulator-2", "ltp" : "ifIndex2", "radio-signal-id" : "27"}, {"uuid" : "Simulator-3", "ltp" : "ifIndex1", "radio-signal-id" : "27"}]
+        [{"uuid" : "Simulator-1", "ltp" : "airIntf1", "radio-signal-id" : "26"}, {"uuid" : "Simulator-2", "ltp" : "airIntf1", "radio-signal-id" : "26"}],
+        [{"uuid" : "Simulator-1", "ltp" : "airIntf2", "radio-signal-id" : "27"}, {"uuid" : "Simulator-2", "ltp" : "airIntf2", "radio-signal-id" : "27"}],
+        [{"uuid" : "Simulator-2", "ltp" : "airIntf3", "radio-signal-id" : "28"}, {"uuid" : "Simulator-3", "ltp" : "airIntf1", "radio-signal-id" : "28"}],
+		[{"uuid" : "Simulator-2", "ltp" : "airIntf4", "radio-signal-id" : "29"}, {"uuid" : "Simulator-3", "ltp" : "airIntf2", "radio-signal-id" : "29"}]
         ]
     },
-    "mws" : {}
+    "eth" : {
+      "links" : [
+        [{"uuid" : "Simulator-2", "ltp" : "ety1", "vlan-id" : "30"}, {"uuid" : "Simulator-3", "ltp" : "ety1", "vlan-id" : "30"}]
+      ]
+    }
   }
 }
 ```
@@ -221,7 +390,7 @@ An example emulator configuration file `config.json` is shown below:
     "password" : "admin"
   },
   "managementIpNetwork" : "192.168.0.0/16",
-  "linksIpNetwork" : "10.10.0.0/16",
+  "hostIpNetwork" : "10.10.0.0/16",
   "notificationPeriod" : 10
 }
 ```
@@ -230,12 +399,12 @@ The information about the SDN controller, where the emulated NEs automatically
 register, is available under the `controller` object.
 
 The range for the management IP of the network elements is given by the 
-`managementIpNetwork` object, and the range for the IPs of the NE interfaces
+`managementIpNetwork` object, and the range for the IPs of the hosts connected to the NEs 
 is configurable through the `linksIpNetwork` element.
 
 Each  NE is capable of generating a random `problem-notification` NETCONF nofiticaion,
 from its available `supported-alarms`. The value of `notificationPeriod` object
-represents the amount of seconds between each such  random notifications.
+represents the amount of **seconds** between each such  random notifications.
 
 * Starting the emulator is done with the following command (asuming you are in the base folder):
 

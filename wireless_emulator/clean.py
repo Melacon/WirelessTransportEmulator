@@ -29,6 +29,7 @@ def cleanup(configFileName = None):
     print("All cleaned up!")
     return True
 
+#TODO add support for new docker container
 def getDockerNames():
     dockerNamesList = []
 
@@ -44,6 +45,20 @@ def getDockerNames():
     for line in cmd.stdout:
         strLine = line.decode("utf-8").rstrip('\n')
         dockerNamesList.append(strLine)
+
+    if dockerNamesList is []:
+        stringCmd = "docker ps -a | grep javasimulator | awk '{print $NF}'"
+
+        cmd = subprocess.Popen(stringCmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        for line in cmd.stderr:
+            strLine = line.decode("utf-8").rstrip('\n')
+            logger.critical("Could not get names of docker containers having image openyuma.\n Stderr: %s", strLine)
+            raise RuntimeError("Could not get docker container names")
+
+        for line in cmd.stdout:
+            strLine = line.decode("utf-8").rstrip('\n')
+            dockerNamesList.append(strLine)
 
     return dockerNamesList
 

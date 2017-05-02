@@ -14,10 +14,11 @@ logger = logging.getLogger(__name__)
 
 class NetworkElement:
 
-    def __init__(self, neUuid, neId, interfaces, eth_x_conn = None):
+    def __init__(self, neUuid, neId, interfaces, eth_x_conn = None, dockerType = None):
         self.uuid = neUuid
         self.id = neId
         self.dockerName = self.uuid.replace(" ", "")
+        self.dockerType = dockerType
 
         self.emEnv = wireless_emulator.emulator.Emulator()
 
@@ -314,14 +315,23 @@ class NetworkElement:
                     xconnObj.buildXmlFiles()
                     id += 1
 
+    # TODO add support for new docker container
     def createDockerContainer(self):
         print("Creating docker container %s..." % (self.dockerName))
 
-        stringCmd = "docker create -it --privileged -p %s:8300:830 -p %s:2200:22 --name=%s --network=%s openyuma" % \
+        stringCmd = None
+        if self.dockerType == 'JavaNetconfServer':
+            stringCmd = "docker create -it --privileged -p %s:8300:830 -p %s:2200:22 --name=%s --network=%s javasimulator" % \
+                        (self.managementIPAddressString, self.managementIPAddressString, self.dockerName,
+                         self.networkName)
+        else:
+            stringCmd = "docker create -it --privileged -p %s:8300:830 -p %s:2200:22 --name=%s --network=%s openyuma" % \
                     (self.managementIPAddressString, self.managementIPAddressString, self.dockerName, self.networkName)
-        self.emEnv.executeCommandInOS(stringCmd)
 
-        logger.debug("Created docker container %s having IP=%s", self.dockerName, self.managementIPAddressString)
+
+        if stringCmd is not None:
+            self.emEnv.executeCommandInOS(stringCmd)
+            logger.debug("Created docker container %s having IP=%s", self.dockerName, self.managementIPAddressString)
 
     def createDockerNetwork(self):
 
@@ -334,6 +344,7 @@ class NetworkElement:
 
         logger.debug("Created docker network %s having address %s", self.networkName, netAddressString)
 
+    # TODO add support for new docker container
     def copyXmlConfigFileToDockerContainer(self):
         outFileName = "startup-cfg.xml"
         self.xmlConfigurationTree.write(outFileName)
@@ -346,6 +357,7 @@ class NetworkElement:
         stringCmd = "rm -f %s" % (outFileName)
         self.emEnv.executeCommandInOS(stringCmd)
 
+#TODO add support for new docker container
     def copyXmlStatusFileToDockerContainer(self):
         outFileName = "microwave-model-status.xml"
         self.xmlStatusTree.write(outFileName)
@@ -362,6 +374,7 @@ class NetworkElement:
         stringCmd = "docker start %s" % (self.dockerName)
         self.emEnv.executeCommandInOS(stringCmd)
 
+#TODO add support for new docker container
     def copyYangFilesToDockerContainer(self):
 
         directory = 'yang'
