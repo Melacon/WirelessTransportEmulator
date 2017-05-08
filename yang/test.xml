@@ -845,10 +845,10 @@
           <priority2 xmlns="urn:ietf:params:xml:ns:yang:ietf-ptp-dataset"/>
           <domain-number xmlns="urn:ietf:params:xml:ns:yang:ietf-ptp-dataset"/>
           <slave-only xmlns="urn:ietf:params:xml:ns:yang:ietf-ptp-dataset"/>
-          <local-priority xmlns="urn:onf:params:xml:ns:yang:onf-ptp-dataset">128</local-priority>
-          <max-steps-removed xmlns="urn:onf:params:xml:ns:yang:onf-ptp-dataset">128</max-steps-removed>
-          <multicast-mac-address xmlns="urn:onf:params:xml:ns:yang:onf-ptp-dataset"/>
-          <designated-enabled xmlns="urn:onf:params:xml:ns:yang:onf-ptp-dataset">true</designated-enabled>
+          <local-priority xmlns="urn:ietf:params:xml:ns:yang:ietf-ptp-dataset">128</local-priority>
+          <max-steps-removed xmlns="urn:ietf:params:xml:ns:yang:ietf-ptp-dataset">128</max-steps-removed>
+          <multicast-mac-address xmlns="urn:ietf:params:xml:ns:yang:ietf-ptp-dataset"/>
+          <designated-enabled xmlns="urn:ietf:params:xml:ns:yang:ietf-ptp-dataset">true</designated-enabled>
        </default-ds>
        <current-ds xmlns="urn:ietf:params:xml:ns:yang:ietf-ptp-dataset">
           <steps-removed xmlns="urn:ietf:params:xml:ns:yang:ietf-ptp-dataset">0</steps-removed>
@@ -897,11 +897,10 @@
           <delay-mechanism xmlns="urn:ietf:params:xml:ns:yang:ietf-ptp-dataset"/>
           <log-min-pdelay-req-interval xmlns="urn:ietf:params:xml:ns:yang:ietf-ptp-dataset"/>
           <version-number xmlns="urn:ietf:params:xml:ns:yang:ietf-ptp-dataset"/>
-          <master-only xmlns="urn:onf:params:xml:ns:yang:onf-ptp-dataset">true</master-only>
-          <local-priority xmlns="urn:onf:params:xml:ns:yang:onf-ptp-dataset">128</local-priority>
-          <designated-enabled xmlns="urn:onf:params:xml:ns:yang:onf-ptp-dataset">true</designated-enabled>
-          <delay-asymmetry xmlns="urn:onf:params:xml:ns:yang:onf-ptp-dataset">0</delay-asymmetry>
-          <logical-termination-point xmlns="urn:onf:params:xml:ns:yang:onf-ptp-dataset"/>
+          <master-only xmlns="urn:ietf:params:xml:ns:yang:ietf-ptp-dataset">true</master-only>
+          <local-priority xmlns="urn:ietf:params:xml:ns:yang:ietf-ptp-dataset">128</local-priority>
+          <designated-enabled xmlns="urn:ietf:params:xml:ns:yang:ietf-ptp-dataset">true</designated-enabled>
+          <delay-asymmetry xmlns="urn:ietf:params:xml:ns:yang:ietf-ptp-dataset">0</delay-asymmetry>
        </port-ds-list>
     </instance-list>
     <transparent-clock-default-ds xmlns="urn:ietf:params:xml:ns:yang:ietf-ptp-dataset">

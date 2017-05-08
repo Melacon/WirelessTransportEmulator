@@ -1016,8 +1016,8 @@
        <port-ds-list>
           <port-number/>
           <port-identity>
-             <port-number/>
           </port-identity>
+          <logical-termination-point/>
        </port-ds-list>
     </instance-list>
     <transparent-clock-default-ds>

@@ -41,12 +41,17 @@ RUN set -x -e; \
 WORKDIR /usr/src/OpenYuma/example-modules/onf-ethernet-conditional-packages
 RUN set -x -e; \
     make DVM=1; \
-    sudo make install
+    sudo make install     
+WORKDIR /usr/src/OpenYuma/example-modules/onf-ptp-dataset
+RUN set -x -e; \
+    make DVM=1; \
+    sudo make install  
+  
 
 WORKDIR /usr/src/OpenYuma
 RUN set -x -e; \
     printf 'Port 830\nSubsystem netconf "/usr/sbin/netconf-subsystem --ncxserver-sockname=830@/tmp/ncxserver.sock"\n' >> /etc/ssh/sshd_config; \
-    printf '#!/bin/bash\nset -e -x\n/usr/sbin/netconfd --with-startup=true --log=/usr/src/OpenYuma/debug.log --startup=/usr/src/OpenYuma/startup-cfg.xml --target=running --superuser=admin --module=microwave-model --module=core-model --module=onf-ethernet-conditional-packages&\nsleep 1\n/usr/sbin/sshd -D &\nwait\nkill %%\n' > /root/start.sh; \
+    printf '#!/bin/bash\nset -e -x\n/usr/sbin/netconfd --with-startup=true --log=/usr/src/OpenYuma/debug.log --startup=/usr/src/OpenYuma/startup-cfg.xml --target=running --superuser=admin --module=microwave-model --module=core-model --module=onf-ethernet-conditional-packages --module=onf-ptp-dataset --module=ietf-ptp-dataset&\nsleep 1\n/usr/sbin/sshd -D &\nwait\nkill %%\n' > /root/start.sh; \
     chmod 0755 /root/start.sh
 CMD ["/root/start.sh"]
 

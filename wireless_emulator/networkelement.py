@@ -14,11 +14,16 @@ logger = logging.getLogger(__name__)
 
 class NetworkElement:
 
-    def __init__(self, neUuid, neId, interfaces, eth_x_conn = None, dockerType = None):
+    def __init__(self, neUuid, neId, interfaces, eth_x_conn = None, dockerType = None, ptpClock = None):
         self.uuid = neUuid
         self.id = neId
         self.dockerName = self.uuid.replace(" ", "")
         self.dockerType = dockerType
+        self.ptpEnabled = False
+        if ptpClock is not None:
+            self.ptpClockInstance = str(ptpClock[0])
+            self.ptpEnabled = True
+            logger.debug("PTP is enabled. Clock instance is %s", self.ptpClockInstance)
 
         self.emEnv = wireless_emulator.emulator.Emulator()
 
@@ -36,6 +41,8 @@ class NetworkElement:
         self.ethernetContainerPacConfigXmlNode = None
         self.forwardingConstructConfigXmlNode = None
         self.ethernetPacConfigXmlNode = None
+        self.ptpInstanceListConfigXmlNode = None
+        self.ptpPortDsListConfigXmlNode = None
 
         # Status XML nodes
         self.xmlStatusTree = None
@@ -47,6 +54,8 @@ class NetworkElement:
         self.ethernetContainerStatusXmlNode = None
         self.forwardingConstructStatusXmlNode = None
         self.ethernetPacStatusXmlNode = None
+        self.ptpInstanceListStatusXmlNode = None
+        self.ptpPortDsListStatusXmlNode = None
 
         # namespace from host, used when adding a veth pair from the host inside a container, for emulating a physical connection
         self.networkNamespace = None
@@ -80,7 +89,9 @@ class NetworkElement:
         # XML namespaces needed when searching the config XML
         self.namespaces = {'microwave-model' : 'urn:onf:params:xml:ns:yang:microwave-model',
                            'core-model' : 'urn:onf:params:xml:ns:yang:core-model',
-                           'onf-ethernet-conditional-packages' : 'urn:onf:params:xml:ns:yang:onf-ethernet-conditional-packages'}
+                           'onf-ethernet-conditional-packages' : 'urn:onf:params:xml:ns:yang:onf-ethernet-conditional-packages',
+                           'ptp' : 'urn:ietf:params:xml:ns:yang:ietf-ptp-dataset',
+                           'ptp-ex': 'urn:onf:params:xml:ns:yang:onf-ptp-dataset'}
         self.saveXmlTemplates()
 
         logger.info("Created NetworkElement object with uuid=%s and id=%s and IP=%s",
@@ -142,6 +153,13 @@ class NetworkElement:
         self.ethernetPacConfigXmlNode = copy.deepcopy(ethernetPac)
         self.configRootXmlNode.remove(ethernetPac)
 
+        ptpInstanceList = self.configRootXmlNode.find('ptp:instance-list', self.namespaces)
+        self.ptpInstanceListConfigXmlNode = copy.deepcopy(ptpInstanceList)
+        ptpPortDsList = self.ptpInstanceListConfigXmlNode.find('ptp:port-ds-list', self.namespaces)
+        self.ptpPortDsListConfigXmlNode = copy.deepcopy(ptpPortDsList)
+        self.ptpInstanceListConfigXmlNode.remove(ptpPortDsList)
+        self.configRootXmlNode.remove(ptpInstanceList)
+
         uselessNode = self.configRootXmlNode.find('microwave-model:co-channel-group', self.namespaces)
         self.configRootXmlNode.remove(uselessNode)
 
@@ -164,6 +182,12 @@ class NetworkElement:
         self.configRootXmlNode.remove(uselessNode)
 
         uselessNode = self.configRootXmlNode.find('core-model:equipment', self.namespaces)
+        self.configRootXmlNode.remove(uselessNode)
+
+        uselessNode = self.configRootXmlNode.find('ptp:transparent-clock-default-ds', self.namespaces)
+        self.configRootXmlNode.remove(uselessNode)
+
+        uselessNode = self.configRootXmlNode.find('ptp:transparent-clock-port-ds-list', self.namespaces)
         self.configRootXmlNode.remove(uselessNode)
 
     def saveStatusXmlTemplates(self):
@@ -196,6 +220,13 @@ class NetworkElement:
         self.ethernetPacStatusXmlNode = copy.deepcopy(ethernetPac)
         self.statusRootXmlNode.remove(ethernetPac)
 
+        ptpInstanceList = self.statusRootXmlNode.find('instance-list')
+        self.ptpInstanceListStatusXmlNode = copy.deepcopy(ptpInstanceList)
+        ptpPortDsList = self.ptpInstanceListStatusXmlNode.find('port-ds-list', self.namespaces)
+        self.ptpPortDsListStatusXmlNode = copy.deepcopy(ptpPortDsList)
+        self.ptpInstanceListStatusXmlNode.remove(ptpPortDsList)
+        self.statusRootXmlNode.remove(ptpInstanceList)
+
         uselessNode = self.statusRootXmlNode.find('co-channel-group')
         self.statusRootXmlNode.remove(uselessNode)
 
@@ -220,6 +251,12 @@ class NetworkElement:
         uselessNode = self.statusRootXmlNode.find('equipment')
         self.statusRootXmlNode.remove(uselessNode)
 
+        uselessNode = self.statusRootXmlNode.find('transparent-clock-default-ds')
+        self.statusRootXmlNode.remove(uselessNode)
+
+        uselessNode = self.statusRootXmlNode.find('transparent-clock-port-ds-list')
+        self.statusRootXmlNode.remove(uselessNode)
+
     def buildCoreModelXml(self):
         node = self.networkElementConfigXmlNode
 
@@ -242,6 +279,75 @@ class NetworkElement:
         addCoreDefaultStatusValuesToNode(fd)
 
         addCoreDefaultStatusValuesToNode(node)
+
+    def buildPtpModelConfigXml(self):
+        node = self.configRootXmlNode
+
+        instanceNumber = self.ptpInstanceListConfigXmlNode.find('ptp:instance-number', self.namespaces)
+        instanceNumber.text = self.ptpClockInstance
+
+        defaultDs = self.ptpInstanceListConfigXmlNode.find('ptp:default-ds', self.namespaces)
+
+        twoStepFlag = defaultDs.find('ptp:two-step-flag', self.namespaces)
+        twoStepFlag.text = 'true'
+
+        clockIdentity = defaultDs.find('ptp:clock-identity', self.namespaces)
+        byteRepr = ' '.join(format(ord(x), 'b') for x in 'PTPCLOCK')
+        byteRepr.replace(" ", "")
+        clockIdentity.text = byteRepr
+
+        numberPorts = defaultDs.find('ptp:number-ports', self.namespaces)
+        numberPorts.text = '0'
+
+        clockQuality = defaultDs.find('ptp:clock-quality', self.namespaces)
+
+        clockClass = clockQuality.find('ptp:clock-class', self.namespaces)
+        clockClass.text = '248'
+
+        clockAccuracy = clockQuality.find('ptp:clock-accuracy', self.namespaces)
+        clockAccuracy.text = '254'
+
+        priority2 = defaultDs.find('ptp:priority2', self.namespaces)
+        priority2.text = '128'
+
+        domainNumber = defaultDs.find('ptp:domain-number', self.namespaces)
+        domainNumber.text = '24'
+
+        slaveOnly = defaultDs.find('ptp:slave-only', self.namespaces)
+        slaveOnly.text = 'false'
+
+        parentDs = self.ptpInstanceListConfigXmlNode.find('ptp:parent-ds', self.namespaces)
+
+        parentPortIdentity = parentDs.find('ptp:parent-port-identity', self.namespaces)
+
+        clockIdentity = parentPortIdentity.find('ptp:clock-identity', self.namespaces)
+        byteRepr = ' '.join(format(ord(x), 'b') for x in 'MASTER01')
+        byteRepr.replace(" ", "")
+        clockIdentity.text = byteRepr
+
+        portNumber = parentPortIdentity.find('ptp:port-number', self.namespaces)
+        portNumber.text = '1'
+
+        timePropertiesDs = self.ptpInstanceListConfigXmlNode.find('ptp:time-properties-ds', self.namespaces)
+
+        timeTraceable = timePropertiesDs.find('ptp:time-traceable', self.namespaces)
+        timeTraceable.text = 'false'
+
+        frequencyTraceable = timePropertiesDs.find('ptp:frequency-traceable', self.namespaces)
+        frequencyTraceable.text = 'false'
+
+        ptpTimescale = timePropertiesDs.find('ptp:ptp-timescale', self.namespaces)
+        ptpTimescale.text = 'true'
+
+        node.append(self.ptpInstanceListConfigXmlNode)
+
+    def buildPtpModelStatusXml(self):
+        node = self.statusRootXmlNode
+
+        instanceNumber = self.ptpInstanceListStatusXmlNode.find('instance-number')
+        instanceNumber.text = self.ptpClockInstance
+
+        node.append(self.ptpInstanceListStatusXmlNode)
 
     def buildNotificationStatusXml(self):
         node = self.statusRootXmlNode
@@ -394,6 +500,11 @@ class NetworkElement:
         print("Adding Network element %s..." % (self.uuid))
         self.buildCoreModelXml()
         self.buildCoreModelStatusXml()
+
+        if self.ptpEnabled is True:
+            self.buildPtpModelConfigXml()
+            self.buildPtpModelStatusXml()
+
         self.buildNotificationStatusXml()
 
         self.createInterfaces()

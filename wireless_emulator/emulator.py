@@ -96,13 +96,16 @@ class Emulator(metaclass=Singleton):
             interfaces = ne['network-element']['interfaces']
             eth_x_conn = None
             dockerType = None
+            ptpClock = None
             if ne['network-element'].get('eth-cross-connections') is not None:
                 eth_x_conn = ne['network-element']['eth-cross-connections']
             if ne['network-element'].get('type') is not None:
                 dockerType = ne['network-element']['type']
+            if ne['network-element'].get('ptp-clock') is not None:
+                ptpClock = ne['network-element']['ptp-clock']
             neObj = None
             try:
-                neObj = NE.NetworkElement(neUuid, neId, interfaces, eth_x_conn, dockerType)
+                neObj = NE.NetworkElement(neUuid, neId, interfaces, eth_x_conn, dockerType, ptpClock)
             except ValueError:
                 logger.critical("Could not create Network Element=%s", neUuid)
                 printErrorAndExit()

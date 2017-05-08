@@ -269,12 +269,81 @@ class MwpsInterface:
 
         parentNode.append(histPerfDataList)
 
+    def buildPtpModelConfigXml(self):
+        parentNode = self.neObj.ptpInstanceListConfigXmlNode
+
+        defaultDs = parentNode.find('ptp:default-ds', self.neObj.namespaces)
+
+        numberPorts = defaultDs.find('ptp:number-ports', self.neObj.namespaces)
+        num = int(numberPorts.text)
+        num += 1
+        numberPorts.text = str(num)
+
+        portDsList = copy.deepcopy(self.neObj.ptpPortDsListConfigXmlNode)
+        ltpUuid = "ltp-" + self.interfaceName
+
+        portNumber = portDsList.find('ptp:port-number', self.neObj.namespaces)
+        portNumber.text = str(self.id)
+
+        portIdentity = portDsList.find('ptp:port-identity', self.neObj.namespaces)
+        clockIdentity = portIdentity.find('ptp:clock-identity', self.neObj.namespaces)
+        byteRepr = ' '.join(format(ord(x), 'b') for x in 'LOCAL-01')
+        byteRepr.replace(" ", "")
+        clockIdentity.text = byteRepr
+        portNumber = portIdentity.find('ptp:port-number', self.neObj.namespaces)
+        portNumber.text = str(self.id)
+
+        portState = portDsList.find('ptp:port-state', self.neObj.namespaces)
+        portState.text = 'LISTENING'
+
+        logMinDelay = portDsList.find('ptp:log-min-delay-req-interval', self.neObj.namespaces)
+        logMinDelay.text = '-4'
+
+        logAnounceInterval = portDsList.find('ptp:log-announce-interval', self.neObj.namespaces)
+        logAnounceInterval.text = '-3'
+
+        announceReceiptTimeout = portDsList.find('ptp:announce-receipt-timeout', self.neObj.namespaces)
+        announceReceiptTimeout.text = '3'
+
+        logSyncInterval = portDsList.find('ptp:log-sync-interval', self.neObj.namespaces)
+        logSyncInterval.text = '-4'
+
+        delayMechanism = portDsList.find('ptp:delay-mechanism', self.neObj.namespaces)
+        delayMechanism.text = 'E2E'
+
+        versionNumber = portDsList.find('ptp:version-number', self.neObj.namespaces)
+        versionNumber.text = '2'
+
+        ltp = portDsList.find('ptp-ex:logical-termination-point', self.neObj.namespaces)
+        ltp.text = ltpUuid
+
+        parentNode.append(portDsList)
+
+    def buildPtpModelStatusXml(self):
+        parentNode = self.neObj.ptpInstanceListStatusXmlNode
+
+        portDsList = copy.deepcopy(self.neObj.ptpPortDsListStatusXmlNode)
+        #ltpUuid = "ltp-" + self.interfaceName
+
+        portNumber = portDsList.find('port-number')
+        portNumber.text = str(self.id)
+
+        portIdentity = portDsList.find('port-identity')
+        portNumber = portIdentity.find('port-number')
+        portNumber.text = str(self.id)
+
+        parentNode.append(portDsList)
+
     def buildXmlFiles(self):
         self.buildCoreModelConfigXml()
         self.buildMicrowaveModelXml()
 
         self.buildCoreModelStatusXml()
         self.buildMicrowaveModelStatusXml()
+
+        if self.neObj.ptpEnabled is True:
+            self.buildPtpModelConfigXml()
+            self.buildPtpModelStatusXml()
 
     def findRadioSignalId(self):
         for link in self.emEnv.topoJson['topologies']['mwps']['links']:
@@ -924,10 +993,79 @@ class ElectricalEtyInterface:
 
 #TODO this interface does not have yet a model, it is only present in the Core Model
 
+    def buildPtpModelConfigXml(self):
+        parentNode = self.neObj.ptpInstanceListConfigXmlNode
+
+        defaultDs = parentNode.find('ptp:default-ds', self.neObj.namespaces)
+
+        numberPorts = defaultDs.find('ptp:number-ports', self.neObj.namespaces)
+        num = int(numberPorts.text)
+        num += 1
+        numberPorts.text = str(num)
+
+        portDsList = copy.deepcopy(self.neObj.ptpPortDsListConfigXmlNode)
+        ltpUuid = "ltp-" + self.interfaceName
+
+        portNumber = portDsList.find('ptp:port-number', self.neObj.namespaces)
+        portNumber.text = str(self.id)
+
+        portIdentity = portDsList.find('ptp:port-identity', self.neObj.namespaces)
+        clockIdentity = portIdentity.find('ptp:clock-identity', self.neObj.namespaces)
+        byteRepr = ' '.join(format(ord(x), 'b') for x in 'LOCAL-01')
+        byteRepr.replace(" ", "")
+        clockIdentity.text = byteRepr
+        portNumber = portIdentity.find('ptp:port-number', self.neObj.namespaces)
+        portNumber.text = str(self.id)
+
+        portState = portDsList.find('ptp:port-state', self.neObj.namespaces)
+        portState.text = 'LISTENING'
+
+        logMinDelay = portDsList.find('ptp:log-min-delay-req-interval', self.neObj.namespaces)
+        logMinDelay.text = '-4'
+
+        logAnounceInterval = portDsList.find('ptp:log-announce-interval', self.neObj.namespaces)
+        logAnounceInterval.text = '-3'
+
+        announceReceiptTimeout = portDsList.find('ptp:announce-receipt-timeout', self.neObj.namespaces)
+        announceReceiptTimeout.text = '3'
+
+        logSyncInterval = portDsList.find('ptp:log-sync-interval', self.neObj.namespaces)
+        logSyncInterval.text = '-4'
+
+        delayMechanism = portDsList.find('ptp:delay-mechanism', self.neObj.namespaces)
+        delayMechanism.text = 'E2E'
+
+        versionNumber = portDsList.find('ptp:version-number', self.neObj.namespaces)
+        versionNumber.text = '2'
+
+        ltp = portDsList.find('ptp-ex:logical-termination-point', self.neObj.namespaces)
+        ltp.text = ltpUuid
+
+        parentNode.append(portDsList)
+
+    def buildPtpModelStatusXml(self):
+        parentNode = self.neObj.ptpInstanceListStatusXmlNode
+
+        portDsList = copy.deepcopy(self.neObj.ptpPortDsListStatusXmlNode)
+        #ltpUuid = "ltp-" + self.interfaceName
+
+        portNumber = portDsList.find('port-number')
+        portNumber.text = str(self.id)
+
+        portIdentity = portDsList.find('port-identity')
+        portNumber = portIdentity.find('port-number')
+        portNumber.text = str(self.id)
+
+        parentNode.append(portDsList)
+
     def buildXmlFiles(self):
 
         self.buildCoreModelConfigXml()
         self.buildCoreModelStatusXml()
+
+        if self.neObj.ptpEnabled is True:
+            self.buildPtpModelConfigXml()
+            self.buildPtpModelStatusXml()
 
 
 class EthCtpInterface:
