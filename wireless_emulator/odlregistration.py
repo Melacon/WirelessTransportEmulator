@@ -138,11 +138,11 @@ def createXmlPayloadForOdl(neUuid, neManagementIp):
 
     return ET.ElementTree(module)
 
-def registerNeToOdlNewVersion(controllerInfo, neUuid, neManagementIp):
+def registerNeToOdlNewVersion(controllerInfo, neUuid, neManagementIp, nePort):
 
-    print("Registering NE=%s having IP=%s to ODL controller" % (neUuid, neManagementIp))
+    print("Registering NE=%s having IP=%s and port=%s to ODL controller" % (neUuid, neManagementIp, nePort))
 
-    xmlTree = createNewXmlPayloadForOdl(neUuid, neManagementIp)
+    xmlTree = createNewXmlPayloadForOdl(neUuid, neManagementIp, nePort)
 
     root = xmlTree.getroot()
 
@@ -190,7 +190,7 @@ def unregisterNeFromOdlNewVersion(controllerInfo, neUuid):
             logger.error(json.dumps(json.loads(response.text), indent=4))
         raise RuntimeError
 
-def createNewXmlPayloadForOdl(neUuid, neManagementIp):
+def createNewXmlPayloadForOdl(neUuid, neManagementIp, nePort):
     netconfNs = "urn:opendaylight:netconf-node-topology"
 
     node = ET.Element("node", xmlns="urn:TBD:params:xml:ns:yang:network-topology")
@@ -202,7 +202,7 @@ def createNewXmlPayloadForOdl(neUuid, neManagementIp):
     host.set('xmlns', netconfNs)
 
     port = ET.SubElement(node, "port")
-    port.text = "8300"
+    port.text = str(nePort)
     port.set('xmlns', netconfNs)
 
     username = ET.SubElement(node, "username")

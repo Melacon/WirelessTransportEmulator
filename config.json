@@ -8,5 +8,10 @@
   },
   "managementIpNetwork" : "192.168.0.0/16",
   "hostIpNetwork" : "10.10.0.0/16",
-  "notificationPeriod" : 10
+  "notificationPeriod" : 10,
+  "automatic-odl-registration" : true,
+  "portBasedEmulation" : true,
+  "netconfPortBase" : 12000,
+  "sshPortBase" : 15000,
+  "emulatorIpAddress" : "192.168.254.253"
 }

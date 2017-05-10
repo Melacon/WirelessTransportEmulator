@@ -66,6 +66,16 @@ class NetworkElement:
             raise ValueError("Invalid Network IP address")
         self.managementIPAddressString = str(self.networkIPAddress[1])
 
+        self.netconfPortNumber = None
+        self.sshPortNumber = None
+        if self.emEnv.portBasedEmulation is True:
+            self.netconfPortNumber = self.emEnv.netconfPortBase + self.id
+            self.sshPortNumber = self.emEnv.sshPortBase + self.id
+            self.managementIPAddressString = self.emEnv.emulatorIp
+        else:
+            self.netconfPortNumber = 8300
+            self.sshPortNumber = 2200
+
         self.interfaces = interfaces
         self.interfaceList = []
 
@@ -425,14 +435,29 @@ class NetworkElement:
     def createDockerContainer(self):
         print("Creating docker container %s..." % (self.dockerName))
 
-        stringCmd = None
-        if self.dockerType == 'JavaNetconfServer':
-            stringCmd = "docker create -it --privileged -p %s:8300:830 -p %s:2200:22 --name=%s --network=%s javasimulator" % \
-                        (self.managementIPAddressString, self.managementIPAddressString, self.dockerName,
-                         self.networkName)
+        if self.emEnv.portBasedEmulation is True:
+            stringCmd = None
+            if self.dockerType == 'JavaNetconfServer':
+                stringCmd = "docker create -it --privileged -p %s:%s:830 -p %s:%s:22 --name=%s javasimulator" % \
+                            (self.managementIPAddressString, self.netconfPortNumber,
+                             self.managementIPAddressString, self.sshPortNumber, self.dockerName)
+            else:
+                stringCmd = "docker create -it --privileged -p %s:%s:830 -p %s:%s:22 --name=%s openyuma" % \
+                            (self.managementIPAddressString, self.netconfPortNumber,
+                             self.managementIPAddressString, self.sshPortNumber, self.dockerName)
         else:
-            stringCmd = "docker create -it --privileged -p %s:8300:830 -p %s:2200:22 --name=%s --network=%s openyuma" % \
-                    (self.managementIPAddressString, self.managementIPAddressString, self.dockerName, self.networkName)
+            self.createDockerNetwork()
+            stringCmd = None
+            if self.dockerType == 'JavaNetconfServer':
+                stringCmd = "docker create -it --privileged -p %s:%s:830 -p %s:%s:22 --name=%s --network=%s javasimulator" % \
+                            (self.managementIPAddressString, self.netconfPortNumber,
+                             self.managementIPAddressString, self.sshPortNumber,
+                             self.dockerName, self.networkName)
+            else:
+                stringCmd = "docker create -it --privileged -p %s:%s:830 -p %s:%s:22 --name=%s --network=%s openyuma" % \
+                            (self.managementIPAddressString, self.netconfPortNumber,
+                             self.managementIPAddressString, self.sshPortNumber,
+                             self.dockerName, self.networkName)
 
 
         if stringCmd is not None:
@@ -510,7 +535,6 @@ class NetworkElement:
         self.createInterfaces()
         self.addEthCrossConnections()
 
-        self.createDockerNetwork()
         self.createDockerContainer()
 
         self.copyXmlConfigFileToDockerContainer()
@@ -521,9 +545,11 @@ class NetworkElement:
         if self.emEnv.registerToOdl == True:
            try:
                # registerNeToOdl(self.emEnv.controllerInfo, self.uuid, self.managementIPAddressString)
-               registerNeToOdlNewVersion(self.emEnv.controllerInfo, self.uuid, self.managementIPAddressString)
+               registerNeToOdlNewVersion(self.emEnv.controllerInfo, self.uuid, self.managementIPAddressString,
+                                         self.netconfPortNumber)
            except RuntimeError:
-               print("Failed to register NE=%s having IP=%s to the ODL controller" % (self.uuid, self.managementIPAddressString))
+               print("Failed to register NE=%s having IP=%s and port=%s to the ODL controller" %
+                     (self.uuid, self.managementIPAddressString, self.netconfPortNumber))
 
         self.saveNetworkNamespace()
 

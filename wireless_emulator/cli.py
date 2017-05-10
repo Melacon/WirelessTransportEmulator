@@ -81,6 +81,7 @@ class CLI(Cmd):
             print('#########################################')
             print('#### Network Element UUID: \'%s\'' % node.uuid)
             print('#### Network Element management IP: %s' % node.managementIPAddressString)
+            print('#### Network Element port: %s' % node.netconfPortNumber)
             print('########### Interfaces: ###########')
             for intf in node.interfaceList:
                 print('Interface: UUID=\'%s\' having type=%s Linux Interface Name=\'%s\'' %
@@ -95,6 +96,7 @@ class CLI(Cmd):
             print('#########################################')
             print('#### Network Element UUID: \'%s\'' % node.uuid)
             print('#### Network Element management IP: %s' % node.managementIPAddressString)
+            print('#### Network Element port: %s' % node.netconfPortNumber)
             print('########### Interfaces: ###########')
             for intf in node.interfaceList:
                 print('Interface: UUID=\'%s\' having type=%s Linux Interface Name=\'%s\'' %

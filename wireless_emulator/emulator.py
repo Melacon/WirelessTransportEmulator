@@ -66,6 +66,16 @@ class Emulator(metaclass=Singleton):
 
         self.macAddressFactory = MacAddressFactory()
 
+        self.netconfPortBase = None
+        self.sshPortBase = None
+        self.portBasedEmulation = False
+        self.emulatorIp = None
+        if self.configJson['portBasedEmulation'] is True:
+            self.netconfPortBase = self.configJson['netconfPortBase']
+            self.sshPortBase = self.configJson['sshPortBase']
+            self.portBasedEmulation = True
+            self.emulatorIp = self.configJson['emulatorIpAddress']
+
         self.saveControllerInfo()
 
     def validatePreferedIpNetworks(self, mngIpNetwork, hostIpNetwork):
@@ -85,7 +95,8 @@ class Emulator(metaclass=Singleton):
             logger.error("Could not read controller parameters from the JSON topology file! "
                          "The emulator will not try to register the NEs to the ODL controller")
 
-        self.registerToOdl = True
+        self.registerToOdl = self.configJson['automatic-odl-registration']
+
 
     def createNetworkElements(self):
         logger.debug("Creating Network Elements")
