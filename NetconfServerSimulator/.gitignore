@@ -1,0 +1,14 @@
+*.class
+*.log
+
+# Package Files #
+*.war
+*.ear
+
+# Eclipse files #
+.classpath
+.project
+.settings
+
+# Maven builds #
+target
