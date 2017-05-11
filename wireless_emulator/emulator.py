@@ -8,6 +8,7 @@ import ipaddress
 from wireless_emulator.utils import printErrorAndExit
 from wireless_emulator.ip import ManagementNetworkIPFactory, InterfaceIPFactory, MacAddressFactory
 import wireless_emulator.networkelement as NE
+import wireless_emulator.netconfserversimulator as JNE
 from wireless_emulator.utils import Singleton
 from wireless_emulator.topology import Topology
 
@@ -104,7 +105,9 @@ class Emulator(metaclass=Singleton):
         neId = 1
         for ne in self.topoJson['network-elements']:
             neUuid = ne['network-element']['uuid']
-            interfaces = ne['network-element']['interfaces']
+            interfaces = None
+            if ne['network-element'].get('interfaces') is not None:
+                interfaces = ne['network-element']['interfaces']
             eth_x_conn = None
             dockerType = None
             ptpClock = None
@@ -116,7 +119,10 @@ class Emulator(metaclass=Singleton):
                 ptpClock = ne['network-element']['ptp-clock']
             neObj = None
             try:
-                neObj = NE.NetworkElement(neUuid, neId, interfaces, eth_x_conn, dockerType, ptpClock)
+                if (dockerType == "JavaNetconfServer"):
+                    neObj = JNE.NetconfServerSimulator(neUuid, neId, dockerType, ne['network-element'] )
+                else:
+                    neObj = NE.NetworkElement(neUuid, neId, interfaces, eth_x_conn, dockerType, ptpClock)
             except ValueError:
                 logger.critical("Could not create Network Element=%s", neUuid)
                 printErrorAndExit()

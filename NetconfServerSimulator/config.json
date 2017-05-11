@@ -1,0 +1,17 @@
+{
+  "controller" :
+  {
+    "ip-address" : "192.168.178.44",
+    "port" : 8181,
+    "username" : "admin",
+    "password" : "admin"
+  },
+  "managementIpNetwork" : "192.168.0.0/16",
+  "hostIpNetwork" : "10.18.0.0/16",
+  "notificationPeriod" : 20,
+  "automatic-odl-registration" : true,
+  "portBasedEmulation" : true,
+  "netconfPortBase" : 12000,
+  "sshPortBase" : 15000,
+  "emulatorIpAddress" : "192.168.178.44"
+}
