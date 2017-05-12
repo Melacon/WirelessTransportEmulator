@@ -202,7 +202,7 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
 
     public static void main(String[] args) throws IOException {
 
-        if (args.length < 2) {
+        if (args.length < 3) {
             cliOutput("To less parameters. Command: Server xmlFilename port [pathToYang]");
             return;
         }
@@ -211,12 +211,14 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
         String xmlFilename = args[0];
         String debugFile = "debug"+String.valueOf(port) +".log";
         String yangPath = args.length >= 3 ? args[2] : "yang/yangNeModel";
+        String uuid = args.length >= 4 ? args[3] : "";
 
         cliOutput("Start parameters are:");
         cliOutput("\tFilename: "+xmlFilename);
         cliOutput("\tPort: "+port);
         cliOutput("\tDebuginfo and communication is in file: "+debugFile);
         cliOutput("\tYang files in directory: "+yangPath);
+        cliOutput("\tUuid: "+uuid);
 
         initDebug(debugFile);
 
@@ -224,7 +226,7 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
 
         NetworkElement ne;
         try {
-            ne = new NetworkElement(xmlFilename, yangPath);
+            ne = new NetworkElement(xmlFilename, yangPath, uuid);
             ServerSimulator server = ServerSimulator.createServer("0.0.0.0", port, ne);
             server.startServer();
 

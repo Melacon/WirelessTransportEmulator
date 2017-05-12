@@ -83,12 +83,12 @@ class NetconfServerSimulator:
         print("Creating docker container %s..." % (self.dockerName))
 
         if self.emEnv.portBasedEmulation is True:
-            stringCmd = "docker create -it --privileged -p %s:%s:830 -p %s:%s:22 --name=%s netconfserversimulator" % \
+            stringCmd = 'docker create -it --privileged -p %s:%s:830 -p %s:%s:22 --name=%s netconfserversimulator' % \
                             (self.managementIPAddressString, self.netconfPortNumber,
                              self.managementIPAddressString, self.sshPortNumber, self.dockerName)
         else:
             self.createDockerNetwork()
-            stringCmd = "docker create -it --privileged -p %s:%s:830 -p %s:%s:22 --name=%s --network=%s netconfserversimulator" % \
+            stringCmd = 'docker create -it --privileged -p %s:%s:830 -p %s:%s:22 --name=%s --network=%s netconfserversimulator' % \
                             (self.managementIPAddressString, self.netconfPortNumber,
                              self.managementIPAddressString, self.sshPortNumber,
                              self.dockerName, self.networkName)

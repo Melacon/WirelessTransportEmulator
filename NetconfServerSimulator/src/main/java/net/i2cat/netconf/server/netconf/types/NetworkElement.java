@@ -58,7 +58,7 @@ public class NetworkElement {
      * Constructor
      */
 
-    public NetworkElement(String filename, String schemaPath) throws SAXException, IOException, ParserConfigurationException, TransformerConfigurationException, XPathExpressionException {
+    public NetworkElement(String filename, String schemaPath, String uuid) throws SAXException, IOException, ParserConfigurationException, TransformerConfigurationException, XPathExpressionException {
 
         LOG.debug("Networkelements uses file: "+filename);
         File file = new File(filename);
@@ -98,9 +98,19 @@ public class NetworkElement {
             LOG.info(consoleMessage("OK:\n"+sbOk.toString()));
             LOG.info(consoleMessage("Not OK:\n"+sbNotOk.toString()));
 
+            Node uuidNode = getNode(doc, "//data/network-element/uuid");
+            if (uuid != null && !uuid.isEmpty()) {
+                uuidNode.setTextContent(uuid);
+            }
+            LOG.info(consoleMessage("UUID od device: '"+uuidNode.getTextContent()+"'"));
+
         } else {
             throw new IllegalArgumentException("Invalid schema directory: '"+String.valueOf(schemaPath)+"'");
         }
+    }
+
+    public NetworkElement(String filename, String schemaPath) throws SAXException, IOException, ParserConfigurationException, TransformerConfigurationException, XPathExpressionException {
+        this(filename, schemaPath, null);
     }
 
     /* ---------------------------------------------------------------
@@ -740,8 +750,8 @@ public class NetworkElement {
 
     /**
      * Send hello Answer
-     * @param id
-     * @return
+     * @param sessionId of message message
+     * @return xml String with result
      */
     public String assembleHelloReply(String sessionId) {
 
@@ -757,8 +767,8 @@ public class NetworkElement {
 
     /**
      * Send Reply with no data, normally after get-config request
-     * @param id
-     * @return
+     * @param id of message message
+     * @return xml String with result
      */
     public String assembleRpcReplyEmptyData(String id) {
         StringBuffer res = new StringBuffer();
@@ -774,8 +784,8 @@ public class NetworkElement {
 
     /**
      * Send rcp-reply empty data reply with ok
-     * @param id
-     * @return
+     * @param id of message message
+     * @return xml String with result
      */
     public String assembleRpcReplyEmptyDataOk(String id) {
 
@@ -794,8 +804,8 @@ public class NetworkElement {
 
     /**
      * Send rcp-reply with ok
-     * @param id
-     * @return
+     * @param id of message message
+     * @return xml String with result
      */
     public String assembleRpcReplyOk(String id) {
 
@@ -835,12 +845,10 @@ public class NetworkElement {
     /**
      * Assemble rpc-reply message from model according to paramers
      * @param id    MessageId for answer
-     * @param name Name of root element of subtree
-     * @param namespace Namespace of root elemenet
-     * @param xmlSubTree xml-data with requested subtree
+     * @param tags list with element for filter information
      * @return xml String with rpc-reply message
      */
-    public String assembleRpcReplyFromFilterMessage(String id, NetconfTagList tags) {
+   public String assembleRpcReplyFromFilterMessage(String id, NetconfTagList tags) {
         if (tags.isEmtpy() ) {
 
             return assembleRpcReplyEmptyData(id);

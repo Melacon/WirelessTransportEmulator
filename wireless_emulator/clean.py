@@ -49,6 +49,7 @@ def getDockerNames():
         dockerNamesList.append(strLine)
 
     #Changed from javasimulator to netconfserversimulator
+    dockerName="netconfserversimulator"
     stringCmd = "docker ps -a | grep "+dockerName+" | awk '{print $NF}'"
 
     cmd = subprocess.Popen(stringCmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)

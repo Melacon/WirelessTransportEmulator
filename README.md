@@ -1,25 +1,27 @@
 # Wireless Transport Emulator
 
-OpenYuma Wireless Transport Emulator (WTE) is a wireless transport topology emulation with [OpenYuma](https://github.com/OpenClovis/OpenYuma) NETCONF server, 
+OpenYuma Wireless Transport Emulator (WTE) is a wireless transport topology emulation with [OpenYuma](https://github.com/OpenClovis/OpenYuma) NETCONF server,
 based on [ONF TR-532](https://www.opennetworking.org/images/stories/downloads/sdn-resources/technical-reports/TR-532-Microwave-Information-Model-V1.pdf).
 
 ### Description
 
 WTE takes as input three files:
- * a JSON topology file, with a specific structure, describing the network 
+ * a JSON topology file, with a specific structure, describing the network
 to be emulated.
  * a JSON configuration file giving details about the SDN controller information,
  ranges for the NEs management IP addresses and for the hosts connected to the NEs
- * the XML configuration file based on the YANG models 
+ * the XML configuration file based on the YANG models
 to be used by each emulated Network Element as a startup configuration and
-an XML file containing the status parameters of the model. These two files can 
+an XML file containing the status parameters of the model. These two files can
 be automatically generated using a custom version of the [pyang](https://github.com/mbj4668/pyang) utility,
 that is available [here](https://github.com/Melacon/pyang-we).
 
 Each NE is emulated as a docker container and exposes a NETCONF server based on the OpenYuma
-framework, reflecting an information model based on TR-532 from ONF. Links between different NEs, as 
-described in the JSON topology file, are emulated as connections through veth pairs. The 
+framework, reflecting an information model based on TR-532 from ONF. Links between different NEs, as
+described in the JSON topology file, are emulated as connections through veth pairs. The
 high-level architecture of the emulator is shown below.
+
+As extension of Wireless Transport Emulator the java based netconf simulator [NetconfServerSimulator](NetconfServerSimulator/README.md) can be used.
 
 ![logo](./Architecture.png)
 
@@ -115,7 +117,7 @@ sudo python3.6 setup.py install
 
 ### Usage
 
-The JSON topology configuration file `topology.json` for the topology in the previous figure 
+The JSON topology configuration file `topology.json` for the topology in the previous figure
 looks like this:
 
 ```JSON
@@ -135,7 +137,7 @@ looks like this:
                         "physical-port-reference" : "shelf1:slot2:card-type:port1",
                         "conditional-package" : "mw-air-interface-pac"
                       },
-			          { "id": "airIntf2",
+                      { "id": "airIntf2",
                         "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
                         "physical-port-reference" : "shelf1:slot3:card-type:port1",
                         "conditional-package" : "mw-air-interface-pac"
@@ -150,7 +152,7 @@ looks like this:
                         "serverLTPs" : [{"id" : "airIntf1"}],
                         "conditional-package" : "mw-pure-ethernet-structure-pac"
                       },
-			          { "id" : "pureEth2",
+                      { "id" : "pureEth2",
                         "supportedAlarms" : "structureAlarm",
                         "serverLTPs" : [{"id" : "airIntf2"}],
                         "conditional-package" : "mw-pure-ethernet-structure-pac"
@@ -206,7 +208,7 @@ looks like this:
                         "physical-port-reference" : "shelf1:slot2:card-type:port1",
                         "conditional-package" : "mw-air-interface-pac"
                       },
-			          { "id": "airIntf2",
+                      { "id": "airIntf2",
                         "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
                         "physical-port-reference" : "shelf1:slot3:card-type:port1",
                         "conditional-package" : "mw-air-interface-pac"
@@ -216,7 +218,7 @@ looks like this:
                         "physical-port-reference" : "shelf1:slot4:card-type:port1",
                         "conditional-package" : "mw-air-interface-pac"
                       },
-			          { "id": "airIntf4",
+                      { "id": "airIntf4",
                         "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
                         "physical-port-reference" : "shelf1:slot5:card-type:port1",
                         "conditional-package" : "mw-air-interface-pac"
@@ -231,7 +233,7 @@ looks like this:
                         "serverLTPs" : [{"id" : "airIntf1"}],
                         "conditional-package" : "mw-pure-ethernet-structure-pac"
                       },
-			          { "id" : "pureEth2",
+                      { "id" : "pureEth2",
                         "supportedAlarms" : "structureAlarm",
                         "serverLTPs" : [{"id" : "airIntf2"}],
                         "conditional-package" : "mw-pure-ethernet-structure-pac"
@@ -241,7 +243,7 @@ looks like this:
                         "serverLTPs" : [{"id" : "airIntf3"}],
                         "conditional-package" : "mw-pure-ethernet-structure-pac"
                       },
-			          { "id" : "pureEth4",
+                      { "id" : "pureEth4",
                         "supportedAlarms" : "structureAlarm",
                         "serverLTPs" : [{"id" : "airIntf4"}],
                         "conditional-package" : "mw-pure-ethernet-structure-pac"
@@ -303,7 +305,7 @@ looks like this:
                         "physical-port-reference" : "shelf1:slot2:card-type:port1",
                         "conditional-package" : "mw-air-interface-pac"
                       },
-			          { "id": "airIntf2",
+                      { "id": "airIntf2",
                         "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
                         "physical-port-reference" : "shelf1:slot3:card-type:port1",
                         "conditional-package" : "mw-air-interface-pac"
@@ -318,7 +320,7 @@ looks like this:
                         "serverLTPs" : [{"id" : "airIntf1"}],
                         "conditional-package" : "mw-pure-ethernet-structure-pac"
                       },
-			          { "id" : "pureEth2",
+                      { "id" : "pureEth2",
                         "supportedAlarms" : "structureAlarm",
                         "serverLTPs" : [{"id" : "airIntf2"}],
                         "conditional-package" : "mw-pure-ethernet-structure-pac"
@@ -366,7 +368,7 @@ looks like this:
         [{"uuid" : "Simulator-1", "ltp" : "airIntf1", "radio-signal-id" : "26"}, {"uuid" : "Simulator-2", "ltp" : "airIntf1", "radio-signal-id" : "26"}],
         [{"uuid" : "Simulator-1", "ltp" : "airIntf2", "radio-signal-id" : "27"}, {"uuid" : "Simulator-2", "ltp" : "airIntf2", "radio-signal-id" : "27"}],
         [{"uuid" : "Simulator-2", "ltp" : "airIntf3", "radio-signal-id" : "28"}, {"uuid" : "Simulator-3", "ltp" : "airIntf1", "radio-signal-id" : "28"}],
-		[{"uuid" : "Simulator-2", "ltp" : "airIntf4", "radio-signal-id" : "29"}, {"uuid" : "Simulator-3", "ltp" : "airIntf2", "radio-signal-id" : "29"}]
+        [{"uuid" : "Simulator-2", "ltp" : "airIntf4", "radio-signal-id" : "29"}, {"uuid" : "Simulator-3", "ltp" : "airIntf2", "radio-signal-id" : "29"}]
         ]
     },
     "eth" : {
@@ -403,8 +405,8 @@ An example emulator configuration file `config.json` is shown below:
 The information about the SDN controller, where the emulated NEs automatically
 register, is available under the `controller` object.
 
-The range for the management IP of the network elements is given by the 
-`managementIpNetwork` object, and the range for the IPs of the hosts connected to the NEs 
+The range for the management IP of the network elements is given by the
+`managementIpNetwork` object, and the range for the IPs of the hosts connected to the NEs
 is configurable through the `linksIpNetwork` element.
 
 Each  NE is capable of generating a random `problem-notification` NETCONF nofiticaion,
@@ -415,10 +417,10 @@ represents the amount of **seconds** between each such  random notifications.
 
 `sudo wtemulator --config=config.json --topo=topology.json --xml=yang/microwave-model-config.xml`
 
-* Stopping the emulator is done with the commands `quit` or `exit` executed from the CLI. This will delete 
+* Stopping the emulator is done with the commands `quit` or `exit` executed from the CLI. This will delete
 all the previously created docker containers, docker networks or OVS Bridges or ports.
 
-* Cleaning might be necessary if previous runs were not terminated correctly. This will delete 
+* Cleaning might be necessary if previous runs were not terminated correctly. This will delete
 all the previously created docker containers, docker networks or OVS Bridges or ports.
 
 `sudo wtemulator --config=config.json --clean`
