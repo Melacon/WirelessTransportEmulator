@@ -20,6 +20,10 @@ class NetconfServerSimulator:
         self.dockerName = self.uuid.replace(" ", "")
         self.dockerType = dockerType
         self.ptpEnabled = False
+        if (neParamObject.get('xmlFile') is None):
+            self.xmlFile = "xmlNeModel/DVM-ETY.xml"
+        else:
+            self.xmlFile = neParamObject.get('xmlFile')
 
         self.emEnv = wireless_emulator.emulator.Emulator()
 
@@ -83,15 +87,16 @@ class NetconfServerSimulator:
         print("Creating docker container %s..." % (self.dockerName))
 
         if self.emEnv.portBasedEmulation is True:
-            stringCmd = 'docker create -it --privileged -p %s:%s:830 -p %s:%s:22 --name=%s netconfserversimulator' % \
-                            (self.managementIPAddressString, self.netconfPortNumber,
-                             self.managementIPAddressString, self.sshPortNumber, self.dockerName)
+            network=''
         else:
             self.createDockerNetwork()
-            stringCmd = 'docker create -it --privileged -p %s:%s:830 -p %s:%s:22 --name=%s --network=%s netconfserversimulator' % \
-                            (self.managementIPAddressString, self.netconfPortNumber,
-                             self.managementIPAddressString, self.sshPortNumber,
-                             self.dockerName, self.networkName)
+            network='--network=%s' % self.networkName
+
+        stringCmd = 'docker create -it --privileged -p %s:%s:830 -p %s:%s:22 --name=%s %s -e "UUID=%s" -e "XMLFILE=%s" netconfserversimulator' % \
+                          (self.managementIPAddressString, self.netconfPortNumber,
+                           self.managementIPAddressString, self.sshPortNumber,
+                           self.dockerName, network,
+                           self.uuid, self.xmlFile)
 
         if stringCmd is not None:
             self.emEnv.executeCommandInOS(stringCmd)

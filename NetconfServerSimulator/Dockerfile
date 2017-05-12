@@ -20,7 +20,7 @@ COPY yang/yangNeModel/* /usr/NetconfServerSimulator/yang/yangNeModel/
 #java -classpath NESimServer.jar net.i2cat.netconf.server.Server ../xmlNeModel/DVM-ETY.xml 830 ../yang/yangNeModel
 WORKDIR /usr/NetconfServerSimulator
 RUN set -x -e; \
-    printf '#!/bin/bash\nset -e -x\njava -classpath NetconfServerSimulator.jar net.i2cat.netconf.server.ServerSimulator xmlNeModel/DVM-ETY.xml 830 yang/yangNeModel $UUID\n' > /root/start.sh; \
+    printf '#!/bin/bash\nset -e -x\njava -classpath NetconfServerSimulator.jar net.i2cat.netconf.server.ServerSimulator $XMLFILE 830 yang/yangNeModel $UUID\n' > /root/start.sh; \
     chmod 0755 /root/start.sh
 CMD ["/root/start.sh"]
 

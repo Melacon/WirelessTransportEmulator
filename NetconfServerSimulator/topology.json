@@ -5,7 +5,7 @@
       {
         "uuid" : "JavaSimulator-1",
         "type" : "JavaNetconfServer",
-        "config" : "Specific"
+        "xmlFile" : "xmlNeModel/DVM-ETY.xml"
       }
     },
     {
@@ -22,7 +22,7 @@
                         "physical-port-reference" : "shelf1:slot2:card-type:port1",
                         "conditional-package" : "mw-air-interface-pac"
                       },
-			          { "id": "airIntf2",
+                      { "id": "airIntf2",
                         "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
                         "physical-port-reference" : "shelf1:slot3:card-type:port1",
                         "conditional-package" : "mw-air-interface-pac"
@@ -37,7 +37,7 @@
                         "serverLTPs" : [{"id" : "airIntf1"}],
                         "conditional-package" : "mw-pure-ethernet-structure-pac"
                       },
-			          { "id" : "pureEth2",
+                      { "id" : "pureEth2",
                         "supportedAlarms" : "structureAlarm",
                         "serverLTPs" : [{"id" : "airIntf2"}],
                         "conditional-package" : "mw-pure-ethernet-structure-pac"
@@ -93,7 +93,7 @@
                         "physical-port-reference" : "shelf1:slot2:card-type:port1",
                         "conditional-package" : "mw-air-interface-pac"
                       },
-			          { "id": "airIntf2",
+                      { "id": "airIntf2",
                         "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
                         "physical-port-reference" : "shelf1:slot3:card-type:port1",
                         "conditional-package" : "mw-air-interface-pac"
@@ -103,7 +103,7 @@
                         "physical-port-reference" : "shelf1:slot4:card-type:port1",
                         "conditional-package" : "mw-air-interface-pac"
                       },
-			          { "id": "airIntf4",
+                      { "id": "airIntf4",
                         "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
                         "physical-port-reference" : "shelf1:slot5:card-type:port1",
                         "conditional-package" : "mw-air-interface-pac"
@@ -118,7 +118,7 @@
                         "serverLTPs" : [{"id" : "airIntf1"}],
                         "conditional-package" : "mw-pure-ethernet-structure-pac"
                       },
-			          { "id" : "pureEth2",
+                      { "id" : "pureEth2",
                         "supportedAlarms" : "structureAlarm",
                         "serverLTPs" : [{"id" : "airIntf2"}],
                         "conditional-package" : "mw-pure-ethernet-structure-pac"
@@ -128,7 +128,7 @@
                         "serverLTPs" : [{"id" : "airIntf3"}],
                         "conditional-package" : "mw-pure-ethernet-structure-pac"
                       },
-			          { "id" : "pureEth4",
+                      { "id" : "pureEth4",
                         "supportedAlarms" : "structureAlarm",
                         "serverLTPs" : [{"id" : "airIntf4"}],
                         "conditional-package" : "mw-pure-ethernet-structure-pac"
@@ -190,7 +190,7 @@
                         "physical-port-reference" : "shelf1:slot2:card-type:port1",
                         "conditional-package" : "mw-air-interface-pac"
                       },
-			          { "id": "airIntf2",
+                      { "id": "airIntf2",
                         "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
                         "physical-port-reference" : "shelf1:slot3:card-type:port1",
                         "conditional-package" : "mw-air-interface-pac"
@@ -205,7 +205,7 @@
                         "serverLTPs" : [{"id" : "airIntf1"}],
                         "conditional-package" : "mw-pure-ethernet-structure-pac"
                       },
-			          { "id" : "pureEth2",
+                      { "id" : "pureEth2",
                         "supportedAlarms" : "structureAlarm",
                         "serverLTPs" : [{"id" : "airIntf2"}],
                         "conditional-package" : "mw-pure-ethernet-structure-pac"
@@ -253,7 +253,7 @@
         [{"uuid" : "Simulator-1", "ltp" : "airIntf1", "radio-signal-id" : "26"}, {"uuid" : "Simulator-2", "ltp" : "airIntf1", "radio-signal-id" : "26"}],
         [{"uuid" : "Simulator-1", "ltp" : "airIntf2", "radio-signal-id" : "27"}, {"uuid" : "Simulator-2", "ltp" : "airIntf2", "radio-signal-id" : "27"}],
         [{"uuid" : "Simulator-2", "ltp" : "airIntf3", "radio-signal-id" : "28"}, {"uuid" : "Simulator-3", "ltp" : "airIntf1", "radio-signal-id" : "28"}],
-		[{"uuid" : "Simulator-2", "ltp" : "airIntf4", "radio-signal-id" : "29"}, {"uuid" : "Simulator-3", "ltp" : "airIntf2", "radio-signal-id" : "29"}]
+        [{"uuid" : "Simulator-2", "ltp" : "airIntf4", "radio-signal-id" : "29"}, {"uuid" : "Simulator-3", "ltp" : "airIntf2", "radio-signal-id" : "29"}]
         ]
     },
     "eth" : {

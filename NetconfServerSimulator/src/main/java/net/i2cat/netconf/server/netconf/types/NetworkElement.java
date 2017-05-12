@@ -99,10 +99,14 @@ public class NetworkElement {
             LOG.info(consoleMessage("Not OK:\n"+sbNotOk.toString()));
 
             Node uuidNode = getNode(doc, "//data/network-element/uuid");
-            if (uuid != null && !uuid.isEmpty()) {
+            if (uuidNode != null && uuid != null && !uuid.isEmpty()) {
                 uuidNode.setTextContent(uuid);
-            }
-            LOG.info(consoleMessage("UUID od device: '"+uuidNode.getTextContent()+"'"));
+                Node nameNode = getNode(doc, "//data/network-element/name/value");
+                nameNode.setTextContent(uuid);
+                LOG.info(consoleMessage("UUID of device: '"+uuidNode.getTextContent()+"'"));
+            } else {
+				LOG.info(consoleMessage("no UUID with xml"));
+			}
 
         } else {
             throw new IllegalArgumentException("Invalid schema directory: '"+String.valueOf(schemaPath)+"'");
