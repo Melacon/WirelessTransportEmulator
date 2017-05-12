@@ -31,54 +31,12 @@
     </properties>
 
     <dependencies>
-        <!-- Netconf4j library -->
-        <!-- <dependency> At the moment 17/05/12 not available.
-            <groupId>net.i2cat.netconf</groupId>
-            <artifactId>netconf4j</artifactId>
-            <version>${netconf4j.version}</version>
-        </dependency>-->
+        <!-- Netconf4j library (At the moment 17/05/12 not available.)-->
         <dependency>
             <groupId>net.i2cat.netconf</groupId>
             <artifactId>netconf4j</artifactId>
             <version>${netconf4j.version}</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/netconf4j-0.0.9b.jar</systemPath>
         </dependency>
-               <!-- <dependency>
-                        <groupId>junit</groupId>
-                        <artifactId>junit</artifactId>
-                        <version>4.8.1</version>
-                        <scope>test</scope>
-                </dependency> -->
-                <dependency>
-                        <groupId>ch.ethz.ganymed</groupId>
-                        <artifactId>ganymed-ssh2</artifactId>
-                        <version>build210</version>
-                </dependency>
-                <dependency>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
-                        <version>1.1.1</version>
-                </dependency>
-                <!-- <dependency>
-                        <groupId>commons-io</groupId>
-                        <artifactId>commons-io</artifactId>
-                        <version>1.4</version>
-                </dependency> -->
-                <dependency>
-                        <groupId>commons-configuration</groupId>
-                        <artifactId>commons-configuration</artifactId>
-                        <version>1.6</version>
-                </dependency>
-                <dependency>
-                  <groupId>com.google.guava</groupId>
-                  <artifactId>guava</artifactId>
-                  <version>${guava.version}</version>
-                </dependency>
-
-
-
-
         <!-- Pax logging - - >
         <dependency>
             <groupId>org.ops4j.pax.logging</groupId>
@@ -278,7 +236,7 @@
                 </execution>
               </executions>
             </plugin>
-         </plugins>
+          </plugins>
     </build>
 
     <repositories>
@@ -297,6 +255,11 @@
             <id>Maven-central</id>
             <name>Maven central</name>
             <url>http://repo1.maven.org/maven2</url>
+        </repository>
+        <repository>
+            <id>repo</id>
+            <name>Project local</name>
+            <url>file://${basedir}/repo</url>
         </repository>
 
        <!-- <repository>
