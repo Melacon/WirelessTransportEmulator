@@ -8,3 +8,8 @@ bin/output.xml
 bin/topology.json
 debug.log
 OpenYuma/.settings/*
+output*xml
+odlNewRegistration.xml
+#eclipse specific
+.project
+.pydevproject

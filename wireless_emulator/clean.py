@@ -48,19 +48,19 @@ def getDockerNames():
         strLine = line.decode("utf-8").rstrip('\n')
         dockerNamesList.append(strLine)
 
-    if dockerNamesList is []:
-        stringCmd = "docker ps -a | grep javasimulator | awk '{print $NF}'"
+    #Changed from javasimulator to netconfserversimulator
+    stringCmd = "docker ps -a | grep "+dockerName+" | awk '{print $NF}'"
 
-        cmd = subprocess.Popen(stringCmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    cmd = subprocess.Popen(stringCmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-        for line in cmd.stderr:
-            strLine = line.decode("utf-8").rstrip('\n')
-            logger.critical("Could not get names of docker containers having image openyuma.\n Stderr: %s", strLine)
-            raise RuntimeError("Could not get docker container names")
+    for line in cmd.stderr:
+        strLine = line.decode("utf-8").rstrip('\n')
+        logger.critical("Could not get names of docker containers having image "+dockerName+".\n Stderr: %s", strLine)
+        raise RuntimeError("Could not get docker container names")
 
-        for line in cmd.stdout:
-            strLine = line.decode("utf-8").rstrip('\n')
-            dockerNamesList.append(strLine)
+    for line in cmd.stdout:
+        strLine = line.decode("utf-8").rstrip('\n')
+        dockerNamesList.append(strLine)
 
     return dockerNamesList
 
