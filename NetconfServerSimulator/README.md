@@ -6,13 +6,17 @@ The NetconfServerSimulator is a Java based approach to simulate netconf managed 
 
 ### Prerequisites
 
-The description bases on the environment: Ubuntu 16.04, Maven 3.3.9, Java 1.8
+The description bases on the environment: Ubuntu 16.04, Maven 3.3.9, Java 1.8, git 2.7.4, Docker version 17.03.1-ce
 
 #### Java
 
-Verify maven version (mvn --version).
+Install maven
 
-Install Java 1.8 environment
+```commandline
+sudo apt-get install maven
+```
+
+Install Java 1.8 JDK environment
 
 ```commandline
 sudo apt-get install openjdk-8-jre icedtea-8-plugin openjdk-8-jdk
@@ -29,7 +33,8 @@ Builds the executable jar and the docker container for the NetconfServerSimulato
 
   * The executable NetconfServerSimulator.jar is placed in the /build subdirectory on replaces the previouse version.
   * The docker container with the name "netconfserversimulator" is created in the local docker repository.
-  * The java and docker build instructions are in the pom.xml. Additionally the docker build is within the file. *makeDockerContainer.sh*
+  * The java and docker build instructions are in the pom.xml.
+  * (Today 17/05/12) The dana-i2cat repository is not available. As a workarround the required netconf4j artifact is stored in the project local repository *repo*.
 
 
 ```commandline
@@ -41,6 +46,8 @@ mvn clean install
 #### With  WirelessTransportEmulator
 
 In the *topology.json* file within the network-element definition section the *type* parameter indicates to use the *NetconfServerSimulator* as shown in the example below. In the actual version of this simulator the xmlFile can be selected and the uuid assigned. Simulated Interfaces and links for this container are not supported.
+
+Information how to start/stop the environment is described in the *Usage* section of the [WirelessTransportEmulator README](../README.md) file.
 
 ```JSON
 {
@@ -60,8 +67,7 @@ In the *config.json* file there are no specific configurations required.
 
 The jar proved a command line after it is started. Type "help" to get a list of commands.
 
-
-#### Stand alone
+#### Stand alone JAR
 
 The NetconfServerSimulator can be directly started from the command line. It is recommended to use screen for remote ssh/putty sessions.
 The jar parameter are:
@@ -78,6 +84,15 @@ In the *build* directory there are some examples for start commands.
 ```Script
 ./NetconfServerSimulator.sh ../xmlNeModel/DVM_MWCore10_BasicAir.xml 2224 ../yang/yangNeModel
 ```
+#### Stand alone Docker
+
+The docker container with the name "netconfserversimulator" is available in the local docker images repo after maven build.
+It can be started directly in interactive mode by using the image id listed by ```docker images``` output.
+Port 830 is used as netconf port.
+```
+docker run -i -e "XMLFILE=xmlNeModel/DVM-ETY.xml" -t e18037c3e9cb
+```
+
 
 ### Common information
 
