@@ -200,7 +200,7 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
 
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
         if (args.length < 3) {
             cliOutput("To less parameters. Command: Server xmlFilename port [pathToYang]");
@@ -235,7 +235,12 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
             String command;
 
             while (true) {
-                command = buffer.readLine().toLowerCase();
+                command = buffer.readLine();
+                if (command != null) {
+                    command = command.toLowerCase();
+                } else {
+                    command = "<null>";
+                }
 
                 if (command.equals("list")) {
                     cliOutput("Messages received(" + server.getStoredMessages().size() + "):");
@@ -276,10 +281,12 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
         } catch (ServerException e) {
             LOG.error("(..something..) failed", e);
         } catch (XPathExpressionException e) {
-            LOG.error("(..something..) failed", e); // TODO
+            LOG.error("(..something..) failed", e);
+        } catch (IOException e1) {
+            LOG.error("(..something..) failed", e1);
         }
 
-        LOG.info("Exiting");
+        LOG.info(cliOutput("Exiting"));
         System.exit(0);
     }
 
