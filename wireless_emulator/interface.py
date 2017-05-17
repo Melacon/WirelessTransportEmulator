@@ -208,7 +208,7 @@ class MwpsInterface:
         node = currentPerformanceDataList.find('scanner-id')
         node.text = "1"
         node = currentPerformanceDataList.find('granularity-period')
-        node.text = "period-15min"
+        node.text = "period-15-min"
         node = currentPerformanceDataList.find('suspect-interval-flag')
         node.text = "false"
         node = currentPerformanceDataList.find('timestamp')
@@ -219,7 +219,7 @@ class MwpsInterface:
         node = currentPerformanceDataList.find('scanner-id')
         node.text = "2"
         node = currentPerformanceDataList.find('granularity-period')
-        node.text = "period-24hours"
+        node.text = "period-24-hours"
         node = currentPerformanceDataList.find('suspect-interval-flag')
         node.text = "false"
         node = currentPerformanceDataList.find('timestamp')
@@ -244,7 +244,7 @@ class MwpsInterface:
         node = histPerfDataList.find('history-data-id')
         node.text = str(index)
         node = histPerfDataList.find('granularity-period')
-        node.text = "period-15min"
+        node.text = "period-15-min"
         node = histPerfDataList.find('suspect-interval-flag')
         node.text = "false"
         node = histPerfDataList.find('period-end-time')
@@ -260,7 +260,7 @@ class MwpsInterface:
         node = histPerfDataList.find('history-data-id')
         node.text = str(index + 96)
         node = histPerfDataList.find('granularity-period')
-        node.text = "period-24hours"
+        node.text = "period-24-hours"
         node = histPerfDataList.find('suspect-interval-flag')
         node.text = "false"
         node = histPerfDataList.find('period-end-time')
@@ -554,7 +554,7 @@ class MwsInterface:
         node = currentPerformanceDataList.find('scanner-id')
         node.text = "1"
         node = currentPerformanceDataList.find('granularity-period')
-        node.text = "period-15min"
+        node.text = "period-15-min"
         node = currentPerformanceDataList.find('suspect-interval-flag')
         node.text = "false"
         node = currentPerformanceDataList.find('timestamp')
@@ -565,7 +565,7 @@ class MwsInterface:
         node = currentPerformanceDataList.find('scanner-id')
         node.text = "2"
         node = currentPerformanceDataList.find('granularity-period')
-        node.text = "period-24hours"
+        node.text = "period-24-hours"
         node = currentPerformanceDataList.find('suspect-interval-flag')
         node.text = "false"
         node = currentPerformanceDataList.find('timestamp')
@@ -590,7 +590,7 @@ class MwsInterface:
         node = histPerfDataList.find('history-data-id')
         node.text = str(index)
         node = histPerfDataList.find('granularity-period')
-        node.text = "period-15min"
+        node.text = "period-15-min"
         node = histPerfDataList.find('suspect-interval-flag')
         node.text = "false"
         node = histPerfDataList.find('period-end-time')
@@ -606,7 +606,7 @@ class MwsInterface:
         node = histPerfDataList.find('history-data-id')
         node.text = str(index + 96)
         node = histPerfDataList.find('granularity-period')
-        node.text = "period-24hours"
+        node.text = "period-24-hours"
         node = histPerfDataList.find('suspect-interval-flag')
         node.text = "false"
         node = histPerfDataList.find('period-end-time')
@@ -837,7 +837,7 @@ class MwEthContainerInterface:
         node = currentPerformanceDataList.find('scanner-id')
         node.text = "1"
         node = currentPerformanceDataList.find('granularity-period')
-        node.text = "period-15min"
+        node.text = "period-15-min"
         node = currentPerformanceDataList.find('suspect-interval-flag')
         node.text = "false"
         node = currentPerformanceDataList.find('timestamp')
@@ -848,7 +848,7 @@ class MwEthContainerInterface:
         node = currentPerformanceDataList.find('scanner-id')
         node.text = "2"
         node = currentPerformanceDataList.find('granularity-period')
-        node.text = "period-24hours"
+        node.text = "period-24-hours"
         node = currentPerformanceDataList.find('suspect-interval-flag')
         node.text = "false"
         node = currentPerformanceDataList.find('timestamp')
@@ -873,7 +873,7 @@ class MwEthContainerInterface:
         node = histPerfDataList.find('history-data-id')
         node.text = str(index)
         node = histPerfDataList.find('granularity-period')
-        node.text = "period-15min"
+        node.text = "period-15-min"
         node = histPerfDataList.find('suspect-interval-flag')
         node.text = "false"
         node = histPerfDataList.find('period-end-time')
@@ -889,7 +889,7 @@ class MwEthContainerInterface:
         node = histPerfDataList.find('history-data-id')
         node.text = str(index + 96)
         node = histPerfDataList.find('granularity-period')
-        node.text = "period-24hours"
+        node.text = "period-24-hours"
         node = histPerfDataList.find('suspect-interval-flag')
         node.text = "false"
         node = histPerfDataList.find('period-end-time')
