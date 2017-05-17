@@ -213,6 +213,8 @@ class MwpsInterface:
         node.text = "false"
         node = currentPerformanceDataList.find('timestamp')
         node.text = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-5] + "Z"
+        node = currentPerformanceDataList.find('administrative-state')
+        node.text = "unlocked"
         parentNode.append(currentPerformanceDataList)
 
         currentPerformanceDataList = copy.deepcopy(savedNode)
@@ -224,6 +226,8 @@ class MwpsInterface:
         node.text = "false"
         node = currentPerformanceDataList.find('timestamp')
         node.text = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-5] + "Z"
+        node = currentPerformanceDataList.find('administrative-state')
+        node.text = "unlocked"
         parentNode.append(currentPerformanceDataList)
 
     def addHistoricalPerformancesXmlValues(self, parentNode):
@@ -559,6 +563,8 @@ class MwsInterface:
         node.text = "false"
         node = currentPerformanceDataList.find('timestamp')
         node.text = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-5] + "Z"
+        node = currentPerformanceDataList.find('administrative-state')
+        node.text = "unlocked"
         parentNode.append(currentPerformanceDataList)
 
         currentPerformanceDataList = copy.deepcopy(savedNode)
@@ -570,6 +576,8 @@ class MwsInterface:
         node.text = "false"
         node = currentPerformanceDataList.find('timestamp')
         node.text = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-5] + "Z"
+        node = currentPerformanceDataList.find('administrative-state')
+        node.text = "unlocked"
         parentNode.append(currentPerformanceDataList)
 
     def addHistoricalPerformancesXmlValues(self, parentNode):
@@ -842,6 +850,8 @@ class MwEthContainerInterface:
         node.text = "false"
         node = currentPerformanceDataList.find('timestamp')
         node.text = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-5] + "Z"
+        node = currentPerformanceDataList.find('administrative-state')
+        node.text = "unlocked"
         parentNode.append(currentPerformanceDataList)
 
         currentPerformanceDataList = copy.deepcopy(savedNode)
@@ -853,6 +863,8 @@ class MwEthContainerInterface:
         node.text = "false"
         node = currentPerformanceDataList.find('timestamp')
         node.text = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-5] + "Z"
+        node = currentPerformanceDataList.find('administrative-state')
+        node.text = "unlocked"
         parentNode.append(currentPerformanceDataList)
 
     def addHistoricalPerformancesXmlValues(self, parentNode):
