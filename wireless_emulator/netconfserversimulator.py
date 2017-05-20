@@ -49,7 +49,7 @@ class NetconfServerSimulator:
         # docker network name
         self.networkName = "wte_net_" + str(self.id)
 
-        tree = ET.parse("NetconfServerSimulator/xmlNeModel/DVM-ETY.xml")
+        tree = ET.parse("NetconfServerSimulator/"+self.xmlFile)
         if tree is None:
             logger.critical("Could not parse XML default values configuration file!")
             printErrorAndExit()
