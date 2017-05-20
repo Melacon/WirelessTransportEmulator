@@ -68,7 +68,7 @@
         "eth-cross-connections" : [
           {"fcPorts" : [{"ltp" : "eth1", "vlan-id" : "26"}, {"ltp" : "eth5", "vlan-id" : "26"}], "host" : true, "fcRoute" : "service1"}
           ],
-        "ptp-clock" : [0]
+        "ptp-clock" : [1]
       }
     },
     {
@@ -164,7 +164,8 @@
           ],
         "eth-cross-connections" : [
           {"fcPorts" : [{"ltp" : "eth5", "vlan-id" : "26"}, {"ltp" : "eth6", "vlan-id" : "26"}], "host" : false, "fcRoute" : "service1"}
-          ]
+          ],
+        "ptp-clock" : [1]
       }
     },
     {
@@ -235,7 +236,8 @@
           ],
         "eth-cross-connections" : [
           {"fcPorts" : [{"ltp" : "eth1", "vlan-id" : "26"}, {"ltp" : "eth5", "vlan-id" : "26"}], "host" : true, "fcRoute" : "service1"}
-          ]
+          ],
+        "ptp-clock" : [1]
       }
     }
     ],
