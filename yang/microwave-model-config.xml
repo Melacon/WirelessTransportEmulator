@@ -29,7 +29,7 @@
           <auto-freq-select-range xmlns="urn:onf:params:xml:ns:yang:microwave-model">-1</auto-freq-select-range>
           <modulation-is-on xmlns="urn:onf:params:xml:ns:yang:microwave-model">true</modulation-is-on>
           <encryption-is-on xmlns="urn:onf:params:xml:ns:yang:microwave-model">false</encryption-is-on>
-          <cryptographic-key xmlns="urn:onf:params:xml:ns:yang:microwave-model">Cryptographic key not yet defined.</cryptographic-key>
+          <cryptographic-key xmlns="urn:onf:params:xml:ns:yang:microwave-model">********</cryptographic-key>
           <loop-back-kind-on xmlns="urn:onf:params:xml:ns:yang:microwave-model">none</loop-back-kind-on>
           <maintenance-timer xmlns="urn:onf:params:xml:ns:yang:microwave-model">-1</maintenance-timer>
           <problem-kind-severity-list xmlns="urn:onf:params:xml:ns:yang:microwave-model">
@@ -105,7 +105,7 @@
           <ipv6-compression-is-on xmlns="urn:onf:params:xml:ns:yang:microwave-model">false</ipv6-compression-is-on>
           <layer4-compression-is-on xmlns="urn:onf:params:xml:ns:yang:microwave-model">false</layer4-compression-is-on>
           <encryption-is-on xmlns="urn:onf:params:xml:ns:yang:microwave-model">false</encryption-is-on>
-          <cryptographic-key xmlns="urn:onf:params:xml:ns:yang:microwave-model">Cryptographic key not yet defined.</cryptographic-key>
+          <cryptographic-key xmlns="urn:onf:params:xml:ns:yang:microwave-model">********</cryptographic-key>
           <problem-kind-severity-list xmlns="urn:onf:params:xml:ns:yang:microwave-model">
              <problem-kind-name xmlns="urn:onf:params:xml:ns:yang:microwave-model"/>
              <problem-kind-severity xmlns="urn:onf:params:xml:ns:yang:microwave-model">warning</problem-kind-severity>
