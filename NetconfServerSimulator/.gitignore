@@ -1,5 +1,5 @@
 *.class
-*.log
+*.log*
 
 # Package Files #
 *.war
@@ -12,3 +12,6 @@
 
 # Maven builds #
 target
+
+# Builds should be there
+!build

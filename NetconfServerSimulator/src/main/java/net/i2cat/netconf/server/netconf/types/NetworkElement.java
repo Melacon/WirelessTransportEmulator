@@ -105,8 +105,8 @@ public class NetworkElement {
                 nameNode.setTextContent(uuid);
                 LOG.info(consoleMessage("UUID of device: '"+uuidNode.getTextContent()+"'"));
             } else {
-				LOG.info(consoleMessage("no UUID with xml"));
-			}
+                LOG.info(consoleMessage("no UUID with xml"));
+            }
 
         } else {
             throw new IllegalArgumentException("Invalid schema directory: '"+String.valueOf(schemaPath)+"'");
@@ -710,7 +710,9 @@ public class NetworkElement {
         LOG.info("-- Notification start -- Command: '"+command+"'");
 
         List<String> xmlSubTreeProblems = getXmlSubTreeAsStringList("//mw-notifications/problem-notification");
+        xmlSubTreeProblems.addAll(getXmlSubTreeAsStringList("//MW_Notifications/ProblemNotification"));
         List<String> xmlSubTreeChanges = getXmlSubTreeAsStringList("//mw-notifications/attribute-value-changed-notification");
+        xmlSubTreeChanges.addAll(getXmlSubTreeAsStringList("//MW_Notifications/AttributeValueChangedNotification"));
         int idx = 0;
 
         if (command.contains("x")) {
@@ -911,8 +913,8 @@ public class NetworkElement {
 
         StringBuffer res = new StringBuffer();
         res.append("<notification xmlns=\"urn:ietf:params:xml:ns:netconf:notification:1.0\">\n");
-        //res.append("<eventTime>2017-03-28T15:11:12Z</eventTime>\n");
-        res.append("<eventTime>$TIME</eventTime>\n");
+        res.append("<eventTime>2011-11-11T11:11:11Z</eventTime>\n");
+        //res.append("<eventTime>$TIME</eventTime>\n");
         res.append(xmlSubTree);
         res.append("</notification>\n");
         return res.toString();
