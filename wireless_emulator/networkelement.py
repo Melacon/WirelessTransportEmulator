@@ -693,6 +693,7 @@ class NetworkElement:
         cmd = subprocess.Popen(stringCmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         for line in cmd.stderr:
+            logger.critical("Failed executing command %s", command)
             strLine = line.decode("utf-8").rstrip('\n')
             logger.critical("Stderr: %s", strLine)
             raise RuntimeError

@@ -25,7 +25,10 @@ class MwpsInterface:
         self.neObj = neObj
         self.layer = 'MWPS'
         self.prefixName = 'mwps-'
-        self.interfaceName = self.prefixName + str(self.uuid)
+        #self.interfaceName = self.prefixName + str(self.uuid)
+        self.interfaceName = str(self.uuid)
+        self.ltpUuid = self.interfaceName
+        self.lpUuid = self.ltpUuid + '-LP-1'
         self.clientLtpNode = None
 
         self.emEnv = wireless_emulator.emulator.Emulator()
@@ -48,7 +51,8 @@ class MwpsInterface:
 
         ltpNode = copy.deepcopy(self.neObj.ltpConfigXmlNode)
         uuid = ltpNode.find('core-model:uuid', self.neObj.namespaces)
-        ltpUuid = "ltp-" + self.interfaceName
+        #ltpUuid = "ltp-" + self.interfaceName
+        ltpUuid = self.ltpUuid
         uuid.text = ltpUuid
         addCoreDefaultValuesToNode(ltpNode, ltpUuid, self.neObj.namespaces)
 
@@ -58,7 +62,8 @@ class MwpsInterface:
 
         lpNode = ltpNode.find('core-model:lp', self.neObj.namespaces)
         uuid = lpNode.find('core-model:uuid', self.neObj.namespaces)
-        lpUuid = "lp-" + self.interfaceName
+        #lpUuid = "lp-" + self.interfaceName
+        lpUuid = self.lpUuid
         uuid.text = lpUuid
         layerProtocolName = lpNode.find('core-model:layer-protocol-name', self.neObj.namespaces)
         layerProtocolName.text = self.layer
@@ -106,10 +111,11 @@ class MwpsInterface:
         for ltpNode in neNode.findall('core-model:ltp', self.neObj.namespaces):
             uuid = ltpNode.find('core-model:uuid', self.neObj.namespaces)
             logger.debug("Found ltp with ltp=%s", uuid.text)
-            if uuid.text == ('ltp-' + self.interfaceName):
+            #if uuid.text == ('ltp-' + self.interfaceName):
+            if uuid.text == self.interfaceName:
                 if self.clientLtpNode is not None:
                     newClient = copy.deepcopy(self.clientLtpNode)
-                    newClient.text = 'ltp-' + clientLtpUuid
+                    newClient.text = clientLtpUuid
                     ltpNode.append(newClient)
 
     def buildCoreModelStatusXml(self):
@@ -117,13 +123,15 @@ class MwpsInterface:
 
         ltpNode = copy.deepcopy(self.neObj.ltpStatusXmlNode)
         uuid = ltpNode.find('uuid')
-        ltpUuid = "ltp-" + self.interfaceName
+        #ltpUuid = "ltp-" + self.interfaceName
+        ltpUuid = self.ltpUuid
         uuid.text = ltpUuid
         addCoreDefaultStatusValuesToNode(ltpNode)
 
         lpNode = ltpNode.find('lp')
         uuid = lpNode.find('uuid')
-        lpUuid = "lp-" + self.interfaceName
+        #lpUuid = "lp-" + self.interfaceName
+        lpUuid = self.lpUuid
         uuid.text = lpUuid
         addCoreDefaultStatusValuesToNode(lpNode)
 
@@ -133,7 +141,8 @@ class MwpsInterface:
         parentNode = self.neObj.configRootXmlNode
 
         airInterface = copy.deepcopy(self.neObj.airInterfacePacConfigXmlNode)
-        lpUuid = "lp-" + self.interfaceName
+        #lpUuid = "lp-" + self.interfaceName
+        lpUuid = self.lpUuid
 
         layerProtocol = airInterface.find('microwave-model:layer-protocol', self.neObj.namespaces)
         layerProtocol.text = lpUuid
@@ -167,7 +176,8 @@ class MwpsInterface:
         parentNode = self.neObj.statusRootXmlNode
 
         airInterface = copy.deepcopy(self.neObj.airInterfaceStatusXmlNode)
-        lpUuid = "lp-" + self.interfaceName
+        #lpUuid = "lp-" + self.interfaceName
+        lpUuid = self.lpUuid
 
         layerProtocol = airInterface.find('layer-protocol')
         layerProtocol.text = lpUuid
@@ -284,7 +294,8 @@ class MwpsInterface:
         numberPorts.text = str(num)
 
         portDsList = copy.deepcopy(self.neObj.ptpPortDsListConfigXmlNode)
-        ltpUuid = "ltp-" + self.interfaceName
+        #ltpUuid = "ltp-" + self.interfaceName
+        ltpUuid = self.ltpUuid
 
         portNumber = portDsList.find('ptp:port-number', self.neObj.namespaces)
         portNumber.text = str(self.id)
@@ -374,7 +385,9 @@ class MwsInterface:
         self.neObj = neObj
         self.layer = 'MWS'
         self.prefixName = 'mws-'
-        self.interfaceName = self.prefixName + str(self.uuid)
+        self.interfaceName = str(self.uuid)
+        self.ltpUuid = self.interfaceName
+        self.lpUuid = self.ltpUuid + "-LP-1"
 
         self.emEnv = wireless_emulator.emulator.Emulator()
 
@@ -398,7 +411,8 @@ class MwsInterface:
         neNode = self.neObj.networkElementConfigXmlNode
         ltpNode = copy.deepcopy(self.neObj.ltpConfigXmlNode)
         uuid = ltpNode.find('core-model:uuid', self.neObj.namespaces)
-        ltpUuid = "ltp-" + self.interfaceName
+        #ltpUuid = "ltp-" + self.interfaceName
+        ltpUuid = self.ltpUuid
         uuid.text = ltpUuid
         addCoreDefaultValuesToNode(ltpNode, ltpUuid, self.neObj.namespaces)
 
@@ -414,15 +428,17 @@ class MwsInterface:
             server = copy.deepcopy(serverLtpNode)
 
             serverInterface = self.neObj.getInterfaceFromInterfaceUuid(ltp)
-            server.text = 'ltp-' + serverInterface.interfaceName
+            #server.text = 'ltp-' + serverInterface.interfaceName
+            server.text = serverInterface.interfaceName
 
             ltpNode.append(server)
 
-            serverInterface.setCoreModelClientStateXml(self.interfaceName)
+            serverInterface.setCoreModelClientStateXml(self.ltpUuid)
 
         lpNode = ltpNode.find('core-model:lp', self.neObj.namespaces)
         uuid = lpNode.find('core-model:uuid', self.neObj.namespaces)
-        lpUuid = "lp-" + self.interfaceName
+        #lpUuid = "lp-" + self.interfaceName
+        lpUuid = self.lpUuid
         uuid.text = lpUuid
         layerProtocolName = lpNode.find('core-model:layer-protocol-name', self.neObj.namespaces)
         layerProtocolName.text = self.layer
@@ -467,10 +483,11 @@ class MwsInterface:
         for ltpNode in neNode.findall('core-model:ltp', self.neObj.namespaces):
             uuid = ltpNode.find('core-model:uuid', self.neObj.namespaces)
             logger.debug("Found ltp with ltp=%s", uuid.text)
-            if uuid.text == ('ltp-' + self.interfaceName):
+            #if uuid.text == ('ltp-' + self.interfaceName):
+            if uuid.text == self.ltpUuid:
                 if self.clientLtpNode is not None:
                     newClient = copy.deepcopy(self.clientLtpNode)
-                    newClient.text = 'ltp-' + clientLtpUuid
+                    newClient.text = clientLtpUuid
                     ltpNode.append(newClient)
 
     def buildCoreModelStatusXml(self):
@@ -478,13 +495,15 @@ class MwsInterface:
 
         ltpNode = copy.deepcopy(self.neObj.ltpStatusXmlNode)
         uuid = ltpNode.find('uuid')
-        ltpUuid = "ltp-" + self.interfaceName
+        #ltpUuid = "ltp-" + self.interfaceName
+        ltpUuid = self.ltpUuid
         uuid.text = ltpUuid
         addCoreDefaultStatusValuesToNode(ltpNode)
 
         lpNode = ltpNode.find('lp')
         uuid = lpNode.find('uuid')
-        lpUuid = "lp-" + self.interfaceName
+        #lpUuid = "lp-" + self.interfaceName
+        lpUuid = self.lpUuid
         uuid.text = lpUuid
         addCoreDefaultStatusValuesToNode(lpNode)
 
@@ -494,7 +513,8 @@ class MwsInterface:
         parentNode = self.neObj.configRootXmlNode
 
         pureEthernetStructure = copy.deepcopy(self.neObj.pureEthernetPacConfigXmlNode)
-        lpUuid = "lp-" + self.interfaceName
+        #lpUuid = "lp-" + self.interfaceName
+        lpUuid = self.lpUuid
 
         layerProtocol = pureEthernetStructure.find('microwave-model:layer-protocol', self.neObj.namespaces)
         layerProtocol.text = lpUuid
@@ -521,7 +541,8 @@ class MwsInterface:
         parentNode = self.neObj.statusRootXmlNode
 
         pureEthernetStructure = copy.deepcopy(self.neObj.pureEthernetStatusXmlNode)
-        lpUuid = "lp-" + self.interfaceName
+        #lpUuid = "lp-" + self.interfaceName
+        lpUuid = self.lpUuid
 
         layerProtocol = pureEthernetStructure.find('layer-protocol')
         layerProtocol.text = lpUuid
@@ -648,7 +669,9 @@ class MwEthContainerInterface:
         self.neObj = neObj
         self.layer = 'ETC'
         self.prefixName = 'etc-'
-        self.interfaceName = self.prefixName + str(self.uuid)
+        self.interfaceName = str(self.uuid)
+        self.ltpUuid = self.interfaceName
+        self.lpUuid = self.ltpUuid + "-LP-1"
 
         self.emEnv = wireless_emulator.emulator.Emulator()
 
@@ -672,7 +695,8 @@ class MwEthContainerInterface:
         neNode = self.neObj.networkElementConfigXmlNode
         ltpNode = copy.deepcopy(self.neObj.ltpConfigXmlNode)
         uuid = ltpNode.find('core-model:uuid', self.neObj.namespaces)
-        ltpUuid = "ltp-" + self.interfaceName
+        #ltpUuid = "ltp-" + self.interfaceName
+        ltpUuid = self.ltpUuid
         uuid.text = ltpUuid
         addCoreDefaultValuesToNode(ltpNode, ltpUuid, self.neObj.namespaces)
 
@@ -688,15 +712,16 @@ class MwEthContainerInterface:
             server = copy.deepcopy(serverLtpNode)
 
             serverInterface = self.neObj.getInterfaceFromInterfaceUuid(ltp)
-            server.text = 'ltp-' + serverInterface.interfaceName
+            server.text = serverInterface.interfaceName
 
             ltpNode.append(server)
 
-            serverInterface.setCoreModelClientStateXml(self.interfaceName)
+            serverInterface.setCoreModelClientStateXml(self.ltpUuid)
 
         lpNode = ltpNode.find('core-model:lp', self.neObj.namespaces)
         uuid = lpNode.find('core-model:uuid', self.neObj.namespaces)
-        lpUuid = "lp-" + self.interfaceName
+        #lpUuid = "lp-" + self.interfaceName
+        lpUuid = self.lpUuid
         uuid.text = lpUuid
         layerProtocolName = lpNode.find('core-model:layer-protocol-name', self.neObj.namespaces)
         layerProtocolName.text = self.layer
@@ -741,10 +766,10 @@ class MwEthContainerInterface:
         for ltpNode in neNode.findall('core-model:ltp', self.neObj.namespaces):
             uuid = ltpNode.find('core-model:uuid', self.neObj.namespaces)
             logger.debug("Found ltp with ltp=%s", uuid.text)
-            if uuid.text == ('ltp-' + self.interfaceName):
+            if uuid.text == self.ltpUuid:
                 if self.clientLtpNode is not None:
                     newClient = copy.deepcopy(self.clientLtpNode)
-                    newClient.text = 'ltp-' + clientLtpUuid
+                    newClient.text = clientLtpUuid
                     ltpNode.append(newClient)
 
     def buildCoreModelStatusXml(self):
@@ -752,13 +777,15 @@ class MwEthContainerInterface:
 
         ltpNode = copy.deepcopy(self.neObj.ltpStatusXmlNode)
         uuid = ltpNode.find('uuid')
-        ltpUuid = "ltp-" + self.interfaceName
+        #ltpUuid = "ltp-" + self.interfaceName
+        ltpUuid = self.ltpUuid
         uuid.text = ltpUuid
         addCoreDefaultStatusValuesToNode(ltpNode)
 
         lpNode = ltpNode.find('lp')
         uuid = lpNode.find('uuid')
-        lpUuid = "lp-" + self.interfaceName
+        #lpUuid = "lp-" + self.interfaceName
+        lpUuid = self.lpUuid
         uuid.text = lpUuid
         addCoreDefaultStatusValuesToNode(lpNode)
 
@@ -768,7 +795,8 @@ class MwEthContainerInterface:
         parentNode = self.neObj.configRootXmlNode
 
         ethernetContainer = copy.deepcopy(self.neObj.ethernetContainerPacConfigXmlNode)
-        lpUuid = "lp-" + self.interfaceName
+        #lpUuid = "lp-" + self.interfaceName
+        lpUuid = self.lpUuid
 
         layerProtocol = ethernetContainer.find('microwave-model:layer-protocol', self.neObj.namespaces)
         layerProtocol.text = lpUuid
@@ -811,7 +839,8 @@ class MwEthContainerInterface:
         parentNode = self.neObj.statusRootXmlNode
 
         ethernetContainer = copy.deepcopy(self.neObj.ethernetContainerStatusXmlNode)
-        lpUuid = "lp-" + self.interfaceName
+        #lpUuid = "lp-" + self.interfaceName
+        lpUuid = self.lpUuid
 
         layerProtocol = ethernetContainer.find('layer-protocol')
         layerProtocol.text = lpUuid
@@ -926,7 +955,9 @@ class ElectricalEtyInterface:
         self.neObj = neObj
         self.layer = 'ETY'
         self.prefixName = 'ety-'
-        self.interfaceName = self.prefixName + str(self.uuid)
+        self.interfaceName = str(self.uuid)
+        self.ltpUuid = self.interfaceName
+        self.lpUuid = self.ltpUuid + "-LP-1"
 
         self.emEnv = wireless_emulator.emulator.Emulator()
 
@@ -951,7 +982,8 @@ class ElectricalEtyInterface:
         neNode = self.neObj.networkElementConfigXmlNode
         ltpNode = copy.deepcopy(self.neObj.ltpConfigXmlNode)
         uuid = ltpNode.find('core-model:uuid', self.neObj.namespaces)
-        ltpUuid = "ltp-" + self.interfaceName
+        #ltpUuid = "ltp-" + self.interfaceName
+        ltpUuid = self.ltpUuid
         uuid.text = ltpUuid
         addCoreDefaultValuesToNode(ltpNode, ltpUuid, self.neObj.namespaces)
 
@@ -961,7 +993,8 @@ class ElectricalEtyInterface:
 
         lpNode = ltpNode.find('core-model:lp', self.neObj.namespaces)
         uuid = lpNode.find('core-model:uuid', self.neObj.namespaces)
-        lpUuid = "lp-" + self.interfaceName
+        #lpUuid = "lp-" + self.interfaceName
+        lpUuid = self.lpUuid
         uuid.text = lpUuid
         layerProtocolName = lpNode.find('core-model:layer-protocol-name', self.neObj.namespaces)
         layerProtocolName.text = self.layer
@@ -979,13 +1012,15 @@ class ElectricalEtyInterface:
 
         ltpNode = copy.deepcopy(self.neObj.ltpStatusXmlNode)
         uuid = ltpNode.find('uuid')
-        ltpUuid = "ltp-" + self.interfaceName
+        #ltpUuid = "ltp-" + self.interfaceName
+        ltpUuid = self.ltpUuid
         uuid.text = ltpUuid
         addCoreDefaultStatusValuesToNode(ltpNode)
 
         lpNode = ltpNode.find('lp')
         uuid = lpNode.find('uuid')
-        lpUuid = "lp-" + self.interfaceName
+        #lpUuid = "lp-" + self.interfaceName
+        lpUuid = self.lpUuid
         uuid.text = lpUuid
         addCoreDefaultStatusValuesToNode(lpNode)
 
@@ -997,10 +1032,10 @@ class ElectricalEtyInterface:
         for ltpNode in neNode.findall('core-model:ltp', self.neObj.namespaces):
             uuid = ltpNode.find('core-model:uuid', self.neObj.namespaces)
             logger.debug("Found ltp with ltp=%s", uuid.text)
-            if uuid.text == ('ltp-' + self.interfaceName):
+            if uuid.text == self.ltpUuid:
                 if self.clientLtpNode is not None:
                     newClient = copy.deepcopy(self.clientLtpNode)
-                    newClient.text = 'ltp-' + clientLtpUuid
+                    newClient.text = clientLtpUuid
                     ltpNode.append(newClient)
 
 #TODO this interface does not have yet a model, it is only present in the Core Model
@@ -1016,7 +1051,8 @@ class ElectricalEtyInterface:
         numberPorts.text = str(num)
 
         portDsList = copy.deepcopy(self.neObj.ptpPortDsListConfigXmlNode)
-        ltpUuid = "ltp-" + self.interfaceName
+        #ltpUuid = "ltp-" + self.interfaceName
+        ltpUuid = self.ltpUuid
 
         portNumber = portDsList.find('ptp:port-number', self.neObj.namespaces)
         portNumber.text = str(self.id)
@@ -1090,7 +1126,9 @@ class EthCtpInterface:
         self.neObj = neObj
         self.layer = 'ETH'
         self.prefixName = 'eth-'
-        self.interfaceName = self.prefixName + str(self.uuid)
+        self.interfaceName = str(self.uuid)
+        self.ltpUuid = self.interfaceName
+        self.lpUuid = self.ltpUuid + "-LP-1"
 
         self.serverLtpsList = []
         for ltp in serverLtps:
@@ -1128,13 +1166,15 @@ class EthCtpInterface:
         neNode = self.neObj.networkElementConfigXmlNode
         ltpNode = copy.deepcopy(self.neObj.ltpConfigXmlNode)
         uuid = ltpNode.find('core-model:uuid', self.neObj.namespaces)
-        ltpUuid = "ltp-" + self.interfaceName
+        #ltpUuid = "ltp-" + self.interfaceName
+        ltpUuid = self.ltpUuid
         uuid.text = ltpUuid
         addCoreDefaultValuesToNode(ltpNode, ltpUuid, self.neObj.namespaces)
 
         lpNode = ltpNode.find('core-model:lp', self.neObj.namespaces)
         uuid = lpNode.find('core-model:uuid', self.neObj.namespaces)
-        lpUuid = "lp-" + self.interfaceName
+        #lpUuid = "lp-" + self.interfaceName
+        lpUuid = self.lpUuid
         uuid.text = lpUuid
         layerProtocolName = lpNode.find('core-model:layer-protocol-name', self.neObj.namespaces)
         layerProtocolName.text = self.layer
@@ -1179,10 +1219,10 @@ class EthCtpInterface:
             server = copy.deepcopy(serverLtpNode)
 
             serverInterface = self.neObj.getInterfaceFromInterfaceUuid(ltp)
-            server.text = 'ltp-' + serverInterface.interfaceName
+            server.text = serverInterface.interfaceName
             ltpNode.append(server)
 
-            serverInterface.setCoreModelClientStateXml(self.interfaceName)
+            serverInterface.setCoreModelClientStateXml(self.ltpUuid)
 
         neNode.append(ltpNode)
 
@@ -1191,13 +1231,15 @@ class EthCtpInterface:
 
         ltpNode = copy.deepcopy(self.neObj.ltpStatusXmlNode)
         uuid = ltpNode.find('uuid')
-        ltpUuid = "ltp-" + self.interfaceName
+        #ltpUuid = "ltp-" + self.interfaceName
+        ltpUuid = self.ltpUuid
         uuid.text = ltpUuid
         addCoreDefaultStatusValuesToNode(ltpNode)
 
         lpNode = ltpNode.find('lp')
         uuid = lpNode.find('uuid')
-        lpUuid = "lp-" + self.interfaceName
+        #lpUuid = "lp-" + self.interfaceName
+        lpUuid = self.lpUuid
         uuid.text = lpUuid
         addCoreDefaultStatusValuesToNode(lpNode)
 
@@ -1207,7 +1249,8 @@ class EthCtpInterface:
         parentNode = self.neObj.configRootXmlNode
 
         ethernetPac = copy.deepcopy(self.neObj.ethernetPacConfigXmlNode)
-        lpUuid = "lp-" + self.interfaceName
+        #lpUuid = "lp-" + self.interfaceName
+        lpUuid = self.lpUuid
 
         layerProtocol = ethernetPac.find('onf-ethernet-conditional-packages:layer-protocol', self.neObj.namespaces)
         layerProtocol.text = lpUuid
@@ -1228,7 +1271,8 @@ class EthCtpInterface:
         parentNode = self.neObj.statusRootXmlNode
 
         ethernetPac = copy.deepcopy(self.neObj.ethernetPacStatusXmlNode)
-        lpUuid = "lp-" + self.interfaceName
+        #lpUuid = "lp-" + self.interfaceName
+        lpUuid = self.lpUuid
 
         layerProtocol = ethernetPac.find('layer-protocol')
         layerProtocol.text = lpUuid
