@@ -3,6 +3,7 @@ package net.i2cat.netconf.server.netconf.control;
 import java.io.InputStream;
 import java.io.OutputStream;
 import net.i2cat.netconf.messageQueue.MessageQueue;
+import net.i2cat.netconf.server.Console;
 import net.i2cat.netconf.server.MessageStore;
 import net.i2cat.netconf.server.netconf.streamProcessing.NetconfMessageProcessorThread;
 import net.i2cat.netconf.server.netconf.streamProcessing.NetconfStreamCodecThread;
@@ -46,9 +47,9 @@ public class NetconfController implements NetconfNotifyExecutor {
 
     }
 
-    public void start(MessageStore messageStore, NetworkElement ne) {
+    public void start(MessageStore messageStore, NetworkElement ne, Console console) {
         // start message processor
-        startMessageProcessor(messageStore, ne);
+        startMessageProcessor(messageStore, ne, console);
         // wait for message processor to continue
         ioThread = ioCodec.start();
     }
@@ -75,9 +76,9 @@ public class NetconfController implements NetconfNotifyExecutor {
      * Private functions and classes
      */
 
-    private void startMessageProcessor(MessageStore messageStore, NetworkElement ne) {
+    private void startMessageProcessor(MessageStore messageStore, NetworkElement ne, Console console) {
         log.info("Creating new message processor...");
-        messageProcessorThread = new NetconfMessageProcessorThread("Message processor", status, ioCodec, messageQueue, messageStore, ne);
+        messageProcessorThread = new NetconfMessageProcessorThread("Message processor", status, ioCodec, messageQueue, messageStore, ne, console);
         messageProcessorThread.start();
         log.info("Message processor started.");
         try {

@@ -34,6 +34,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import net.i2cat.netconf.server.Console;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
@@ -53,12 +54,13 @@ public class NetworkElement {
     private Document doc = null;
     private final Transformer transformer;
     private final String schemaPath;
+    private final Console console;
 
     /* ---------------------------------------------------------------
      * Constructor
      */
 
-    public NetworkElement(String filename, String schemaPath, String uuid) throws SAXException, IOException, ParserConfigurationException, TransformerConfigurationException, XPathExpressionException {
+    public NetworkElement(String filename, String schemaPath, String uuid, Console console) throws SAXException, IOException, ParserConfigurationException, TransformerConfigurationException, XPathExpressionException {
 
         LOG.debug("Networkelements uses file: "+filename);
         File file = new File(filename);
@@ -75,6 +77,8 @@ public class NetworkElement {
         transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
 
         this.schemaPath = schemaPath;
+        this.console = console;
+
         File schemaPathDirectory = new File(this.schemaPath);
         if (schemaPathDirectory.exists() && schemaPathDirectory.isDirectory()) {
 
@@ -99,13 +103,19 @@ public class NetworkElement {
             LOG.info(consoleMessage("Not OK:\n"+sbNotOk.toString()));
 
             Node uuidNode = getNode(doc, "//data/network-element/uuid");
-            if (uuidNode != null && uuid != null && !uuid.isEmpty()) {
-                uuidNode.setTextContent(uuid);
-                Node nameNode = getNode(doc, "//data/network-element/name/value");
-                nameNode.setTextContent(uuid);
-                LOG.info(consoleMessage("UUID of device: '"+uuidNode.getTextContent()+"'"));
+            if (uuidNode != null) {
+                if (uuid != null && !uuid.isEmpty()) {
+                    LOG.info(consoleMessage("Overwrite uuid and name with parameter "+uuid));
+                    uuidNode.setTextContent(uuid);
+                    Node nameNode = getNode(doc, "//data/network-element/name/value");
+                    if (nameNode != null) {
+                        LOG.info(consoleMessage("Overwrite name with parameter "+uuid));
+                        nameNode.setTextContent(uuid);
+                    }
+                }
+                LOG.info(consoleMessage("device info uuid'"+uuidNode.getTextContent()+"'"));
             } else {
-                LOG.info(consoleMessage("no UUID with xml"));
+                LOG.info(consoleMessage("no uuid found within xml-File"));
             }
 
         } else {
@@ -114,7 +124,7 @@ public class NetworkElement {
     }
 
     public NetworkElement(String filename, String schemaPath) throws SAXException, IOException, ParserConfigurationException, TransformerConfigurationException, XPathExpressionException {
-        this(filename, schemaPath, null);
+        this(filename, schemaPath, null, null);
     }
 
     /* ---------------------------------------------------------------
@@ -126,9 +136,8 @@ public class NetworkElement {
      * @param msg content
      * @return again the msg
      */
-    private static String consoleMessage(String msg) {
-        System.out.println(msg);
-        return msg;
+    private String consoleMessage(String msg) {
+        return console.cliOutput(msg);
     }
 
     /**
@@ -150,17 +159,17 @@ public class NetworkElement {
      * @param doc the document
      * @param xPathRoot the start node that is listed
      */
-    private static void listNodes(Document doc, String xPathRoot) {
+    private static void listNodesToConsole(Document doc, String xPathRoot, Console console) {
         Node root;
 
         try {
             root = getNode(doc, xPathRoot);
             for (Node l1 : getChildElementNodes(root)) {
-                consoleMessage(l1.getNodeName()+"-<root>");
+                console.cliOutput(l1.getNodeName()+"-<root>");
                 for (Node l2 : getChildElementNodes(l1)) {
-                    consoleMessage(l1.getNodeName()+"-"+l2.getNodeName());
+                    console.cliOutput(l1.getNodeName()+"-"+l2.getNodeName());
                     for (Node l3 : getChildElementNodes(l2)) {
-                        consoleMessage(l1.getNodeName()+"-"+l2.getNodeName()+"-"+l3.getNodeName());
+                        console.cliOutput(l1.getNodeName()+"-"+l2.getNodeName()+"-"+l3.getNodeName());
                     }
                 }
             }
@@ -401,7 +410,7 @@ public class NetworkElement {
      * @param newChild element to add
      * @param idx null or index information for console output
      */
-    private static void appendChild(Node destination, Node newChild, String idx) {
+    private static void appendChild(Node destination, Node newChild, String idx, Console console) {
 
         StringBuffer msg = new StringBuffer();
         msg.append(CONSOLEPREFIX1);
@@ -410,7 +419,7 @@ public class NetworkElement {
             msg.append(" idx["+idx+"]");
         }
 
-        LOG.info( consoleMessage(msg.toString()) );
+        LOG.info( console.cliOutput(msg.toString()) );
         Node copy = newChild.cloneNode(true);
 
         destination.appendChild(copy);
@@ -423,7 +432,7 @@ public class NetworkElement {
      * @param newChild replace with this content
      * @param idx null or index information for console output.
      */
-    private static void replaceChild(Node destination, Node child, Node newChild, String idx) {
+    private static void replaceChild(Node destination, Node child, Node newChild, String idx, Console console) {
 
         StringBuffer msg = new StringBuffer();
         msg.append(CONSOLEPREFIX1);
@@ -431,7 +440,7 @@ public class NetworkElement {
         if (idx != null) {
             msg.append(" idx["+idx+"]");
         }
-        LOG.info( consoleMessage(msg.toString()));
+        LOG.info( console.cliOutput(msg.toString()));
 
         Node copy = newChild.cloneNode(true);
         destination.replaceChild(copy, child);
@@ -444,7 +453,7 @@ public class NetworkElement {
      * @param destination has the effected attributes
      * @param newChild is the new attribute that replaces an existing one or is added.
      */
-    private static void replaceChild(Node destination, Node newChild ) {
+    private static void replaceChild(Node destination, Node newChild, Console console ) {
 
         if (newChild.getNodeType() == Node.ELEMENT_NODE) {
 
@@ -465,10 +474,10 @@ public class NetworkElement {
                 }
 
                 if (found) {
-                    replaceChild(destination, child, newChild, newChildUuidString );
+                    replaceChild(destination, child, newChild, newChildUuidString, console);
 
                 } else {
-                    appendChild(destination, newChild, newChildUuidString );
+                    appendChild(destination, newChild, newChildUuidString, console );
                 }
             }
         }
@@ -479,10 +488,10 @@ public class NetworkElement {
      * @param destination attributes to be replaced
      * @param source new attributes to replace existing ones or to be added
      */
-    private static void replaceChilds(Node destination, Node source) {
+    private static void replaceChilds(Node destination, Node source, Console console) {
 
         for (Node sourceChild : getChildElementNodes(source)) {
-            replaceChild(destination, sourceChild );
+            replaceChild(destination, sourceChild,console );
         }
 
     }
@@ -511,7 +520,7 @@ public class NetworkElement {
      * @param deleteCommand Node with xpath as parameter
      * @throws XPathExpressionException
      */
-    private static void deleteNode(Document doc, Node deleteCommand) throws XPathExpressionException {
+    private static void deleteNode(Document doc, Node deleteCommand, Console console) throws XPathExpressionException {
 
         String path = deleteCommand.getTextContent();
         LOG.info("Try to delete: '"+path+"'");
@@ -520,7 +529,7 @@ public class NetworkElement {
 
             if (toBeDeleted != null) {
                 toBeDeleted.getParentNode().removeChild(toBeDeleted);
-                LOG.info(consoleMessage(CONSOLEPREFIX1+" deleted: '"+path+"'"));
+                LOG.info(console.cliOutput(CONSOLEPREFIX1+" deleted: '"+path+"'"));
             } else {
                 LOG.info("Node to delete not found by xpath: '"+path+"'");
             }
@@ -569,12 +578,12 @@ public class NetworkElement {
      * @throws XPathExpressionException Wrong xpath
      * @throws TransformerException
      */
-    private static void processDynamic(Document doc, String idx, Transformer transformer, List<String> notificationXmls) throws XPathExpressionException, TransformerException {
+    private static void processDynamic(Document doc, String idx, Transformer transformer, List<String> notificationXmls, Console console) throws XPathExpressionException, TransformerException {
 
         Node node = getNode(doc, idx);
 
         if (node == null) {
-            LOG.warn( consoleMessage("Can not find any action for node index: '"+idx+"'"));
+            LOG.warn( console.cliOutput("Can not find any action for node index: '"+idx+"'"));
             return;
         }
 
@@ -583,7 +592,7 @@ public class NetworkElement {
 
             if (item.getNodeName().equals("network-element")) {
                 // Exchange / create LTPs already done in earlier step. Ignore here
-                replaceChilds( getNode(doc, "//data/network-element"), item );
+                replaceChilds( getNode(doc, "//data/network-element"), item, console );
 
             } else if (item.getNodeName().equals("mw-notifications")) {
                 // Generate Notification .. Ignore here
@@ -591,11 +600,11 @@ public class NetworkElement {
 
             } else if (item.getNodeName().equals("delete")) {
                 // Delete from doc
-                deleteNode(doc, item);
+                deleteNode(doc, item, console);
 
             } else {
                 // Create remaining objects
-                appendChild(getNode(doc, "//data"), item, null);
+                appendChild(getNode(doc, "//data"), item, null, console);
 
             }
 
@@ -639,7 +648,7 @@ public class NetworkElement {
             //Not in first, but in second => Create
             for ( String idx : getStringInFirstNotInSecond( secondList, firstList ) ) {
                 LOG.info(consoleMessage("Create action: "+idx));
-                processDynamic(doc, "//"+idx+"/create", transformer, res);
+                processDynamic(doc, "//"+idx+"/create", transformer, res, console);
             }
 
             //In first, and in second => Update (Not implemented)
@@ -650,7 +659,7 @@ public class NetworkElement {
             //In first, but not in second => Remove (Not implemented)
             for ( String idx : getStringInFirstNotInSecond( firstList, secondList ) ) {
                 LOG.info(consoleMessage("Remove action: "+idx));
-                processDynamic(doc, "//"+idx+"/remove", transformer, res);
+                processDynamic(doc, "//"+idx+"/remove", transformer, res, console);
             }
 
         } catch (Exception e) {
@@ -715,11 +724,11 @@ public class NetworkElement {
         xmlSubTreeChanges.addAll(getXmlSubTreeAsStringList("//MW_Notifications/AttributeValueChangedNotification"));
         int idx = 0;
 
-        if (command.contains("x")) {
+        if (command.startsWith("x")) {
 
-            listNodes(doc, "//data");
+            listNodesToConsole(doc, "//data", console);
 
-        } else if (command.contains("l")) {
+        } else if (command.startsWith("l")) {
             consoleMessage("Lists of problems and changes");
             for (String xmlString : xmlSubTreeProblems) {
                 consoleMessage("["+idx+"]:"+xmlString);
@@ -729,7 +738,7 @@ public class NetworkElement {
                 consoleMessage("["+idx+"]:"+xmlString);
                 idx++;
             }
-        } else {
+         } else {
 
             idx = Integer.parseInt(command.trim());
             String xmlSubTree = null;

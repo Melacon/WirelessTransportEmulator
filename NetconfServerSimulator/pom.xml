@@ -56,11 +56,6 @@
         </dependency>
 
         <!-- Apache commons-io -->
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>${commons-io.version}</version>
-        </dependency>
 
         <!-- JUnit -->
         <dependency>
@@ -92,7 +87,7 @@
                         <archive>
                             <manifest>
                                 <addClasspath>true</addClasspath>
-                                <mainClass>net.i2cat.netconf.testserver.Server</mainClass>
+                                <mainClass>net.i2cat.netconf.testserver.ServerSimulator</mainClass>
                             </manifest>
                         </archive>
                     </configuration>

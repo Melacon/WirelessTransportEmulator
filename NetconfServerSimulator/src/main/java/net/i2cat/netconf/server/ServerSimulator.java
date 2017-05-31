@@ -12,8 +12,10 @@ package net.i2cat.netconf.server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
@@ -40,13 +42,15 @@ import org.apache.sshd.server.Command;
 import org.apache.sshd.server.keyprovider.SimpleGeneratorHostKeyProvider;
 import org.xml.sax.SAXException;
 
-public class ServerSimulator implements MessageStore, BehaviourContainer, NetconfNotifyOriginator {
+public class ServerSimulator implements MessageStore, BehaviourContainer, NetconfNotifyOriginator, Console {
 
-    private static final Log    LOG                = LogFactory.getLog(ServerSimulator.class);
+    private static final Log   LOG                = LogFactory.getLog(ServerSimulator.class);
+    private static final SimpleDateFormat DATEFORMAT = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
 
     private SshServer           sshd;
 
     // stored messages
+    @SuppressWarnings("unused")
     private boolean             storeMessages    = false;
     private List<RPCElement>    messages;
 
@@ -60,43 +64,38 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
     }
 
     /**
-     * Creates a server and store all received messages
-     *
-     * @param host
-     *            host name (use null to listen in all interfaces)
-     * @param listeningPort
-     *            where the server will listen for SSH connections
-     *
+     * Creates a server and no not store messages
+     * @return a class representing the server
      */
-    public static ServerSimulator createServer(String host, int listeiningPort, NetworkElement ne) throws IllegalArgumentException {
-        if (ne == null) {
-            throw new IllegalArgumentException(cliOutput("NetworkElement is null"));
-        }
-
+    public static ServerSimulator createServer()  {
         ServerSimulator server = new ServerSimulator();
         server.messages = new ArrayList<RPCElement>();
         server.storeMessages = false;
 
-        server.initializeServer(host, listeiningPort, ne);
-
         return server;
     }
 
-    private void initializeServer(String host, int listeningPort, NetworkElement ne) {
-        LOG.info(cliOutput("Configuring server..."));
+    /**
+    * @param host name or ip used by SSH Server (use 0.0.0.0 to listen in all interfaces)
+    * @param listeiningPort where the SSH server will listen for SSH connections
+    * @param ne contains the model that is simulated
+    * @throws IllegalArgumentException if mandatory NE is null
+    */
+    private void initializeServer(String host, int listeningPort, NetworkElement ne) throws IllegalArgumentException {
+        LOG.info(staticCliOutput("Configuring server..."));
         sshd = SshServer.setUpDefaultServer();
         sshd.setHost(host);
         sshd.setPort(listeningPort);
 
-        LOG.info(cliOutput("Host: '" + host + "', listenig port: " + listeningPort));
+        LOG.info(staticCliOutput("Host: '" + host + "', listenig port: " + listeningPort));
 
         sshd.setPasswordAuthenticator(new AlwaysTruePasswordAuthenticator());
         sshd.setKeyPairProvider(new SimpleGeneratorHostKeyProvider(""));
 
         List<NamedFactory<Command>> subsystemFactories = new ArrayList<NamedFactory<Command>>();
-        subsystemFactories.add(NetconfSubsystem.Factory.createFactory(this, this, this, ne));
+        subsystemFactories.add(NetconfSubsystem.Factory.createFactory(this, this, this, ne, this));
         sshd.setSubsystemFactories(subsystemFactories);
-        LOG.info(cliOutput("Server configured."));
+        LOG.info(staticCliOutput("Server configured."));
     }
 
     @Override
@@ -120,25 +119,25 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
     }
 
     public void startServer() throws ServerException {
-        LOG.info(cliOutput("Starting server..."));
+        LOG.info(staticCliOutput("Starting server..."));
         try {
             sshd.start();
         } catch (IOException e) {
-            LOG.error(cliOutput("Error starting server!"+e.getMessage()));
+            LOG.error(staticCliOutput("Error starting server!"+e.getMessage()));
             throw new ServerException("Error starting server", e);
         }
-        LOG.info(cliOutput("Server started."));
+        LOG.info(staticCliOutput("Server started."));
     }
 
     public void stopServer() throws ServerException {
-        LOG.info(cliOutput("Stopping server..."));
+        LOG.info(staticCliOutput("Stopping server..."));
         try {
             sshd.stop();
         } catch (InterruptedException e) {
-            LOG.error(cliOutput("Error stopping server!"+e));
+            LOG.error(staticCliOutput("Error stopping server!"+e));
             throw new ServerException("Error stopping server", e);
         }
-        LOG.info(cliOutput("Server stopped."));
+        LOG.info(staticCliOutput("Server stopped."));
     }
 
     @Override
@@ -161,13 +160,14 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
     @Override
     public void setNetconfNotifyExecutor(NetconfNotifyExecutor executor) {
         this.netconfNotifyExecutor = executor;
+        staticCliOutput("Register user command listener.");
     }
 
     private void notify(String command) {
         if (netconfNotifyExecutor != null) {
             netconfNotifyExecutor.notify(command);
         } else {
-            System.out.println("No notifier registered.");
+            staticCliOutput("No user command listerner registered.");
         }
 
     }
@@ -200,10 +200,15 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
 
     }
 
+    @Override
+    public String cliOutput(String msg) {
+        return staticCliOutput(msg);
+    }
+
     public static void main(String[] args) {
 
         if (args.length < 3) {
-            cliOutput("To less parameters. Command: Server xmlFilename port [pathToYang]");
+            staticCliOutput("To less parameters. Command: Server xmlFilename port [pathToYang]");
             return;
         }
 
@@ -213,21 +218,22 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
         String yangPath = args.length >= 3 ? args[2] : "yang/yangNeModel";
         String uuid = args.length >= 4 ? args[3] : "";
 
-        cliOutput("Start parameters are:");
-        cliOutput("\tFilename: "+xmlFilename);
-        cliOutput("\tPort: "+port);
-        cliOutput("\tDebuginfo and communication is in file: "+debugFile);
-        cliOutput("\tYang files in directory: "+yangPath);
-        cliOutput("\tUuid: "+uuid);
+        staticCliOutput("Start parameters are:");
+        staticCliOutput("\tFilename: "+xmlFilename);
+        staticCliOutput("\tPort: "+port);
+        staticCliOutput("\tDebuginfo and communication is in file: "+debugFile);
+        staticCliOutput("\tYang files in directory: "+yangPath);
+        staticCliOutput("\tUuid: "+uuid);
 
         initDebug(debugFile);
 
-        LOG.info(cliOutput("Netconf NE simulator\n"));
+        LOG.info(staticCliOutput("Netconf NE simulator\n"));
 
-        NetworkElement ne;
         try {
-            ne = new NetworkElement(xmlFilename, yangPath, uuid);
-            ServerSimulator server = ServerSimulator.createServer("0.0.0.0", port, ne);
+            ServerSimulator server = ServerSimulator.createServer();
+            NetworkElement ne = new NetworkElement(xmlFilename, yangPath, uuid, server);
+
+            server.initializeServer("0.0.0.0", port, ne);
             server.startServer();
 
             // read lines form input
@@ -243,39 +249,42 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
                 }
 
                 if (command.equals("list")) {
-                    cliOutput("Messages received(" + server.getStoredMessages().size() + "):");
+                    staticCliOutput("Messages received(" + server.getStoredMessages().size() + "):");
                     for (RPCElement rpcElement : server.getStoredMessages()) {
-                        cliOutput("#####  BEGIN message #####\n" +
+                        staticCliOutput("#####  BEGIN message #####\n" +
                                 rpcElement.toXML() + '\n' +
                                 "#####   END message  #####");
                     }
                 } else  if (command.equals("size")) {
-                    cliOutput("Messages received(" + server.getStoredMessages().size() + "):");
+                    staticCliOutput("Messages received(" + server.getStoredMessages().size() + "):");
 
                 } else  if (command.equals("quit")) {
-                    cliOutput("Stop server");
+                    staticCliOutput("Stop server");
                     server.stopServer();
                     break;
                 } else  if (command.equals("info")) {
-                    cliOutput("Port: "+port+" File: "+xmlFilename);
+                    staticCliOutput("Port: "+port+" File: "+xmlFilename);
                 } else  if (command.equals("status")) {
-                    cliOutput("Status: not implemented");
+                    staticCliOutput("Status: not implemented");
                 } else if (command.startsWith("n")) {
                     String notifyCommand = command.substring(1);
-                    cliOutput("Notification: "+notifyCommand);
+                    staticCliOutput("User command: "+notifyCommand);
                     server.notify(notifyCommand);
                 } else {
-                    cliOutput("NETCONF Simulator V3.0");
-                    cliOutput("Available commands: status, quit, info, list, size, nZZ, nl, nx");
-                    cliOutput("\tnx: list internal XML doc tree");
-                    cliOutput("\tnl: list available notifications");
-                    cliOutput("\tnZZ: send notification with number ZZ");
+                    staticCliOutput("NETCONF Simulator V3.0");
+                    staticCliOutput("Available commands: status, quit, info, list, size, n[ZZ | l | x | dZZ]");
+                    staticCliOutput("\tnl: list available notifications");
+                    staticCliOutput("\tnZZ: send notification with number ZZ");
+                    staticCliOutput("\tnx: list internal XML doc tree");
+                    staticCliOutput("\tndZZ: Introduce delay of ZZ seconds before answer is send to next get-message");
+                    staticCliOutput("\tndl: list actual delay");
+                    staticCliOutput("\tndn: Discard next get message.");
                 }
             }
         } catch (SAXException e) {
-            LOG.error(cliOutput("(..something..) failed"+e.getMessage()));
+            LOG.error(staticCliOutput("(..something..) failed"+e.getMessage()));
         } catch (ParserConfigurationException e) {
-            LOG.error(cliOutput("(..something..) failed"+e.getMessage()));
+            LOG.error(staticCliOutput("(..something..) failed"+e.getMessage()));
         } catch (TransformerConfigurationException e) {
             LOG.error("(..something..) failed", e);
         } catch (ServerException e) {
@@ -286,12 +295,14 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
             LOG.error("(..something..) failed", e1);
         }
 
-        LOG.info(cliOutput("Exiting"));
+        LOG.info(staticCliOutput("Exiting"));
         System.exit(0);
     }
 
-    static String cliOutput(String msg) {
-        System.out.println(msg);
+    public static String staticCliOutput(String msg) {
+        System.out.println(DATEFORMAT.format(new Date())+" "+msg);
         return msg;
     }
+
+
 }
