@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import net.i2cat.netconf.server.BehaviourContainer;
+import net.i2cat.netconf.server.Console;
 import net.i2cat.netconf.server.MessageStore;
 import net.i2cat.netconf.server.netconf.types.NetworkElement;
 import org.apache.commons.logging.Log;
@@ -44,12 +45,14 @@ public class NetconfSubsystem implements Command, SessionAware {
 
     private NetconfController    netconfProcessor;
     private final NetconfNotifyOriginator netconfNotifyExecutor;
+    private final Console console;
 
-    public NetconfSubsystem(MessageStore messageStore, BehaviourContainer behaviourContainer, NetconfNotifyOriginator netconfNotifyExecutor, NetworkElement ne) {
+    public NetconfSubsystem(MessageStore messageStore, BehaviourContainer behaviourContainer, NetconfNotifyOriginator netconfNotifyExecutor, NetworkElement ne, Console console) {
         this.messageStore = messageStore;
         this.behaviourContainer = behaviourContainer;
         this.ne = ne;
         this.netconfNotifyExecutor = netconfNotifyExecutor;
+        this.console = console;
     }
 
     public InputStream getInputStream() {
@@ -92,7 +95,7 @@ public class NetconfSubsystem implements Command, SessionAware {
         netconfProcessor = new NetconfController(in, out, err, callback);
 
         log.info("Starting new client thread...");
-        netconfProcessor.start(messageStore, ne);
+        netconfProcessor.start(messageStore, ne, console);
         netconfNotifyExecutor.setNetconfNotifyExecutor(netconfProcessor);
 
     }
@@ -118,26 +121,28 @@ public class NetconfSubsystem implements Command, SessionAware {
     public static class Factory implements NamedFactory<Command> {
         private static final Log log2  = LogFactory.getLog(Factory.class);
 
-        private MessageStore        messageStore        = null;
-        private BehaviourContainer  behaviourContainer    = null;
-        private NetworkElement      ne = null;
-        private NetconfNotifyOriginator       notifyFunction = null;
+        private final MessageStore        messageStore;
+        private final BehaviourContainer  behaviourContainer;
+        private final NetworkElement      ne;
+        private final NetconfNotifyOriginator       notifyFunction;
+        private final Console console;
 
-        private Factory(MessageStore messageStore, BehaviourContainer behaviourContainer, NetconfNotifyOriginator notifyFunction, NetworkElement ne) {
+        private Factory(MessageStore messageStore, BehaviourContainer behaviourContainer, NetconfNotifyOriginator notifyFunction, NetworkElement ne, Console console) {
             this.messageStore = messageStore;
             this.behaviourContainer = behaviourContainer;
             this.ne = ne;
             this.notifyFunction = notifyFunction;
+            this.console = console;
         }
 
-        public static Factory createFactory(MessageStore messageStore, BehaviourContainer behaviourContainer, NetconfNotifyOriginator notifyFunction, NetworkElement ne) {
-            return new Factory(messageStore, behaviourContainer, notifyFunction, ne);
+        public static Factory createFactory(MessageStore messageStore, BehaviourContainer behaviourContainer, NetconfNotifyOriginator notifyFunction, NetworkElement ne, Console console) {
+            return new Factory(messageStore, behaviourContainer, notifyFunction, ne, console);
         }
 
         @Override
         public Command create() {
             log2.info("Creating Netconf Subsystem Factory");
-            return new NetconfSubsystem(messageStore, behaviourContainer, notifyFunction, ne);
+            return new NetconfSubsystem(messageStore, behaviourContainer, notifyFunction, ne, console);
         }
 
         @Override

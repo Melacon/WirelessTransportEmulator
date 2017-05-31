@@ -17,6 +17,7 @@ import net.i2cat.netconf.messageQueue.MessageQueue;
 import net.i2cat.netconf.rpc.Query;
 import net.i2cat.netconf.rpc.QueryFactory;
 import net.i2cat.netconf.rpc.RPCElement;
+import net.i2cat.netconf.server.Console;
 import net.i2cat.netconf.server.MessageStore;
 import net.i2cat.netconf.server.netconf.types.NetconfIncommingMessageRepresentation;
 import net.i2cat.netconf.server.netconf.types.UserCommand;
@@ -43,16 +44,20 @@ public class NetconfMessageProcessorThread extends Thread  {
     private final NetworkElement theNe;
 
     private int counter = 0;
+    private int msgDelaySeconds = 0;
+    private int msgDiscard = 0;
+    private final Console console;
 
 
     public NetconfMessageProcessorThread(String name, NetconfSessionStatusHolder status, NetconfSender sender,
-            MessageQueue messageQueue, MessageStore messageStore, NetworkElement ne) {
+            MessageQueue messageQueue, MessageStore messageStore, NetworkElement ne, Console console) {
         super(name);
         this.status = status;
         this.sender = sender;
         this.messageQueue = messageQueue;
         this.messageStore = messageStore;
         this.theNe = ne;
+        this.console = console;
    }
 
     public void send(String xmlMessage) throws IOException {
@@ -122,6 +127,7 @@ public class NetconfMessageProcessorThread extends Thread  {
     private void doMessageProcessing(NetconfIncommingMessageRepresentation receivedMessage) throws IOException {
 
         if (receivedMessage.isHello()) {
+            consoleMessage("Hello ["+receivedMessage.getMessageId()+"]");
 
             if (status.less(NetconfSessionStatus.HELLO_RECEIVED)) {
                 status.change(NetconfSessionStatus.HELLO_RECEIVED);
@@ -137,42 +143,64 @@ public class NetconfMessageProcessorThread extends Thread  {
             }
 
         } else if (receivedMessage.isRpcCreateSubscription()) {
+            consoleMessage("CreateSubscription["+receivedMessage.getMessageId()+"]"+receivedMessage.getFilterTags().asCompactString());
             send(theNe.assembleRpcReplyEmptyDataOk(receivedMessage.getMessageId()));
 
         } else if (receivedMessage.isRpcGetFilter()) {
-            System.out.println("Get "+receivedMessage.getFilterTags().asCompactString());
-            send( theNe.assembleRpcReplyFromFilterMessage(
-                    receivedMessage.getMessageId(),
-                    receivedMessage.getFilterTags() ));
+            consoleMessage("Get["+receivedMessage.getMessageId()+"] "+receivedMessage.getFilterTags().asCompactString());
+            if (msgDiscard > 0) {
+                consoleMessage("Discard message: "+receivedMessage.getMessageId());
+                msgDiscard--;
+            } else {
+                if (msgDelaySeconds > 0) {
+                    consoleMessage("Wait seconds: "+msgDelaySeconds+" for msg "+receivedMessage.getMessageId());
+                    sleepSeconds(msgDelaySeconds);
+                    msgDelaySeconds = 0;
+                    consoleMessage("Proceed");
+                }
+                send( theNe.assembleRpcReplyFromFilterMessage(
+                        receivedMessage.getMessageId(),
+                        receivedMessage.getFilterTags() ));
+            }
 
         } else if (receivedMessage.isRpcGetConfigSourceRunningFilter()) {
             NetconfTagList tags = receivedMessage.getFilterTags();
-            if (! tags.isEmtpy()) {
-                System.out.println("Get-config running "+receivedMessage.getFilterTags().asCompactString());
-            }
+            if (! tags.isEmtpy()) { //Do not indicate polls
+                consoleMessage("Get-config ["+receivedMessage.getMessageId()+"] running "+receivedMessage.getFilterTags().asCompactString());
 
-            send( theNe.assembleRpcReplyFromFilterMessage(
+            }
+           send( theNe.assembleRpcReplyFromFilterMessage(
                     receivedMessage.getMessageId(),
                     receivedMessage.getFilterTags() ));
 
         } else if (receivedMessage.isRpcLockTargetRunning()) {
-            System.out.println("Lock running");
+            consoleMessage("Lock ["+receivedMessage.getMessageId()+"] running");
             send( theNe.assembleRpcReplyOk(
                     receivedMessage.getMessageId()) );
 
         } else if (receivedMessage.isRpcUnlockTargetRunning()) {
-            System.out.println("Unlock running");
+            consoleMessage("Unlock ["+receivedMessage.getMessageId()+"] running");
             send( theNe.assembleRpcReplyOk(
                     receivedMessage.getMessageId()) );
 
         } else if (receivedMessage.isRpcEditConfigTargetRunningDefaultOperationConfig()){
-            System.out.println("Edit-config message with id "+receivedMessage.getMessageId());
+            consoleMessage("Edit-config ]"+receivedMessage.getMessageId()+"] message");
             send( theNe.editconfigElement(
                     receivedMessage.getMessageId(),
                     receivedMessage.getXmlSourceMessage()) );
         } else {
-            System.out.println("NO RULE for source message with id "+receivedMessage.getMessageId());
-            System.out.println(receivedMessage.getXmlSourceMessage());
+            consoleMessage("NO RULE for source message with id "+receivedMessage.getMessageId());
+            consoleMessage(receivedMessage.getXmlSourceMessage());
+        }
+    }
+
+    private static void sleepSeconds(int delaySeconds) {
+        if (delaySeconds > 0) {
+            try {
+                Thread.sleep(delaySeconds * 1000);
+            } catch (InterruptedException e) {
+                log.error("(..something..) failed", e);
+            }
         }
     }
 
@@ -185,11 +213,42 @@ public class NetconfMessageProcessorThread extends Thread  {
 
     private void doNotificationProcessing(UserCommand receivedMessage) throws IOException {
         log.info("User initiated Notification: " + receivedMessage.toString());
-        String msg = theNe.doProcessUserAction(receivedMessage.getCommand());
-        if (msg != null) {
-            send( msg );        //Test purpose
-            System.out.println("Notification: "+msg);
+        String command = receivedMessage.getCommand();
+
+        if (command.startsWith("dl")) {
+            consoleMessage("Delay in seconds: "+msgDelaySeconds);
+
+        } else if (command.startsWith("dn")) {
+
+            consoleMessage("Discard next incoming get-message");
+            msgDiscard = 1;
+
+        } else if (command.startsWith("d")) {
+
+            try {
+                msgDelaySeconds = Integer.valueOf(command.substring(1));
+                consoleMessage("New delay in seconds: "+msgDelaySeconds);
+            } catch (NumberFormatException e) {
+                consoleMessage("Not a number. Unchanged delay in seconds: "+msgDelaySeconds);
+            }
+
+        } else {
+            String msg = theNe.doProcessUserAction(receivedMessage.getCommand());
+            if (msg != null) {
+                send( msg );        //Test purpose
+                consoleMessage("Notification: "+msg);
+            }
         }
     }
+
+    /**
+     * Message to console
+     * @param msg content
+     * @return again the msg
+     */
+    private String consoleMessage(String msg) {
+        return console.cliOutput(msg);
+    }
+
 
 }

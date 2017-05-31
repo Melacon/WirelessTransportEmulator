@@ -3,9 +3,7 @@ module notifications {
     namespace "urn:ietf:params:xml:ns:netconf:notification:1.0";
     prefix "ncEvent";
 
-    import ietf-yang-types { prefix yang; }
-
-    import yuma-ncx { prefix ncx; }
+    import ietf-yang-types { prefix yang; revision-date "2013-07-15";}
 
     organization
       "IETF NETCONF WG";
@@ -14,9 +12,9 @@ module notifications {
       "netconf@ops.ietf.org";
 
     description
-      "Conversion of the 'ncEvent' XSD in the 
+      "Conversion of the 'ncEvent' XSD in the
        NETCONF Notifications RFC.";
-         
+
     reference
       "RFC 5277.";
 
@@ -36,7 +34,7 @@ module notifications {
          takes as argument the name of the notification stream
          and filter. Both of those options limit the content of
          the subscription. In addition, there are two time-related
-         parameters, startTime and stopTime, which can be used to 
+         parameters, startTime and stopTime, which can be used to
          select the time interval of interest to the notification
          replay feature.";
 
@@ -56,7 +54,7 @@ module notifications {
              possible events is of interest. The format of this
              parameter is the same as that of the filter parameter
              in the NETCONF protocol operations. If not present,
-             all events not precluded by other parameters will 
+             all events not precluded by other parameters will
              be sent.";
         }
 
@@ -81,18 +79,4 @@ module notifications {
         }
       }
     }
-
-   container notification {
-      description "internal struct to start a notification";
-      ncx:abstract;
-      ncx:hidden;
-      config false;
-
-      leaf eventTime {
-         mandatory true;
-         type yang:date-and-time;
-      }
-
-      // eventType and any data content goes here
-   }  
 }

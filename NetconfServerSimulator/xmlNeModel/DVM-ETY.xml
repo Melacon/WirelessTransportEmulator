@@ -343,6 +343,48 @@
             <ltp-direction>bidirectional</ltp-direction>
         </ltp>
     </network-element>
+     <mw-notifications>
+          <notification-timeout>20</notification-timeout>
+          <problem-notification xmlns="urn:onf:params:xml:ns:yang:microwave-model">
+              <problem>signalIsLost</problem>
+              <object-id-ref>LP-MWPS-RADIO</object-id-ref>
+              <severity>critical</severity>
+          </problem-notification>
+          <problem-notification xmlns="urn:onf:params:xml:ns:yang:microwave-model">
+              <problem>rslIsExceeded</problem>
+              <object-id-ref>LP-MWPS-RADIO</object-id-ref>
+              <severity>major</severity>
+          </problem-notification>
+          <problem-notification xmlns="urn:onf:params:xml:ns:yang:microwave-model">
+              <problem>temperatureIsExceeded</problem>
+              <object-id-ref>LP-MWPS-RADIO</object-id-ref>
+              <severity>minor</severity>
+            </problem-notification>
+          <problem-notification xmlns="urn:onf:params:xml:ns:yang:microwave-model">
+              <problem>modemIsFaulty</problem>
+              <object-id-ref>LP-MWPS-RADIO</object-id-ref>
+              <severity>warning</severity>
+            </problem-notification>
+          <problem-notification xmlns="urn:onf:params:xml:ns:yang:microwave-model">
+              <problem>modemIsFaulty</problem>
+              <object-id-ref>LP-MWPS-RADIO</object-id-ref>
+              <severity>non-alarmed</severity>
+          </problem-notification>
+
+         <attribute-value-changed-notification xmlns="urn:onf:params:xml:ns:yang:microwave-model">
+            <attribute-name>airInterfaceStatus/modulationCur</attribute-name>
+            <object-id-ref>LP-MWPS-ifIndex1</object-id-ref>
+            <new-value>128</new-value>
+         </attribute-value-changed-notification>
+         <attribute-value-changed-notification xmlns="urn:onf:params:xml:ns:yang:microwave-model">
+            <counter>234</counter>
+            <time-stamp>$TIME</time-stamp>
+            <attribute-name>airInterfaceStatus/modulationCur</attribute-name>
+            <object-id-ref>LP-MWPS-ifIndex1</object-id-ref>
+            <new-value>$COUNTER</new-value>
+         </attribute-value-changed-notification>
+    </mw-notifications>
+
     <FC-LTP-ETY-01-ETH-23-LTP-ETY-02-ETH-23>
         <create>
             <network-element>
