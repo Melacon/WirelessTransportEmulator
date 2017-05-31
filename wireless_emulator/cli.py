@@ -6,6 +6,7 @@ from subprocess import call
 
 from wireless_emulator import *
 from wireless_emulator.clean import cleanup
+from wireless_emulator.odlregistration import registerNeToOdlNewVersion, unregisterNeFromOdlNewVersion
 
 class CLI(Cmd):
     prompt = 'WirelessTransportEmulator>'
@@ -130,3 +131,78 @@ class CLI(Cmd):
             else:
                 print('ERROR: Node %s not found' % arg)
                 print('Usage: xterm <list_of_ne_uuids>')
+
+    def do_mount(self, line):
+        "Triggers a mount command in ODL for the specified NEs"
+        args = line.split(' ')
+        if len(args) != 1:
+            print('ERROR: usage: mount <all> for mounting all NEs')
+            print('ERROR: usage: mount <NE_uuid> for mounting a single network element')
+            return
+
+        nodeUuid = args[0]
+
+        if nodeUuid == 'all':
+            for node in self.emulator.networkElementList:
+                if node is not None:
+                    try:
+                        registerNeToOdlNewVersion(self.emulator.controllerInfo, node.uuid,
+                                                  node.managementIPAddressString,
+                                                  node.netconfPortNumber)
+                    except RuntimeError:
+                        print("Failed to register NE=%s having IP=%s and port=%s to the ODL controller" %
+                              (node.uuid, node.managementIPAddressString, node.netconfPortNumber))
+                else:
+                    print('ERROR: Node %s not found' % node)
+                    print('ERROR: usage: mount <all> for mounting all NEs')
+                    print('ERROR: usage: mount <NE_uuid> for mounting a single network element')
+        else:
+            node = self.emulator.getNeByName(nodeUuid)
+
+            if node is not None:
+                try:
+                    registerNeToOdlNewVersion(self.emulator.controllerInfo, node.uuid, node.managementIPAddressString,
+                                              node.netconfPortNumber)
+                except RuntimeError:
+                    print("Failed to register NE=%s having IP=%s and port=%s to the ODL controller" %
+                          (node.uuid, node.managementIPAddressString, node.netconfPortNumber))
+            else:
+                print('ERROR: Node %s not found' % node)
+                print('ERROR: usage: mount <all> for mounting all NEs')
+                print('ERROR: usage: mount <NE_uuid> for mounting a single network element')
+
+    def do_unmount(self, line):
+        "Triggers an unmount command in ODL for the specified NEs"
+        args = line.split(' ')
+        if len(args) != 1:
+            print('ERROR: usage: unmount <all> for unmounting all NEs')
+            print('ERROR: usage: unmount <NE_uuid> for unmounting a single network element')
+            return
+
+        nodeUuid = args[0]
+
+        if nodeUuid == 'all':
+            for node in self.emulator.networkElementList:
+                if node is not None:
+                    try:
+                        unregisterNeFromOdlNewVersion(self.emulator.controllerInfo, node.uuid)
+                    except RuntimeError:
+                        print("Failed to unregister NE=%s having IP=%s and port=%s from the ODL controller" %
+                              (node.uuid, node.managementIPAddressString, node.netconfPortNumber))
+                else:
+                    print('ERROR: Node %s not found' % node)
+                    print('ERROR: usage: unmount <all> for unmounting all NEs')
+                    print('ERROR: usage: unmount <NE_uuid> for unmounting a single network element')
+        else:
+            node = self.emulator.getNeByName(nodeUuid)
+
+            if node is not None:
+                try:
+                    unregisterNeFromOdlNewVersion(self.emulator.controllerInfo, node.uuid)
+                except RuntimeError:
+                    print("Failed to unregister NE=%s having IP=%s and port=%s from the ODL controller" %
+                          (node.uuid, node.managementIPAddressString, node.netconfPortNumber))
+            else:
+                print('ERROR: Node %s not found' % node)
+                print('ERROR: usage: unmount <all> for unmounting all NEs')
+                print('ERROR: usage: unmount <NE_uuid> for unmounting a single network element')
