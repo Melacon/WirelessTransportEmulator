@@ -1150,7 +1150,7 @@ class EthCtpInterface:
         return self.neObj.dockerName
 
     def findVlanId(self):
-        for link in self.emEnv.topoJson['topologies']['eth']['links']:
+        for link in self.emEnv.topoJson['topologies']['ety']['links']:
             if self.neObj.getNeUuid() == link[0]['uuid'] and self.uuid == link[0]['ltp']:
                 return link[0]['vlan-id']
             elif self.neObj.getNeUuid() == link[1]['uuid'] and self.uuid == link[1]['ltp']:
