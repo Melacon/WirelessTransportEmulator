@@ -23,7 +23,7 @@ class Topology:
                 linkObj.addLink()
                 self.linkList.append(linkObj)
                 logger.debug("Link added to linkList...")
-        elif self.topologyLayer == 'eth':
+        elif self.topologyLayer == 'ety':
             for link in self.topologyDescription['links']:
                 logger.debug("Creating link...")
                 linkObj = Link(link)

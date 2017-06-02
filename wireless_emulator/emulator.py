@@ -140,12 +140,12 @@ class Emulator(metaclass=Singleton):
         topoObj = Topology(mwpsTopo, "mwps")
         self.topologies.append(topoObj)
 
-        logger.debug("Creating topologies list eth...")
+        logger.debug("Creating topologies list ety...")
 
-        ethTopo = self.topoJson['topologies']['eth']
+        etyTopo = self.topoJson['topologies']['ety']
 
-        ethObj = Topology(ethTopo, "eth")
-        self.topologies.append(ethObj)
+        etyObj = Topology(etyTopo, "ety")
+        self.topologies.append(etyObj)
 
     def buildTopologies(self):
         logger.debug("Building topologies...")

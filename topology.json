@@ -57,16 +57,12 @@
           },
           {
             "layer" : "ETH",
-            "LTPs" : [{"id" : "eth1", "serverLTPs" : [{"id" : "ety1"}], "conditional-package" : "ethernet-pac"},
-                      {"id" : "eth2", "serverLTPs" : [{"id" : "ety2"}], "conditional-package" : "ethernet-pac"},
-                      {"id" : "eth3", "serverLTPs" : [{"id" : "ety3"}], "conditional-package" : "ethernet-pac"},
-                      {"id" : "eth4", "serverLTPs" : [{"id" : "ety4"}], "conditional-package" : "ethernet-pac"},
-                      {"id" : "eth5", "serverLTPs" : [{"id" : "mwEtc1"}], "conditional-package" : "ethernet-pac"}
+            "LTPs" : [
                     ]
           }
           ],
         "eth-cross-connections" : [
-          {"fcPorts" : [{"ltp" : "eth1", "vlan-id" : "26"}, {"ltp" : "eth5", "vlan-id" : "26"}], "host" : true, "fcRoute" : "service1"}
+
           ],
         "ptp-clock" : [1]
       }
@@ -250,7 +246,7 @@
 		[{"uuid" : "Simulator-2", "ltp" : "airIntf4", "radio-signal-id" : "29"}, {"uuid" : "Simulator-3", "ltp" : "airIntf2", "radio-signal-id" : "29"}]
         ]
     },
-    "eth" : {
+    "ety" : {
       "links" : [
         [{"uuid" : "Simulator-2", "ltp" : "ety1", "vlan-id" : "30"}, {"uuid" : "Simulator-3", "ltp" : "ety1", "vlan-id" : "30"}]
       ]
