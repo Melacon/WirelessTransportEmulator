@@ -13,6 +13,7 @@ package net.i2cat.netconf.server.netconf.streamProcessing;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.regex.Pattern;
 import net.i2cat.netconf.messageQueue.MessageQueue;
 import net.i2cat.netconf.rpc.Query;
 import net.i2cat.netconf.rpc.QueryFactory;
@@ -33,6 +34,7 @@ import org.apache.commons.logging.LogFactory;
 public class NetconfMessageProcessorThread extends Thread  {
 
     private static final Log log  = LogFactory.getLog(NetconfMessageProcessorThread.class);
+
     // status fields
     private final NetconfSessionStatusHolder status;
     private final NetconfSender sender;
@@ -45,8 +47,9 @@ public class NetconfMessageProcessorThread extends Thread  {
 
     private int counter = 0;
     private int msgDelaySeconds = 0;
-    private int msgDiscard = 0;
+    private int msgToDiscardCounter = 0;
     private final Console console;
+    private Pattern msgPattern = setPattern(null);
 
 
     public NetconfMessageProcessorThread(String name, NetconfSessionStatusHolder status, NetconfSender sender,
@@ -147,12 +150,15 @@ public class NetconfMessageProcessorThread extends Thread  {
             send(theNe.assembleRpcReplyEmptyDataOk(receivedMessage.getMessageId()));
 
         } else if (receivedMessage.isRpcGetFilter()) {
-            consoleMessage("Get["+receivedMessage.getMessageId()+"] "+receivedMessage.getFilterTags().asCompactString());
-            if (msgDiscard > 0) {
+            String tagString = receivedMessage.getFilterTags().asCompactString();
+            boolean matches = msgPattern.matcher(tagString).matches();
+            consoleMessage("Get["+receivedMessage.getMessageId()+"]  "+(matches ? "matches" : "")+tagString);
+
+            if (matches && msgToDiscardCounter > 0) {
                 consoleMessage("Discard message: "+receivedMessage.getMessageId());
-                msgDiscard--;
+                msgToDiscardCounter--;
             } else {
-                if (msgDelaySeconds > 0) {
+                if (matches && msgDelaySeconds > 0) {
                     consoleMessage("Wait seconds: "+msgDelaySeconds+" for msg "+receivedMessage.getMessageId());
                     sleepSeconds(msgDelaySeconds);
                     msgDelaySeconds = 0;
@@ -217,17 +223,22 @@ public class NetconfMessageProcessorThread extends Thread  {
 
         if (command.startsWith("dl")) {
             consoleMessage("Delay in seconds: "+msgDelaySeconds);
+            consoleMessage("Message pattern: '"+msgPattern.pattern()+"'");
+
+        } else if (command.startsWith("dp")) {
+            msgPattern = setPattern(command.substring(2));
+            consoleMessage("Set message pattern to '"+msgPattern.pattern()+"'");
 
         } else if (command.startsWith("dn")) {
 
-            consoleMessage("Discard next incoming get-message");
-            msgDiscard = 1;
+            consoleMessage("Discard next incoming filtered get-message using pattern: '"+msgPattern.pattern()+"'");
+            msgToDiscardCounter = 1;
 
         } else if (command.startsWith("d")) {
 
             try {
                 msgDelaySeconds = Integer.valueOf(command.substring(1));
-                consoleMessage("New delay in seconds: "+msgDelaySeconds);
+                consoleMessage("New delay in seconds: "+msgDelaySeconds+" using pattern: '"+msgPattern.pattern()+"'");
             } catch (NumberFormatException e) {
                 consoleMessage("Not a number. Unchanged delay in seconds: "+msgDelaySeconds);
             }
@@ -248,6 +259,19 @@ public class NetconfMessageProcessorThread extends Thread  {
      */
     private String consoleMessage(String msg) {
         return console.cliOutput(msg);
+    }
+
+    /**
+     * Return the selected pattern
+     * @param regex that should be used
+     * @return selected
+     */
+    private static Pattern setPattern(String regex) {
+         if (regex == null || regex.isEmpty()) {
+            regex = ".*";
+        }
+        return Pattern.compile(regex);
+
     }
 
 

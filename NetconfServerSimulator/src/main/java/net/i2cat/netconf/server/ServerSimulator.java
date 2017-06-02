@@ -242,13 +242,11 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
 
             while (true) {
                 command = buffer.readLine();
-                if (command != null) {
-                    command = command.toLowerCase();
-                } else {
-                    command = "<null>";
-                }
-
-                if (command.equals("list")) {
+                if (command == null) {
+                    staticCliOutput("Command <null>");
+                } else if (command.isEmpty()) {
+                    //Do nothing
+                } else if (command.equals("list")) {
                     staticCliOutput("Messages received(" + server.getStoredMessages().size() + "):");
                     for (RPCElement rpcElement : server.getStoredMessages()) {
                         staticCliOutput("#####  BEGIN message #####\n" +
@@ -270,15 +268,18 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
                     String notifyCommand = command.substring(1);
                     staticCliOutput("User command: "+notifyCommand);
                     server.notify(notifyCommand);
-                } else {
-                    staticCliOutput("NETCONF Simulator V3.0");
+                } else if (command.startsWith("h")) {
+                    staticCliOutput("NETCONF Simulator V4.0");
                     staticCliOutput("Available commands: status, quit, info, list, size, n[ZZ | l | x | dZZ]");
                     staticCliOutput("\tnl: list available notifications");
                     staticCliOutput("\tnZZ: send notification with number ZZ");
                     staticCliOutput("\tnx: list internal XML doc tree");
                     staticCliOutput("\tndZZ: Introduce delay of ZZ seconds before answer is send to next get-message");
-                    staticCliOutput("\tndl: list actual delay");
+                    staticCliOutput("\tndl: list actual delay and pattern");
+                    staticCliOutput("\tndp??: set tag filter regex pattern (.* = any)");
                     staticCliOutput("\tndn: Discard next get message.");
+                } else {
+                    staticCliOutput("Unknown command '"+command+"' (h for help)");
                 }
             }
         } catch (SAXException e) {
