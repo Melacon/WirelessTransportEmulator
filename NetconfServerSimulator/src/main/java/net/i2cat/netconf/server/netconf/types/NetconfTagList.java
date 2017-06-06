@@ -97,6 +97,14 @@ public class NetconfTagList {
         return tags.get(0);
     }
 
+    public boolean endsWithLeave() {
+        if (tags.size() > 0) {
+			return ! tags.get(tags.size()-1).hasOneValue();
+		} else {
+			return false;
+		}
+    }
+
     public String getSubTreePath() {
         StringBuilder res = new StringBuilder();
         for (NetconfTag tag : tags) {

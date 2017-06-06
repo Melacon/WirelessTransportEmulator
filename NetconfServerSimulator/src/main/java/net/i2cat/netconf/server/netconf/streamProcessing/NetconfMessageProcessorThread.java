@@ -152,7 +152,7 @@ public class NetconfMessageProcessorThread extends Thread  {
         } else if (receivedMessage.isRpcGetFilter()) {
             String tagString = receivedMessage.getFilterTags().asCompactString();
             boolean matches = msgPattern.matcher(tagString).matches();
-            consoleMessage("Get["+receivedMessage.getMessageId()+"]  "+(matches ? "matches" : "")+tagString);
+            consoleMessage("Get["+receivedMessage.getMessageId()+"]  "+(matches ? "matches " : "")+tagString);
 
             if (matches && msgToDiscardCounter > 0) {
                 consoleMessage("Discard message: "+receivedMessage.getMessageId());

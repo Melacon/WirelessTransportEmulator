@@ -880,19 +880,14 @@ public class NetworkElement {
 
             appendXmlMessageRpcReplyOpen(res, id);
             res.append("<data>\n");
-            if (idx != null) {
+            if (idx != null && tags.endsWithLeave()) {
 
                 //Open Example: "    <MW_AirInterface_Pac xmlns=\"uri:onf:MicrowaveModel-ObjectClasses-AirInterface\">\n" +
                 appendXmlTagOpen( res, root.getName(), root.getNamespace() );
                 //Example: "<layerProtocol>ffffffffff</layerProtocol>
                 appendXml( res, idx.getName(), idx.getValue());
                 //Subtree
-                if (root.getName().equals(idx.getName())) {
-                    //Root is requested
-                    res.append(xmlSubTree.replaceFirst("<"+root.getName()+">", "").replaceFirst("</"+root.getName()+">",""));
-                } else {
-                    res.append(xmlSubTree);
-                }
+                res.append(xmlSubTree);
                 //Close
                 appendXmlTagClose(res, root.getName());
             } else {
