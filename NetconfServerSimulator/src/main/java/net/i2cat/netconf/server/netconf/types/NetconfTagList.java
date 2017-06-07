@@ -31,6 +31,14 @@ public class NetconfTagList {
         }
     }
 
+    public int size() {
+        return tags.size();
+    }
+
+    public List<NetconfTag> getList() {
+        return tags;
+    }
+
     public boolean checkTags(String ...tagList) {
         if (tags.size() >= tagList.length) {
             for (int idx=0; idx < tagList.length; idx++) {
@@ -99,10 +107,10 @@ public class NetconfTagList {
 
     public boolean endsWithLeave() {
         if (tags.size() > 0) {
-			return ! tags.get(tags.size()-1).hasOneValue();
-		} else {
-			return false;
-		}
+            return ! tags.get(tags.size()-1).hasOneValue();
+        } else {
+            return false;
+        }
     }
 
     public String getSubTreePath() {

@@ -158,7 +158,7 @@ public class NetconfMessageProcessorThread extends Thread  {
     private void doMessageProcessing(NetconfIncommingMessageRepresentation receivedMessage) throws IOException {
 
         if (receivedMessage.isHello()) {
-            consoleMessage("Hello ["+receivedMessage.getMessageId()+"]");
+            consoleMessage("Hello");
 
             if (status.less(NetconfSessionStatus.HELLO_RECEIVED)) {
                 status.change(NetconfSessionStatus.HELLO_RECEIVED);
@@ -218,8 +218,14 @@ public class NetconfMessageProcessorThread extends Thread  {
                     receivedMessage.getMessageId()) );
 
         } else if (receivedMessage.isRpcEditConfigTargetRunningDefaultOperationConfig()){
-            consoleMessage("Edit-config ]"+receivedMessage.getMessageId()+"] message");
+            consoleMessage("Edit-config ["+receivedMessage.getMessageId()+"] message");
             send( theNe.editconfigElement(
+                    receivedMessage.getMessageId(),
+                    receivedMessage.getXmlSourceMessage()) );
+
+        } else if (receivedMessage.isRpcGetSchema()) {
+            consoleMessage("get-schema ["+receivedMessage.getMessageId()+"] message");
+            send( theNe.getSchema(
                     receivedMessage.getMessageId(),
                     receivedMessage.getXmlSourceMessage()) );
         } else {

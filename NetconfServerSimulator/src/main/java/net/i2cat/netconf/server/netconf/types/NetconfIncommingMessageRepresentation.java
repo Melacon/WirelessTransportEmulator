@@ -85,22 +85,16 @@ public class NetconfIncommingMessageRepresentation extends RPCElement {
         return messageType.equals("hello");
     }
 
-    public boolean isRpcCreateSubscription() {
-        return messageType.equals("rpc") && tags.checkTags("create-subscription");
-    }
-
     public boolean isRpcGetFilter() {
         return messageType.equals("rpc") && tags.checkTags("get","filter");
     }
 
-    /*
-    public boolean isRpcGetConfigSourceRunning() {
-        return messageType.equals("rpc") && tags.checkTags("get-config","source","running");
-    }
-    */
-
     public boolean isRpcGetConfigSourceRunningFilter() {
         return messageType.equals("rpc") && tags.checkTags("get-config","source","running", "filter");
+    }
+
+    public boolean isRpcEditConfigTargetRunningDefaultOperationConfig() {
+        return messageType.equals("rpc") && tags.checkTags("edit-config","target","running","default-operation", "config");
     }
 
     public boolean isRpcLockTargetRunning() {
@@ -111,10 +105,13 @@ public class NetconfIncommingMessageRepresentation extends RPCElement {
         return messageType.equals("rpc") && tags.checkTags("unlock","target","running");
     }
 
-    public boolean isRpcEditConfigTargetRunningDefaultOperationConfig() {
-        return messageType.equals("rpc") && tags.checkTags("edit-config","target","running","default-operation", "config");
+    public boolean isRpcCreateSubscription() {
+        return messageType.equals("rpc") && tags.checkTags("create-subscription");
     }
 
+    public boolean isRpcGetSchema() {
+        return messageType.equals("rpc") && tags.checkTags("get-schema");
+    }
 
     /*----------------------------------------------------------------
      * Required but not really used
