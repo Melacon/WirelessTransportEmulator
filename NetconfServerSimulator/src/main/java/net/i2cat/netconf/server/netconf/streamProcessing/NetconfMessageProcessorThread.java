@@ -12,7 +12,9 @@
 package net.i2cat.netconf.server.netconf.streamProcessing;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
+import java.util.regex.Pattern;
 import net.i2cat.netconf.messageQueue.MessageQueue;
 import net.i2cat.netconf.rpc.Query;
 import net.i2cat.netconf.rpc.QueryFactory;
@@ -33,6 +35,12 @@ import org.apache.commons.logging.LogFactory;
 public class NetconfMessageProcessorThread extends Thread  {
 
     private static final Log log  = LogFactory.getLog(NetconfMessageProcessorThread.class);
+    private static final String TAG_PTPID1 = "$PTPID(";
+    private static final String TAG_PTPID2 = ")";
+    private static final String TAG_TIME = "$TIME";
+    private static final String TAG_COUNTER = "$COUNTER";
+
+
     // status fields
     private final NetconfSessionStatusHolder status;
     private final NetconfSender sender;
@@ -45,9 +53,9 @@ public class NetconfMessageProcessorThread extends Thread  {
 
     private int counter = 0;
     private int msgDelaySeconds = 0;
-    private int msgDiscard = 0;
+    private int msgToDiscardCounter = 0;
     private final Console console;
-
+    private Pattern msgPattern = setPattern(null);
 
     public NetconfMessageProcessorThread(String name, NetconfSessionStatusHolder status, NetconfSender sender,
             MessageQueue messageQueue, MessageStore messageStore, NetworkElement ne, Console console) {
@@ -60,11 +68,34 @@ public class NetconfMessageProcessorThread extends Thread  {
         this.console = console;
    }
 
+    private static String substitudePtpId(String xml) {
+        int idx, idx2;
+        String substringCode, toExchange, base64Result;
+
+        int protect = 20;
+        while ((idx = xml.indexOf(TAG_PTPID1)) > 0 && protect-- > 0) {
+            idx2 = xml.indexOf(TAG_PTPID2, idx + TAG_PTPID1.length());
+            substringCode = xml.substring(idx + TAG_PTPID1.length(), idx2);
+            base64Result = Base64.getEncoder().encodeToString(substringCode.getBytes());
+
+            toExchange = TAG_PTPID1+substringCode+TAG_PTPID2;
+            xml = xml.replace(toExchange, base64Result);
+        }
+        if (protect <= 0) {
+            log.warn("Problem during conversion of "+TAG_PTPID1+TAG_PTPID2);
+        }
+
+        return xml;
+    }
+
+
     public void send(String xmlMessage) throws IOException {
 
         xmlMessage = xmlMessage
-                .replace("$TIME", NetconfTimeStamp.getTimeStamp() )
-                .replace("$COUNTER", String.valueOf(counter++) );
+                .replace(TAG_TIME, NetconfTimeStamp.getTimeStamp() )
+                .replace(TAG_COUNTER, String.valueOf(counter++) );
+
+        xmlMessage = substitudePtpId(xmlMessage);
 
         sender.send(xmlMessage);
     }
@@ -147,12 +178,15 @@ public class NetconfMessageProcessorThread extends Thread  {
             send(theNe.assembleRpcReplyEmptyDataOk(receivedMessage.getMessageId()));
 
         } else if (receivedMessage.isRpcGetFilter()) {
-            consoleMessage("Get["+receivedMessage.getMessageId()+"] "+receivedMessage.getFilterTags().asCompactString());
-            if (msgDiscard > 0) {
+            String tagString = receivedMessage.getFilterTags().asCompactString();
+            boolean matches = msgPattern.matcher(tagString).matches();
+            consoleMessage("Get["+receivedMessage.getMessageId()+"]  "+(matches ? "matches " : "")+tagString);
+
+            if (matches && msgToDiscardCounter > 0) {
                 consoleMessage("Discard message: "+receivedMessage.getMessageId());
-                msgDiscard--;
+                msgToDiscardCounter--;
             } else {
-                if (msgDelaySeconds > 0) {
+                if (matches && msgDelaySeconds > 0) {
                     consoleMessage("Wait seconds: "+msgDelaySeconds+" for msg "+receivedMessage.getMessageId());
                     sleepSeconds(msgDelaySeconds);
                     msgDelaySeconds = 0;
@@ -217,17 +251,22 @@ public class NetconfMessageProcessorThread extends Thread  {
 
         if (command.startsWith("dl")) {
             consoleMessage("Delay in seconds: "+msgDelaySeconds);
+            consoleMessage("Message pattern: '"+msgPattern.pattern()+"'");
+
+        } else if (command.startsWith("dp")) {
+            msgPattern = setPattern(command.substring(2));
+            consoleMessage("Set message pattern to '"+msgPattern.pattern()+"'");
 
         } else if (command.startsWith("dn")) {
 
-            consoleMessage("Discard next incoming get-message");
-            msgDiscard = 1;
+            consoleMessage("Discard next incoming filtered get-message using pattern: '"+msgPattern.pattern()+"'");
+            msgToDiscardCounter = 1;
 
         } else if (command.startsWith("d")) {
 
             try {
                 msgDelaySeconds = Integer.valueOf(command.substring(1));
-                consoleMessage("New delay in seconds: "+msgDelaySeconds);
+                consoleMessage("New delay in seconds: "+msgDelaySeconds+" using pattern: '"+msgPattern.pattern()+"'");
             } catch (NumberFormatException e) {
                 consoleMessage("Not a number. Unchanged delay in seconds: "+msgDelaySeconds);
             }
@@ -248,6 +287,19 @@ public class NetconfMessageProcessorThread extends Thread  {
      */
     private String consoleMessage(String msg) {
         return console.cliOutput(msg);
+    }
+
+    /**
+     * Return the selected pattern
+     * @param regex that should be used
+     * @return selected
+     */
+    private static Pattern setPattern(String regex) {
+         if (regex == null || regex.isEmpty()) {
+            regex = ".*";
+        }
+        return Pattern.compile(regex);
+
     }
 
 

@@ -51,10 +51,11 @@ public class NetworkElement {
     private static final String UUIDNAME = "uuid";
     private static final String CONSOLEPREFIX1 = "\tdoc-change: ";
 
-    private Document doc = null;
     private final Transformer transformer;
     private final String schemaPath;
     private final Console console;
+    private Document doc = null;
+    private String nePath = null;
 
     /* ---------------------------------------------------------------
      * Constructor
@@ -88,6 +89,7 @@ public class NetworkElement {
             Node node;
             StringBuffer sbNotOk = new StringBuffer();
             StringBuffer sbOk = new StringBuffer();
+            LOG.info(consoleMessage("Found number of schemas in XML-file: "+schemas.getLength()));
             for (int n = 0; n < schemas.getLength(); n++) {
                 node = schemas.item(n);
 
@@ -99,10 +101,29 @@ public class NetworkElement {
                     sbOk.append("\t"+fileSchema.getName()+"\n");
                 }
             }
-            LOG.info(consoleMessage("OK:\n"+sbOk.toString()));
-            LOG.info(consoleMessage("Not OK:\n"+sbNotOk.toString()));
+            if (sbOk.length() > 0) {
+                LOG.info(consoleMessage("Schemas-OK:\n"+sbOk.toString()));
+            }
+            if (sbNotOk.length() > 0) {
+                LOG.info(consoleMessage("Schemas-NOT OK:\n"+sbNotOk.toString()));
+            }
 
-            Node uuidNode = getNode(doc, "//data/network-element/uuid");
+            // Analyse mode version
+            Node neNode;
+            nePath = "//data/network-element"; //ONF V1.2
+            neNode = getNode(doc, nePath);
+            if (neNode == null) {
+                nePath = "//data/NetworkElement";  //ONF V1.0
+                neNode = getNode(doc, nePath);
+            }
+            if (neNode == null) {
+                LOG.error(consoleMessage("Can not find networkelement definition"));
+            } else {
+                LOG.info(consoleMessage("Network element root: "+nePath));
+            }
+
+            //Get UUID
+            Node uuidNode = getNode(doc, nePath+"/"+UUIDNAME);
             if (uuidNode != null) {
                 if (uuid != null && !uuid.isEmpty()) {
                     LOG.info(consoleMessage("Overwrite uuid and name with parameter "+uuid));
@@ -880,19 +901,14 @@ public class NetworkElement {
 
             appendXmlMessageRpcReplyOpen(res, id);
             res.append("<data>\n");
-            if (idx != null) {
+            if (idx != null && tags.endsWithLeave()) {
 
                 //Open Example: "    <MW_AirInterface_Pac xmlns=\"uri:onf:MicrowaveModel-ObjectClasses-AirInterface\">\n" +
                 appendXmlTagOpen( res, root.getName(), root.getNamespace() );
                 //Example: "<layerProtocol>ffffffffff</layerProtocol>
                 appendXml( res, idx.getName(), idx.getValue());
                 //Subtree
-                if (root.getName().equals(idx.getName())) {
-                    //Root is requested
-                    res.append(xmlSubTree.replaceFirst("<"+root.getName()+">", "").replaceFirst("</"+root.getName()+">",""));
-                } else {
-                    res.append(xmlSubTree);
-                }
+                res.append(xmlSubTree);
                 //Close
                 appendXmlTagClose(res, root.getName());
             } else {
