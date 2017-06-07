@@ -30,11 +30,11 @@ RUN set -x -e; \
 	make clean; \
     make; \
     sudo make install
-WORKDIR /usr/src/OpenYuma/example-modules/core-model
+WORKDIR /usr/src/OpenYuma/example-modules/microwave-model
 RUN set -x -e; \
     make DVM=1; \
     sudo make install
-WORKDIR /usr/src/OpenYuma/example-modules/microwave-model
+WORKDIR /usr/src/OpenYuma/example-modules/core-model
 RUN set -x -e; \
     make DVM=1; \
     sudo make install

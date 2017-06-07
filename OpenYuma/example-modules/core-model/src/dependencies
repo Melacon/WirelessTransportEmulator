@@ -42,7 +42,14 @@
  /usr/include/yuma/ncx/dlq.h /usr/include/yuma/ncx/ncx.h \
  /usr/include/yuma/ncx/ncx_feature.h /usr/include/yuma/ncx/ncxmod.h \
  /usr/include/yuma/ncx/cap.h /usr/include/yuma/ncx/ncxtypes.h \
- u_core-model.h y_core-model.h
+ u_core-model.h y_core-model.h \
+ ../../onf-ethernet-conditional-packages/src/y_onf-ethernet-conditional-packages.h \
+ ../../microwave-model/src/u_microwave-model.h \
+ /usr/include/yuma/agt/agt_not.h \
+ ../../microwave-model/src/y_microwave-model.h \
+ ../../mediator_utils/include/utils.h /usr/include/yuma/ncx/obj.h \
+ /usr/include/yuma/ncx/val_util.h /usr/include/libxml2/libxml/xpath.h \
+ /usr/include/libxml2/libxml/xpathInternals.h
 
 ../bin/y_core-model.o: y_core-model.c \
  /usr/include/libxml2/libxml/xmlstring.h \

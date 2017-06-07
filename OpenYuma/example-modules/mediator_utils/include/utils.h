@@ -86,4 +86,12 @@ status_t get_xpath_string_for_element(val_value_t *elem, xmlChar **buff);
 pthread_mutex_t lock;
 void update_status_values();
 
+status_t create_root_element_for_module(const char *module_name, const char *revision, const char *element_name, val_value_t** created_element_val);
+
+status_t create_and_init_child_element(const char *modname, const char *objname, val_value_t *parent_val, val_value_t **child_val, const char *valuestr);
+
+status_t create_and_init_siblings(obj_template_t *curr_obj,	val_value_t *parent_val);
+
+status_t add_virtual_leaf(val_value_t *parentVal, const char *elementName, getcb_fn_t callbackFunction);
+
 #endif /* UTILS_H_ */

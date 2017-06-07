@@ -36,10 +36,29 @@
 #include "u_core-model.h"
 #include "y_core-model.h"
 
+#include "y_onf-ethernet-conditional-packages.h"
+#include "u_microwave-model.h"
+
 #define XPATH_MAX_LENGTH 2048
 
+#include "utils.h"
+#include <string.h>
+
+static boolean init_finished = false;
+static uint32 obj_creation_counter = 0;
+static uint32 obj_deletion_counter = 0;
 
 /* put your static variables here */
+static status_t create_fc_configuration(val_value_t *newval);
+static status_t delete_fc_configuration(val_value_t *curval);
+static status_t build_and_attach_fc(cfg_template_t* runningcfg, const char *fc_uuid);
+static status_t build_and_attach_fc_port(val_value_t* parentval, const char *ltp_uuid);
+static status_t build_and_attach_ethernet_model(cfg_template_t* runningcfg, const char *lp_uuid);
+static status_t delete_fc(cfg_template_t* runningcfg, const char *fc_uuid);
+static status_t delete_ethernet_model(cfg_template_t* runningcfg, const char *lp_uuid);
+
+static void send_object_creation_notification(const char *obj_type, const char *obj_id_ref);
+static void send_object_deletion_notification(const char *obj_id_ref);
 
 
 /********************************************************************
@@ -198,13 +217,18 @@ status_t u_core_model_network_element_fd_fc_edit (
     status_t res = NO_ERR;
 
     if (LOGDEBUG) {
-        log_debug("\nEnter u_core_model_network_element_fd_fc_edit callback for %s phase",
-            agt_cbtype_name(cbtyp));
+        log_debug("\nEnter u_core_model_network_element_fd_fc_edit callback for %s phase and editop=%d",
+            agt_cbtype_name(cbtyp), editop);
     }
+    if (LOGDEBUG) {
+		log_debug("\nEnter u_core_model_network_element_fd_fc_edit OP_EDITOP_REPLACE with cur_val=%s and new_val=%s",
+			curval != NULL ? VAL_STRING(curval) : "null", newval != NULL ? VAL_STRING(newval) : "null");
+	}
 
     switch (cbtyp) {
     case AGT_CB_VALIDATE:
         /* description-stmt validation here */
+    	res = create_fc_configuration(newval);
         break;
     case AGT_CB_APPLY:
         /* database manipulation done here */
@@ -221,6 +245,7 @@ status_t u_core_model_network_element_fd_fc_edit (
         case OP_EDITOP_CREATE:
             break;
         case OP_EDITOP_DELETE:
+        	res = delete_fc_configuration(curval);
             break;
         default:
             res = SET_ERROR(ERR_INTERNAL_VAL);
@@ -37155,6 +37180,7 @@ status_t u_core_model_init2 (void)
 {
     status_t res = NO_ERR;
 
+    init_finished = true;
     /* put your init2 code here */
 
     return res;
@@ -37170,5 +37196,956 @@ void u_core_model_cleanup (void)
     /* put your cleanup code here */
     
 } /* u_core_model_cleanup */
+
+static status_t create_fc_configuration(val_value_t *newval)
+{
+	YUMA_ASSERT(TRUE, NOP, "create_fc_configuration was called with fc_uuid=%s", newval != NULL ? VAL_STRING(newval) : "null");
+	YUMA_ASSERT(init_finished == false, return NO_ERR, "create_fc_configuration was called at init state, returning without any modifications");
+
+	status_t res = NO_ERR;
+
+    cfg_template_t* runningcfg;
+	runningcfg = cfg_get_config_id(NCX_CFGID_RUNNING);
+	YUMA_ASSERT(!runningcfg || !runningcfg->root, return ERR_INTERNAL_VAL, "No running config available!");
+
+	res = build_and_attach_fc(runningcfg, VAL_STRING(newval));
+	YUMA_ASSERT(res != NO_ERR, return ERR_INTERNAL_VAL, "Failed to build and attach forwarding construct having uuid=%s", newval != NULL ? VAL_STRING(newval) : "null");
+
+	const char s[2] = ","; //delimiter for the ltp uuids
+	char *token = NULL, fc_uuid_copy[100];
+
+	strcpy(fc_uuid_copy, VAL_STRING(newval));
+	token = strtok(fc_uuid_copy, s);
+
+	res = build_and_attach_ethernet_model(runningcfg, token);
+	YUMA_ASSERT(res != NO_ERR, return ERR_INTERNAL_VAL, "Failed to build and attach ethernet model having uuid=%s", token);
+
+	token = strtok(NULL, s);
+
+	res = build_and_attach_ethernet_model(runningcfg, token);
+	YUMA_ASSERT(res != NO_ERR, return ERR_INTERNAL_VAL, "Failed to build and attach ethernet model having uuid=%s", token);
+
+	return NO_ERR;
+}
+
+static status_t delete_fc_configuration(val_value_t *curval)
+{
+	YUMA_ASSERT(TRUE, NOP, "delete_fc_configuration was called with fc_uuid=%s", curval != NULL ? VAL_STRING(curval) : "null");
+	YUMA_ASSERT(init_finished == false, return NO_ERR, "create_fc_configuration was called at init state, returning without any modifications");
+
+	status_t res = NO_ERR;
+
+    cfg_template_t* runningcfg;
+	runningcfg = cfg_get_config_id(NCX_CFGID_RUNNING);
+	YUMA_ASSERT(!runningcfg || !runningcfg->root, return ERR_INTERNAL_VAL, "No running config available!");
+
+	res = delete_fc(runningcfg, VAL_STRING(curval));
+	YUMA_ASSERT(res != NO_ERR, return ERR_INTERNAL_VAL, "Failed to delete forwarding construct having uuid=%s", curval != NULL ? VAL_STRING(curval) : "null");
+
+	const char s[2] = ","; //delimiter for the ltp uuids
+	char *token = NULL, fc_uuid_copy[100];
+
+	strcpy(fc_uuid_copy, VAL_STRING(curval));
+	token = strtok(fc_uuid_copy, s);
+
+	res = delete_ethernet_model(runningcfg, token);
+	YUMA_ASSERT(res != NO_ERR, return ERR_INTERNAL_VAL, "Failed to delete ethernet model having uuid=%s", token);
+
+	token = strtok(NULL, s);
+
+	res = delete_ethernet_model(runningcfg, token);
+	YUMA_ASSERT(res != NO_ERR, return ERR_INTERNAL_VAL, "Failed to delete ethernet model having uuid=%s", token);
+
+	return NO_ERR;
+}
+
+static status_t build_and_attach_fc(cfg_template_t* runningcfg, const char *fc_uuid)
+{
+	status_t res = NO_ERR;
+	YUMA_ASSERT(TRUE, NOP, "build_and_attach_fc called with fc_uuid=%s", fc_uuid);
+	/*
+	 * Creating the root element for the module: forwarding-construct
+	 */
+
+	val_value_t *forwarding_construct_val = NULL;
+
+	res = create_root_element_for_module(y_core_model_M_core_model,
+			y_core_model_R_core_model,
+			y_core_model_N_forwarding_construct,
+			&forwarding_construct_val);
+	YUMA_ASSERT(NULL == forwarding_construct_val, return ERR_INTERNAL_VAL,
+			"create_root_element_for_module failed for element=%s", y_core_model_N_forwarding_construct);
+
+	val_add_child(forwarding_construct_val, runningcfg->root);
+
+	/*
+	 * Creating the uuid element
+	 */
+	val_value_t  *uuid_val = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_uuid,
+			forwarding_construct_val,
+			&uuid_val,
+			fc_uuid);
+	YUMA_ASSERT(NULL == uuid_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_uuid);
+
+	/*
+	 * Creating the layer-protocol-name element
+	 */
+	val_value_t  *layer_protocol_name = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_layer_protocol_name,
+			forwarding_construct_val,
+			&layer_protocol_name,
+			"ETH");
+	YUMA_ASSERT(NULL == layer_protocol_name, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_layer_protocol_name);
+
+	/*
+	 * Creating the fc-route element
+	 */
+	val_value_t  *fc_route = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_fc_route,
+			forwarding_construct_val,
+			&fc_route,
+			"service1");
+	YUMA_ASSERT(NULL == fc_route, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_fc_route);
+
+	const char s[2] = ","; //delimiter for the ltp uuids
+	char *token = NULL, fc_uuid_copy[100];
+
+	strcpy(fc_uuid_copy, fc_uuid);
+	token = strtok(fc_uuid_copy, s);
+
+	res = build_and_attach_fc_port(forwarding_construct_val, token);
+	YUMA_ASSERT(res != NO_ERR, return ERR_INTERNAL_VAL, "Failed to build and attach fc_port having uuid=%s", token);
+
+	token = strtok(NULL, s);
+
+	res = build_and_attach_fc_port(forwarding_construct_val, token);
+	YUMA_ASSERT(res != NO_ERR, return ERR_INTERNAL_VAL, "Failed to build and attach fc_port having uuid=%s", token);
+
+	/*
+	 * Creating the forwarding-direction element
+	 */
+	val_value_t  *forwarding_direction_val = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_forwarding_direction,
+			forwarding_construct_val,
+			&forwarding_direction_val,
+			"bidirectional");
+	YUMA_ASSERT(NULL == forwarding_direction_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_forwarding_direction);
+
+	/*
+	 * Creating the is-protection-lock-out element
+	 */
+	val_value_t  *is_protection_lockout_val = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_is_protection_lock_out,
+			forwarding_construct_val,
+			&is_protection_lockout_val,
+			NULL);
+	YUMA_ASSERT(NULL == is_protection_lockout_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_is_protection_lock_out);
+
+	/*
+	 * Creating the service-priority element
+	 */
+	val_value_t  *service_priority_val = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_service_priority,
+			forwarding_construct_val,
+			&service_priority_val,
+			NULL);
+	YUMA_ASSERT(NULL == service_priority_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_service_priority);
+
+	/*
+	 * Creating the local-id element
+	 */
+	val_value_t  *local_id_val = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_local_id,
+			forwarding_construct_val,
+			&local_id_val,
+			NULL);
+	YUMA_ASSERT(NULL == local_id_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_local_id);
+
+	/*
+	 * Creating the value-name element
+	 */
+	val_value_t  *value_name_val = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_value_name,
+			local_id_val,
+			&value_name_val,
+			"vLocalId");
+	YUMA_ASSERT(NULL == value_name_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_value_name);
+
+	/*
+	 * Creating the value element
+	 */
+	val_value_t  *value_val = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_value,
+			local_id_val,
+			&value_val,
+			fc_uuid);
+	YUMA_ASSERT(NULL == value_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_value);
+
+	/*
+	 * Creating the name element
+	 */
+	val_value_t  *name_val = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_name,
+			forwarding_construct_val,
+			&name_val,
+			NULL);
+	YUMA_ASSERT(NULL == name_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_name);
+
+	/*
+	 * Creating the value-name element
+	 */
+	val_value_t  *value_name_val_2 = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_value_name,
+			name_val,
+			&value_name_val_2,
+			"vName");
+	YUMA_ASSERT(NULL == value_name_val_2, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_value_name);
+
+	/*
+	 * Creating the value element
+	 */
+	val_value_t  *value_val_2 = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_value,
+			name_val,
+			&value_val_2,
+			fc_uuid);
+	YUMA_ASSERT(NULL == value_val_2, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_value);
+
+	/*
+	 * Creating the label element
+	 */
+	val_value_t  *label_val = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_label,
+			forwarding_construct_val,
+			&label_val,
+			NULL);
+	YUMA_ASSERT(NULL == label_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_label);
+
+	/*
+	 * Creating the value-name element
+	 */
+	val_value_t  *value_name_val_3 = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_value_name,
+			label_val,
+			&value_name_val_3,
+			"vLabel");
+	YUMA_ASSERT(NULL == value_name_val_3, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_value_name);
+
+	/*
+	 * Creating the value element
+	 */
+	val_value_t  *value_val_3 = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_value,
+			label_val,
+			&value_val_3,
+			fc_uuid);
+	YUMA_ASSERT(NULL == value_val_3, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_value);
+
+	/*
+	 * Creating the extension element
+	 */
+	val_value_t  *extension_val = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_extension,
+			forwarding_construct_val,
+			&extension_val,
+			NULL);
+	YUMA_ASSERT(NULL == extension_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_extension);
+
+	/*
+	 * Creating the value-name element
+	 */
+	val_value_t  *value_name_val_4 = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_value_name,
+			extension_val,
+			&value_name_val_4,
+			"vExtension");
+	YUMA_ASSERT(NULL == value_name_val_4, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_value_name);
+
+	/*
+	 * Creating the value element
+	 */
+	val_value_t  *value_val_4 = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_value,
+			extension_val,
+			&value_val_4,
+			fc_uuid);
+	YUMA_ASSERT(NULL == value_val_4, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_value);
+
+	/*
+	 * Creating the operational-state element
+	 */
+	val_value_t  *operational_state_val = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_operational_state,
+			forwarding_construct_val,
+			&operational_state_val,
+			"enabled");
+	YUMA_ASSERT(NULL == operational_state_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_operational_state);
+
+	/*
+	 * Creating the administrative-control element
+	 */
+	val_value_t  *administrative_control_val = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_administrative_control,
+			forwarding_construct_val,
+			&administrative_control_val,
+			"unlock");
+	YUMA_ASSERT(NULL == administrative_control_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_administrative_control);
+
+	/*
+	 * Creating the administrative-state element
+	 */
+	val_value_t  *administrative_state_val = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_administrative_state,
+			forwarding_construct_val,
+			&administrative_state_val,
+			"unlocked");
+	YUMA_ASSERT(NULL == administrative_state_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_administrative_state);
+
+	/*
+	 * Creating the lifecycle-state element
+	 */
+	val_value_t  *lifecycle_state_val = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_lifecycle_state,
+			forwarding_construct_val,
+			&lifecycle_state_val,
+			"installed");
+	YUMA_ASSERT(NULL == lifecycle_state_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_lifecycle_state);
+
+	 send_object_creation_notification(y_core_model_N_forwarding_construct, fc_uuid);
+
+	return NO_ERR;
+}
+
+static status_t build_and_attach_fc_port(val_value_t* parentval, const char *ltp_uuid)
+{
+	status_t res = NO_ERR;
+	YUMA_ASSERT(TRUE, NOP, "build_and_attach_fc_port called with ltp_uuid=%s", ltp_uuid);
+
+	/*
+	 * Creating the fc-port element
+	 */
+	val_value_t  *fc_port = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_fc_port,
+			parentval,
+			&fc_port,
+			NULL);
+	YUMA_ASSERT(NULL == fc_port, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_fc_port);
+
+	/*
+	 * Creating the ltp element
+	 */
+	val_value_t  *ltp_val = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_ltp,
+			fc_port,
+			&ltp_val,
+			ltp_uuid);
+	YUMA_ASSERT(NULL == ltp_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_ltp);
+
+	/*
+	 * Creating the uuid element
+	 */
+	val_value_t  *uuid_val = NULL;
+	char uuid_str[100];
+	strcpy(uuid_str, ltp_uuid);
+	strcat(uuid_str, "_fc_port");
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_uuid,
+			fc_port,
+			&uuid_val,
+			uuid_str);
+	YUMA_ASSERT(NULL == uuid_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_uuid);
+
+	/*
+	 * Creating the fc-port-direction element
+	 */
+	val_value_t  *fc_port_direction_val = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_fc_port_direction,
+			fc_port,
+			&fc_port_direction_val,
+			"bidirectional");
+	YUMA_ASSERT(NULL == fc_port_direction_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_fc_port_direction);
+
+	/*
+	 * Creating the is-protection-lock-out element
+	 */
+	val_value_t  *is_protection_lockout_val = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_is_protection_lock_out,
+			fc_port,
+			&is_protection_lockout_val,
+			NULL);
+	YUMA_ASSERT(NULL == is_protection_lockout_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_is_protection_lock_out);
+
+	/*
+	 * Creating the selection-priority element
+	 */
+	val_value_t  *selection_priority_val = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_selection_priority,
+			fc_port,
+			&selection_priority_val,
+			NULL);
+	YUMA_ASSERT(NULL == selection_priority_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_selection_priority);
+
+	/*
+	 * Creating the is-internal-port element
+	 */
+	val_value_t  *is_internal_port_val = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_is_internal_port,
+			fc_port,
+			&is_internal_port_val,
+			NULL);
+	YUMA_ASSERT(NULL == is_internal_port_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_is_internal_port);
+
+	/*
+	 * Creating the local-id element
+	 */
+	val_value_t  *local_id_val = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_local_id,
+			fc_port,
+			&local_id_val,
+			NULL);
+	YUMA_ASSERT(NULL == local_id_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_local_id);
+
+	/*
+	 * Creating the value-name element
+	 */
+	val_value_t  *value_name_val = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_value_name,
+			local_id_val,
+			&value_name_val,
+			"vLocalId");
+	YUMA_ASSERT(NULL == value_name_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_value_name);
+
+	/*
+	 * Creating the value element
+	 */
+	val_value_t  *value_val = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_value,
+			local_id_val,
+			&value_val,
+			uuid_str);
+	YUMA_ASSERT(NULL == value_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_value);
+
+	/*
+	 * Creating the name element
+	 */
+	val_value_t  *name_val = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_name,
+			fc_port,
+			&name_val,
+			NULL);
+	YUMA_ASSERT(NULL == name_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_name);
+
+	/*
+	 * Creating the value-name element
+	 */
+	val_value_t  *value_name_val_2 = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_value_name,
+			name_val,
+			&value_name_val_2,
+			"vName");
+	YUMA_ASSERT(NULL == value_name_val_2, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_value_name);
+
+	/*
+	 * Creating the value element
+	 */
+	val_value_t  *value_val_2 = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_value,
+			name_val,
+			&value_val_2,
+			uuid_str);
+	YUMA_ASSERT(NULL == value_val_2, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_value);
+
+	/*
+	 * Creating the label element
+	 */
+	val_value_t  *label_val = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_label,
+			fc_port,
+			&label_val,
+			NULL);
+	YUMA_ASSERT(NULL == label_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_label);
+
+	/*
+	 * Creating the value-name element
+	 */
+	val_value_t  *value_name_val_3 = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_value_name,
+			label_val,
+			&value_name_val_3,
+			"vLabel");
+	YUMA_ASSERT(NULL == value_name_val_3, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_value_name);
+
+	/*
+	 * Creating the value element
+	 */
+	val_value_t  *value_val_3 = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_value,
+			label_val,
+			&value_val_3,
+			uuid_str);
+	YUMA_ASSERT(NULL == value_val_3, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_value);
+
+	/*
+	 * Creating the extension element
+	 */
+	val_value_t  *extension_val = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_extension,
+			fc_port,
+			&extension_val,
+			NULL);
+	YUMA_ASSERT(NULL == extension_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_extension);
+
+	/*
+	 * Creating the value-name element
+	 */
+	val_value_t  *value_name_val_4 = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_value_name,
+			extension_val,
+			&value_name_val_4,
+			"vExtension");
+	YUMA_ASSERT(NULL == value_name_val_4, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_value_name);
+
+	/*
+	 * Creating the value element
+	 */
+	val_value_t  *value_val_4 = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_value,
+			extension_val,
+			&value_val_4,
+			uuid_str);
+	YUMA_ASSERT(NULL == value_val_4, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_value);
+
+	/*
+	 * Creating the operational-state element
+	 */
+	val_value_t  *operational_state_val = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_operational_state,
+			fc_port,
+			&operational_state_val,
+			"enabled");
+	YUMA_ASSERT(NULL == operational_state_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_operational_state);
+
+	/*
+	 * Creating the administrative-control element
+	 */
+	val_value_t  *administrative_control_val = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_administrative_control,
+			fc_port,
+			&administrative_control_val,
+			"unlock");
+	YUMA_ASSERT(NULL == administrative_control_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_administrative_control);
+
+	/*
+	 * Creating the administrative-state element
+	 */
+	val_value_t  *administrative_state_val = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_administrative_state,
+			fc_port,
+			&administrative_state_val,
+			"unlocked");
+	YUMA_ASSERT(NULL == administrative_state_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_administrative_state);
+
+	/*
+	 * Creating the lifecycle-state element
+	 */
+	val_value_t  *lifecycle_state_val = NULL;
+
+	res = create_and_init_child_element(y_core_model_M_core_model,
+			y_core_model_N_lifecycle_state,
+			fc_port,
+			&lifecycle_state_val,
+			"installed");
+	YUMA_ASSERT(NULL == lifecycle_state_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_core_model_N_lifecycle_state);
+
+	return NO_ERR;
+}
+
+static status_t build_and_attach_ethernet_model(cfg_template_t* runningcfg, const char *lp_uuid)
+{
+	status_t res = NO_ERR;
+
+	/*
+	 * Creating the root element for the module: ethernet-pac
+	 */
+
+	val_value_t *ethernet_pac_val = NULL;
+
+	res = create_root_element_for_module(y_onf_ethernet_conditional_packages_M_onf_ethernet_conditional_packages,
+			y_onf_ethernet_conditional_packages_R_onf_ethernet_conditional_packages,
+			y_onf_ethernet_conditional_packages_N_ethernet_pac,
+			&ethernet_pac_val);
+	YUMA_ASSERT(NULL == ethernet_pac_val, return ERR_INTERNAL_VAL,
+			"create_root_element_for_module failed for element=%s", y_onf_ethernet_conditional_packages_N_ethernet_pac);
+
+	val_add_child(ethernet_pac_val, runningcfg->root);
+
+	/*
+	 * Creating the layer-protocol element
+	 */
+	val_value_t  *uuid_val = NULL;
+	char uuid_str[100];
+	strcpy(uuid_str, lp_uuid);
+	strcat(uuid_str, "-LP-1");
+
+	val_value_t  *layer_protocol_val = NULL;
+
+	res = create_and_init_child_element(y_onf_ethernet_conditional_packages_M_onf_ethernet_conditional_packages,
+			y_onf_ethernet_conditional_packages_N_layer_protocol,
+			ethernet_pac_val,
+			&layer_protocol_val,
+			uuid_str);
+	YUMA_ASSERT(NULL == layer_protocol_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_onf_ethernet_conditional_packages_N_layer_protocol);
+
+	/*
+	 * Creating the ethernet-capability element
+	 */
+	val_value_t  *ethernet_capability_val = NULL;
+
+	res = create_and_init_child_element(y_onf_ethernet_conditional_packages_M_onf_ethernet_conditional_packages,
+			y_onf_ethernet_conditional_packages_N_ethernet_capability,
+			ethernet_pac_val,
+			&ethernet_capability_val,
+			NULL);
+	YUMA_ASSERT(NULL == ethernet_capability_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_onf_ethernet_conditional_packages_N_ethernet_capability);
+
+	/*
+	 * Creating the ethernet-configuration element
+	 */
+	val_value_t  *ethernet_configuration_val = NULL;
+
+	res = create_and_init_child_element(y_onf_ethernet_conditional_packages_M_onf_ethernet_conditional_packages,
+			y_onf_ethernet_conditional_packages_N_ethernet_configuration,
+			ethernet_pac_val,
+			&ethernet_configuration_val,
+			NULL);
+	YUMA_ASSERT(NULL == ethernet_configuration_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_onf_ethernet_conditional_packages_N_ethernet_configuration);
+
+	/*
+	 * Creating the ethernet-status element
+	 */
+	val_value_t  *ethernet_status_val = NULL;
+
+	res = create_and_init_child_element(y_onf_ethernet_conditional_packages_M_onf_ethernet_conditional_packages,
+			y_onf_ethernet_conditional_packages_N_ethernet_status,
+			ethernet_pac_val,
+			&ethernet_status_val,
+			NULL);
+	YUMA_ASSERT(NULL == ethernet_status_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_onf_ethernet_conditional_packages_N_ethernet_status);
+
+	/*
+	 * Creating the ethernet-current-problems element
+	 */
+	val_value_t  *ethernet_current_problems_val = NULL;
+
+	res = create_and_init_child_element(y_onf_ethernet_conditional_packages_M_onf_ethernet_conditional_packages,
+			y_onf_ethernet_conditional_packages_N_ethernet_current_problems,
+			ethernet_pac_val,
+			&ethernet_current_problems_val,
+			NULL);
+	YUMA_ASSERT(NULL == ethernet_current_problems_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_onf_ethernet_conditional_packages_N_ethernet_current_problems);
+
+	/*
+	 * Creating the ethernet-current-performance element
+	 */
+	val_value_t  *ethernet_current_performance_val = NULL;
+
+	res = create_and_init_child_element(y_onf_ethernet_conditional_packages_M_onf_ethernet_conditional_packages,
+			y_onf_ethernet_conditional_packages_N_ethernet_current_performance,
+			ethernet_pac_val,
+			&ethernet_current_performance_val,
+			NULL);
+	YUMA_ASSERT(NULL == ethernet_current_performance_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_onf_ethernet_conditional_packages_N_ethernet_current_performance);
+
+	/*
+	 * Creating the ethernet-historical-performances element
+	 */
+	val_value_t  *ethernet_historical_performances_val = NULL;
+
+	res = create_and_init_child_element(y_onf_ethernet_conditional_packages_M_onf_ethernet_conditional_packages,
+			y_onf_ethernet_conditional_packages_N_ethernet_historical_performances,
+			ethernet_pac_val,
+			&ethernet_historical_performances_val,
+			NULL);
+	YUMA_ASSERT(NULL == ethernet_historical_performances_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_onf_ethernet_conditional_packages_N_ethernet_historical_performances);
+
+	/*
+	 * Creating the vlan-id element
+	 */
+	val_value_t  *vlan_id_val = NULL;
+	char vlan_id[10], *last_delim;
+	last_delim = strrchr(lp_uuid, '-');
+	strcpy(vlan_id, lp_uuid + (last_delim - lp_uuid) + 1);
+
+	res = create_and_init_child_element(y_onf_ethernet_conditional_packages_M_onf_ethernet_conditional_packages,
+			y_onf_ethernet_conditional_packages_N_vlan_id,
+			ethernet_configuration_val,
+			&vlan_id_val,
+			vlan_id);
+	YUMA_ASSERT(NULL == vlan_id_val, return ERR_INTERNAL_VAL ,
+				"create_and_init_child_element failed for element=%s", y_onf_ethernet_conditional_packages_N_vlan_id);
+
+	send_object_creation_notification(y_onf_ethernet_conditional_packages_N_ethernet_pac, uuid_str);
+
+	return NO_ERR;
+}
+
+static status_t delete_fc(cfg_template_t* runningcfg, const char *fc_uuid)
+{
+	status_t res = NO_ERR;
+
+	val_value_t *forwarding_construct_val = val_match_child(runningcfg->root,
+															y_core_model_M_core_model,
+															y_core_model_N_forwarding_construct);
+
+	do
+	{
+		val_value_t *uuid_val = val_find_child (forwarding_construct_val,
+												y_core_model_M_core_model,
+												y_core_model_N_uuid);
+
+		if (uuid_val != NULL && !strcmp(VAL_STRING(uuid_val), fc_uuid))
+		{
+			val_remove_child(forwarding_construct_val);
+
+			send_object_deletion_notification(fc_uuid);
+
+			YUMA_ASSERT(TRUE, return NO_ERR, "Deleted forwarding construct having uuid=%s", fc_uuid);
+		}
+		forwarding_construct_val = val_find_next_child(runningcfg->root,
+														y_core_model_M_core_model,
+														y_core_model_N_forwarding_construct,
+														forwarding_construct_val);
+	}
+	while (forwarding_construct_val != NULL);
+
+	return NO_ERR;
+}
+
+static status_t delete_ethernet_model(cfg_template_t* runningcfg, const char *lp_uuid)
+{
+	status_t res = NO_ERR;
+
+	char uuid_str[100];
+	strcpy(uuid_str, lp_uuid);
+	strcat(uuid_str, "-LP-1");
+
+	val_value_t *ethernet_pac_val = val_match_child(runningcfg->root,
+													y_onf_ethernet_conditional_packages_M_onf_ethernet_conditional_packages,
+													y_onf_ethernet_conditional_packages_N_ethernet_pac);
+
+	do
+	{
+		val_value_t *uuid_val = val_find_child (ethernet_pac_val,
+												y_onf_ethernet_conditional_packages_M_onf_ethernet_conditional_packages,
+												y_onf_ethernet_conditional_packages_N_layer_protocol);
+
+		if (uuid_val != NULL && !strcmp(VAL_STRING(uuid_val), uuid_str))
+		{
+			val_remove_child(ethernet_pac_val);
+
+			send_object_deletion_notification(uuid_str);
+
+			YUMA_ASSERT(TRUE, return NO_ERR, "Deleted ethernet pac layer-protocol=%s", uuid_str);
+		}
+		ethernet_pac_val = val_find_next_child(runningcfg->root,
+												y_onf_ethernet_conditional_packages_M_onf_ethernet_conditional_packages,
+												y_onf_ethernet_conditional_packages_N_layer_protocol,
+												ethernet_pac_val);
+	}
+	while (ethernet_pac_val != NULL);
+
+	return NO_ERR;
+}
+
+static void send_object_creation_notification(const char *obj_type, const char *obj_id_ref)
+{
+	char 			dateAndTime[256];
+	time_t 			t = time(NULL);
+	struct tm 		tm = *localtime(&t);
+	struct timeval 	tv;
+	int 			millisec;
+
+	gettimeofday(&tv, NULL);
+	millisec = lrint(tv.tv_usec/1000.0); // Round to nearest millisec
+	if (millisec>=1000)
+	{ // Allow for rounding up to nearest second
+		millisec -=1000;
+		tv.tv_sec++;
+		millisec /= 100;
+	}
+	sprintf(dateAndTime, "%04d-%02d-%02dT%02d:%02d:%02d.%01dZ",
+	tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday,
+	tm.tm_hour, tm.tm_min, tm.tm_sec, millisec/100);
+
+	return u_microwave_model_object_creation_notification_send(obj_creation_counter++,
+																dateAndTime,
+																obj_id_ref,
+																obj_type);
+}
+
+static void send_object_deletion_notification(const char *obj_id_ref)
+{
+	char 			dateAndTime[256];
+	time_t 			t = time(NULL);
+	struct tm 		tm = *localtime(&t);
+	struct timeval 	tv;
+	int 			millisec;
+
+	gettimeofday(&tv, NULL);
+	millisec = lrint(tv.tv_usec/1000.0); // Round to nearest millisec
+	if (millisec>=1000)
+	{ // Allow for rounding up to nearest second
+		millisec -=1000;
+		tv.tv_sec++;
+		millisec /= 100;
+	}
+	sprintf(dateAndTime, "%04d-%02d-%02dT%02d:%02d:%02d.%01dZ",
+	tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday,
+	tm.tm_hour, tm.tm_min, tm.tm_sec, millisec/100);
+
+	return u_microwave_model_object_deletion_notification_send(obj_deletion_counter++,
+																dateAndTime,
+																obj_id_ref);
+}
 
 /* END u_core_model.c */

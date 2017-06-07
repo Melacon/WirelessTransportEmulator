@@ -55,7 +55,7 @@ CINC += -I$(CINCBASE)/yuma/platform -I$(CINCBASE)/yuma/ncx \
      -I$(CINCBASE)/yuma/agt 
 endif
 
-CINC += -I$(CINCBASE) -I$(CINCBASE)/libxml2 -I$(CINCBASE)/libxml2/libxml -I$(CINCCOMMON)
+CINC += -I$(CINCBASE) -I$(CINCBASE)/libxml2 -I$(CINCBASE)/libxml2/libxml -I$(CINCCOMMON) -I../../onf-ethernet-conditional-packages/src -I../../microwave-model/src
 
 ifdef FREEBSD
 CINC += -I/usr/local/include -I/usr/local/include/libxml2 \
@@ -259,7 +259,7 @@ superclean:
 
 ifdef DVM
 $(LIB_INST)/lib$(SUBDIR_NM).so: $(OBJS)
-	$(LINK) $(CFLAGS) $(LDFLAGS) -shared -rdynamic -Wl,-soname,lib$(SUBDIR_NM).so -o $@ $(OBJS) -L$(BASE_COMMON)/lib -l$(BASE_NAME)
+	$(LINK) $(CFLAGS) $(LDFLAGS) -shared -rdynamic -Wl,-soname,lib$(SUBDIR_NM).so -o $@ $(OBJS) -L$(BASE_COMMON)/lib -l$(BASE_NAME) -L../../microwave-model/lib -lmicrowave-model
 else
 $(LIB_INST)/lib$(SUBDIR_NM).so: $(OBJS)
 	$(LINK) $(CFLAGS) $(LDFLAGS) -shared -rdynamic -Wl,-soname,lib$(SUBDIR_NM).so -o $@ $(OBJS)
