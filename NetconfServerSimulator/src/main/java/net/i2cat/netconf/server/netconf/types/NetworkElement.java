@@ -89,6 +89,7 @@ public class NetworkElement {
             Node node;
             StringBuffer sbNotOk = new StringBuffer();
             StringBuffer sbOk = new StringBuffer();
+            LOG.info(consoleMessage("Found number of schemas in XML-file: "+schemas.getLength()));
             for (int n = 0; n < schemas.getLength(); n++) {
                 node = schemas.item(n);
 
@@ -101,11 +102,11 @@ public class NetworkElement {
                 }
             }
             if (sbOk.length() > 0) {
-				LOG.info(consoleMessage("OK:\n"+sbOk.toString()));
-			}
+                LOG.info(consoleMessage("Schemas-OK:\n"+sbOk.toString()));
+            }
             if (sbNotOk.length() > 0) {
-				LOG.info(consoleMessage("Not OK:\n"+sbNotOk.toString()));
-			}
+                LOG.info(consoleMessage("Schemas-NOT OK:\n"+sbNotOk.toString()));
+            }
 
             // Analyse mode version
             Node neNode;
@@ -116,10 +117,10 @@ public class NetworkElement {
                 neNode = getNode(doc, nePath);
             }
             if (neNode == null) {
-				LOG.error(consoleMessage("Can not find networkelement definition"));
-			} else {
-				LOG.info(consoleMessage("Network element root: "+nePath));
-			}
+                LOG.error(consoleMessage("Can not find networkelement definition"));
+            } else {
+                LOG.info(consoleMessage("Network element root: "+nePath));
+            }
 
             //Get UUID
             Node uuidNode = getNode(doc, nePath+"/"+UUIDNAME);

@@ -46,6 +46,8 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
 
     private static final Log   LOG                = LogFactory.getLog(ServerSimulator.class);
     private static final SimpleDateFormat DATEFORMAT = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
+    private static final String NAME = "NETCONF - NE Simulator";
+    private static final String VERSION = "3.0";
 
     private SshServer           sshd;
 
@@ -207,27 +209,34 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
 
     public static void main(String[] args) {
 
+
+        System.out.println("---------------------------------------");
+        System.out.println(NAME);
+        System.out.println("Version: "+VERSION);
+        System.out.println("---------------------------------------");
+
         if (args.length < 3) {
             staticCliOutput("To less parameters. Command: Server xmlFilename port [pathToYang]");
             return;
         }
-
         int port = Integer.valueOf(args[1]);
         String xmlFilename = args[0];
-        String debugFile = "debug"+String.valueOf(port) +".log";
         String yangPath = args.length >= 3 ? args[2] : "yang/yangNeModel";
         String uuid = args.length >= 4 ? args[3] : "";
+
+        String debugFile = "debug"+String.valueOf(port) +".log";
+        initDebug(debugFile);
+
+        LOG.info(staticCliOutput(NAME+" Version: "+VERSION));
 
         staticCliOutput("Start parameters are:");
         staticCliOutput("\tFilename: "+xmlFilename);
         staticCliOutput("\tPort: "+port);
         staticCliOutput("\tDebuginfo and communication is in file: "+debugFile);
         staticCliOutput("\tYang files in directory: "+yangPath);
-        staticCliOutput("\tUuid: "+uuid);
+        staticCliOutput("\tUuid-parameter: '"+uuid+"'");
 
-        initDebug(debugFile);
 
-        LOG.info(staticCliOutput("Netconf NE simulator\n"));
 
         try {
             ServerSimulator server = ServerSimulator.createServer();
