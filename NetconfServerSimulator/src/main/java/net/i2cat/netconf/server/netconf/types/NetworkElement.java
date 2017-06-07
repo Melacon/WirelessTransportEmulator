@@ -51,10 +51,11 @@ public class NetworkElement {
     private static final String UUIDNAME = "uuid";
     private static final String CONSOLEPREFIX1 = "\tdoc-change: ";
 
-    private Document doc = null;
     private final Transformer transformer;
     private final String schemaPath;
     private final Console console;
+    private Document doc = null;
+    private String nePath = null;
 
     /* ---------------------------------------------------------------
      * Constructor
@@ -99,10 +100,29 @@ public class NetworkElement {
                     sbOk.append("\t"+fileSchema.getName()+"\n");
                 }
             }
-            LOG.info(consoleMessage("OK:\n"+sbOk.toString()));
-            LOG.info(consoleMessage("Not OK:\n"+sbNotOk.toString()));
+            if (sbOk.length() > 0) {
+				LOG.info(consoleMessage("OK:\n"+sbOk.toString()));
+			}
+            if (sbNotOk.length() > 0) {
+				LOG.info(consoleMessage("Not OK:\n"+sbNotOk.toString()));
+			}
 
-            Node uuidNode = getNode(doc, "//data/network-element/uuid");
+            // Analyse mode version
+            Node neNode;
+            nePath = "//data/network-element"; //ONF V1.2
+            neNode = getNode(doc, nePath);
+            if (neNode == null) {
+                nePath = "//data/NetworkElement";  //ONF V1.0
+                neNode = getNode(doc, nePath);
+            }
+            if (neNode == null) {
+				LOG.error(consoleMessage("Can not find networkelement definition"));
+			} else {
+				LOG.info(consoleMessage("Network element root: "+nePath));
+			}
+
+            //Get UUID
+            Node uuidNode = getNode(doc, nePath+"/"+UUIDNAME);
             if (uuidNode != null) {
                 if (uuid != null && !uuid.isEmpty()) {
                     LOG.info(consoleMessage("Overwrite uuid and name with parameter "+uuid));

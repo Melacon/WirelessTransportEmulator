@@ -565,7 +565,8 @@
     <default-ds>
       <two-step-flag>true</two-step-flag>
         <!--clock-identity=PTPCLOCK -->
-      <clock-identity>UFRQQ0xPQ0s=</clock-identity>
+        <!--<clock-identity>UFRQQ0xPQ0s=</clock-identity>-->
+      <clock-identity>$PTPID(PTPCLOCK)</clock-identity>
       <number-ports>2</number-ports>
       <clock-quality>
         <clock-class>248</clock-class>

@@ -12,6 +12,7 @@
 package net.i2cat.netconf.server.netconf.streamProcessing;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 import java.util.regex.Pattern;
 import net.i2cat.netconf.messageQueue.MessageQueue;
@@ -34,6 +35,11 @@ import org.apache.commons.logging.LogFactory;
 public class NetconfMessageProcessorThread extends Thread  {
 
     private static final Log log  = LogFactory.getLog(NetconfMessageProcessorThread.class);
+    private static final String TAG_PTPID1 = "$PTPID(";
+    private static final String TAG_PTPID2 = ")";
+    private static final String TAG_TIME = "$TIME";
+    private static final String TAG_COUNTER = "$COUNTER";
+
 
     // status fields
     private final NetconfSessionStatusHolder status;
@@ -51,7 +57,6 @@ public class NetconfMessageProcessorThread extends Thread  {
     private final Console console;
     private Pattern msgPattern = setPattern(null);
 
-
     public NetconfMessageProcessorThread(String name, NetconfSessionStatusHolder status, NetconfSender sender,
             MessageQueue messageQueue, MessageStore messageStore, NetworkElement ne, Console console) {
         super(name);
@@ -63,11 +68,34 @@ public class NetconfMessageProcessorThread extends Thread  {
         this.console = console;
    }
 
+    private static String substitudePtpId(String xml) {
+        int idx, idx2;
+        String substringCode, toExchange, base64Result;
+
+        int protect = 20;
+        while ((idx = xml.indexOf(TAG_PTPID1)) > 0 && protect-- > 0) {
+            idx2 = xml.indexOf(TAG_PTPID2, idx + TAG_PTPID1.length());
+            substringCode = xml.substring(idx + TAG_PTPID1.length(), idx2);
+            base64Result = Base64.getEncoder().encodeToString(substringCode.getBytes());
+
+            toExchange = TAG_PTPID1+substringCode+TAG_PTPID2;
+            xml = xml.replace(toExchange, base64Result);
+        }
+        if (protect <= 0) {
+            log.warn("Problem during conversion of "+TAG_PTPID1+TAG_PTPID2);
+        }
+
+        return xml;
+    }
+
+
     public void send(String xmlMessage) throws IOException {
 
         xmlMessage = xmlMessage
-                .replace("$TIME", NetconfTimeStamp.getTimeStamp() )
-                .replace("$COUNTER", String.valueOf(counter++) );
+                .replace(TAG_TIME, NetconfTimeStamp.getTimeStamp() )
+                .replace(TAG_COUNTER, String.valueOf(counter++) );
+
+        xmlMessage = substitudePtpId(xmlMessage);
 
         sender.send(xmlMessage);
     }
