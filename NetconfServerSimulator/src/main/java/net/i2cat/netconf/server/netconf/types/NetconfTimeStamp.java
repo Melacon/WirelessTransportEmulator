@@ -36,7 +36,7 @@ public class NetconfTimeStamp {
      * Get actual timestamp in
      * @return DateAndTime Date in this YANG Format
      */
-    public static String getTimeStamp() {
+    public synchronized static String getTimeStamp() {
         if (dateFormatResult == null) {
             doInit();
         }

@@ -158,7 +158,7 @@ public class NetworkElement {
      * @return again the msg
      */
     private String consoleMessage(String msg) {
-        return console.cliOutput(msg);
+        return console.cliOutput("NE:"+msg);
     }
 
     /**
@@ -327,7 +327,7 @@ public class NetworkElement {
      * @param root starting node to read subtree
      * @return string with subtree content
      */
-    public String getXmlSubTreeAsString(String root) {
+    public synchronized String getXmlSubTreeAsString(String root) {
         return getXmlSubTreeAsString(doc, root, transformer);
     }
 
@@ -641,7 +641,7 @@ public class NetworkElement {
      * @param xml String with complete message
      */
 
-    public List<String> editconfigElement(String sessionId, String xml) {
+    public synchronized List<String> editconfigElement(String sessionId, String xml) {
 
         LOG.info("Start processing of edit-config");
 
@@ -700,7 +700,7 @@ public class NetworkElement {
      * @param xml from received message
      * @return answer xml
      */
-    public String getSchema(String sessionId, String xml) {
+    public synchronized String getSchema(String sessionId, String xml) {
 
         LOG.info("Start processing of get-schema");
 
@@ -741,7 +741,7 @@ public class NetworkElement {
      * @param command 'l' to list all notifications or number to send related notification
      * @return XML content or null
      */
-    public String doProcessUserAction(String command) {
+    public synchronized String doProcessUserAction(String command) {
 
         LOG.info("-- Notification start -- Command: '"+command+"'");
 
@@ -795,7 +795,7 @@ public class NetworkElement {
      * @param sessionId of message message
      * @return xml String with result
      */
-    public String assembleHelloReply(String sessionId) {
+    public synchronized String assembleHelloReply(String sessionId) {
 
         String xmlSubTree = getXmlSubTreeAsString("//capabilities");
         StringBuffer res = new StringBuffer();
@@ -812,7 +812,7 @@ public class NetworkElement {
      * @param id of message message
      * @return xml String with result
      */
-    public String assembleRpcReplyEmptyData(String id) {
+    public synchronized String assembleRpcReplyEmptyData(String id) {
         StringBuffer res = new StringBuffer();
         appendXmlMessageRpcReplyOpen(res, id);
         res.append("<data/>\n");
@@ -829,7 +829,7 @@ public class NetworkElement {
      * @param id of message message
      * @return xml String with result
      */
-    public String assembleRpcReplyEmptyDataOk(String id) {
+    public synchronized String assembleRpcReplyEmptyDataOk(String id) {
 
         StringBuffer res = new StringBuffer();
         appendXmlMessageRpcReplyOpen(res, id);
@@ -849,7 +849,7 @@ public class NetworkElement {
      * @param id of message message
      * @return xml String with result
      */
-    public String assembleRpcReplyOk(String id) {
+    public synchronized String assembleRpcReplyOk(String id) {
 
         StringBuffer res = new StringBuffer();
         appendXmlMessageRpcReplyOpen(res, id);
@@ -867,7 +867,7 @@ public class NetworkElement {
      * @param xmlSubTree xml-data with requested subtree
      * @return xml String with rpc-reply message
      */
-    public String assembleRpcReplyMessage(String id, String name, String namespace, String xmlSubTree) {
+    public synchronized String assembleRpcReplyMessage(String id, String name, String namespace, String xmlSubTree) {
         StringBuffer res = new StringBuffer();
         appendXmlMessageRpcReplyOpen(res, id);
         res.append("<data/>\n");
@@ -890,7 +890,7 @@ public class NetworkElement {
      * @param tags list with element for filter information
      * @return xml String with rpc-reply message
      */
-   public String assembleRpcReplyFromFilterMessage(String id, NetconfTagList tags) {
+   public synchronized String assembleRpcReplyFromFilterMessage(String id, NetconfTagList tags) {
         if (tags.isEmtpy() ) {
 
             return assembleRpcReplyEmptyData(id);

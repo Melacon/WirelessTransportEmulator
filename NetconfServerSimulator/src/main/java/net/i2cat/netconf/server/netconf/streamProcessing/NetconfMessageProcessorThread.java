@@ -292,7 +292,7 @@ public class NetconfMessageProcessorThread extends Thread  {
      * @return again the msg
      */
     private String consoleMessage(String msg) {
-        return console.cliOutput(msg);
+        return console.cliOutput("MP"+this.hashCode()+":"+msg);
     }
 
     /**
@@ -307,6 +307,4 @@ public class NetconfMessageProcessorThread extends Thread  {
         return Pattern.compile(regex);
 
     }
-
-
 }
