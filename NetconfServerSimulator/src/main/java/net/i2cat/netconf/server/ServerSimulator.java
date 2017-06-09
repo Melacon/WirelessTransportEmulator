@@ -59,7 +59,7 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
     // behaviours
     private List<Behaviour>     behaviours;
 
-    private NetconfNotifyExecutor netconfNotifyExecutor = null;
+    private final List<NetconfNotifyExecutor> netconfNotifyExecutor = new ArrayList<NetconfNotifyExecutor>();
 
     // hide default constructor, forcing using factory method
     private ServerSimulator() {
@@ -160,18 +160,19 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
     }
 
     @Override
-    public void setNetconfNotifyExecutor(NetconfNotifyExecutor executor) {
-        this.netconfNotifyExecutor = executor;
-        staticCliOutput("Register user command listener.");
+    public synchronized void setNetconfNotifyExecutor(NetconfNotifyExecutor executor) {
+        this.netconfNotifyExecutor.add(executor);
+        staticCliOutput("Register user command listener: "+executor.hashCode());
     }
 
     private void notify(String command) {
-        if (netconfNotifyExecutor != null) {
-            netconfNotifyExecutor.notify(command);
-        } else {
+        if (netconfNotifyExecutor.isEmpty()) {
             staticCliOutput("No user command listerner registered.");
+        } else {
+            for (NetconfNotifyExecutor executor : netconfNotifyExecutor) {
+                executor.notify(command);
+            }
         }
-
     }
 
     private static void initDebug( String debugFilename ) {

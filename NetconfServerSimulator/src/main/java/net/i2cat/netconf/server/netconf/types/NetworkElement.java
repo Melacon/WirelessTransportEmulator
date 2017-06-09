@@ -158,7 +158,7 @@ public class NetworkElement {
      * @return again the msg
      */
     private String consoleMessage(String msg) {
-        return console.cliOutput(msg);
+        return console.cliOutput("NE:"+msg);
     }
 
     /**
@@ -327,7 +327,7 @@ public class NetworkElement {
      * @param root starting node to read subtree
      * @return string with subtree content
      */
-    public String getXmlSubTreeAsString(String root) {
+    public synchronized String getXmlSubTreeAsString(String root) {
         return getXmlSubTreeAsString(doc, root, transformer);
     }
 
@@ -563,7 +563,7 @@ public class NetworkElement {
      * Read file into String
      * @param path filename
      * @return String with content
-     * @throws IOException
+     * @throws IOException if problem during read.
      */
     private static String readFile(String path) throws IOException {
         byte[] encoded = Files.readAllBytes(Paths.get(path));
@@ -573,8 +573,8 @@ public class NetworkElement {
     /**
      * Generate filename for YANG file using idendifier and revision date
      * @param schemaPath
-     * @param schema
-     * @return
+     * @param schema with schema 'identifier' and 'version' date
+     * @return filename of schema or empty.
      */
     private static String getFilenameFromNode( String schemaPath, Node schema ) {
 
@@ -641,7 +641,7 @@ public class NetworkElement {
      * @param xml String with complete message
      */
 
-    public List<String> editconfigElement(String sessionId, String xml) {
+    public synchronized List<String> editconfigElement(String sessionId, String xml) {
 
         LOG.info("Start processing of edit-config");
 
@@ -696,38 +696,44 @@ public class NetworkElement {
 
     /**
      * Deliver the YANG files for the requested schema
-     * @param sessionId for generatin an answer
+     * @param sessionId for generation an answer
      * @param xml from received message
      * @return answer xml
      */
-    public String getSchema(String sessionId, String xml) {
+    public synchronized String getSchema(String sessionId, String xml) {
 
         LOG.info("Start processing of get-schema");
 
-        StringBuffer res = new StringBuffer();
+        StringBuffer res;
 
         try {
             final Document inDoc = loadXMLFromString(xml);
 
             Node schema = getNode(inDoc, "//get-schema");
             if (schema != null) {
-                String fileName = getFilenameFromNode(schemaPath, schema);
-                System.out.println("Load schema: "+fileName);
-                String yang = readFile(fileName);
 
-                appendXmlMessageRpcReplyOpen(res, sessionId);
-                res.append("<data xmlns=\"urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring\">");
-                //res.append("<xs:schema xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">");
+                String fileName = getFilenameFromNode(schemaPath, schema);
+                consoleMessage("Load schema: "+fileName);
+                String yang = readFile(fileName);
+                //Assemble message
+                res = new StringBuffer();
+                res.append("<rpc-reply message-id=\""+sessionId+"\" xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\">\n");
+                res.append("<data xmlns=\"urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring\">\n");
+                res.append("<![CDATA[");
                 res.append(yang);
-                //res.append("</xs:schema>");
+                res.append("]]>");
+                res.append("\n</data>\n");
                 appendXmlMessageRpcReplyClose(res);
+            } else {
+                LOG.warn("Can not find get-schema node");
+                res = assembleRpcReplyError("invalid-value", "Can not find get-schma node");
             }
         } catch (Exception e) {
-            LOG.error("(..something..) failed", e);
-        }
 
-
-        return res.toString();
+            LOG.warn("(..something..) failed", e);
+            res = assembleRpcReplyError("invalid-value", e.getMessage());
+       }
+       return res.toString();
     }
 
     /**
@@ -735,7 +741,7 @@ public class NetworkElement {
      * @param command 'l' to list all notifications or number to send related notification
      * @return XML content or null
      */
-    public String doProcessUserAction(String command) {
+    public synchronized String doProcessUserAction(String command) {
 
         LOG.info("-- Notification start -- Command: '"+command+"'");
 
@@ -789,7 +795,7 @@ public class NetworkElement {
      * @param sessionId of message message
      * @return xml String with result
      */
-    public String assembleHelloReply(String sessionId) {
+    public synchronized String assembleHelloReply(String sessionId) {
 
         String xmlSubTree = getXmlSubTreeAsString("//capabilities");
         StringBuffer res = new StringBuffer();
@@ -806,7 +812,7 @@ public class NetworkElement {
      * @param id of message message
      * @return xml String with result
      */
-    public String assembleRpcReplyEmptyData(String id) {
+    public synchronized String assembleRpcReplyEmptyData(String id) {
         StringBuffer res = new StringBuffer();
         appendXmlMessageRpcReplyOpen(res, id);
         res.append("<data/>\n");
@@ -823,7 +829,7 @@ public class NetworkElement {
      * @param id of message message
      * @return xml String with result
      */
-    public String assembleRpcReplyEmptyDataOk(String id) {
+    public synchronized String assembleRpcReplyEmptyDataOk(String id) {
 
         StringBuffer res = new StringBuffer();
         appendXmlMessageRpcReplyOpen(res, id);
@@ -843,7 +849,7 @@ public class NetworkElement {
      * @param id of message message
      * @return xml String with result
      */
-    public String assembleRpcReplyOk(String id) {
+    public synchronized String assembleRpcReplyOk(String id) {
 
         StringBuffer res = new StringBuffer();
         appendXmlMessageRpcReplyOpen(res, id);
@@ -861,7 +867,7 @@ public class NetworkElement {
      * @param xmlSubTree xml-data with requested subtree
      * @return xml String with rpc-reply message
      */
-    public String assembleRpcReplyMessage(String id, String name, String namespace, String xmlSubTree) {
+    public synchronized String assembleRpcReplyMessage(String id, String name, String namespace, String xmlSubTree) {
         StringBuffer res = new StringBuffer();
         appendXmlMessageRpcReplyOpen(res, id);
         res.append("<data/>\n");
@@ -884,7 +890,7 @@ public class NetworkElement {
      * @param tags list with element for filter information
      * @return xml String with rpc-reply message
      */
-   public String assembleRpcReplyFromFilterMessage(String id, NetconfTagList tags) {
+   public synchronized String assembleRpcReplyFromFilterMessage(String id, NetconfTagList tags) {
         if (tags.isEmtpy() ) {
 
             return assembleRpcReplyEmptyData(id);
@@ -892,33 +898,75 @@ public class NetworkElement {
             //log.warn("Taglist shouldn't be empty");
             //return EMPTY;
         } else {
-            NetconfTag root = tags.getRoot();
+
             String xmlSubTreePath = tags.getSubTreePath();
             LOG.info("Subtreepath="+xmlSubTreePath);
             String xmlSubTree = getXmlSubTreeAsString("//data/"+xmlSubTreePath);
-            NetconfTag idx = tags.getIdx(0);
-            StringBuffer res = new StringBuffer();
 
+            /*
+            consoleMessage("Tags: "+tags.asCompactString());
+            consoleMessage("Ends with leaf: "+tags.endsWithLeave());
+            consoleMessage("idx: "+String.valueOf(idx));
+            consoleMessage("Subtreepath: "+xmlSubTreePath);
+            //consoleMessage("xmlSubTree: "+(xmlSubTree.length() > 100 ? xmlSubTree.substring(0,  99) : xmlSubTree) );
+            */
+
+            StringBuffer res = new StringBuffer();
             appendXmlMessageRpcReplyOpen(res, id);
             res.append("<data>\n");
-            if (idx != null && tags.endsWithLeave()) {
-
-                //Open Example: "    <MW_AirInterface_Pac xmlns=\"uri:onf:MicrowaveModel-ObjectClasses-AirInterface\">\n" +
-                appendXmlTagOpen( res, root.getName(), root.getNamespace() );
-                //Example: "<layerProtocol>ffffffffff</layerProtocol>
-                appendXml( res, idx.getName(), idx.getValue());
-                //Subtree
-                res.append(xmlSubTree);
-                //Close
-                appendXmlTagClose(res, root.getName());
-            } else {
-                res.append(xmlSubTree.replaceFirst(root.getName(), root.getName()+" xmlns=\""+root.getNamespace()+"\""));
-            }
+            recuresAddContent(tags, res, xmlSubTree, 0 );
             res.append("</data>\n");
             appendXmlMessageRpcReplyClose(res);
+
             return res.toString();
         }
     }
+
+   /**
+    * Add content according to tag sequence
+    * @param tags tags of received message
+    * @param sb filled with new answer message content
+    * @param content XML content that has to be delivered back
+    * @param idx parameter doing the recursion. Start from 0 and increasing
+    */
+   private void recuresAddContent(NetconfTagList tags, StringBuffer sb, String content,int idx) {
+
+       if (idx < tags.size()) {
+           //Get akt
+           NetconfTag tag = tags.getList().get(idx);
+           NetconfTag tagidx = null;
+           boolean last;
+           if (idx + 1 < tags.size()) {
+               tagidx = tags.getList().get(idx+1);
+               if (!tagidx.hasOneValue()) {
+                   tagidx = null; //No index
+                   last = false;
+               } else {
+                   last = !(idx + 2 < tags.size());
+               }
+           } else {
+               last = true;
+           }
+
+           if (last) {
+               //Leaf
+               sb.append(content.replaceFirst(tag.getName(), tag.getName()+" xmlns=\""+tag.getNamespace()+"\""));
+
+           } else {
+               //Wrapper
+               //Wrap Begin
+               if (!tag.hasOneValue()) {
+                   appendXmlTagOpen( sb, tag.getName(), tag.getNamespace() );
+                   recuresAddContent(tags, sb, content, idx+1 );
+                   //Wrap1 End
+                   appendXmlTagClose(sb, tag.getName());
+               } else {
+                   appendXml( sb, tag.getName(), tag.getValue());
+                   recuresAddContent(tags, sb, content, idx+1 );
+               }
+           }
+       }
+   }
 
     /*------------------
      * DEBUG Help from ODL/OPENYUMA log as example for attribute change notification
@@ -1012,7 +1060,26 @@ public class NetworkElement {
     *     getMessageId()=m-65, getCtx()=null, xmlSourceMessage='<?xml version="1.0" encoding="UTF-8" standalone="no"?>
     */
 
+    /**
+     * Indicating an error
+     * @param errorMsg with error text
+     * @return StringBuffer with error message
+     */
+    private static StringBuffer assembleRpcReplyError(String errorTag, String errorMsg) {
+        StringBuffer res = new StringBuffer();
+        res.append("   <rpc-reply xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\">\n" +
+        "       <rpc-error>\n" +
+        "         <error-type>rpc</error-type>\n" +
+        "         <error-tag>"+errorTag+"</error-tag>\n" +
+        "         <error-severity>error</error-severity>\n" +
+        "         <error-message xml:lang=\"en\">\n" +
+        errorMsg + "\n" +
+        "         </error-message>\n" +
+        "       </rpc-error>\n" +
+        "     </rpc-reply>\n");
+        return res;
 
+    }
 
     /*---------------------------------------------------
      * Base functions for message creation

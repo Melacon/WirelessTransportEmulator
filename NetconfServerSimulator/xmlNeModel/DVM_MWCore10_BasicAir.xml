@@ -2,203 +2,242 @@
 <data>
     <capabilities>
         <capability>urn:ietf:params:netconf:base:1.0</capability>
-        <!--<capability>urn:ietf:params:netconf:base:1.1</capability>-->
-        <capability>urn:ietf:params:netconf:capability:writable-running:1.0</capability>
-        <capability>urn:ietf:params:netconf:capability:rollback-on-error:1.0</capability>
-        <capability>urn:ietf:params:netconf:capability:validate:1.0</capability>
-        <capability>urn:ietf:params:netconf:capability:validate:1.1</capability>
-        <capability>urn:ietf:params:netconf:capability:url:1.0?scheme=file</capability>
-        <capability>urn:ietf:params:netconf:capability:xpath:1.0</capability>
         <capability>urn:ietf:params:netconf:capability:notification:1.0</capability>
-        <capability>urn:ietf:params:netconf:capability:interleave:1.0</capability>
-        <capability>urn:ietf:params:netconf:capability:partial-lock:1.0</capability>
-        <capability>urn:ietf:params:netconf:capability:with-defaults:1.0?basic-mode=explicit&amp;also-supported=trim,report-all,report-all-tagged</capability>
+        <capability>urn:ietf:params:netconf:capability:writable-running:1.0</capability>
+        <capability>urn:ietf:params:xml:ns:yang:ietf-inet-types?module=ietf-inet-types&amp;revision=2013-07-15</capability>
+        <capability>urn:ietf:params:xml:ns:yang:ietf-yang-types?module=ietf-yang-types&amp;revision=2013-07-15</capability>
+        <capability>urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring?module=ietf-netconf-monitoring&amp;revision=2010-10-04</capability>
+        <capability>urn:ietf:params:xml:ns:yang:ietf-netconf-acm?module=ietf-netconf-acm&amp;revision=2012-02-22</capability>
+        <capability>urn:ietf:params:xml:ns:yang:iana-crypt-hash?module=iana-crypt-hash&amp;revision=2014-04-04</capability>
+        <capability>urn:ietf:params:xml:ns:yang:ietf-system?module=ietf-system&amp;revision=2014-08-06&amp;features=radius,authentication,local-users,radius-authentication,ntp,ntp-udp-port,timezone-name,dns-udp-tcp-port</capability>
+        <capability>urn:ietf:params:xml:ns:netconf:base:1.0?module=ietf-netconf&amp;revision=2011-06-01</capability>
+        <capability>urn:ietf:params:xml:ns:yang:ietf-netconf-with-defaults?module=ietf-netconf-with-defaults&amp;revision=2011-06-01</capability>
+        <capability>urn:ietf:params:xml:ns:netconf:partial-lock:1.0?module=ietf-netconf-partial-lock&amp;revision=2009-10-19</capability>
+        <capability>urn:ietf:params:xml:ns:netconf:notification:1.0?module=notifications&amp;revision=2008-07-14</capability>
+        <capability>urn:ietf:params:xml:ns:netmod:notification?module=nc-notifications&amp;revision=2008-07-14</capability>
         <capability>uri:onf:CoreModel-CoreFoundationModule-StateModel?module=CoreModel-CoreFoundationModule-StateModel&amp;revision=2016-08-09</capability>
         <capability>uri:onf:CoreModel-CoreFoundationModule-SuperClassesAndCommonPackages?module=CoreModel-CoreFoundationModule-SuperClassesAndCommonPackages&amp;revision=2016-07-10</capability>
         <capability>uri:onf:CoreModel-CoreFoundationModule-TypeDefinitions?module=CoreModel-CoreFoundationModule-TypeDefinitions&amp;revision=2016-07-01</capability>
-        <capability>uri:onf:CoreModel-CoreNetworkModule-ObjectClasses?module=CoreModel-CoreNetworkModule-ObjectClasses&amp;revision=2016-08-11</capability>
         <capability>uri:onf:CoreModel-CoreNetworkModule-TypeDefinitions?module=CoreModel-CoreNetworkModule-TypeDefinitions&amp;revision=2016-07-10</capability>
+        <capability>uri:onf:CoreModel-CoreNetworkModule-ObjectClasses?module=CoreModel-CoreNetworkModule-ObjectClasses&amp;revision=2016-08-11</capability>
         <capability>uri:onf:G_874_1_model-Imported_Data_Types?module=G_874_1_model-Imported_Data_Types&amp;revision=2016-07-10</capability>
-        <capability>uri:onf:G_874_1_model-Imported_Information_Object_Classes-Q_822?module=G_874_1_model-Imported_Information_Object_Classes-Q_822&amp;revision=2016-08-11</capability>
         <capability>uri:onf:G_874_1_model-Imported_Information_Object_Classes-X_721?module=G_874_1_model-Imported_Information_Object_Classes-X_721&amp;revision=2016-07-10</capability>
         <capability>uri:onf:G_874_1_model-Imported_Information_Object_Classes-X_739?module=G_874_1_model-Imported_Information_Object_Classes-X_739&amp;revision=2016-07-10</capability>
-        <capability>uri:onf:G_874_1_model-Object_Classes?module=G_874_1_model-Object_Classes&amp;revision=2016-07-10</capability>
+        <capability>uri:onf:G_874_1_model-Imported_Information_Object_Classes-Q_822?module=G_874_1_model-Imported_Information_Object_Classes-Q_822&amp;revision=2016-08-11</capability>
         <capability>uri:onf:G_874_1_model-Type_Definitions?module=G_874_1_model-Type_Definitions&amp;revision=2016-07-10</capability>
-        <capability>uri:onf:MicrowaveModel-NetworkElement-CurrentProblemList?module=MicrowaveModel-NetworkElement-CurrentProblemList&amp;revision=2016-11-20</capability>
+        <capability>uri:onf:G_874_1_model-Object_Classes?module=G_874_1_model-Object_Classes&amp;revision=2016-07-10</capability>
+        <capability>uri:onf:MicrowaveModel-TypeDefinitions?module=MicrowaveModel-TypeDefinitions&amp;revision=2016-09-02</capability>
+        <capability>uri:onf:MicrowaveModel-ObjectClasses-SuperClasses?module=MicrowaveModel-ObjectClasses-SuperClasses&amp;revision=2016-08-09</capability>
         <capability>uri:onf:MicrowaveModel-Notifications?module=MicrowaveModel-Notifications&amp;revision=2016-08-09</capability>
+        <capability>uri:onf:MicrowaveModel-NetworkElement-CurrentProblemList?module=MicrowaveModel-NetworkElement-CurrentProblemList&amp;revision=2016-11-20</capability>
         <capability>uri:onf:MicrowaveModel-ObjectClasses-AirInterface?module=MicrowaveModel-ObjectClasses-AirInterface&amp;revision=2016-09-01</capability>
         <capability>uri:onf:MicrowaveModel-ObjectClasses-EthernetContainer?module=MicrowaveModel-ObjectClasses-EthernetContainer&amp;revision=2016-09-02</capability>
         <capability>uri:onf:MicrowaveModel-ObjectClasses-PureEthernetStructure?module=MicrowaveModel-ObjectClasses-PureEthernetStructure&amp;revision=2016-09-02&amp;features=pure-ethernet</capability>
-        <capability>uri:onf:MicrowaveModel-ObjectClasses-SuperClasses?module=MicrowaveModel-ObjectClasses-SuperClasses&amp;revision=2016-08-09</capability>
-        <capability>uri:onf:MicrowaveModel-TypeDefinitions?module=MicrowaveModel-TypeDefinitions&amp;revision=2016-09-02</capability>
-        <capability>urn:ietf:params:xml:ns:yang:iana-crypt-hash?module=iana-crypt-hash&amp;revision=2014-04-04&amp;features=crypt-hash-md5,crypt-hash-sha-256,crypt-hash-sha-512</capability>
-        <capability>urn:ietf:params:xml:ns:yang:ietf-inet-types?module=ietf-inet-types&amp;revision=2010-09-24</capability>
-        <capability>urn:ietf:params:xml:ns:yang:ietf-netconf-acm?module=ietf-netconf-acm&amp;revision=2012-02-22</capability>
-        <capability>urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring?module=ietf-netconf-monitoring&amp;revision=2010-10-04</capability>
-        <capability>urn:ietf:params:xml:ns:netconf:partial-lock:1.0?module=ietf-netconf-partial-lock&amp;revision=2009-10-19</capability>
-        <capability>urn:ietf:params:xml:ns:yang:ietf-netconf-with-defaults?module=ietf-netconf-with-defaults&amp;revision=2011-06-01</capability>
-        <capability>urn:ietf:params:xml:ns:yang:ietf-system?module=ietf-system&amp;revision=2014-08-06&amp;features=radius,authentication,local-users,radius-authentication,ntp,ntp-udp-port,timezone-name,dns-udp-tcp-port</capability>
-        <capability>urn:ietf:params:xml:ns:yang:ietf-yang-types?module=ietf-yang-types&amp;revision=2010-09-24</capability>
-        <capability>urn:ietf:params:xml:ns:netmod:notification?module=nc-notifications&amp;revision=2008-07-14</capability>
-        <capability>urn:ietf:params:xml:ns:netconf:notification:1.0?module=notifications&amp;revision=2008-07-14</capability>
-        <capability>http://netconfcentral.org/ns/yuma-app-common?module=yuma-app-common&amp;revision=2012-08-16</capability>
-        <capability>http://netconfcentral.org/ns/yuma-arp?module=yuma-arp&amp;revision=2012-01-13</capability>
-        <capability>http://netconfcentral.org/ns/yuma-mysession?module=yuma-mysession&amp;revision=2010-05-10</capability>
-        <capability>http://netconfcentral.org/ns/yuma-ncx?module=yuma-ncx&amp;revision=2012-01-13</capability>
-        <capability>http://netconfcentral.org/ns/yuma-proc?module=yuma-proc&amp;revision=2012-10-10</capability>
-        <capability>http://netconfcentral.org/ns/yuma-system?module=yuma-system&amp;revision=2014-11-27</capability>
-        <capability>http://netconfcentral.org/ns/yuma-time-filter?module=yuma-time-filter&amp;revision=2011-08-13</capability>
-        <capability>http://netconfcentral.org/ns/yuma-types?module=yuma-types&amp;revision=2012-06-01</capability>
     </capabilities>
-    <netconf-state>
+    <netconf-state xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">
         <schemas>
+            <schema>
+                <identifier>ietf-inet-types</identifier>
+                <version>2013-07-15</version>
+                <namespace>urn:ietf:params:xml:ns:yang:ietf-inet-types</namespace>
+                <format>yang</format>
+                <location>NETCONF</location>
+            </schema>
+            <schema>
+                 <identifier>ietf-yang-types</identifier>
+                <version>2013-07-15</version>
+                <namespace>urn:ietf:params:xml:ns:yang:ietf-yang-types</namespace>
+                <format>yang</format>
+                <location>NETCONF</location>
+            </schema>
+            <schema>
+                <identifier>ietf-netconf-monitoring</identifier>
+                <version>2010-10-04</version>
+                <namespace>urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring</namespace>
+                <format>yang</format>
+                <location>NETCONF</location>
+            </schema>
+            <schema>
+                 <identifier>ietf-netconf-acm</identifier>
+                <version>2012-02-22</version>
+                <namespace>urn:ietf:params:xml:ns:yang:ietf-netconf-acm</namespace>
+                <format>yang</format>
+                <location>NETCONF</location>
+            </schema>
+            <schema>
+                <identifier>iana-crypt-hash</identifier>
+                <version>2014-04-04</version>
+                <namespace>urn:ietf:params:xml:ns:yang:iana-crypt-hash</namespace>
+                <format>yang</format>
+                <location>NETCONF</location>
+            </schema>
+            <schema>
+                <identifier>ietf-system</identifier>
+                <version>2014-08-06</version>
+                <namespace>urn:ietf:params:xml:ns:yang:ietf-system</namespace>
+                <format>yang</format>
+                <location>NETCONF</location>
+            </schema>
+            <schema>
+                <identifier>ietf-netconf</identifier>
+                <version>2011-06-01</version>
+                <namespace>urn:ietf:params:xml:ns:netconf:base:1.0</namespace>
+                <format>yang</format>
+                <location>NETCONF</location>
+            </schema>
+             <schema>
+                 <identifier>ietf-netconf-with-defaults</identifier>
+                <version>2011-06-01</version>
+                <namespace>urn:ietf:params:xml:ns:yang:ietf-netconf-with-defaults</namespace>
+                <format>yang</format>
+                <location>NETCONF</location>
+            </schema>
+             <schema>
+                <identifier>ietf-netconf-partial-lock</identifier>
+                <version>2009-10-19</version>
+                <namespace>urn:ietf:params:xml:ns:netconf:partial-lock:1.0</namespace>
+                <format>yang</format>
+                <location>NETCONF</location>
+            </schema>
             <schema>
                 <identifier>notifications</identifier>
                 <version>2008-07-14</version>
-                <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
                 <namespace>urn:ietf:params:xml:ns:netconf:notification:1.0</namespace>
                 <!--<location>http://dld.netconfcentral.org/src/notifications@2008-07-14.yang</location>-->
+                <format>yang</format>
                 <location>NETCONF</location>
             </schema>
-            <schema>
-                <identifier>yuma-ncx</identifier>
-                <version>2012-01-13</version>
-                <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
-                <namespace>http://netconfcentral.org/ns/yuma-ncx</namespace>
-                <!--<location>http://dld.netconfcentral.org/src/yuma-ncx@2012-01-13.yang</location>-->
-                <location>NETCONF</location>
-            </schema>
-            <schema>
-                <identifier>ietf-inet-types</identifier>
-                <version>2010-09-24</version>
-                <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
-                <namespace>urn:ietf:params:xml:ns:yang:ietf-inet-types</namespace>
+             <schema>
+                <identifier>nc-notifications</identifier>
+                <version>2008-07-14</version>
+                <namespace>urn:ietf:params:xml:ns:netmod:notification</namespace>
+                <format>yang</format>
                 <location>NETCONF</location>
             </schema>
             <schema>
                 <identifier>CoreModel-CoreFoundationModule-StateModel</identifier>
                 <version>2016-08-09</version>
-                <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
                 <namespace>uri:onf:CoreModel-CoreFoundationModule-StateModel</namespace>
+                <format>yang</format>
                 <location>NETCONF</location>
             </schema>
             <schema>
                 <identifier>CoreModel-CoreFoundationModule-SuperClassesAndCommonPackages</identifier>
                 <version>2016-07-10</version>
-                <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
                 <namespace>uri:onf:CoreModel-CoreFoundationModule-SuperClassesAndCommonPackages</namespace>
+                <format>yang</format>
                 <location>NETCONF</location>
             </schema>
             <schema>
                 <identifier>CoreModel-CoreFoundationModule-TypeDefinitions</identifier>
                 <version>2016-07-01</version>
-                <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
                 <namespace>uri:onf:CoreModel-CoreFoundationModule-TypeDefinitions</namespace>
-                <location>NETCONF</location>
-            </schema>
-            <schema>
-                <identifier>CoreModel-CoreNetworkModule-ObjectClasses</identifier>
-                <version>2016-08-11</version>
-                <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
-                <namespace>uri:onf:CoreModel-CoreNetworkModule-ObjectClasses</namespace>
+                <format>yang</format>
                 <location>NETCONF</location>
             </schema>
             <schema>
                 <identifier>CoreModel-CoreNetworkModule-TypeDefinitions</identifier>
                 <version>2016-07-10</version>
-                <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
                 <namespace>uri:onf:CoreModel-CoreNetworkModule-TypeDefinitions</namespace>
+                <format>yang</format>
                 <location>NETCONF</location>
             </schema>
-            <schema>
+             <schema>
+                <identifier>CoreModel-CoreNetworkModule-ObjectClasses</identifier>
+                <version>2016-08-11</version>
+                <namespace>uri:onf:CoreModel-CoreNetworkModule-ObjectClasses</namespace>
+                <format>yang</format>
+                <location>NETCONF</location>
+            </schema>
+           <schema>
                 <identifier>G_874_1_model-Imported_Data_Types</identifier>
                 <version>2016-07-10</version>
-                <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
                 <namespace>uri:onf:G_874_1_model-Imported_Data_Types</namespace>
-                <location>NETCONF</location>
-            </schema>
-            <schema>
-                <identifier>G_874_1_model-Imported_Information_Object_Classes-Q_822</identifier>
-                <version>2016-08-11</version>
-                <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
-                <namespace>uri:onf:G_874_1_model-Imported_Information_Object_Classes-Q_822</namespace>
+                <format>yang</format>
                 <location>NETCONF</location>
             </schema>
             <schema>
                 <identifier>G_874_1_model-Imported_Information_Object_Classes-X_721</identifier>
                 <version>2016-07-10</version>
-                <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
                 <namespace>uri:onf:G_874_1_model-Imported_Information_Object_Classes-X_721</namespace>
+                <format>yang</format>
                 <location>NETCONF</location>
             </schema>
             <schema>
                 <identifier>G_874_1_model-Imported_Information_Object_Classes-X_739</identifier>
                 <version>2016-07-10</version>
-                <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
                 <namespace>uri:onf:G_874_1_model-Imported_Information_Object_Classes-X_739</namespace>
+                <format>yang</format>
                 <location>NETCONF</location>
             </schema>
-            <schema>
-                <identifier>G_874_1_model-Object_Classes</identifier>
-                <version>2016-07-10</version>
-                <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
-                <namespace>uri:onf:G_874_1_model-Object_Classes</namespace>
+             <schema>
+                <identifier>G_874_1_model-Imported_Information_Object_Classes-Q_822</identifier>
+                <version>2016-08-11</version>
+                <namespace>uri:onf:G_874_1_model-Imported_Information_Object_Classes-Q_822</namespace>
+                <format>yang</format>
                 <location>NETCONF</location>
             </schema>
             <schema>
                 <identifier>G_874_1_model-Type_Definitions</identifier>
                 <version>2016-07-10</version>
-                <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
                 <namespace>uri:onf:G_874_1_model-Type_Definitions</namespace>
+                <format>yang</format>
                 <location>NETCONF</location>
             </schema>
             <schema>
-                <identifier>MicrowaveModel-Notifications</identifier>
-                <version>2016-08-09</version>
-                <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
-                <namespace>uri:onf:MicrowaveModel-Notifications</namespace>
-                <location>NETCONF</location>
-            </schema>
-            <schema>
-                <identifier>MicrowaveModel-NetworkElement-CurrentProblemList</identifier>
-                <version>2016-11-20</version>
-                <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
-                <namespace>uri:onf:MicrowaveModel-NetworkElement-CurrentProblemList</namespace>
-                <location>NETCONF</location>
-            </schema>
-            <schema>
-                <identifier>MicrowaveModel-ObjectClasses-AirInterface</identifier>
-                <version>2016-09-01</version>
-                <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
-                <namespace>uri:onf:MicrowaveModel-ObjectClasses-AirInterface</namespace>
-                <location>NETCONF</location>
-            </schema>
-            <schema>
-                <identifier>MicrowaveModel-ObjectClasses-EthernetContainer</identifier>
-                <version>2016-09-02</version>
-                <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
-                <namespace>uri:onf:MicrowaveModel-ObjectClasses-EthernetContainer</namespace>
-                <location>NETCONF</location>
-            </schema>
-            <schema>
-                <identifier>MicrowaveModel-ObjectClasses-PureEthernetStructure</identifier>
-                <version>2016-09-02</version>
-                <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
-                <namespace>uri:onf:MicrowaveModel-ObjectClasses-PureEthernetStructure</namespace>
-                <location>NETCONF</location>
-            </schema>
-            <schema>
-                <identifier>MicrowaveModel-ObjectClasses-SuperClasses</identifier>
-                <version>2016-08-09</version>
-                <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
-                <namespace>uri:onf:MicrowaveModel-ObjectClasses-SuperClasses</namespace>
+                <identifier>G_874_1_model-Object_Classes</identifier>
+                <version>2016-07-10</version>
+                <namespace>uri:onf:G_874_1_model-Object_Classes</namespace>
+                <format>yang</format>
                 <location>NETCONF</location>
             </schema>
             <schema>
                 <identifier>MicrowaveModel-TypeDefinitions</identifier>
                 <version>2016-09-02</version>
-                <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
                 <namespace>uri:onf:MicrowaveModel-TypeDefinitions</namespace>
+                <format>yang</format>
+                <location>NETCONF</location>
+            </schema>
+            <schema>
+                <identifier>MicrowaveModel-ObjectClasses-SuperClasses</identifier>
+                <version>2016-08-09</version>
+                <namespace>uri:onf:MicrowaveModel-ObjectClasses-SuperClasses</namespace>
+                <format>yang</format>
+                <location>NETCONF</location>
+            </schema>
+            <schema>
+                <identifier>MicrowaveModel-Notifications</identifier>
+                <version>2016-08-09</version>
+                <namespace>uri:onf:MicrowaveModel-Notifications</namespace>
+                <format>yang</format>
+                <location>NETCONF</location>
+            </schema>
+            <schema>
+                <identifier>MicrowaveModel-NetworkElement-CurrentProblemList</identifier>
+                <version>2016-11-20</version>
+                <namespace>uri:onf:MicrowaveModel-NetworkElement-CurrentProblemList</namespace>
+                <format>yang</format>
+                <location>NETCONF</location>
+            </schema>
+            <schema>
+                <identifier>MicrowaveModel-ObjectClasses-AirInterface</identifier>
+                <version>2016-09-01</version>
+                <namespace>uri:onf:MicrowaveModel-ObjectClasses-AirInterface</namespace>
+                <format>yang</format>
+                <location>NETCONF</location>
+            </schema>
+            <schema>
+                <identifier>MicrowaveModel-ObjectClasses-EthernetContainer</identifier>
+                <version>2016-09-02</version>
+                <namespace>uri:onf:MicrowaveModel-ObjectClasses-EthernetContainer</namespace>
+                <format>yang</format>
+                <location>NETCONF</location>
+            </schema>
+            <schema>
+                <identifier>MicrowaveModel-ObjectClasses-PureEthernetStructure</identifier>
+                <version>2016-09-02</version>
+                <namespace>uri:onf:MicrowaveModel-ObjectClasses-PureEthernetStructure</namespace>
+                <format>yang</format>
                 <location>NETCONF</location>
             </schema>
         </schemas>

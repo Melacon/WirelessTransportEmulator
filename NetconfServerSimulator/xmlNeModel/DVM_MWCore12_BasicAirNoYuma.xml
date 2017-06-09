@@ -4,9 +4,6 @@
         <capability>urn:ietf:params:netconf:base:1.0</capability>
         <capability>urn:ietf:params:netconf:capability:notification:1.0</capability>
         <capability>urn:ietf:params:netconf:capability:writable-running:1.0</capability>
-        <capability>urn:onf:params:xml:ns:yang:core-model?module=core-model&amp;revision=2017-03-20&amp;features=protection-exclude-server,protection-exclude-fc-port,protection-exclude-ltp</capability>
-        <capability>urn:onf:params:xml:ns:yang:g.874.1-model?module=g.874.1-model&amp;revision=2017-03-20</capability>
-        <capability>urn:onf:params:xml:ns:yang:microwave-model?module=microwave-model&amp;revision=2017-03-24&amp;features=pure-ethernet,hybrid-microwave</capability>
         <capability>urn:ietf:params:xml:ns:yang:ietf-inet-types?module=ietf-inet-types&amp;revision=2010-09-24</capability>
         <capability>urn:ietf:params:xml:ns:yang:ietf-yang-types?module=ietf-yang-types&amp;revision=2010-09-24</capability>
         <capability>urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring?module=ietf-netconf-monitoring&amp;revision=2010-10-04</capability>
@@ -16,6 +13,9 @@
         <capability>urn:ietf:params:xml:ns:netconf:partial-lock:1.0?module=ietf-netconf-partial-lock&amp;revision=2009-10-19</capability>
         <capability>urn:ietf:params:xml:ns:netmod:notification?module=nc-notifications&amp;revision=2008-07-14</capability>
         <capability>urn:ietf:params:xml:ns:netconf:notification:1.0?module=notifications&amp;revision=2008-07-14</capability>
+        <capability>urn:onf:params:xml:ns:yang:core-model?module=core-model&amp;revision=2017-03-20&amp;features=protection-exclude-server,protection-exclude-fc-port,protection-exclude-ltp</capability>
+        <capability>urn:onf:params:xml:ns:yang:g.874.1-model?module=g.874.1-model&amp;revision=2017-03-20</capability>
+        <capability>urn:onf:params:xml:ns:yang:microwave-model?module=microwave-model&amp;revision=2017-03-24&amp;features=pure-ethernet,hybrid-microwave</capability>
     </capabilities>
     <netconf-state>
         <schemas>

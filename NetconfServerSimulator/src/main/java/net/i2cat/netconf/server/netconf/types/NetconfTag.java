@@ -37,6 +37,10 @@ public class NetconfTag {
         return name;
     }
 
+    public int size() {
+    	return values.size();
+    }
+
     public boolean hasOneValue() {
         return values.size() == 1;
     }
