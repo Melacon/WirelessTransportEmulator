@@ -11,11 +11,12 @@
         <capability>urn:ietf:params:xml:ns:yang:ietf-netconf-with-defaults?module=ietf-netconf-with-defaults&amp;revision=2011-06-01</capability>
         <capability>urn:ietf:params:xml:ns:yang:ietf-system?module=ietf-system&amp;revision=2014-08-06&amp;features=radius,authentication,local-users,radius-authentication,ntp,ntp-udp-port,timezone-name,dns-udp-tcp-port</capability>
         <capability>urn:ietf:params:xml:ns:netconf:partial-lock:1.0?module=ietf-netconf-partial-lock&amp;revision=2009-10-19</capability>
-        <capability>urn:ietf:params:xml:ns:netmod:notification?module=nc-notifications&amp;revision=2008-07-14</capability>
         <capability>urn:ietf:params:xml:ns:netconf:notification:1.0?module=notifications&amp;revision=2008-07-14</capability>
+        <capability>urn:ietf:params:xml:ns:netmod:notification?module=nc-notifications&amp;revision=2008-07-14</capability>
         <capability>urn:onf:params:xml:ns:yang:core-model?module=core-model&amp;revision=2017-03-20&amp;features=protection-exclude-server,protection-exclude-fc-port,protection-exclude-ltp</capability>
         <capability>urn:onf:params:xml:ns:yang:g.874.1-model?module=g.874.1-model&amp;revision=2017-03-20</capability>
         <capability>urn:onf:params:xml:ns:yang:microwave-model?module=microwave-model&amp;revision=2017-03-24&amp;features=pure-ethernet,hybrid-microwave</capability>
+        <capability>urn:onf:params:xml:ns:yang:onf-core-model-conditional-packages?module=onf-core-model-conditional-packages&amp;revision=2017-04-02</capability>
     </capabilities>
     <netconf-state>
         <schemas>
@@ -101,6 +102,13 @@
                 <version>2008-07-14</version>
                 <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
                 <namespace>urn:ietf:params:xml:ns:netconf:notification:1.0</namespace>
+                <location>NETCONF</location>
+            </schema>
+            <schema>
+                <identifier>onf-core-model-conditional-packages</identifier>
+                <version>2017-04-02</version>
+                <namespace>urn:onf:params:xml:ns:yang:onf-core-model-conditional-packages</namespace>
+                <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
                 <location>NETCONF</location>
             </schema>
         </schemas>
