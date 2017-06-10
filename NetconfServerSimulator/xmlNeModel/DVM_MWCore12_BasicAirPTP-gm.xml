@@ -18,6 +18,7 @@
     <capability>urn:onf:params:xml:ns:yang:g.874.1-model?module=g.874.1-model&amp;revision=2017-03-20</capability>
     <capability>urn:onf:params:xml:ns:yang:microwave-model?module=microwave-model&amp;revision=2017-03-24&amp;features=pure-ethernet,hybrid-microwave</capability>
     <capability>urn:onf:params:xml:ns:yang:onf-ptp-dataset?module=onf-ptp-dataset&amp;revision=2017-05-08</capability>
+    <capability>urn:onf:params:xml:ns:yang:onf-ethernet-conditional-packages?module=onf-ethernet-conditional-packages&amp;revision=2017-04-02</capability>
     <capability>urn:onf:params:xml:ns:yang:onf-core-model-conditional-packages?module=onf-core-model-conditional-packages&amp;revision=2017-04-02</capability>
   </capabilities>
   <netconf-state>
@@ -118,6 +119,13 @@
         <version>2017-02-08</version>
         <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
         <namespace>urn:ietf:params:xml:ns:yang:ietf-ptp-dataset</namespace>
+        <location>NETCONF</location>
+      </schema>
+      <schema>
+        <identifier>onf-ethernet-conditional-packages</identifier>
+        <version>2017-04-02</version>
+        <namespace>urn:onf:params:xml:ns:yang:onf-ethernet-conditional-packages</namespace>
+        <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
         <location>NETCONF</location>
       </schema>
       <schema>
