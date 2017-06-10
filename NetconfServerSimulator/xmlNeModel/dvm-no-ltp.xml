@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+	<capabilities>
+		<capability>urn:ietf:params:netconf:base:1.0</capability>
+		<capability>urn:ietf:params:netconf:capability:notification:1.0</capability>
+		<capability>urn:ietf:params:netconf:capability:writable-running:1.0</capability>
+		<capability>urn:ietf:params:xml:ns:yang:ietf-inet-types?module=ietf-inet-types&amp;revision=2010-09-24</capability>
+		<capability>urn:ietf:params:xml:ns:yang:ietf-yang-types?module=ietf-yang-types&amp;revision=2010-09-24</capability>
+		<capability>urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring?module=ietf-netconf-monitoring&amp;revision=2010-10-04</capability>
+		<capability>urn:ietf:params:xml:ns:yang:ietf-netconf-acm?module=ietf-netconf-acm&amp;revision=2012-02-22</capability>
+		<capability>urn:ietf:params:xml:ns:yang:ietf-netconf-with-defaults?module=ietf-netconf-with-defaults&amp;revision=2011-06-01</capability>
+		<capability>urn:ietf:params:xml:ns:yang:ietf-system?module=ietf-system&amp;revision=2014-08-06&amp;features=radius,authentication,local-users,radius-authentication,ntp,ntp-udp-port,timezone-name,dns-udp-tcp-port</capability>
+		<capability>urn:ietf:params:xml:ns:netconf:partial-lock:1.0?module=ietf-netconf-partial-lock&amp;revision=2009-10-19</capability>
+		<capability>urn:ietf:params:xml:ns:netmod:notification?module=nc-notifications&amp;revision=2008-07-14</capability>
+		<capability>urn:ietf:params:xml:ns:netconf:notification:1.0?module=notifications&amp;revision=2008-07-14</capability>
+		<capability>urn:ietf:params:xml:ns:yang:ietf-ptp-dataset?module=ietf-ptp-dataset&amp;revision=2017-02-08</capability>
+		<capability>urn:onf:params:xml:ns:yang:core-model?module=core-model&amp;revision=2017-03-20&amp;features=protection-exclude-server,protection-exclude-fc-port,protection-exclude-ltp</capability>
+		<capability>urn:onf:params:xml:ns:yang:g.874.1-model?module=g.874.1-model&amp;revision=2017-03-20</capability>
+		<capability>urn:onf:params:xml:ns:yang:microwave-model?module=microwave-model&amp;revision=2017-03-24&amp;features=pure-ethernet,hybrid-microwave</capability>
+		<capability>urn:onf:params:xml:ns:yang:onf-ptp-dataset?module=onf-ptp-dataset&amp;revision=2017-05-08</capability>
+	</capabilities>
+	<netconf-state>
+		<schemas>
+			<schema>
+				<identifier>core-model</identifier>
+				<version>2017-03-20</version>
+				<format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
+				<namespace>urn:onf:params:xml:ns:yang:core-model</namespace>
+				<location>NETCONF</location>
+			</schema>
+			<schema>
+				<identifier>g.874.1-model</identifier>
+				<version>2017-03-20</version>
+				<format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
+				<namespace>urn:onf:params:xml:ns:yang:g.874.1-model</namespace>
+				<location>NETCONF</location>
+			</schema>
+			<schema>
+				<identifier>microwave-model</identifier>
+				<version>2017-03-24</version>
+				<format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
+				<namespace>urn:onf:params:xml:ns:yang:microwave-model</namespace>
+				<location>NETCONF</location>
+			</schema>
+			<schema>
+				<identifier>onf-ptp-dataset</identifier>
+				<version>2017-05-08</version>
+				<format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
+				<namespace>urn:onf:params:xml:ns:yang:onf-ptp-dataset</namespace>
+				<location>NETCONF</location>
+			</schema>
+			<schema>
+				<identifier>ietf-inet-types</identifier>
+				<version>2010-09-24</version>
+				<format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
+				<namespace>urn:ietf:params:xml:ns:yang:ietf-inet-types</namespace>
+				<location>NETCONF</location>
+			</schema>
+			<schema>
+				<identifier>ietf-netconf-acm</identifier>
+				<version>2012-02-22</version>
+				<format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
+				<namespace>urn:ietf:params:xml:ns:yang:ietf-netconf-acm</namespace>
+				<location>NETCONF</location>
+			</schema>
+			<schema>
+				<identifier>ietf-netconf-monitoring</identifier>
+				<version>2010-10-04</version>
+				<format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
+				<namespace>urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring</namespace>
+				<location>NETCONF</location>
+			</schema>
+			<schema>
+				<identifier>ietf-netconf-partial-lock</identifier>
+				<version>2009-10-19</version>
+				<format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
+				<namespace>urn:ietf:params:xml:ns:netconf:partial-lock:1.0</namespace>
+				<location>NETCONF</location>
+			</schema>
+			<schema>
+				<identifier>ietf-netconf-with-defaults</identifier>
+				<version>2011-06-01</version>
+				<format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
+				<namespace>urn:ietf:params:xml:ns:yang:ietf-netconf-with-defaults</namespace>
+				<location>NETCONF</location>
+			</schema>
+			<schema>
+				<identifier>ietf-system</identifier>
+				<version>2014-08-06</version>
+				<format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
+				<namespace>urn:ietf:params:xml:ns:yang:ietf-system</namespace>
+				<location>NETCONF</location>
+			</schema>
+			<schema>
+				<identifier>ietf-yang-types</identifier>
+				<version>2013-07-15</version>
+				<format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
+				<namespace>urn:ietf:params:xml:ns:yang:ietf-yang-types</namespace>
+				<location>NETCONF</location>
+			</schema>
+			<schema>
+				<identifier>nc-notifications</identifier>
+				<version>2008-07-14</version>
+				<format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
+				<namespace>urn:ietf:params:xml:ns:netmod:notification</namespace>
+				<location>NETCONF</location>
+			</schema>
+			<schema>
+				<identifier>notifications</identifier>
+				<version>2008-07-14</version>
+				<format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
+				<namespace>urn:ietf:params:xml:ns:netconf:notification:1.0</namespace>
+				<location>NETCONF</location>
+			</schema>
+			<schema>
+				<identifier>ietf-ptp-dataset</identifier>
+				<version>2017-02-08</version>
+				<format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
+				<namespace>urn:ietf:params:xml:ns:yang:ietf-ptp-dataset</namespace>
+				<location>NETCONF</location>
+			</schema>
+		</schemas>
+	</netconf-state>
+	<network-element>
+		<local-id>
+			<value-name>ne-local-id</value-name>
+			<value>PTPSlave</value>
+		</local-id>
+		<uuid>PTPSlave</uuid>
+		<name>
+			<value-name>ne-name</value-name>
+			<value>PTPSlave</value>
+		</name>
+		<label>
+			<value-name>ne-label</value-name>
+			<value>PTPSlave</value>
+		</label>
+		<extension>
+			<value-name>ne-extension</value-name>
+			<value>PTPSlave</value>
+		</extension>
+		<extension>
+			<value-name>neIpAddress</value-name>
+			<value>10.42.213.72</value>
+		</extension>
+		<extension>
+			<value-name>webUri</value-name>
+			<value>https://10.42.213.72/</value>
+		</extension>
+		<extension>
+			<value-name>cliAddress</value-name>
+			<value>cli@10.42.213.72</value>
+		</extension>
+		<extension>
+			<value-name>appCommand</value-name>
+			<value/>
+		</extension>
+		<extension>
+			<value-name>neExtension</value-name>
+			<value>NE-12</value>
+		</extension>
+		<operational-state>enabled</operational-state>
+		<administrative-control>unlock</administrative-control>
+		<administrative-state>unlocked</administrative-state>
+		<lifecycle-state>installed</lifecycle-state>
+	</network-element>
+</data>
+
