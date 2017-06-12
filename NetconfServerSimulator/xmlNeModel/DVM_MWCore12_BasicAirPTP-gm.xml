@@ -182,9 +182,9 @@
     <fd>
                     <uuid>ethernet-switch</uuid>
                     <layer-protocol-name>ETH</layer-protocol-name>
-                    <fc>LTP-ETY-02-ETH-56,LTP-ETY-02-ETH-56</fc>
+                    <fc>LTP-ETY-02-ETH-56,LTP-ETY-06-ETH-56</fc>
                     <ltp>LTP-ETY-02-ETH-56</ltp>
-                    <ltp>LTP-ETY-02-ETH-56</ltp>
+                    <ltp>LTP-ETY-06-ETH-56</ltp>
                     <local-id>
                         <value-name>fd-local-id</value-name>
                         <value>ethernet-switch</value>
@@ -270,7 +270,6 @@
         <is-protection-lock-out>false</is-protection-lock-out>
         <fc-blocks-signal-to-lp/>
       </lp>
-      <ltp-in-other-view>LTP-MWS-RADIO</ltp-in-other-view>
       <ltp-direction>bidirectional</ltp-direction>
     </ltp>
     <ltp>
@@ -296,7 +295,7 @@
       <administrative-state>unlocked</administrative-state>
       <lifecycle-state>installed</lifecycle-state>
       <server-ltp>LTP-MWPS-TTP-RADIO</server-ltp>
-      <client-ltp>LTP-ETC-02</client-ltp>
+      <client-ltp>LTP-ETC-06</client-ltp>
       <lp>
         <local-id>
           <value-name>lp-local-id</value-name>
@@ -334,46 +333,45 @@
         <is-protection-lock-out>false</is-protection-lock-out>
         <fc-blocks-signal-to-lp/>
       </lp>
-      <ltp-in-other-view>LTP-MWPS-TTP-RADIO</ltp-in-other-view>
-      <ltp-in-other-view>LTP-ETC-02</ltp-in-other-view>
       <ltp-direction>bidirectional</ltp-direction>
     </ltp>
     <ltp>
+      <uuid>LTP-ETC-06</uuid>
+      <server-ltp>LTP-MWS-RADIO</server-ltp>
+      <client-ltp>LTP-ETC-06-ETH-56</client-ltp>
       <local-id>
         <value-name>ltp-local-id</value-name>
         <value>ETH-CONTAINER</value>
       </local-id>
-      <uuid>LTP-ETC-02</uuid>
       <name>
         <value-name>ltp-name</value-name>
-        <value>LTP-ETC-02</value>
+        <value>LTP-ETC-06</value>
       </name>
       <label>
         <value-name>ltp-label</value-name>
-        <value>LTP-ETC-02</value>
+        <value>LTP-ETC-06</value>
       </label>
       <extension>
         <value-name>ltp-extension</value-name>
-        <value>LTP-ETC-02</value>
+        <value>LTP-ETC-06</value>
       </extension>
       <operational-state>enabled</operational-state>
       <administrative-control>unlock</administrative-control>
       <administrative-state>unlocked</administrative-state>
       <lifecycle-state>installed</lifecycle-state>
-      <server-ltp>LTP-MWS-RADIO</server-ltp>
       <lp>
         <local-id>
           <value-name>lp-local-id</value-name>
           <value>ETH-CONTAINER</value>
         </local-id>
-        <uuid>LTP-ETC-02-LP-1</uuid>
+        <uuid>LTP-ETC-06-LP-1</uuid>
         <name>
           <value-name>lp-name</value-name>
-          <value>LTP-ETC-02-LP-1</value>
+          <value>LTP-ETC-06-LP-1</value>
         </name>
         <label>
           <value-name>lp-label</value-name>
-          <value>LTP-ETC-02-LP-1</value>
+          <value>LTP-ETC-06-LP-1</value>
         </label>
         <extension>
           <value-name>capability</value-name>
@@ -402,55 +400,67 @@
       <ltp-direction>bidirectional</ltp-direction>
     </ltp>
     <ltp>
-      <uuid>LTP-ETY-02</uuid>
-      <physical-port-reference>shelf:001-slot:001-EthernetCard-port:001</physical-port-reference>
-      <local-id>
-        <value-name>ltp-local-id</value-name>
-        <value>LTP-ETY-02</value>
-      </local-id>
-      <name>
-        <value-name>ltp-name</value-name>
-        <value>LTP-ETY-02</value>
-      </name>
-      <label>
-        <value-name>ltp-label</value-name>
-        <value>LTP-ETY-02</value>
-      </label>
-      <extension>
-        <value-name>ltp-extension</value-name>
-        <value>LTP-ETY-02</value>
-      </extension>
-      <operational-state>enabled</operational-state>
-      <administrative-control>unlock</administrative-control>
-      <administrative-state>unlocked</administrative-state>
-      <lifecycle-state>installed</lifecycle-state>
-      <lp>
-        <uuid>LTP-ETY-02-LP-1</uuid>
-        <local-id>
-          <value-name>lp-local-id</value-name>
-          <value>LP-ETY-01</value>
-        </local-id>
-        <name>
-          <value-name>lp-name</value-name>
-          <value>LP-ETY-01</value>
-        </name>
-        <label>
-          <value-name>lp-label</value-name>
-          <value>LP-ETY-01</value>
-        </label>
-        <operational-state>enabled</operational-state>
-        <administrative-control>unlock</administrative-control>
-        <administrative-state>unlocked</administrative-state>
-        <lifecycle-state>installed</lifecycle-state>
-        <layer-protocol-name>ETY</layer-protocol-name>
-        <configured-client-capacity />
-        <lp-direction>bidirectional</lp-direction>
-        <termination-state>terminated-bidirectional</termination-state>
-        <is-protection-lock-out>false</is-protection-lock-out>
-        <fc-blocks-signal-to-lp />
-      </lp>
-      <ltp-direction>bidirectional</ltp-direction>
-    </ltp>
+                    <uuid>LTP-ETC-06-ETH-56</uuid>
+                    <server-ltp>LTP-ETC-06</server-ltp>
+                    <local-id>
+                        <value-name>ltp-local-id</value-name>
+                        <value>LTP-ETC-06-ETH-56</value>
+                    </local-id>
+                    <name>
+                        <value-name>ltp-name</value-name>
+                        <value>LTP-ETC-06-ETH-56</value>
+                    </name>
+                    <label>
+                        <value-name>ltp-label</value-name>
+                        <value>LTP-ETC-06-ETH-56</value>
+                    </label>
+                    <extension>
+                        <value-name>ltp-extension</value-name>
+                        <value>LTP-ETC-06-ETH-56</value>
+                    </extension>
+                    <operational-state>enabled</operational-state>
+                    <administrative-control>unlock</administrative-control>
+                    <administrative-state>unlocked</administrative-state>
+                    <lifecycle-state>installed</lifecycle-state>
+                    <lp>
+                        <uuid>LTP-ETC-06-ETH-56-LP-1</uuid>
+                        <local-id>
+                            <value-name>lp-local-id</value-name>
+                            <value>LTP-ETC-06-ETH-56-LP-1</value>
+                        </local-id>
+                        <name>
+                            <value-name>lp-name</value-name>
+                            <value>LTP-ETC-06-ETH-56-LP-1</value>
+                        </name>
+                        <label>
+                            <value-name>lp-label</value-name>
+                            <value>LP-ETY-01-ETH-56</value>
+                        </label>
+                        <extension>
+                            <value-name>capability</value-name>
+                            <value>urn:onf:params:xml:ns:yang:onf-ethernet-conditional-packages?module=onf-ethernet-conditional-packages</value>
+                        </extension>
+                        <extension>
+                            <value-name>revision</value-name>
+                            <value>2017-04-02</value>
+                        </extension>
+                        <extension>
+                            <value-name>conditional-package</value-name>
+                            <value>ethernet-pac</value>
+                        </extension>
+                        <operational-state>enabled</operational-state>
+                        <administrative-control>unlock</administrative-control>
+                        <administrative-state>unlocked</administrative-state>
+                        <lifecycle-state>installed</lifecycle-state>
+                        <layer-protocol-name>ETH</layer-protocol-name>
+                        <configured-client-capacity/>
+                        <lp-direction>bidirectional</lp-direction>
+                        <termination-state>lp-can-never-terminate</termination-state>
+                        <is-protection-lock-out>false</is-protection-lock-out>
+                        <fc-blocks-signal-to-lp/>
+                    </lp>
+                    <ltp-direction>bidirectional</ltp-direction>
+                </ltp>
     <ltp>
                     <uuid>LTP-ETY-02-ETH-56</uuid>
                     <server-ltp>LTP-ETY-02</server-ltp>
@@ -513,68 +523,57 @@
                     </lp>
                     <ltp-direction>bidirectional</ltp-direction>
                 </ltp>
-                <ltp>
-                    <uuid>LTP-ETC-02-ETH-56</uuid>
-                    <server-ltp>LTP-ETC-02</server-ltp>
-                    <local-id>
-                        <value-name>ltp-local-id</value-name>
-                        <value>LTP-ETC-02-ETH-56</value>
-                    </local-id>
-                    <name>
-                        <value-name>ltp-name</value-name>
-                        <value>LTP-ETC-02-ETH-56</value>
-                    </name>
-                    <label>
-                        <value-name>ltp-label</value-name>
-                        <value>LTP-ETC-02-ETH-56</value>
-                    </label>
-                    <extension>
-                        <value-name>ltp-extension</value-name>
-                        <value>LTP-ETC-02-ETH-56</value>
-                    </extension>
-                    <operational-state>enabled</operational-state>
-                    <administrative-control>unlock</administrative-control>
-                    <administrative-state>unlocked</administrative-state>
-                    <lifecycle-state>installed</lifecycle-state>
-                    <lp>
-                        <uuid>LTP-ETC-02-ETH-56-LP-1</uuid>
-                        <local-id>
-                            <value-name>lp-local-id</value-name>
-                            <value>LP-ETY-01-ETH-56</value>
-                        </local-id>
-                        <name>
-                            <value-name>lp-name</value-name>
-                            <value>LP-ETY-01-ETH-56</value>
-                        </name>
-                        <label>
-                            <value-name>lp-label</value-name>
-                            <value>LP-ETY-01-ETH-56</value>
-                        </label>
-                        <extension>
-                            <value-name>capability</value-name>
-                            <value>urn:onf:params:xml:ns:yang:onf-ethernet-conditional-packages?module=onf-ethernet-conditional-packages</value>
-                        </extension>
-                        <extension>
-                            <value-name>revision</value-name>
-                            <value>2017-04-02</value>
-                        </extension>
-                        <extension>
-                            <value-name>conditional-package</value-name>
-                            <value>ethernet-pac</value>
-                        </extension>
-                        <operational-state>enabled</operational-state>
-                        <administrative-control>unlock</administrative-control>
-                        <administrative-state>unlocked</administrative-state>
-                        <lifecycle-state>installed</lifecycle-state>
-                        <layer-protocol-name>ETH</layer-protocol-name>
-                        <configured-client-capacity/>
-                        <lp-direction>bidirectional</lp-direction>
-                        <termination-state>lp-can-never-terminate</termination-state>
-                        <is-protection-lock-out>false</is-protection-lock-out>
-                        <fc-blocks-signal-to-lp/>
-                    </lp>
-                    <ltp-direction>bidirectional</ltp-direction>
-                </ltp>
+    <ltp>
+      <uuid>LTP-ETY-02</uuid>
+      <client-ltp>LTP-ETC-02-ETH-56</client-ltp>
+      <physical-port-reference>shelf:001-slot:001-EthernetCard-port:001</physical-port-reference>
+      <local-id>
+        <value-name>ltp-local-id</value-name>
+        <value>LTP-ETY-02</value>
+      </local-id>
+      <name>
+        <value-name>ltp-name</value-name>
+        <value>LTP-ETY-02</value>
+      </name>
+      <label>
+        <value-name>ltp-label</value-name>
+        <value>LTP-ETY-02</value>
+      </label>
+      <extension>
+        <value-name>ltp-extension</value-name>
+        <value>LTP-ETY-02</value>
+      </extension>
+      <operational-state>enabled</operational-state>
+      <administrative-control>unlock</administrative-control>
+      <administrative-state>unlocked</administrative-state>
+      <lifecycle-state>installed</lifecycle-state>
+      <lp>
+        <uuid>LTP-ETY-02-LP-1</uuid>
+        <local-id>
+          <value-name>lp-local-id</value-name>
+          <value>LTP-ETY-02-LP-1</value>
+        </local-id>
+        <name>
+          <value-name>lp-name</value-name>
+          <value>LTP-ETY-02-LP-1</value>
+        </name>
+        <label>
+          <value-name>lp-label</value-name>
+          <value>LTP-ETY-02-LP-1</value>
+        </label>
+        <operational-state>enabled</operational-state>
+        <administrative-control>unlock</administrative-control>
+        <administrative-state>unlocked</administrative-state>
+        <lifecycle-state>installed</lifecycle-state>
+        <layer-protocol-name>ETY</layer-protocol-name>
+        <configured-client-capacity />
+        <lp-direction>bidirectional</lp-direction>
+        <termination-state>terminated-bidirectional</termination-state>
+        <is-protection-lock-out>false</is-protection-lock-out>
+        <fc-blocks-signal-to-lp />
+      </lp>
+      <ltp-direction>bidirectional</ltp-direction>
+    </ltp>
   </network-element>
   <instance-list>
     <instance-number>1</instance-number>
@@ -1956,7 +1955,7 @@
     <pure-ethernet-structure-historical-performances />
   </mw-pure-ethernet-structure-pac>
   <mw-ethernet-container-pac>
-    <layer-protocol>LTP-ETC-02-LP-1</layer-protocol>
+    <layer-protocol>LTP-ETC-06-LP-1</layer-protocol>
     <ethernet-container-capability>
       <bundling-is-avail>false</bundling-is-avail>
       <packet-compression-is-avail>false</packet-compression-is-avail>
@@ -2213,8 +2212,19 @@
       </historical-performance-data-list>
     </ethernet-container-historical-performances>
   </mw-ethernet-container-pac>
+        <ethernet-pac>
+                <layer-protocol>LTP-ETC-06-ETH-56</layer-protocol>
+                <ethernet-capability/>
+                <ethernet-configuration>
+                    <vlan-id>56</vlan-id>
+                </ethernet-configuration>
+                <ethernet-status/>
+                <ethernet-current-problems/>
+                <ethernet-current-performance/>
+                <ethernet-historical-performances/>
+      </ethernet-pac>
        <forwarding-construct>
-                <uuid>LTP-ETY-02-ETH-56,LTP-ETC-02-ETH-56</uuid>
+                <uuid>LTP-ETY-02-ETH-56,LTP-ETC-06-ETH-56</uuid>
                 <layer-protocol-name>ETH</layer-protocol-name>
                 <fc-port>
                     <uuid>FC-Port-ETH-01</uuid>
@@ -2244,7 +2254,7 @@
                 </fc-port>
                 <fc-port>
                     <uuid>FC-Port-ETH-02</uuid>
-                    <ltp>LTP-ETY-02-ETH-56</ltp>
+                    <ltp>LTP-ETY-06-ETH-56</ltp>
                     <fc-port-direction>bidirectional</fc-port-direction>
                     <is-internal-port>true</is-internal-port>
                     <local-id>
@@ -2270,36 +2280,25 @@
                 </fc-port>
                 <local-id>
                     <value-name>fc-local-id</value-name>
-                    <value>LTP-ETY-02-ETH-56,LTP-ETC-02-ETH-56</value>
+                    <value>LTP-ETY-02-ETH-56,LTP-ETC-06-ETH-56</value>
                 </local-id>
                 <name>
                     <value-name>fc-name</value-name>
-                    <value>LTP-ETY-02-ETH-56,LTP-ETC-02-ETH-56</value>
+                    <value>LTP-ETY-02-ETH-56,LTP-ETC-06-ETH-56</value>
                 </name>
                 <label>
                     <value-name>fc-label</value-name>
-                    <value>LTP-ETY-02-ETH-56,LTP-ETC-02-ETH-56</value>
+                    <value>LTP-ETY-02-ETH-56,LTP-ETC-06-ETH-56</value>
                 </label>
                 <extension>
                     <value-name>fc-ex</value-name>
-                    <value>LTP-ETY-02-ETH-56,LTP-ETC-02-ETH-56</value>
+                    <value>LTP-ETY-02-ETH-56,LTP-ETC-06-ETH-56</value>
                 </extension>
                 <operational-state>enabled</operational-state>
                 <administrative-control>unlock</administrative-control>
                 <administrative-state>unlocked</administrative-state>
                 <lifecycle-state>installed</lifecycle-state>
       </forwarding-construct>
-      <ethernet-pac>
-                <layer-protocol>LTP-ETC-02-ETH-56</layer-protocol>
-                <ethernet-capability/>
-                <ethernet-configuration>
-                    <vlan-id>56</vlan-id>
-                </ethernet-configuration>
-                <ethernet-status/>
-                <ethernet-current-problems/>
-                <ethernet-current-performance/>
-                <ethernet-historical-performances/>
-      </ethernet-pac>
       <ethernet-pac>
                 <layer-protocol>LTP-ETY-02-ETH-56</layer-protocol>
                 <ethernet-capability/>
