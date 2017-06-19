@@ -257,6 +257,8 @@
           </historical-performance-data-list>
        </air-interface-diversity-historical-performances>
     </mw-air-interface-diversity-pac>
+
+
     <mw-pure-ethernet-structure-pac>
        <layer-protocol/>
        <pure-ethernet-structure-capability>
@@ -314,66 +316,32 @@
     <mw-hybrid-mw-structure-pac>
        <layer-protocol/>
        <hybrid-mw-structure-capability>
-          <structure-id/>
+          <structure-id>1</structure-id>
           <supported-tdm-structure-types-list>
-             <tdm-structure-name/>
-             <tdm-segment-size>-1</tdm-segment-size>
-             <max-number-of-segments-reservable>-1</max-number-of-segments-reservable>
+             <tdm-structure-name>tdm-name</tdm-structure-name>
+             <tdm-segment-size>1</tdm-segment-size>
+             <max-number-of-segments-reservable>1</max-number-of-segments-reservable>
           </supported-tdm-structure-types-list>
-          <supported-alarms>Supported alarms not yet defined.</supported-alarms>
+          <supported-alarms></supported-alarms>
        </hybrid-mw-structure-capability>
        <hybrid-mw-structure-configuration>
           <structure-type>
-             <tdm-structure-name>TDM structure name not defined.</tdm-structure-name>
-             <tdm-segment-size>-1</tdm-segment-size>
-             <max-number-of-segments-reservable>-1</max-number-of-segments-reservable>
+             <tdm-structure-name>tdm-name</tdm-structure-name>
+             <tdm-segment-size>1</tdm-segment-size>
+             <max-number-of-segments-reservable>1</max-number-of-segments-reservable>
           </structure-type>
-          <problem-kind-severity-list>
-             <problem-kind-name/>
-          </problem-kind-severity-list>
        </hybrid-mw-structure-configuration>
        <hybrid-mw-structure-status>
           <segment-status-list>
-             <segment-status-type-id/>
+             <segment-status-type-id>1</segment-status-type-id>
              <segment-is-reserved-for-tdm>false</segment-is-reserved-for-tdm>
              <operational-status>disabled</operational-status>
-             <obsolete-priority-class>-1</obsolete-priority-class>
-             <obsolete-drop-order-rank>-1</obsolete-drop-order-rank>
           </segment-status-list>
           <last-status-change>2017-01-01T00:00:00.0Z</last-status-change>
        </hybrid-mw-structure-status>
-       <hybrid-mw-structure-current-problems>
-          <current-problem-list>
-             <problem-name>Problem name not specified.</problem-name>
-             <sequence-number/>
-             <time-stamp>2017-01-01T00:00:00.0Z</time-stamp>
-             <problem-severity>warning</problem-severity>
-          </current-problem-list>
-       </hybrid-mw-structure-current-problems>
-       <hybrid-mw-structure-current-performance>
-          <current-performance-data-list>
-             <performance-data/>
-             <timestamp/>
-             <suspect-interval-flag/>
-             <elapsed-time/>
-             <scanner-id/>
-             <granularity-period/>
-             <administrative-state/>
-             <object-class/>
-             <name-binding/>
-          </current-performance-data-list>
-       </hybrid-mw-structure-current-performance>
-       <hybrid-mw-structure-historical-performances>
-          <historical-performance-data-list>
-             <performance-data/>
-             <suspect-interval-flag>false</suspect-interval-flag>
-             <history-data-id/>
-             <period-end-time/>
-             <granularity-period/>
-             <object-class/>
-             <name-binding/>
-          </historical-performance-data-list>
-       </hybrid-mw-structure-historical-performances>
+       <hybrid-mw-structure-current-problems></hybrid-mw-structure-current-problems>
+       <hybrid-mw-structure-current-performance></hybrid-mw-structure-current-performance>
+       <hybrid-mw-structure-historical-performances></hybrid-mw-structure-historical-performances>
     </mw-hybrid-mw-structure-pac>
     <mw-ethernet-container-pac>
        <layer-protocol/>
