@@ -195,23 +195,23 @@
             <value>ETY-02</value>
         </label>
         <fd>
-            <uuid>ethernet-switch</uuid>
+            <uuid>eth-switch</uuid>
             <layer-protocol-name>ETH</layer-protocol-name>
             <local-id>
                 <value-name>fd-local-id</value-name>
-                <value>ethernet-switch</value>
+                <value>eth-switch</value>
             </local-id>
             <name>
                 <value-name>fd-name</value-name>
-                <value>ethernet-switch</value>
+                <value>eth-switch</value>
             </name>
             <label>
                 <value-name>fd-label</value-name>
-                <value>ethernet-switch</value>
+                <value>eth-switch</value>
             </label>
             <extension>
                 <value-name>fd-ex</value-name>
-                <value>ethernet-switch</value>
+                <value>eth-switch</value>
             </extension>
             <operational-state>enabled</operational-state>
             <administrative-control>unlock</administrative-control>
@@ -389,26 +389,26 @@
         <create>
             <network-element>
                 <fd>
-                    <uuid>ethernet-switch</uuid>
+                    <uuid>eth-switch</uuid>
                     <layer-protocol-name>ETH</layer-protocol-name>
                     <fc>FC-LTP-ETY-01-ETH-23-LTP-ETY-02-ETH-23</fc>
                     <ltp>LTP-ETY-01-ETH-23</ltp>
                     <ltp>LTP-ETY-02-ETH-23</ltp>
                     <local-id>
                         <value-name>fd-local-id</value-name>
-                        <value>ethernet-switch</value>
+                        <value>eth-switch</value>
                     </local-id>
                     <name>
                         <value-name>fd-name</value-name>
-                        <value>ethernet-switch</value>
+                        <value>eth-switch</value>
                     </name>
                     <label>
                         <value-name>fd-label</value-name>
-                        <value>ethernet-switch</value>
+                        <value>eth-switch</value>
                     </label>
                     <extension>
                         <value-name>fd-ex</value-name>
-                        <value>ethernet-switch</value>
+                        <value>eth-switch</value>
                     </extension>
                     <operational-state>enabled</operational-state>
                     <administrative-control>unlock</administrative-control>
@@ -764,23 +764,23 @@
         <remove>
             <network-element>
                 <fd>
-                    <uuid>ethernet-switch</uuid>
+                    <uuid>eth-switch</uuid>
                     <layer-protocol-name>ETH</layer-protocol-name>
                     <local-id>
                         <value-name>fd-local-id</value-name>
-                        <value>ethernet-switch</value>
+                        <value>eth-switch</value>
                     </local-id>
                     <name>
                         <value-name>fd-name</value-name>
-                        <value>ethernet-switch</value>
+                        <value>eth-switch</value>
                     </name>
                     <label>
                         <value-name>fd-label</value-name>
-                        <value>ethernet-switch</value>
+                        <value>eth-switch</value>
                     </label>
                     <extension>
                         <value-name>fd-ex</value-name>
-                        <value>ethernet-switch</value>
+                        <value>eth-switch</value>
                     </extension>
                     <operational-state>enabled</operational-state>
                     <administrative-control>unlock</administrative-control>
