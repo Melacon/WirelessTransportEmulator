@@ -24235,6 +24235,12 @@ static status_t set_capacity_for_interface(const xmlChar *k_mw_air_interface_pac
 		k_mw_air_interface_pac_layer_protocol);
 	res = set_value_for_xpath(xpathexpr, modulation_cur_str);
 
+	u_microwave_model_attribute_value_changed_notification_send(attribute_value_changed_counter++,
+																dateAndTime,
+																k_mw_air_interface_pac_layer_protocol,
+																"modulation-cur",
+																modulation_cur_str);
+
 	sprintf(xpathexpr, "/mw-air-interface-pac[layer-protocol=\"%s\"]/air-interface-status/last-status-change",
 		k_mw_air_interface_pac_layer_protocol);
 	res = set_value_for_xpath(xpathexpr, dateAndTime);

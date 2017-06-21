@@ -43,6 +43,8 @@ class NetworkElement:
         self.ethernetPacConfigXmlNode = None
         self.ptpInstanceListConfigXmlNode = None
         self.ptpPortDsListConfigXmlNode = None
+        self.forwardingDomainForwardingConstructXmlNode = None
+        self.fdLtpXmlNode = None
 
         # Status XML nodes
         self.xmlStatusTree = None
@@ -142,6 +144,15 @@ class NetworkElement:
         self.configRootXmlNode.remove(airInterface)
 
         self.networkElementConfigXmlNode = self.configRootXmlNode.find('core-model:network-element', self.namespaces)
+
+        forwardingDomain = self.networkElementConfigXmlNode.find('core-model:fd', self.namespaces)
+        fd_fc_xmlNode = forwardingDomain.find('core-model:fc', self.namespaces)
+        self.forwardingDomainForwardingConstructXmlNode = copy.deepcopy(fd_fc_xmlNode)
+        forwardingDomain.remove(fd_fc_xmlNode)
+
+        fdLtp = forwardingDomain.find('core-model:ltp', self.namespaces)
+        self.fdLtpXmlNode = copy.deepcopy(fdLtp)
+        forwardingDomain.remove(fdLtp)
 
         ltp = self.networkElementConfigXmlNode.find('core-model:ltp', self.namespaces)
         self.ltpConfigXmlNode = copy.deepcopy(ltp)

@@ -1277,7 +1277,7 @@ status_t u_core_model_network_element_fd_operational_state_get (
     sprintf(xpathexpr, "/network-element/fd[uuid=\"%s\"]/operational-state",
         k_network_element_fd_uuid);
     /* set the operational_state var here, */
-    operational_state = get_value_from_xpath(xpathexpr);
+    operational_state = strdup("enabled");
     
     if (operational_state != NULL)
     {
@@ -1386,7 +1386,7 @@ status_t u_core_model_network_element_fd_administrative_state_get (
     sprintf(xpathexpr, "/network-element/fd[uuid=\"%s\"]/administrative-state",
         k_network_element_fd_uuid);
     /* set the administrative_state var here, */
-    administrative_state = get_value_from_xpath(xpathexpr);
+    administrative_state = strdup("unlocked");
     
     if (administrative_state != NULL)
     {
@@ -3444,7 +3444,7 @@ status_t u_core_model_network_element_ltp_lp_config_and_switch_controller_local_
         k_network_element_ltp_lp_uuid,
         k_network_element_ltp_lp_config_and_switch_controller_switch_rule);
     /* set the operational_state var here, */
-    operational_state = get_value_from_xpath(xpathexpr);
+    operational_state = strdup("enabled");
     
     if (operational_state != NULL)
     {
@@ -3559,7 +3559,7 @@ status_t u_core_model_network_element_ltp_lp_config_and_switch_controller_local_
         k_network_element_ltp_lp_uuid,
         k_network_element_ltp_lp_config_and_switch_controller_switch_rule);
     /* set the administrative_state var here, */
-    administrative_state = get_value_from_xpath(xpathexpr);
+    administrative_state = strdup("unlocked");
     
     if (administrative_state != NULL)
     {
@@ -4624,7 +4624,7 @@ status_t u_core_model_network_element_ltp_lp_config_and_switch_controller_global
         k_network_element_ltp_lp_uuid,
         k_network_element_ltp_lp_config_and_switch_controller_switch_rule);
     /* set the operational_state var here, */
-    operational_state = get_value_from_xpath(xpathexpr);
+    operational_state = strdup("enabled");
     
     if (operational_state != NULL)
     {
@@ -4739,7 +4739,7 @@ status_t u_core_model_network_element_ltp_lp_config_and_switch_controller_global
         k_network_element_ltp_lp_uuid,
         k_network_element_ltp_lp_config_and_switch_controller_switch_rule);
     /* set the administrative_state var here, */
-    administrative_state = get_value_from_xpath(xpathexpr);
+    administrative_state = strdup("unlocked");
     
     if (administrative_state != NULL)
     {
@@ -6190,7 +6190,7 @@ status_t u_core_model_network_element_ltp_lp_operational_state_get (
         k_network_element_ltp_uuid,
         k_network_element_ltp_lp_uuid);
     /* set the operational_state var here, */
-    operational_state = get_value_from_xpath(xpathexpr);
+    operational_state = strdup("enabled");
     
     if (operational_state != NULL)
     {
@@ -6302,7 +6302,7 @@ status_t u_core_model_network_element_ltp_lp_administrative_state_get (
         k_network_element_ltp_uuid,
         k_network_element_ltp_lp_uuid);
     /* set the administrative_state var here, */
-    administrative_state = get_value_from_xpath(xpathexpr);
+    administrative_state = strdup("unlocked");
     
     if (administrative_state != NULL)
     {
@@ -7660,7 +7660,7 @@ status_t u_core_model_network_element_ltp_operational_state_get (
     sprintf(xpathexpr, "/network-element/ltp[uuid=\"%s\"]/operational-state",
         k_network_element_ltp_uuid);
     /* set the operational_state var here, */
-    operational_state = get_value_from_xpath(xpathexpr);
+    operational_state = strdup("enabled");
     
     if (operational_state != NULL)
     {
@@ -7769,7 +7769,7 @@ status_t u_core_model_network_element_ltp_administrative_state_get (
     sprintf(xpathexpr, "/network-element/ltp[uuid=\"%s\"]/administrative-state",
         k_network_element_ltp_uuid);
     /* set the administrative_state var here, */
-    administrative_state = get_value_from_xpath(xpathexpr);
+    administrative_state = strdup("unlocked");
     
     if (administrative_state != NULL)
     {
@@ -8784,7 +8784,7 @@ status_t u_core_model_network_element_operational_state_get (
     xmlChar *xpathexpr[XPATH_MAX_LENGTH];
     sprintf(xpathexpr, "/network-element/operational-state");
     /* set the operational_state var here, */
-    operational_state = get_value_from_xpath(xpathexpr);
+    operational_state = strdup("enabled");
     
     if (operational_state != NULL)
     {
@@ -8889,7 +8889,7 @@ status_t u_core_model_network_element_administrative_state_get (
     xmlChar *xpathexpr[XPATH_MAX_LENGTH];
     sprintf(xpathexpr, "/network-element/administrative-state");
     /* set the administrative_state var here, */
-    administrative_state = get_value_from_xpath(xpathexpr);
+    administrative_state = strdup("unlocked");
     
     if (administrative_state != NULL)
     {
@@ -10569,7 +10569,7 @@ status_t u_core_model_forwarding_construct_fc_port_operational_state_get (
         k_forwarding_construct_uuid,
         k_forwarding_construct_fc_port_uuid);
     /* set the operational_state var here, */
-    operational_state = get_value_from_xpath(xpathexpr);
+    operational_state = strdup("enabled");
     
     if (operational_state != NULL)
     {
@@ -10681,7 +10681,7 @@ status_t u_core_model_forwarding_construct_fc_port_administrative_state_get (
         k_forwarding_construct_uuid,
         k_forwarding_construct_fc_port_uuid);
     /* set the administrative_state var here, */
-    administrative_state = get_value_from_xpath(xpathexpr);
+    administrative_state = strdup("unlocked");
     
     if (administrative_state != NULL)
     {
@@ -12653,7 +12653,7 @@ status_t u_core_model_forwarding_construct_fc_switch_internal_configuration_and_
         k_forwarding_construct_uuid,
         k_forwarding_construct_fc_switch_uuid);
     /* set the operational_state var here, */
-    operational_state = get_value_from_xpath(xpathexpr);
+    operational_state = strdup("enabled");
     
     if (operational_state != NULL)
     {
@@ -12765,7 +12765,7 @@ status_t u_core_model_forwarding_construct_fc_switch_internal_configuration_and_
         k_forwarding_construct_uuid,
         k_forwarding_construct_fc_switch_uuid);
     /* set the administrative_state var here, */
-    administrative_state = get_value_from_xpath(xpathexpr);
+    administrative_state = strdup("unlocked");
     
     if (administrative_state != NULL)
     {
@@ -13813,7 +13813,7 @@ status_t u_core_model_forwarding_construct_fc_switch_internal_configuration_and_
         k_forwarding_construct_uuid,
         k_forwarding_construct_fc_switch_uuid);
     /* set the operational_state var here, */
-    operational_state = get_value_from_xpath(xpathexpr);
+    operational_state = strdup("enabled");
     
     if (operational_state != NULL)
     {
@@ -13925,7 +13925,7 @@ status_t u_core_model_forwarding_construct_fc_switch_internal_configuration_and_
         k_forwarding_construct_uuid,
         k_forwarding_construct_fc_switch_uuid);
     /* set the administrative_state var here, */
-    administrative_state = get_value_from_xpath(xpathexpr);
+    administrative_state = strdup("unlocked");
     
     if (administrative_state != NULL)
     {
@@ -15877,7 +15877,7 @@ status_t u_core_model_forwarding_construct_fc_switch_operational_state_get (
         k_forwarding_construct_uuid,
         k_forwarding_construct_fc_switch_uuid);
     /* set the operational_state var here, */
-    operational_state = get_value_from_xpath(xpathexpr);
+    operational_state = strdup("enabled");
     
     if (operational_state != NULL)
     {
@@ -15989,7 +15989,7 @@ status_t u_core_model_forwarding_construct_fc_switch_administrative_state_get (
         k_forwarding_construct_uuid,
         k_forwarding_construct_fc_switch_uuid);
     /* set the administrative_state var here, */
-    administrative_state = get_value_from_xpath(xpathexpr);
+    administrative_state = strdup("unlocked");
     
     if (administrative_state != NULL)
     {
@@ -17283,7 +17283,7 @@ status_t u_core_model_forwarding_construct_operational_state_get (
     sprintf(xpathexpr, "/forwarding-construct[uuid=\"%s\"]/operational-state",
         k_forwarding_construct_uuid);
     /* set the operational_state var here, */
-    operational_state = get_value_from_xpath(xpathexpr);
+    operational_state = strdup("enabled");
     
     if (operational_state != NULL)
     {
@@ -17392,7 +17392,7 @@ status_t u_core_model_forwarding_construct_administrative_state_get (
     sprintf(xpathexpr, "/forwarding-construct[uuid=\"%s\"]/administrative-state",
         k_forwarding_construct_uuid);
     /* set the administrative_state var here, */
-    administrative_state = get_value_from_xpath(xpathexpr);
+    administrative_state = strdup("unlocked");
     
     if (administrative_state != NULL)
     {
@@ -21201,7 +21201,7 @@ status_t u_core_model_equipment_connector_operational_state_get (
         k_equipment_uuid,
         k_equipment_connector_uuid);
     /* set the operational_state var here, */
-    operational_state = get_value_from_xpath(xpathexpr);
+    operational_state = strdup("enabled");
     
     if (operational_state != NULL)
     {
@@ -21313,7 +21313,7 @@ status_t u_core_model_equipment_connector_administrative_state_get (
         k_equipment_uuid,
         k_equipment_connector_uuid);
     /* set the administrative_state var here, */
-    administrative_state = get_value_from_xpath(xpathexpr);
+    administrative_state = strdup("unlocked");
     
     if (administrative_state != NULL)
     {
@@ -24949,7 +24949,7 @@ status_t u_core_model_equipment_contained_holder_operational_state_get (
         k_equipment_uuid,
         k_equipment_contained_holder_uuid);
     /* set the operational_state var here, */
-    operational_state = get_value_from_xpath(xpathexpr);
+    operational_state = strdup("enabled");
     
     if (operational_state != NULL)
     {
@@ -25061,7 +25061,7 @@ status_t u_core_model_equipment_contained_holder_administrative_state_get (
         k_equipment_uuid,
         k_equipment_contained_holder_uuid);
     /* set the administrative_state var here, */
-    administrative_state = get_value_from_xpath(xpathexpr);
+    administrative_state = strdup("unlocked");
     
     if (administrative_state != NULL)
     {
@@ -28005,7 +28005,7 @@ status_t u_core_model_equipment_exposed_cable_connector_operational_state_get (
         k_equipment_exposed_cable_uuid,
         k_equipment_exposed_cable_connector_uuid);
     /* set the operational_state var here, */
-    operational_state = get_value_from_xpath(xpathexpr);
+    operational_state = strdup("enabled");
     
     if (operational_state != NULL)
     {
@@ -28120,7 +28120,7 @@ status_t u_core_model_equipment_exposed_cable_connector_administrative_state_get
         k_equipment_exposed_cable_uuid,
         k_equipment_exposed_cable_connector_uuid);
     /* set the administrative_state var here, */
-    administrative_state = get_value_from_xpath(xpathexpr);
+    administrative_state = strdup("unlocked");
     
     if (administrative_state != NULL)
     {
@@ -30820,7 +30820,7 @@ status_t u_core_model_equipment_exposed_cable_operational_state_get (
         k_equipment_uuid,
         k_equipment_exposed_cable_uuid);
     /* set the operational_state var here, */
-    operational_state = get_value_from_xpath(xpathexpr);
+    operational_state = strdup("enabled");
     
     if (operational_state != NULL)
     {
@@ -30932,7 +30932,7 @@ status_t u_core_model_equipment_exposed_cable_administrative_state_get (
         k_equipment_uuid,
         k_equipment_exposed_cable_uuid);
     /* set the administrative_state var here, */
-    administrative_state = get_value_from_xpath(xpathexpr);
+    administrative_state = strdup("unlocked");
     
     if (administrative_state != NULL)
     {
@@ -36847,7 +36847,7 @@ status_t u_core_model_equipment_operational_state_get (
     sprintf(xpathexpr, "/equipment[uuid=\"%s\"]/operational-state",
         k_equipment_uuid);
     /* set the operational_state var here, */
-    operational_state = get_value_from_xpath(xpathexpr);
+    operational_state = strdup("enabled");
     
     if (operational_state != NULL)
     {
@@ -36956,7 +36956,7 @@ status_t u_core_model_equipment_administrative_state_get (
     sprintf(xpathexpr, "/equipment[uuid=\"%s\"]/administrative-state",
         k_equipment_uuid);
     /* set the administrative_state var here, */
-    administrative_state = get_value_from_xpath(xpathexpr);
+    administrative_state = strdup("unlocked");
     
     if (administrative_state != NULL)
     {

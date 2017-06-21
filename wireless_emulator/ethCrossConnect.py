@@ -90,6 +90,11 @@ class EthCrossConnect:
     def buildConfigXmlFiles(self):
         parentNode = self.neObj.configRootXmlNode
 
+        forwardingDomain = self.neObj.networkElementConfigXmlNode.find('core-model:fd', self.neObj.namespaces)
+        fd_fc_node = copy.deepcopy(self.neObj.forwardingDomainForwardingConstructXmlNode)
+        fd_fc_node.text = self.uuid
+        forwardingDomain.append(fd_fc_node)
+
         forwardingConstruct = copy.deepcopy(self.neObj.forwardingConstructConfigXmlNode)
 
         uuid = forwardingConstruct.find('core-model:uuid', self.neObj.namespaces)
@@ -108,13 +113,28 @@ class EthCrossConnect:
 
         for i in range(0,2):
             fcPort = copy.deepcopy(fcPortSaved)
-            fcPortUuid = self.interfacesObj[i].getInterfaceUuid() + '_' +  str(i)
+            fcPortUuid = self.interfacesObj[i].getInterfaceUuid() + '_fc_port'
 
             uuid = fcPort.find('core-model:uuid', self.neObj.namespaces)
             uuid.text = fcPortUuid
 
+            role = fcPort.find('core-model:role', self.neObj.namespaces)
+            fcPort.remove(role)
+
+            fcRouteNeeds = fcPort.find('core-model:fc-route-feeds-fc-port-egress', self.neObj.namespaces)
+            fcPort.remove(fcRouteNeeds)
+
             ltpNode = fcPort.find('core-model:ltp', self.neObj.namespaces)
-            ltpNode.text = "ltp-" + self.interfacesObj[i].getInterfaceName()
+            ltpNode.text = "ltp-" + self.interfacesObj[i].ltpUuid
+
+            fcPortDirection = fcPort.find('core-model:fc-port-direction', self.neObj.namespaces)
+            fcPortDirection.text = 'bidirectional'
+
+            isProtectionLockout = fcPort.find('core-model:is-protection-lock-out', self.neObj.namespaces)
+            isProtectionLockout.text = 'false'
+
+            selectionPriority = fcPort.find('core-model:selection-priority', self.neObj.namespaces)
+            selectionPriority.text = '0'
 
             addCoreDefaultValuesToNode(fcPort, fcPortUuid, self.neObj.namespaces)
 
@@ -122,6 +142,15 @@ class EthCrossConnect:
 
         uselessNode = forwardingConstruct.find('core-model:fc-switch', self.neObj.namespaces)
         forwardingConstruct.remove(uselessNode)
+
+        forwardingDirection = forwardingConstruct.find('core-model:forwarding-direction', self.neObj.namespaces)
+        forwardingDirection.text = 'bidirectional'
+
+        isProtectionLockout = forwardingConstruct.find('core-model:is-protection-lock-out', self.neObj.namespaces)
+        isProtectionLockout.text = 'false'
+
+        servicePriority = forwardingConstruct.find('core-model:service-priority', self.neObj.namespaces)
+        servicePriority.text = '0'
 
         addCoreDefaultValuesToNode(forwardingConstruct, self.uuid, self.neObj.namespaces)
 
@@ -141,7 +170,7 @@ class EthCrossConnect:
 
         for i in range(0, 2):
             fcPort = copy.deepcopy(fcPortSaved)
-            fcPortUuid = self.interfacesObj[i].getInterfaceUuid() + '_' + str(i)
+            fcPortUuid = self.interfacesObj[i].getInterfaceUuid() + '_fc_port'
 
             uuid = fcPort.find('uuid')
             uuid.text = fcPortUuid

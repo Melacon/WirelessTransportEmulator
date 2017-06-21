@@ -693,6 +693,13 @@ class MwEthContainerInterface:
 
     def buildCoreModelConfigXml(self):
         neNode = self.neObj.networkElementConfigXmlNode
+
+        fdLtp = copy.deepcopy(self.neObj.fdLtpXmlNode)
+        fdLtp.text = self.ltpUuid
+
+        forwardingDomain = neNode.find('core-model:fd', self.neObj.namespaces)
+        forwardingDomain.append(fdLtp)
+
         ltpNode = copy.deepcopy(self.neObj.ltpConfigXmlNode)
         uuid = ltpNode.find('core-model:uuid', self.neObj.namespaces)
         #ltpUuid = "ltp-" + self.interfaceName
@@ -980,6 +987,13 @@ class ElectricalEtyInterface:
 
     def buildCoreModelConfigXml(self):
         neNode = self.neObj.networkElementConfigXmlNode
+
+        fdLtp = copy.deepcopy(self.neObj.fdLtpXmlNode)
+        fdLtp.text = self.ltpUuid
+
+        forwardingDomain = neNode.find('core-model:fd', self.neObj.namespaces)
+        forwardingDomain.append(fdLtp)
+
         ltpNode = copy.deepcopy(self.neObj.ltpConfigXmlNode)
         uuid = ltpNode.find('core-model:uuid', self.neObj.namespaces)
         #ltpUuid = "ltp-" + self.interfaceName
