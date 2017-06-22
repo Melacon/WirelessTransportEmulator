@@ -302,9 +302,9 @@ class MwpsInterface:
 
         portIdentity = portDsList.find('ptp:port-identity', self.neObj.namespaces)
         clockIdentity = portIdentity.find('ptp:clock-identity', self.neObj.namespaces)
-        byteRepr = ' '.join(format(ord(x), 'b') for x in 'LOCAL-01')
-        byteRepr.replace(" ", "")
-        clockIdentity.text = byteRepr
+        # byteRepr = ' '.join(format(ord(x), 'b') for x in 'LOCAL-01')
+        # byteRepr.replace(" ", "")
+        clockIdentity.text = 'UFRQU2xhdmU='
         portNumber = portIdentity.find('ptp:port-number', self.neObj.namespaces)
         portNumber.text = str(self.id)
 
@@ -1073,9 +1073,9 @@ class ElectricalEtyInterface:
 
         portIdentity = portDsList.find('ptp:port-identity', self.neObj.namespaces)
         clockIdentity = portIdentity.find('ptp:clock-identity', self.neObj.namespaces)
-        byteRepr = ' '.join(format(ord(x), 'b') for x in 'LOCAL-01')
-        byteRepr.replace(" ", "")
-        clockIdentity.text = byteRepr
+        # byteRepr = ' '.join(format(ord(x), 'b') for x in 'LOCAL-01')
+        # byteRepr.replace(" ", "")
+        clockIdentity.text = 'UFRQU2xhdmU='
         portNumber = portIdentity.find('ptp:port-number', self.neObj.namespaces)
         portNumber.text = str(self.id)
 

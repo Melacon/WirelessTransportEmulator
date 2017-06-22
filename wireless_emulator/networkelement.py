@@ -313,9 +313,9 @@ class NetworkElement:
         twoStepFlag.text = 'true'
 
         clockIdentity = defaultDs.find('ptp:clock-identity', self.namespaces)
-        byteRepr = ' '.join(format(ord(x), 'b') for x in 'PTPCLOCK')
-        byteRepr.replace(" ", "")
-        clockIdentity.text = byteRepr
+        # byteRepr = ' '.join(format(ord(x), 'b') for x in 'PTPCLOCK')
+        # byteRepr.replace(" ", "")
+        clockIdentity.text = 'UFRQU2xhdmU='
 
         numberPorts = defaultDs.find('ptp:number-ports', self.namespaces)
         numberPorts.text = '0'
@@ -342,9 +342,9 @@ class NetworkElement:
         parentPortIdentity = parentDs.find('ptp:parent-port-identity', self.namespaces)
 
         clockIdentity = parentPortIdentity.find('ptp:clock-identity', self.namespaces)
-        byteRepr = ' '.join(format(ord(x), 'b') for x in 'MASTER01')
-        byteRepr.replace(" ", "")
-        clockIdentity.text = byteRepr
+        # byteRepr = ' '.join(format(ord(x), 'b') for x in 'MASTER01')
+        # byteRepr.replace(" ", "")
+        clockIdentity.text = 'UEFSRU5UMDE='
 
         portNumber = parentPortIdentity.find('ptp:port-number', self.namespaces)
         portNumber.text = '1'
@@ -359,6 +359,9 @@ class NetworkElement:
 
         ptpTimescale = timePropertiesDs.find('ptp:ptp-timescale', self.namespaces)
         ptpTimescale.text = 'true'
+
+        grandmasterIdentity = parentDs.find('ptp:grandmaster-identity', self.namespaces)
+        grandmasterIdentity.text = 'R1JBTkQwMDE='
 
         node.append(self.ptpInstanceListConfigXmlNode)
 
