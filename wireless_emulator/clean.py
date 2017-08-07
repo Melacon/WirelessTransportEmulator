@@ -42,7 +42,8 @@ def getDockerNames():
     for line in cmd.stderr:
         strLine = line.decode("utf-8").rstrip('\n')
         logger.critical("Could not get names of docker containers having image openyuma.\n Stderr: %s", strLine)
-        raise RuntimeError("Could not get docker container names")
+        print("Could not get docker container names")
+        #raise RuntimeError("Could not get docker container names")
 
     for line in cmd.stdout:
         strLine = line.decode("utf-8").rstrip('\n')
@@ -57,7 +58,8 @@ def getDockerNames():
     for line in cmd.stderr:
         strLine = line.decode("utf-8").rstrip('\n')
         logger.critical("Could not get names of docker containers having image "+dockerName+".\n Stderr: %s", strLine)
-        raise RuntimeError("Could not get docker container names")
+        print("Could not get docker container names")
+        #raise RuntimeError("Could not get docker container names")
 
     for line in cmd.stdout:
         strLine = line.decode("utf-8").rstrip('\n')
@@ -76,7 +78,8 @@ def getDockerNetworks():
     for line in cmd.stderr:
         strLine = line.decode("utf-8").rstrip('\n')
         logger.critical("Could not get names of docker networks having names oywe.\n Stderr: %s", strLine)
-        raise RuntimeError("Could not get docker networks")
+        print("Could not get docker networks")
+        #raise RuntimeError("Could not get docker networks")
 
     for line in cmd.stdout:
         strLine = line.decode("utf-8").rstrip('\n')
@@ -94,7 +97,8 @@ def stopAndRemoveDockerContainers(dockerNames):
         for line in cmd.stderr:
             strLine = line.decode("utf-8").rstrip('\n')
             logger.critical("Could not stop docker container %s\n Stderr: %s", container, strLine)
-            raise RuntimeError("Could not stop docker container %s" % container)
+            print("Could not stop docker container %s" % container)
+            #raise RuntimeError("Could not stop docker container %s" % container)
 
         print("Removing docker container %s" % container)
         stringCmd = "docker rm %s" % (container)
@@ -104,7 +108,8 @@ def stopAndRemoveDockerContainers(dockerNames):
         for line in cmd.stderr:
             strLine = line.decode("utf-8").rstrip('\n')
             logger.critical("Could not remove docker container %s\n Stderr: %s", container, strLine)
-            raise RuntimeError("Could not remove docker container ")
+            print("Could not remove docker container %s" % container)
+            #raise RuntimeError("Could not remove docker container ")
 
 def removeDockerNetworks(dockerNetworks):
     for network in dockerNetworks:
@@ -116,7 +121,8 @@ def removeDockerNetworks(dockerNetworks):
         for line in cmd.stderr:
             strLine = line.decode("utf-8").rstrip('\n')
             logger.critical("Could not remove docker network %s\n Stderr: %s", network, strLine)
-            raise RuntimeError("Could not remove docker network %s", network)
+            print("Could not remove docker network %s", network)
+            #raise RuntimeError("Could not remove docker network %s", network)
 
 def removeLinkBridges():
     cmd = subprocess.Popen('ovs-vsctl list-br | grep -i oywe-br', shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
