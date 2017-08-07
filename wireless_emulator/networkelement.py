@@ -561,7 +561,7 @@ class NetworkElement:
                # registerNeToOdl(self.emEnv.controllerInfo, self.uuid, self.managementIPAddressString)
                registerNeToOdlNewVersion(self.emEnv.controllerInfo, self.uuid, self.managementIPAddressString,
                                          self.netconfPortNumber)
-           except RuntimeError:
+           except:
                print("Failed to register NE=%s having IP=%s and port=%s to the ODL controller" %
                      (self.uuid, self.managementIPAddressString, self.netconfPortNumber))
 

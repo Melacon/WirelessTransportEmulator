@@ -1174,7 +1174,7 @@ class EthCtpInterface:
                 return xconn['fcPorts'][0]['vlan-id']
             elif xconn['fcPorts'][1]['ltp'] == self.uuid:
                 return xconn['fcPorts'][1]['vlan-id']
-        return None
+        return '0'
 
     def buildCoreModelConfigXml(self):
         neNode = self.neObj.networkElementConfigXmlNode
