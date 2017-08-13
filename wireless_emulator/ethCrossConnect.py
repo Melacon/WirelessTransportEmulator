@@ -13,7 +13,7 @@ class EthCrossConnect:
         self.id = id
         self.neObj = neObj
         self.hostAvailable = ethCrossConnect['host']
-        self.uuid = 'fc-eth-' + str(self.id)
+        self.uuid = None
 
         self.fcPortList = ethCrossConnect['fcPorts']
         self.fcRoute = ethCrossConnect['fcRoute']
@@ -53,6 +53,9 @@ class EthCrossConnect:
 
         if len(self.interfacesObj) != 2:
             return False
+
+        self.uuid = self.interfacesObj[0].serverLtpsList[0] + '-' + self.interfacesObj[0].vlanId + ',' + \
+                    self.interfacesObj[1].serverLtpsList[0] + '-' + self.interfacesObj[1].vlanId
 
         return True
 
@@ -125,7 +128,7 @@ class EthCrossConnect:
             fcPort.remove(fcRouteNeeds)
 
             ltpNode = fcPort.find('core-model:ltp', self.neObj.namespaces)
-            ltpNode.text = "ltp-" + self.interfacesObj[i].ltpUuid
+            ltpNode.text = self.interfacesObj[i].ltpUuid
 
             fcPortDirection = fcPort.find('core-model:fc-port-direction', self.neObj.namespaces)
             fcPortDirection.text = 'bidirectional'
