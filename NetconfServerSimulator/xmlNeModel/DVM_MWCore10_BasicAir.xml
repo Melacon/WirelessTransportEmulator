@@ -243,10 +243,10 @@
         </schemas>
     </netconf-state>
     <NetworkElement>
-        <uuid>NE-10</uuid>
+        <uuid>NE-101</uuid>
         <nameList>
             <valueName>neName</valueName>
-            <value>NE-10</value>
+            <value>NE-101</value>
         </nameList>
         <labelList>
             <valueName>neLabel</valueName>

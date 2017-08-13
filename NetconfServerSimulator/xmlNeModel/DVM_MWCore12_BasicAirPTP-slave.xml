@@ -606,7 +606,7 @@
             <parent-port-identity>
                 <!--clock-identity=MASTER01 -->
                 <clock-identity>$PTPID(Boundary)</clock-identity>
-                <port-number>1</port-number>
+                <port-number>6</port-number>
             </parent-port-identity>
             <grandmaster-identity>$PTPID(PTP-GM01)</grandmaster-identity>
             <grandmaster-clock-quality>
@@ -625,11 +625,11 @@
             <ptp-timescale>true</ptp-timescale>
         </time-properties-ds>
         <port-ds-list>
-            <port-number>1</port-number>
+            <port-number>6</port-number>
             <port-identity>
                 <!--clock-identity=LOCAL-01 -->
                 <clock-identity>$PTPID(PTPSlave)</clock-identity>
-                <port-number>1</port-number>
+                <port-number>6</port-number>
             </port-identity>
             <port-state>SLAVE</port-state>
             <log-min-delay-req-interval>-4</log-min-delay-req-interval>
@@ -646,11 +646,11 @@
             <logical-termination-point xmlns="urn:onf:params:xml:ns:yang:onf-ptp-dataset">LTP-MWS-RADIO</logical-termination-point>
         </port-ds-list>
         <port-ds-list>
-            <port-number>2</port-number>
+            <port-number>33</port-number>
             <port-identity>
                 <!--clock-identity=LOCAL-02 -->
                 <clock-identity>$PTPID(PTPSlave)</clock-identity>
-                <port-number>2</port-number>
+                <port-number>33</port-number>
             </port-identity>
             <port-state>SLAVE</port-state>
             <log-min-delay-req-interval>-4</log-min-delay-req-interval>
