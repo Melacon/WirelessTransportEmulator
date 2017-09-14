@@ -3,6 +3,7 @@ import sys
 from select import poll, POLLIN
 import string
 from subprocess import call
+import psutil, os, time
 
 from wireless_emulator import *
 from wireless_emulator.clean import cleanup
@@ -206,3 +207,41 @@ class CLI(Cmd):
                 print('ERROR: Node %s not found' % node)
                 print('ERROR: usage: unmount <all> for unmounting all NEs')
                 print('ERROR: usage: unmount <NE_uuid> for unmounting a single network element')
+
+    def do_print_resource_usage(self, line):
+        "Compute the average amount of resources (CPU and Memory) consumed by the WTE in a specified interval"
+        cpu_percent = 0.0
+        memory_percent = 0.0
+        args = line.split()
+
+        interval = 10
+        if len(args) > 0:
+            interval = int(args[0])
+
+        print("Computing CPU and memory usage on an interval of %d seconds. Please wait..." % interval)
+        for i in range(0,interval):
+            for ne in self.emulator.networkElementList:
+                cmd = "ps -g `docker inspect -f '{{.State.Pid}}' %s` --no-headers -o \"pcpu\"" % ne.dockerName
+                output = self.emulator.executeCommandAndGetResultInOS(cmd)
+                for line in output:
+                    cpu_percent += float(line)
+                cmd = "ps -g `docker inspect -f '{{.State.Pid}}' %s` --no-headers -o \"pmem\"" % ne.dockerName
+                output = self.emulator.executeCommandAndGetResultInOS(cmd)
+                for line in output:
+                    memory_percent += float(line)
+
+        cpu_percent /= float(interval)
+        memory_percent /= float(interval)
+
+        pid = os.getpid()
+        p = psutil.Process(pid)
+
+        cpu_percent += p.cpu_percent()
+        memory_percent += p.memory_percent()
+
+        for child in p.children():
+            cpu_percent += child.cpu_percent()
+            memory_percent += child.memory_percent()
+
+        print('CPU Usage: %2.2f%%' % cpu_percent)
+        print('Memory usage: %2.2f%%' % memory_percent)
