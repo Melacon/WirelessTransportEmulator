@@ -89,6 +89,17 @@ def getDockerNetworks():
 
 def stopAndRemoveDockerContainers(dockerNames):
     for container in dockerNames:
+        print("Killing docker container %s" % container)
+        stringCmd = "docker kill %s" % (container)
+
+        cmd = subprocess.Popen(stringCmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        for line in cmd.stderr:
+            strLine = line.decode("utf-8").rstrip('\n')
+            logger.critical("Could not kill docker container %s\n Stderr: %s", container, strLine)
+            print("Could not kill docker container %s" % container)
+            # raise RuntimeError("Could not stop docker container %s" % container)
+
         print("Stopping docker container %s" % container)
         stringCmd = "docker stop %s" % (container)
 
