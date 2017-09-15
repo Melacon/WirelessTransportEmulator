@@ -8451,7 +8451,7 @@
     {
       "network-element" :
       {
-        "uuid" : "NE123",
+        "uuid" : "NE133",
         "type" : "OpenYuma",
         "interfaces" : [
           {
