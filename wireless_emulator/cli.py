@@ -225,13 +225,14 @@ class CLI(Cmd):
                 output = self.emulator.executeCommandAndGetResultInOS(cmd)
                 for line in output:
                     cpu_percent += float(line)
-                cmd = "ps -g `docker inspect -f '{{.State.Pid}}' %s` --no-headers -o \"pmem\"" % ne.dockerName
-                output = self.emulator.executeCommandAndGetResultInOS(cmd)
-                for line in output:
-                    memory_percent += float(line)
+
+        for ne in self.emulator.networkElementList:
+            cmd = "ps -g `docker inspect -f '{{.State.Pid}}' %s` --no-headers -o \"pmem\"" % ne.dockerName
+            output = self.emulator.executeCommandAndGetResultInOS(cmd)
+            for line in output:
+                memory_percent += float(line)
 
         cpu_percent /= float(interval)
-        memory_percent /= float(interval)
 
         pid = os.getpid()
         p = psutil.Process(pid)

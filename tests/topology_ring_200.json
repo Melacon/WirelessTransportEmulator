@@ -6400,8 +6400,9 @@
           ]
       }
     },
-    "network-element" :
-      {
+    {
+    	"network-element" :
+      	{
         "uuid" : "NE101",
         "type" : "OpenYuma",
         "interfaces" : [
