@@ -94,6 +94,10 @@ Install version 3.6 for python:
 sudo add-apt-repository ppa:jonathonf/python-3.6; \
 sudo apt-get update; \
 sudo apt-get install python3.6
+
+sudo apt-get install python3.6-dev
+sudo apt-get install python3-pip
+sudo python3.6 -m pip install psutil
 ```
 
 ### Install
