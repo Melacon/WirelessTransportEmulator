@@ -4,6 +4,8 @@ from select import poll, POLLIN
 import string
 from subprocess import call
 import psutil, os, time
+from timeit import default_timer as timer
+from multiprocessing import Process, Manager
 
 from wireless_emulator import *
 from wireless_emulator.clean import cleanup
@@ -150,7 +152,7 @@ class CLI(Cmd):
                         registerNeToOdlNewVersion(self.emulator.controllerInfo, node.uuid,
                                                   node.managementIPAddressString,
                                                   node.netconfPortNumber)
-                    except RuntimeError:
+                    except:
                         print("Failed to register NE=%s having IP=%s and port=%s to the ODL controller" %
                               (node.uuid, node.managementIPAddressString, node.netconfPortNumber))
                 else:
@@ -164,7 +166,7 @@ class CLI(Cmd):
                 try:
                     registerNeToOdlNewVersion(self.emulator.controllerInfo, node.uuid, node.managementIPAddressString,
                                               node.netconfPortNumber)
-                except RuntimeError:
+                except:
                     print("Failed to register NE=%s having IP=%s and port=%s to the ODL controller" %
                           (node.uuid, node.managementIPAddressString, node.netconfPortNumber))
             else:
@@ -187,7 +189,7 @@ class CLI(Cmd):
                 if node is not None:
                     try:
                         unregisterNeFromOdlNewVersion(self.emulator.controllerInfo, node.uuid)
-                    except RuntimeError:
+                    except:
                         print("Failed to unregister NE=%s having IP=%s and port=%s from the ODL controller" %
                               (node.uuid, node.managementIPAddressString, node.netconfPortNumber))
                 else:
@@ -200,7 +202,7 @@ class CLI(Cmd):
             if node is not None:
                 try:
                     unregisterNeFromOdlNewVersion(self.emulator.controllerInfo, node.uuid)
-                except RuntimeError:
+                except:
                     print("Failed to unregister NE=%s having IP=%s and port=%s from the ODL controller" %
                           (node.uuid, node.managementIPAddressString, node.netconfPortNumber))
             else:
@@ -210,21 +212,27 @@ class CLI(Cmd):
 
     def do_print_resource_usage(self, line):
         "Compute the average amount of resources (CPU and Memory) consumed by the WTE in a specified interval"
-        cpu_percent = 0.0
         memory_percent = 0.0
         args = line.split()
+
+        start = timer()
 
         interval = 10
         if len(args) > 0:
             interval = int(args[0])
 
-        print("Computing CPU and memory usage on an interval of %d seconds. Please wait..." % interval)
-        for i in range(0,interval):
-            for ne in self.emulator.networkElementList:
-                cmd = "ps -g `docker inspect -f '{{.State.Pid}}' %s` --no-headers -o \"pcpu\"" % ne.dockerName
-                output = self.emulator.executeCommandAndGetResultInOS(cmd)
-                for line in output:
-                    cpu_percent += float(line)
+        print("Computing CPU and memory usage by taking %d samples. Please wait..." % interval)
+
+        processes = []
+        results = Manager().dict()
+        for i, ne in enumerate(self.emulator.networkElementList):
+            p = Process(target=ne.getCpuUsage, args=(interval, i, results))
+            processes.append(p)
+            p.start()
+        for p in processes:
+            p.join()
+
+        cpu_percent = sum(results.values())
 
         for ne in self.emulator.networkElementList:
             cmd = "ps -g `docker inspect -f '{{.State.Pid}}' %s` --no-headers -o \"pmem\"" % ne.dockerName
@@ -232,17 +240,8 @@ class CLI(Cmd):
             for line in output:
                 memory_percent += float(line)
 
-        cpu_percent /= float(interval)
-
-        pid = os.getpid()
-        p = psutil.Process(pid)
-
-        cpu_percent += p.cpu_percent()
-        memory_percent += p.memory_percent()
-
-        for child in p.children():
-            cpu_percent += child.cpu_percent()
-            memory_percent += child.memory_percent()
+        end = timer()
 
         print('CPU Usage: %2.2f%%' % cpu_percent)
         print('Memory usage: %2.2f%%' % memory_percent)
+        print('Command took %6.3f seconds' % (end - start))

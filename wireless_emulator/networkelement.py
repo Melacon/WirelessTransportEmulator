@@ -568,8 +568,8 @@ class NetworkElement:
         self.saveNetworkNamespace()
 
         #debug
-        self.xmlConfigurationTree.write('output-config-' + self.dockerName + '.xml')
-        self.xmlStatusTree.write('output-status-' + self.dockerName + '.xml')
+        #self.xmlConfigurationTree.write('output-config-' + self.dockerName + '.xml')
+        #self.xmlStatusTree.write('output-status-' + self.dockerName + '.xml')
 
     def addInterfacesInDockerContainer(self):
 
@@ -713,3 +713,14 @@ class NetworkElement:
             raise RuntimeError
         for line in cmd.stdout:
             print(line.decode("utf-8").rstrip('\n'))
+
+    def getCpuUsage(self, interval, index, results):
+        cpu_percent = 0.0
+        for i in range(0, interval):
+            cmd = "ps -g `docker inspect -f '{{.State.Pid}}' %s` --no-headers -o \"pcpu\"" % self.dockerName
+            output = self.emEnv.executeCommandAndGetResultInOS(cmd)
+            for line in output:
+                cpu_percent += float(line)
+
+        cpu_percent /= float(interval)
+        results[index] = cpu_percent
