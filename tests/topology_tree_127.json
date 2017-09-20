@@ -5315,7 +5315,7 @@
     {
       "network-element" :
       {
-        "uuid" : "NE64",
+        "uuid" : "NE65",
         "type" : "OpenYuma",
         "interfaces" : [
           {
