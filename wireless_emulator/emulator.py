@@ -167,7 +167,7 @@ class Emulator(metaclass=Singleton):
     def addInterfacesInDocker(self):
         for ne in self.networkElementList:
             print("Adding relevant interfaces in docker container %s..." % ne.uuid)
-            ne.addInterfacesInDockerContainer()
+            ne.addInterfacesInDockerContainerToScript()
 
     def startEmulator(self):
         self.createNetworkElements()

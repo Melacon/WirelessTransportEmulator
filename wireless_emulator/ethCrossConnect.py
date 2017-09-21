@@ -86,6 +86,29 @@ class EthCrossConnect:
         command = "ip link set dev %s up" % bridgeName
         self.neObj.executeCommandInContainer(command)
 
+    def addXConnToScript(self):
+
+        bridgeName = 'xc_br' + str(self.id)
+
+        command = "ip link add name %s type bridge\n" % bridgeName
+        self.neObj.scriptIntf.write(command)
+
+        command = "ip link set dev %s master %s\n" % (self.interfacesObj[0].getInterfaceName(), bridgeName)
+        self.neObj.scriptIntf.write(command)
+
+        command = "ip link set dev %s master %s\n" % (self.interfacesObj[1].getInterfaceName(), bridgeName)
+        self.neObj.scriptIntf.write(command)
+
+        if self.hostAvailable is True:
+            ipAddress = str(self.neObj.emEnv.intfIpFactory.getFreeInterfaceIp())
+            mask = str(self.neObj.emEnv.intfIpFactory.netmask)
+
+            command = "ip address add %s/%s dev %s\n" % (ipAddress, mask, bridgeName)
+            self.neObj.scriptIntf.write(command)
+
+        command = "ip link set dev %s up\n" % bridgeName
+        self.neObj.scriptIntf.write(command)
+
     def buildXmlFiles(self):
         self.buildConfigXmlFiles()
         self.buildStatusXmlFiles()

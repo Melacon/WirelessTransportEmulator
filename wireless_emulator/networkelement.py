@@ -3,6 +3,7 @@ import subprocess
 import xml.etree.ElementTree as ET
 import copy
 import os
+from io import StringIO
 
 import wireless_emulator.emulator
 from wireless_emulator.utils import addCoreDefaultValuesToNode, printErrorAndExit, addCoreDefaultStatusValuesToNode
@@ -108,6 +109,9 @@ class NetworkElement:
 
         logger.info("Created NetworkElement object with uuid=%s and id=%s and IP=%s",
                     self.uuid, self.id, self.managementIPAddressString)
+
+        self.scriptIntf = StringIO()
+        self.scriptIntf.write('#!/bin/bash\n\n')
 
     def getNeId(self):
         return self.id
@@ -724,3 +728,128 @@ class NetworkElement:
 
         cpu_percent /= float(interval)
         results[index] = cpu_percent
+
+    def addInterfacesInDockerContainerToScript(self):
+
+        for intf in self.interfaceList:
+            if intf.layer == 'MWPS':
+                self.addDummyEthInterfaceToScript(intf)
+            elif intf.layer == 'MWS':
+                self.addMwsInterfaceToScript(intf)
+            elif intf.layer == 'ETC':
+                self.addMwEthContInterfaceToScript(intf)
+            elif intf.layer == 'ETY':
+                self.addEtyEthInterfaceToScript(intf)
+            elif intf.layer == 'ETH':
+                self.addEthCtpInterfaceToScript(intf)
+        for xconn in self.ethCrossConnectList:
+            xconn.addXConnToScript()
+
+        self.copyInterfaceScriptToDockerContainer()
+        self.runInterfaceScriptInDockerContainer()
+
+    def addMwsInterfaceToScript(self, interfaceObj):
+        command = "ip link add name %s type bond\n" % interfaceObj.getInterfaceName()
+        self.scriptIntf.write(command)
+
+        command = "echo 0 > /sys/class/net/%s/bonding/mode\n" % interfaceObj.getInterfaceName()
+        self.scriptIntf.write(command)
+
+        command = "echo 100 > /sys/class/net/%s/bonding/miimon\n" % interfaceObj.getInterfaceName()
+        self.scriptIntf.write(command)
+
+        for serverLtp in interfaceObj.serverLtpsList:
+            serverObj = self.getInterfaceFromInterfaceUuid(serverLtp)
+            serverName = serverObj.getInterfaceName()
+            command = "ip link set %s down\n" % serverName
+            self.scriptIntf.write(command)
+
+            command = "ip link set %s master %s\n" % (serverName, interfaceObj.getInterfaceName())
+            self.scriptIntf.write(command)
+
+        command = "ip link set %s up\n" % interfaceObj.getInterfaceName()
+        self.scriptIntf.write(command)
+
+    def addMwEthContInterfaceToScript(self, interfaceObj):
+
+        command = "ip link add name %s type bond\n" % interfaceObj.getInterfaceName()
+        self.scriptIntf.write(command)
+
+        command = "echo 0 > /sys/class/net/%s/bonding/mode\n" % interfaceObj.getInterfaceName()
+        self.scriptIntf.write(command)
+
+        command = "echo 100 > /sys/class/net/%s/bonding/miimon\n" % interfaceObj.getInterfaceName()
+        self.scriptIntf.write(command)
+
+        for serverLtp in interfaceObj.serverLtps:
+            serverObj = self.getInterfaceFromInterfaceUuid(serverLtp)
+            serverName = serverObj.getInterfaceName()
+
+            command = "ip link set %s down\n" % serverName
+            self.scriptIntf.write(command)
+
+            command = "ip link set %s master %s\n" % (serverName, interfaceObj.getInterfaceName())
+            self.scriptIntf.write(command)
+
+        command = "ip link set %s up\n" % interfaceObj.getInterfaceName()
+        self.scriptIntf.write(command)
+
+    def addEtyEthInterfaceToScript(self, interfaceObj):
+        if self.emEnv.isInterfaceObjPartOfLink(interfaceObj) is True:
+            pass
+        else:
+            command = "ip link add name %s type dummy\n" % interfaceObj.getInterfaceName()
+            self.scriptIntf.write(command)
+
+            command = "ip link set dev %s up\n" % interfaceObj.getInterfaceName()
+            self.scriptIntf.write(command)
+
+    def addEthCtpInterfaceToScript(self, interfaceObj):
+
+        if len(interfaceObj.serverLtpsList) != 1:
+            return
+
+        for serverLtp in interfaceObj.serverLtpsList:
+            serverObj = self.getInterfaceFromInterfaceUuid(serverLtp)
+            serverName = serverObj.getInterfaceName()
+
+            command = "ip link add name %s link %s type vlan id 0\n" % (interfaceObj.getInterfaceName(), serverName)
+            self.scriptIntf.write(command)
+
+            command = "ip link set dev %s up\n" % interfaceObj.getInterfaceName()
+            self.scriptIntf.write(command)
+
+    def addDummyEthInterfaceToScript(self, interfaceObj):
+        if self.emEnv.isInterfaceObjPartOfLink(interfaceObj) is True:
+            pass
+        else:
+            command = "ip link add name %s type dummy\n" % interfaceObj.getInterfaceName()
+            self.scriptIntf.write(command)
+
+            # command = "ip address add %s/30 dev %s" % (interfaceObj.getIpAddress(), interfaceObj.getInterfaceName())
+            # self.executeCommandInContainer(command)
+
+            command = "ip link set %s up\n" % interfaceObj.getInterfaceName()
+            self.scriptIntf.write(command)
+
+    def copyInterfaceScriptToDockerContainer(self):
+        outFileName = "buildIntf.sh"
+
+        f = open(outFileName, 'w+')
+        f.write(self.scriptIntf.getvalue())
+        f.close()
+
+        targetPath = "/usr/src/OpenYuma"
+
+        os.chmod('./buildIntf.sh', 777)
+
+        stringCmd = "docker cp %s %s:%s" % \
+                    (outFileName, self.dockerName, targetPath)
+        self.emEnv.executeCommandInOS(stringCmd)
+
+        stringCmd = "rm -f %s" % (outFileName)
+        self.emEnv.executeCommandInOS(stringCmd)
+
+    def runInterfaceScriptInDockerContainer(self):
+        cmd = "/usr/src/OpenYuma/buildIntf.sh"
+        self.executeCommandInContainer(cmd)
