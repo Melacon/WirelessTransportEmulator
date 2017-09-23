@@ -210,3 +210,33 @@ class Emulator(metaclass=Singleton):
             return
 
         cmd = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
+
+    def getCpuUsage(self):
+        cmd = 'docker stats --no-stream | awk \'{if (NR!=1) {gsub(/\%/,"");print $2}}\''
+
+        cpu_percentage = 0.0
+        try:
+            output = self.executeCommandAndGetResultInOS(cmd)
+        except:
+            return 0.0
+
+        for line in output:
+            line.strip()
+            cpu_percentage += float(line)
+
+        return cpu_percentage
+
+    def getMemUsage(self):
+        cmd = 'docker stats --no-stream | awk \'{if (NR!=1) {gsub(/\%/,"");print $8}}\''
+
+        mem_percentage = 0.0
+        try:
+            output = self.executeCommandAndGetResultInOS(cmd)
+        except:
+            return 0.0
+
+        for line in output:
+            line.strip()
+            mem_percentage += float(line)
+
+        return mem_percentage

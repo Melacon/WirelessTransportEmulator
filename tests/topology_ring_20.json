@@ -800,7 +800,12 @@
             "LTPs" : [
                       { "id" : "me1",
                         "supportedAlarms" : "framingIsFaulty, containerIsDown",
-                        "serverLTPs" : [{"id" : "pe1"}, {"id" : "pe2"}],
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
                         "conditional-package" : "mw-ethernet-container-pac"
                       }
                     ]
@@ -813,8 +818,7 @@
           },
           {
             "layer" : "ETH",
-            "LTPs" : [{"id" : "eth1", "serverLTPs" : [{"id" : "ety1"}], "conditional-package" : "ethernet-pac"},
-                      {"id" : "eth5", "serverLTPs" : [{"id" : "me1"}], "conditional-package" : "ethernet-pac"}
+            "LTPs" : [
                     ]
           }
           ],
@@ -933,7 +937,12 @@
             "LTPs" : [
                       { "id" : "me1",
                         "supportedAlarms" : "framingIsFaulty, containerIsDown",
-                        "serverLTPs" : [{"id" : "pe1"}, {"id" : "pe2"}],
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
                         "conditional-package" : "mw-ethernet-container-pac"
                       }
                     ]
@@ -946,8 +955,7 @@
           },
           {
             "layer" : "ETH",
-            "LTPs" : [{"id" : "eth1", "serverLTPs" : [{"id" : "ety1"}], "conditional-package" : "ethernet-pac"},
-                      {"id" : "eth5", "serverLTPs" : [{"id" : "me1"}], "conditional-package" : "ethernet-pac"}
+            "LTPs" : [
                     ]
           }
           ],
@@ -1135,7 +1143,12 @@
             "LTPs" : [
                       { "id" : "me1",
                         "supportedAlarms" : "framingIsFaulty, containerIsDown",
-                        "serverLTPs" : [{"id" : "pe1"}, {"id" : "pe2"}],
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
                         "conditional-package" : "mw-ethernet-container-pac"
                       }
                     ]
@@ -1148,8 +1161,7 @@
           },
           {
             "layer" : "ETH",
-            "LTPs" : [{"id" : "eth1", "serverLTPs" : [{"id" : "ety1"}], "conditional-package" : "ethernet-pac"},
-                      {"id" : "eth5", "serverLTPs" : [{"id" : "me1"}], "conditional-package" : "ethernet-pac"}
+            "LTPs" : [
                     ]
           }
           ],

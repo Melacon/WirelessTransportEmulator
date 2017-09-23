@@ -6,6 +6,7 @@ from subprocess import call
 import psutil, os, time
 from timeit import default_timer as timer
 from multiprocessing import Process, Manager
+import multiprocessing
 
 from wireless_emulator import *
 from wireless_emulator.clean import cleanup
@@ -223,22 +224,30 @@ class CLI(Cmd):
 
         print("Computing CPU and memory usage by taking %d samples. Please wait..." % interval)
 
-        processes = []
-        results = Manager().dict()
-        for i, ne in enumerate(self.emulator.networkElementList):
-            p = Process(target=ne.getCpuUsage, args=(interval, i, results))
-            processes.append(p)
-            p.start()
-        for p in processes:
-            p.join()
+        # processes = []
+        # results = Manager().dict()
+        # for i, ne in enumerate(self.emulator.networkElementList):
+        #     p = Process(target=ne.getCpuUsage, args=(interval, i, results))
+        #     processes.append(p)
+        #     p.start()
+        # for p in processes:
+        #     p.join()
 
-        cpu_percent = sum(results.values())
+        cpu_percent = 0.0
+        for i in range(0, interval):
+            cpu_percent += self.emulator.getCpuUsage()
 
-        for ne in self.emulator.networkElementList:
-            cmd = "ps -g `docker inspect -f '{{.State.Pid}}' %s` --no-headers -o \"pmem\"" % ne.dockerName
-            output = self.emulator.executeCommandAndGetResultInOS(cmd)
-            for line in output:
-                memory_percent += float(line)
+        cpu_percent /= float(interval)
+
+        cpu_percent /= float(multiprocessing.cpu_count())
+
+        # for ne in self.emulator.networkElementList:
+        #     cmd = "ps -g `docker inspect -f '{{.State.Pid}}' %s` --no-headers -o \"pmem\"" % ne.dockerName
+        #     output = self.emulator.executeCommandAndGetResultInOS(cmd)
+        #     for line in output:
+        #         memory_percent += float(line)
+
+        memory_percent = self.emulator.getMemUsage()
 
         end = timer()
 
