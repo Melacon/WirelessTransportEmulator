@@ -804,6 +804,11 @@ class NetworkElement:
             command = "ip link set dev %s up\n" % interfaceObj.getInterfaceName()
             self.scriptIntf.write(command)
 
+        command = "tc qdisc add dev %s root handle 5:0 hfsc default 1\n" % interfaceObj.getInterfaceName()
+        self.scriptIntf.write(command)
+        command = "tc class add dev %s parent 5:0 classid 5:1 hfsc sc rate 100Mbit ul rate 100Mbit\n" % interfaceObj.getInterfaceName()
+        self.scriptIntf.write(command)
+
     def addEthCtpInterfaceToScript(self, interfaceObj):
 
         if len(interfaceObj.serverLtpsList) != 1:
@@ -831,6 +836,11 @@ class NetworkElement:
 
             command = "ip link set %s up\n" % interfaceObj.getInterfaceName()
             self.scriptIntf.write(command)
+
+        command = "tc qdisc add dev %s root handle 5:0 hfsc default 1\n" % interfaceObj.getInterfaceName()
+        self.scriptIntf.write(command)
+        command = "tc class add dev %s parent 5:0 classid 5:1 hfsc sc rate 100Mbit ul rate 100Mbit\n" % interfaceObj.getInterfaceName()
+        self.scriptIntf.write(command)
 
     def copyInterfaceScriptToDockerContainer(self):
         outFileName = "buildIntf.sh"

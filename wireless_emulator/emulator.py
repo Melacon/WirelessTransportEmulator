@@ -222,7 +222,10 @@ class Emulator(metaclass=Singleton):
 
         for line in output:
             line.strip()
-            cpu_percentage += float(line)
+            try:
+                cpu_percentage += float(line)
+            except:
+                continue
 
         return cpu_percentage
 
@@ -237,6 +240,9 @@ class Emulator(metaclass=Singleton):
 
         for line in output:
             line.strip()
-            mem_percentage += float(line)
+            try:
+                mem_percentage += float(line)
+            except:
+                continue
 
         return mem_percentage
