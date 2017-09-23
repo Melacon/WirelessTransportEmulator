@@ -245,4 +245,19 @@ class Emulator(metaclass=Singleton):
             except:
                 continue
 
+        #newer docker versions have the memory report in column 6
+        if mem_percentage == 0.0:
+            cmd = 'docker stats --no-stream | awk \'{if (NR!=1) {gsub(/\%/,"");print $6}}\''
+            try:
+                output = self.executeCommandAndGetResultInOS(cmd)
+            except:
+                return 0.0
+
+            for line in output:
+                line.strip()
+                try:
+                    mem_percentage += float(line)
+                except:
+                    continue
+
         return mem_percentage
