@@ -20,7 +20,7 @@ class Emulator(metaclass=Singleton):
         self.networkElementList = []
         self.neNamesList = []
         self.topologies = []
-        self.controllerInfo = {"ip-address" : None, "port" : None, "username" : None, "password" : None}
+        self.controllerList = []
         self.topoJson = None
         self.configJson = None
         self.xmlConfigFile = xmlConfigFile
@@ -86,15 +86,22 @@ class Emulator(metaclass=Singleton):
         return mngNetwork.overlaps(hostNetwork)
 
     def saveControllerInfo(self):
-        self.controllerInfo['ip-address'] = self.configJson['controller']['ip-address']
-        self.controllerInfo['port'] = self.configJson['controller']['port']
-        self.controllerInfo['username'] = self.configJson['controller']['username']
-        self.controllerInfo['password'] = self.configJson['controller']['password']
 
-        if self.controllerInfo['ip-address'] is None or self.controllerInfo['port'] is None \
-            or self.controllerInfo['username'] is None or self.controllerInfo['password'] is None:
-            logger.error("Could not read controller parameters from the JSON topology file! "
-                         "The emulator will not try to register the NEs to the ODL controller")
+        for controller in self.configJson['controller']:
+            controllerInfo = {"ip-address": None, "port": None, "username": None, "password": None}
+
+            controllerInfo['ip-address'] = controller['ip-address']
+            controllerInfo['port'] = controller['port']
+            controllerInfo['username'] = controller['username']
+            controllerInfo['password'] = controller['password']
+
+            self.controllerList.append(controllerInfo)
+
+
+        # if self.controllerInfo['ip-address'] is None or self.controllerInfo['port'] is None \
+        #     or self.controllerInfo['username'] is None or self.controllerInfo['password'] is None:
+        #     logger.error("Could not read controller parameters from the JSON topology file! "
+        #                  "The emulator will not try to register the NEs to the ODL controller")
 
         self.registerToOdl = self.configJson['automatic-odl-registration']
 

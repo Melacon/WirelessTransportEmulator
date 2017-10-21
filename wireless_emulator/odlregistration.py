@@ -140,7 +140,8 @@ def createXmlPayloadForOdl(neUuid, neManagementIp):
 
 def registerNeToOdlNewVersion(controllerInfo, neUuid, neManagementIp, nePort):
 
-    print("Registering NE=%s having IP=%s and port=%s to ODL controller" % (neUuid, neManagementIp, nePort))
+    print("Registering NE=%s having IP=%s and port=%s to ODL controller having IP=%s" %
+          (neUuid, neManagementIp, nePort, controllerInfo['ip-address']))
 
     xmlTree = createNewXmlPayloadForOdl(neUuid, neManagementIp, nePort)
 
@@ -171,7 +172,7 @@ def registerNeToOdlNewVersion(controllerInfo, neUuid, neManagementIp, nePort):
 
 def unregisterNeFromOdlNewVersion(controllerInfo, neUuid):
 
-    print("Unregistering NE=%s from ODL controller" % neUuid)
+    print("Unregistering NE=%s from ODL controller having IP=%s" % (neUuid, controllerInfo['ip-address']))
 
     url = "http://{}:{}/restconf/config/network-topology:network-topology/topology/topology-netconf/node/" \
           "{}".format(controllerInfo['ip-address'], controllerInfo['port'], neUuid)
@@ -179,13 +180,13 @@ def unregisterNeFromOdlNewVersion(controllerInfo, neUuid):
         'content-type': "application/xml",
         'cache-control': "no-cache"
     }
-    response = requests.request("DELETE", url, headers=headers, auth=('admin', 'admin'))
+    response = requests.request("DELETE", url, headers=headers, auth=(controllerInfo['username'], controllerInfo['password']))
 
     if response.status_code in range(200, 208):
-        print("Successfully unregistered NE=%s from ODL controller" % neUuid)
-        logger.info("Successfully unregistered NE=%s from ODL controller", neUuid)
+        print("Successfully unregistered NE=%s from ODL controller having IP=%s" % (neUuid, controllerInfo['ip-address']))
+        logger.info("Successfully unregistered NE=%s from ODL controller having IP=%s", neUuid, controllerInfo['ip-address'])
     else:
-        logger.error("Could not unregister NE=%s from ODL controller", neUuid)
+        logger.error("Could not unregister NE=%s from ODL controller having IP=%s", neUuid, controllerInfo['ip-address'])
         if response.text is not None:
             logger.error(json.dumps(json.loads(response.text), indent=4))
         raise RuntimeError

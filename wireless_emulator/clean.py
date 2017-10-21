@@ -22,8 +22,8 @@ def cleanup(configFileName = None):
                 configJson = json.load(json_data)
                 autoReg = configJson['automatic-odl-registration']
                 if autoReg is True:
-                    controllerInfo = configJson['controller']
-                    unregisterNesFromOdl(controllerInfo, dockerNames)
+                    for controller in configJson['controller']:
+                        unregisterNesFromOdl(controller, dockerNames)
         except IOError as err:
             logger.critical("Could not open configuration file=%s", configFileName)
             logger.critical("I/O error({0}): {1}".format(err.errno, err.strerror))
