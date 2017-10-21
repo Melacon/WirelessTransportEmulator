@@ -154,9 +154,11 @@ class CLI(Cmd):
                             registerNeToOdlNewVersion(controller, node.uuid,
                                                   node.managementIPAddressString,
                                                   node.netconfPortNumber)
+                            break
                         except:
                             print("Failed to register NE=%s having IP=%s and port=%s to the ODL controller having IP=%s" %
                                   (node.uuid, node.managementIPAddressString, node.netconfPortNumber, controller['ip-address']))
+                            continue
                 else:
                     print('ERROR: Node %s not found' % node)
                     print('ERROR: usage: mount <all> for mounting all NEs')
@@ -169,9 +171,11 @@ class CLI(Cmd):
                     try:
                         registerNeToOdlNewVersion(controller, node.uuid, node.managementIPAddressString,
                                               node.netconfPortNumber)
+                        break
                     except:
                         print("Failed to register NE=%s having IP=%s and port=%s to the ODL controller having IP=%s" %
                               (node.uuid, node.managementIPAddressString, node.netconfPortNumber, controller['ip-address']))
+                        continue
             else:
                 print('ERROR: Node %s not found' % node)
                 print('ERROR: usage: mount <all> for mounting all NEs')
@@ -193,9 +197,11 @@ class CLI(Cmd):
                     for controller in self.emulator.controllerList:
                         try:
                             unregisterNeFromOdlNewVersion(controller, node.uuid)
+                            break
                         except:
                             print("Failed to unregister NE=%s having IP=%s and port=%s from the ODL controller having IP=%s" %
                                   (node.uuid, node.managementIPAddressString, node.netconfPortNumber, controller['ip-address']))
+                            continue
                 else:
                     print('ERROR: Node %s not found' % node)
                     print('ERROR: usage: unmount <all> for unmounting all NEs')
@@ -207,9 +213,11 @@ class CLI(Cmd):
                 for controller in self.emulator.controllerList:
                     try:
                         unregisterNeFromOdlNewVersion(controller, node.uuid)
+                        break
                     except:
                         print("Failed to unregister NE=%s having IP=%s and port=%s from the ODL controller having IP=%s" %
                               (node.uuid, node.managementIPAddressString, node.netconfPortNumber, controller['ip-address']))
+                        continue
             else:
                 print('ERROR: Node %s not found' % node)
                 print('ERROR: usage: unmount <all> for unmounting all NEs')

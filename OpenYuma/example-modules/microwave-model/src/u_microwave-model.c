@@ -24320,7 +24320,15 @@ status_t set_channel_bandwidth_for_interface(const xmlChar* layer_protocol_name,
 	{
 		if (strcmp(interfaces[i].layer_protocol_name, layer_protocol_name) == 0)
 		{
-			interfaces[i].channel_bandwidth = channel_bandwidth;
+			//fix bug if channel_bandwidth comes as -1 (MAXINT)
+			if (channel_bandwidth > 1024000)
+			{
+				interfaces[i].channel_bandwidth = 1024000;
+			}
+			else
+			{
+				interfaces[i].channel_bandwidth = channel_bandwidth;
+			}
 		}
 	}
 	return NO_ERR;
@@ -24332,7 +24340,15 @@ status_t set_modulation_for_interface(const xmlChar* layer_protocol_name, uint32
 	{
 		if (strcmp(interfaces[i].layer_protocol_name, layer_protocol_name) == 0)
 		{
-			interfaces[i].modulation_current = modulation;
+			//fix bug if modulation comes as -1 (MAXINT)
+			if (modulation > 8192)
+			{
+				interfaces[i].modulation_current = 8192;
+			}
+			else
+			{
+				interfaces[i].modulation_current = modulation;
+			}
 		}
 	}
 	return NO_ERR;

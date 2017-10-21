@@ -139,9 +139,11 @@ class NetconfServerSimulator:
                try:
                     registerNeToOdlNewVersion(controller, self.uuid, self.managementIPAddressString,
                                          self.netconfPortNumber)
+                    break
                except RuntimeError:
-                   print("Failed to register NE=%s having IP=%s and port=%s to the ODL controller having IP=%s" %
+                    print("Failed to register NE=%s having IP=%s and port=%s to the ODL controller having IP=%s" %
                          (self.uuid, self.managementIPAddressString, self.netconfPortNumber, controller['ip-address']))
+                    continue
 
         self.saveNetworkNamespace()
 
