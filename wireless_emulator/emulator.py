@@ -20,7 +20,7 @@ class Emulator(metaclass=Singleton):
         self.networkElementList = []
         self.neNamesList = []
         self.topologies = []
-        self.controllerInfo = {"ip-address" : None, "port" : None, "username" : None, "password" : None}
+        self.controllerList = []
         self.topoJson = None
         self.configJson = None
         self.xmlConfigFile = xmlConfigFile
@@ -86,15 +86,22 @@ class Emulator(metaclass=Singleton):
         return mngNetwork.overlaps(hostNetwork)
 
     def saveControllerInfo(self):
-        self.controllerInfo['ip-address'] = self.configJson['controller']['ip-address']
-        self.controllerInfo['port'] = self.configJson['controller']['port']
-        self.controllerInfo['username'] = self.configJson['controller']['username']
-        self.controllerInfo['password'] = self.configJson['controller']['password']
 
-        if self.controllerInfo['ip-address'] is None or self.controllerInfo['port'] is None \
-            or self.controllerInfo['username'] is None or self.controllerInfo['password'] is None:
-            logger.error("Could not read controller parameters from the JSON topology file! "
-                         "The emulator will not try to register the NEs to the ODL controller")
+        for controller in self.configJson['controller']:
+            controllerInfo = {"ip-address": None, "port": None, "username": None, "password": None}
+
+            controllerInfo['ip-address'] = controller['ip-address']
+            controllerInfo['port'] = controller['port']
+            controllerInfo['username'] = controller['username']
+            controllerInfo['password'] = controller['password']
+
+            self.controllerList.append(controllerInfo)
+
+
+        # if self.controllerInfo['ip-address'] is None or self.controllerInfo['port'] is None \
+        #     or self.controllerInfo['username'] is None or self.controllerInfo['password'] is None:
+        #     logger.error("Could not read controller parameters from the JSON topology file! "
+        #                  "The emulator will not try to register the NEs to the ODL controller")
 
         self.registerToOdl = self.configJson['automatic-odl-registration']
 
@@ -167,7 +174,7 @@ class Emulator(metaclass=Singleton):
     def addInterfacesInDocker(self):
         for ne in self.networkElementList:
             print("Adding relevant interfaces in docker container %s..." % ne.uuid)
-            ne.addInterfacesInDockerContainer()
+            ne.addInterfacesInDockerContainerToScript()
 
     def startEmulator(self):
         self.createNetworkElements()
@@ -210,3 +217,54 @@ class Emulator(metaclass=Singleton):
             return
 
         cmd = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
+
+    def getCpuUsage(self):
+        cmd = 'docker stats --no-stream | awk \'{if (NR!=1) {gsub(/\%/,"");print $2}}\''
+
+        cpu_percentage = 0.0
+        try:
+            output = self.executeCommandAndGetResultInOS(cmd)
+        except:
+            return 0.0
+
+        for line in output:
+            line.strip()
+            try:
+                cpu_percentage += float(line)
+            except:
+                continue
+
+        return cpu_percentage
+
+    def getMemUsage(self):
+        cmd = 'docker stats --no-stream | awk \'{if (NR!=1) {gsub(/\%/,"");print $8}}\''
+
+        mem_percentage = 0.0
+        try:
+            output = self.executeCommandAndGetResultInOS(cmd)
+        except:
+            return 0.0
+
+        for line in output:
+            line.strip()
+            try:
+                mem_percentage += float(line)
+            except:
+                continue
+
+        #newer docker versions have the memory report in column 6
+        if mem_percentage == 0.0:
+            cmd = 'docker stats --no-stream | awk \'{if (NR!=1) {gsub(/\%/,"");print $6}}\''
+            try:
+                output = self.executeCommandAndGetResultInOS(cmd)
+            except:
+                return 0.0
+
+            for line in output:
+                line.strip()
+                try:
+                    mem_percentage += float(line)
+                except:
+                    continue
+
+        return mem_percentage

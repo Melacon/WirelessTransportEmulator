@@ -2,6 +2,7 @@
 
 import os, sys, logging
 from optparse import OptionParser
+from timeit import default_timer as timer
 
 from wireless_emulator.emulator import Emulator
 from wireless_emulator.utils import ensureRoot
@@ -103,8 +104,23 @@ class EmulatorRunner():
             exit()
 
         e = Emulator(topologyFileName = self.topologyJsonFile, xmlConfigFile = self.xmlConfigFile, configFileName = self.configJsonFile)
+        start = timer()
+        cmd = 'df -k | grep "/$" | awk \'{print $4}\''
+        output = e.executeCommandAndGetResultInOS(cmd)
+        for line in output:
+            startFreeStorage = int(line)
+            break
+
         e.startEmulator()
+        end = timer()
+        output = e.executeCommandAndGetResultInOS(cmd)
+        for line in output:
+            endFreeStorage = int(line)
+            break
+
         print("Emulator started successfully!")
+        print("Boot time: %6.3f seconds" % (end - start))
+        print("Disk storage used by the emulator: %3.3f MB" % ((startFreeStorage - endFreeStorage) / 1000.0))
         CLI(e)
 
 

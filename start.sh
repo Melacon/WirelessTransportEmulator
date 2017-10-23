@@ -1,1 +1,1 @@
-sudo wtemulator --config=config.json --topo=topology.json --xml=yang/microwave-model-config.xml
+sudo wtemulator --config=config.json --topo=tests/topology_ring_100.json --xml=yang/microwave-model-config.xml

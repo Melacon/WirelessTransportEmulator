@@ -134,13 +134,16 @@ class NetconfServerSimulator:
 
         self.startDockerContainer()
         if self.emEnv.registerToOdl == True:
-           try:
-               # registerNeToOdl(self.emEnv.controllerInfo, self.uuid, self.managementIPAddressString)
-               registerNeToOdlNewVersion(self.emEnv.controllerInfo, self.uuid, self.managementIPAddressString,
+           # registerNeToOdl(self.emEnv.controllerInfo, self.uuid, self.managementIPAddressString)
+           for controller in self.emEnv.controllerList:
+               try:
+                    registerNeToOdlNewVersion(controller, self.uuid, self.managementIPAddressString,
                                          self.netconfPortNumber)
-           except RuntimeError:
-               print("Failed to register NE=%s having IP=%s and port=%s to the ODL controller" %
-                     (self.uuid, self.managementIPAddressString, self.netconfPortNumber))
+                    break
+               except RuntimeError:
+                    print("Failed to register NE=%s having IP=%s and port=%s to the ODL controller having IP=%s" %
+                         (self.uuid, self.managementIPAddressString, self.netconfPortNumber, controller['ip-address']))
+                    continue
 
         self.saveNetworkNamespace()
 

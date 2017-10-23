@@ -1,0 +1,1 @@
+python3.6 setup.py build; sudo python3.6 setup.py install

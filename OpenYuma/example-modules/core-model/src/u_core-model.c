@@ -56,6 +56,12 @@ static status_t build_and_attach_fc_port(val_value_t* parentval, const char *ltp
 static status_t build_and_attach_ethernet_model(cfg_template_t* runningcfg, const char *lp_uuid);
 static status_t delete_fc(cfg_template_t* runningcfg, const char *fc_uuid);
 static status_t delete_ethernet_model(cfg_template_t* runningcfg, const char *lp_uuid);
+static status_t create_service_and_service_points_in_device(const char *fc_uuid);
+static status_t delete_service_and_service_points_in_device(const char *fc_uuid);
+static char* 	get_next_free_service_id(const char *fc_uuid);
+static char* 	get_service_id_from_fc_uuid(const char *fc_uuid);
+static status_t	free_service_id_from_fc_uuid(const char *fc_uuid);
+static char 	*service_mapping[100];
 
 static void send_object_creation_notification(const char *obj_type, const char *obj_id_ref);
 static void send_object_deletion_notification(const char *obj_id_ref);
@@ -1277,7 +1283,7 @@ status_t u_core_model_network_element_fd_operational_state_get (
     sprintf(xpathexpr, "/network-element/fd[uuid=\"%s\"]/operational-state",
         k_network_element_fd_uuid);
     /* set the operational_state var here, */
-    operational_state = get_value_from_xpath(xpathexpr);
+    operational_state = strdup("enabled");
     
     if (operational_state != NULL)
     {
@@ -1386,7 +1392,7 @@ status_t u_core_model_network_element_fd_administrative_state_get (
     sprintf(xpathexpr, "/network-element/fd[uuid=\"%s\"]/administrative-state",
         k_network_element_fd_uuid);
     /* set the administrative_state var here, */
-    administrative_state = get_value_from_xpath(xpathexpr);
+    administrative_state = strdup("unlocked");
     
     if (administrative_state != NULL)
     {
@@ -3444,7 +3450,7 @@ status_t u_core_model_network_element_ltp_lp_config_and_switch_controller_local_
         k_network_element_ltp_lp_uuid,
         k_network_element_ltp_lp_config_and_switch_controller_switch_rule);
     /* set the operational_state var here, */
-    operational_state = get_value_from_xpath(xpathexpr);
+    operational_state = strdup("enabled");
     
     if (operational_state != NULL)
     {
@@ -3559,7 +3565,7 @@ status_t u_core_model_network_element_ltp_lp_config_and_switch_controller_local_
         k_network_element_ltp_lp_uuid,
         k_network_element_ltp_lp_config_and_switch_controller_switch_rule);
     /* set the administrative_state var here, */
-    administrative_state = get_value_from_xpath(xpathexpr);
+    administrative_state = strdup("unlocked");
     
     if (administrative_state != NULL)
     {
@@ -4624,7 +4630,7 @@ status_t u_core_model_network_element_ltp_lp_config_and_switch_controller_global
         k_network_element_ltp_lp_uuid,
         k_network_element_ltp_lp_config_and_switch_controller_switch_rule);
     /* set the operational_state var here, */
-    operational_state = get_value_from_xpath(xpathexpr);
+    operational_state = strdup("enabled");
     
     if (operational_state != NULL)
     {
@@ -4739,7 +4745,7 @@ status_t u_core_model_network_element_ltp_lp_config_and_switch_controller_global
         k_network_element_ltp_lp_uuid,
         k_network_element_ltp_lp_config_and_switch_controller_switch_rule);
     /* set the administrative_state var here, */
-    administrative_state = get_value_from_xpath(xpathexpr);
+    administrative_state = strdup("unlocked");
     
     if (administrative_state != NULL)
     {
@@ -6190,7 +6196,7 @@ status_t u_core_model_network_element_ltp_lp_operational_state_get (
         k_network_element_ltp_uuid,
         k_network_element_ltp_lp_uuid);
     /* set the operational_state var here, */
-    operational_state = get_value_from_xpath(xpathexpr);
+    operational_state = strdup("enabled");
     
     if (operational_state != NULL)
     {
@@ -6302,7 +6308,7 @@ status_t u_core_model_network_element_ltp_lp_administrative_state_get (
         k_network_element_ltp_uuid,
         k_network_element_ltp_lp_uuid);
     /* set the administrative_state var here, */
-    administrative_state = get_value_from_xpath(xpathexpr);
+    administrative_state = strdup("unlocked");
     
     if (administrative_state != NULL)
     {
@@ -7660,7 +7666,7 @@ status_t u_core_model_network_element_ltp_operational_state_get (
     sprintf(xpathexpr, "/network-element/ltp[uuid=\"%s\"]/operational-state",
         k_network_element_ltp_uuid);
     /* set the operational_state var here, */
-    operational_state = get_value_from_xpath(xpathexpr);
+    operational_state = strdup("enabled");
     
     if (operational_state != NULL)
     {
@@ -7769,7 +7775,7 @@ status_t u_core_model_network_element_ltp_administrative_state_get (
     sprintf(xpathexpr, "/network-element/ltp[uuid=\"%s\"]/administrative-state",
         k_network_element_ltp_uuid);
     /* set the administrative_state var here, */
-    administrative_state = get_value_from_xpath(xpathexpr);
+    administrative_state = strdup("unlocked");
     
     if (administrative_state != NULL)
     {
@@ -8784,7 +8790,7 @@ status_t u_core_model_network_element_operational_state_get (
     xmlChar *xpathexpr[XPATH_MAX_LENGTH];
     sprintf(xpathexpr, "/network-element/operational-state");
     /* set the operational_state var here, */
-    operational_state = get_value_from_xpath(xpathexpr);
+    operational_state = strdup("enabled");
     
     if (operational_state != NULL)
     {
@@ -8889,7 +8895,7 @@ status_t u_core_model_network_element_administrative_state_get (
     xmlChar *xpathexpr[XPATH_MAX_LENGTH];
     sprintf(xpathexpr, "/network-element/administrative-state");
     /* set the administrative_state var here, */
-    administrative_state = get_value_from_xpath(xpathexpr);
+    administrative_state = strdup("unlocked");
     
     if (administrative_state != NULL)
     {
@@ -10569,7 +10575,7 @@ status_t u_core_model_forwarding_construct_fc_port_operational_state_get (
         k_forwarding_construct_uuid,
         k_forwarding_construct_fc_port_uuid);
     /* set the operational_state var here, */
-    operational_state = get_value_from_xpath(xpathexpr);
+    operational_state = strdup("enabled");
     
     if (operational_state != NULL)
     {
@@ -10681,7 +10687,7 @@ status_t u_core_model_forwarding_construct_fc_port_administrative_state_get (
         k_forwarding_construct_uuid,
         k_forwarding_construct_fc_port_uuid);
     /* set the administrative_state var here, */
-    administrative_state = get_value_from_xpath(xpathexpr);
+    administrative_state = strdup("unlocked");
     
     if (administrative_state != NULL)
     {
@@ -12653,7 +12659,7 @@ status_t u_core_model_forwarding_construct_fc_switch_internal_configuration_and_
         k_forwarding_construct_uuid,
         k_forwarding_construct_fc_switch_uuid);
     /* set the operational_state var here, */
-    operational_state = get_value_from_xpath(xpathexpr);
+    operational_state = strdup("enabled");
     
     if (operational_state != NULL)
     {
@@ -12765,7 +12771,7 @@ status_t u_core_model_forwarding_construct_fc_switch_internal_configuration_and_
         k_forwarding_construct_uuid,
         k_forwarding_construct_fc_switch_uuid);
     /* set the administrative_state var here, */
-    administrative_state = get_value_from_xpath(xpathexpr);
+    administrative_state = strdup("unlocked");
     
     if (administrative_state != NULL)
     {
@@ -13813,7 +13819,7 @@ status_t u_core_model_forwarding_construct_fc_switch_internal_configuration_and_
         k_forwarding_construct_uuid,
         k_forwarding_construct_fc_switch_uuid);
     /* set the operational_state var here, */
-    operational_state = get_value_from_xpath(xpathexpr);
+    operational_state = strdup("enabled");
     
     if (operational_state != NULL)
     {
@@ -13925,7 +13931,7 @@ status_t u_core_model_forwarding_construct_fc_switch_internal_configuration_and_
         k_forwarding_construct_uuid,
         k_forwarding_construct_fc_switch_uuid);
     /* set the administrative_state var here, */
-    administrative_state = get_value_from_xpath(xpathexpr);
+    administrative_state = strdup("unlocked");
     
     if (administrative_state != NULL)
     {
@@ -15877,7 +15883,7 @@ status_t u_core_model_forwarding_construct_fc_switch_operational_state_get (
         k_forwarding_construct_uuid,
         k_forwarding_construct_fc_switch_uuid);
     /* set the operational_state var here, */
-    operational_state = get_value_from_xpath(xpathexpr);
+    operational_state = strdup("enabled");
     
     if (operational_state != NULL)
     {
@@ -15989,7 +15995,7 @@ status_t u_core_model_forwarding_construct_fc_switch_administrative_state_get (
         k_forwarding_construct_uuid,
         k_forwarding_construct_fc_switch_uuid);
     /* set the administrative_state var here, */
-    administrative_state = get_value_from_xpath(xpathexpr);
+    administrative_state = strdup("unlocked");
     
     if (administrative_state != NULL)
     {
@@ -17283,7 +17289,7 @@ status_t u_core_model_forwarding_construct_operational_state_get (
     sprintf(xpathexpr, "/forwarding-construct[uuid=\"%s\"]/operational-state",
         k_forwarding_construct_uuid);
     /* set the operational_state var here, */
-    operational_state = get_value_from_xpath(xpathexpr);
+    operational_state = strdup("enabled");
     
     if (operational_state != NULL)
     {
@@ -17392,7 +17398,7 @@ status_t u_core_model_forwarding_construct_administrative_state_get (
     sprintf(xpathexpr, "/forwarding-construct[uuid=\"%s\"]/administrative-state",
         k_forwarding_construct_uuid);
     /* set the administrative_state var here, */
-    administrative_state = get_value_from_xpath(xpathexpr);
+    administrative_state = strdup("unlocked");
     
     if (administrative_state != NULL)
     {
@@ -21201,7 +21207,7 @@ status_t u_core_model_equipment_connector_operational_state_get (
         k_equipment_uuid,
         k_equipment_connector_uuid);
     /* set the operational_state var here, */
-    operational_state = get_value_from_xpath(xpathexpr);
+    operational_state = strdup("enabled");
     
     if (operational_state != NULL)
     {
@@ -21313,7 +21319,7 @@ status_t u_core_model_equipment_connector_administrative_state_get (
         k_equipment_uuid,
         k_equipment_connector_uuid);
     /* set the administrative_state var here, */
-    administrative_state = get_value_from_xpath(xpathexpr);
+    administrative_state = strdup("unlocked");
     
     if (administrative_state != NULL)
     {
@@ -24949,7 +24955,7 @@ status_t u_core_model_equipment_contained_holder_operational_state_get (
         k_equipment_uuid,
         k_equipment_contained_holder_uuid);
     /* set the operational_state var here, */
-    operational_state = get_value_from_xpath(xpathexpr);
+    operational_state = strdup("enabled");
     
     if (operational_state != NULL)
     {
@@ -25061,7 +25067,7 @@ status_t u_core_model_equipment_contained_holder_administrative_state_get (
         k_equipment_uuid,
         k_equipment_contained_holder_uuid);
     /* set the administrative_state var here, */
-    administrative_state = get_value_from_xpath(xpathexpr);
+    administrative_state = strdup("unlocked");
     
     if (administrative_state != NULL)
     {
@@ -28005,7 +28011,7 @@ status_t u_core_model_equipment_exposed_cable_connector_operational_state_get (
         k_equipment_exposed_cable_uuid,
         k_equipment_exposed_cable_connector_uuid);
     /* set the operational_state var here, */
-    operational_state = get_value_from_xpath(xpathexpr);
+    operational_state = strdup("enabled");
     
     if (operational_state != NULL)
     {
@@ -28120,7 +28126,7 @@ status_t u_core_model_equipment_exposed_cable_connector_administrative_state_get
         k_equipment_exposed_cable_uuid,
         k_equipment_exposed_cable_connector_uuid);
     /* set the administrative_state var here, */
-    administrative_state = get_value_from_xpath(xpathexpr);
+    administrative_state = strdup("unlocked");
     
     if (administrative_state != NULL)
     {
@@ -30820,7 +30826,7 @@ status_t u_core_model_equipment_exposed_cable_operational_state_get (
         k_equipment_uuid,
         k_equipment_exposed_cable_uuid);
     /* set the operational_state var here, */
-    operational_state = get_value_from_xpath(xpathexpr);
+    operational_state = strdup("enabled");
     
     if (operational_state != NULL)
     {
@@ -30932,7 +30938,7 @@ status_t u_core_model_equipment_exposed_cable_administrative_state_get (
         k_equipment_uuid,
         k_equipment_exposed_cable_uuid);
     /* set the administrative_state var here, */
-    administrative_state = get_value_from_xpath(xpathexpr);
+    administrative_state = strdup("unlocked");
     
     if (administrative_state != NULL)
     {
@@ -36847,7 +36853,7 @@ status_t u_core_model_equipment_operational_state_get (
     sprintf(xpathexpr, "/equipment[uuid=\"%s\"]/operational-state",
         k_equipment_uuid);
     /* set the operational_state var here, */
-    operational_state = get_value_from_xpath(xpathexpr);
+    operational_state = strdup("enabled");
     
     if (operational_state != NULL)
     {
@@ -36956,7 +36962,7 @@ status_t u_core_model_equipment_administrative_state_get (
     sprintf(xpathexpr, "/equipment[uuid=\"%s\"]/administrative-state",
         k_equipment_uuid);
     /* set the administrative_state var here, */
-    administrative_state = get_value_from_xpath(xpathexpr);
+    administrative_state = strdup("unlocked");
     
     if (administrative_state != NULL)
     {
@@ -37181,6 +37187,11 @@ status_t u_core_model_init2 (void)
     status_t res = NO_ERR;
 
     init_finished = true;
+
+    for (int i = 0; i < 100; ++i)
+    {
+    	service_mapping[i]= NULL;
+    }
     /* put your init2 code here */
 
     return res;
@@ -37207,6 +37218,9 @@ static status_t create_fc_configuration(val_value_t *newval)
     cfg_template_t* runningcfg;
 	runningcfg = cfg_get_config_id(NCX_CFGID_RUNNING);
 	YUMA_ASSERT(!runningcfg || !runningcfg->root, return ERR_INTERNAL_VAL, "No running config available!");
+
+	res = create_service_and_service_points_in_device(VAL_STRING(newval));
+	YUMA_ASSERT(res != NO_ERR, return ERR_INTERNAL_VAL, "Could not create service and service points on device!");
 
 	res = build_and_attach_fc(runningcfg, VAL_STRING(newval));
 	YUMA_ASSERT(res != NO_ERR, return ERR_INTERNAL_VAL, "Failed to build and attach forwarding construct having uuid=%s", newval != NULL ? VAL_STRING(newval) : "null");
@@ -37238,6 +37252,9 @@ static status_t delete_fc_configuration(val_value_t *curval)
     cfg_template_t* runningcfg;
 	runningcfg = cfg_get_config_id(NCX_CFGID_RUNNING);
 	YUMA_ASSERT(!runningcfg || !runningcfg->root, return ERR_INTERNAL_VAL, "No running config available!");
+
+	res = delete_service_and_service_points_in_device(VAL_STRING(curval));
+	YUMA_ASSERT(res != NO_ERR, return ERR_INTERNAL_VAL, "Could not delete service and service points on device!");
 
 	res = delete_fc(runningcfg, VAL_STRING(curval));
 	YUMA_ASSERT(res != NO_ERR, return ERR_INTERNAL_VAL, "Failed to delete forwarding construct having uuid=%s", curval != NULL ? VAL_STRING(curval) : "null");
@@ -38146,6 +38163,190 @@ static void send_object_deletion_notification(const char *obj_id_ref)
 	return u_microwave_model_object_deletion_notification_send(obj_deletion_counter++,
 																dateAndTime,
 																obj_id_ref);
+}
+
+static status_t create_service_and_service_points_in_device(const char *fc_uuid)
+{
+	status_t res = NO_ERR;
+
+	char command[100], *bridge_name;
+	int result;
+
+	bridge_name = get_next_free_service_id(fc_uuid);
+
+	sprintf(command, "ip link add name %s type bridge",
+		bridge_name);
+	result = system(command);
+	YUMA_ASSERT(TRUE, NOP, "%s", command);
+
+	sprintf(command, "ip link set %s up",
+		bridge_name);
+	result = system(command);
+	YUMA_ASSERT(TRUE, NOP, "%s", command);
+
+
+	const char s[2] = ","; //delimiter for the ltp uuids
+	const char sd[2] = "-"; //delimiter for the ltp uuids
+	char *token = NULL, *fc_uuid_copy;
+
+	fc_uuid_copy = strdup(fc_uuid);
+	token = strtok(fc_uuid_copy, s);
+
+	char vlan_id[10], ifIndex[20], *last_delim;
+
+	last_delim = strchr(token, '-');
+	strncpy(ifIndex, token, last_delim - token);
+	ifIndex[last_delim - token] = '\0';
+
+	last_delim = strrchr(token, '-');
+	strcpy(vlan_id, token + (last_delim - token) + 1);
+
+	sprintf(command, "ip link add name %s link %s type vlan id %s",
+			token, ifIndex, vlan_id);
+	result = system(command);
+	YUMA_ASSERT(TRUE, NOP, "%s", command);
+
+	sprintf(command, "ip link set %s up",
+			token);
+	result = system(command);
+	YUMA_ASSERT(TRUE, NOP, "%s", command);
+
+	sprintf(command, "ip link set dev %s master %s",
+			token, bridge_name);
+	result = system(command);
+	YUMA_ASSERT(TRUE, NOP, "%s", command);
+
+	token = strtok(NULL, s);
+
+	last_delim = strchr(token, '-');
+	strncpy(ifIndex, token, last_delim - token);
+	ifIndex[last_delim - token] = '\0';
+
+	last_delim = strrchr(token, '-');
+	strcpy(vlan_id, token + (last_delim - token) + 1);
+
+	sprintf(command, "ip link add name %s link %s type vlan id %s",
+			token, ifIndex, vlan_id);
+	result = system(command);
+	YUMA_ASSERT(TRUE, NOP, "%s", command);
+
+	sprintf(command, "ip link set %s up",
+			token);
+	result = system(command);
+	YUMA_ASSERT(TRUE, NOP, "%s", command);
+
+	sprintf(command, "ip link set dev %s master %s",
+			token, bridge_name);
+	result = system(command);
+	YUMA_ASSERT(TRUE, NOP, "%s", command);
+
+	free(fc_uuid_copy);
+	free(bridge_name);
+
+	return NO_ERR;
+}
+
+static status_t delete_service_and_service_points_in_device(const char *fc_uuid)
+{
+	status_t res = NO_ERR;
+
+	char command[100], *bridge_name;
+	int result;
+
+	bridge_name = get_service_id_from_fc_uuid(fc_uuid);
+
+	sprintf(command, "ip link del %s",
+			bridge_name);
+	result = system(command);
+	YUMA_ASSERT(TRUE, NOP, "%s", command);
+
+	const char s[2] = ","; //delimiter for the ltp uuids
+	const char sd[2] = "-"; //delimiter for the ltp uuids
+	char *token = NULL, *fc_uuid_copy;
+
+	fc_uuid_copy = strdup(fc_uuid);
+	token = strtok(fc_uuid_copy, s);
+
+	char vlan_id[10], ifIndex[20], *last_delim;
+
+	last_delim = strchr(token, '-');
+	strncpy(ifIndex, token, last_delim - token);
+	ifIndex[last_delim - token] = '\0';
+
+	last_delim = strrchr(token, '-');
+	strcpy(vlan_id, token + (last_delim - token) + 1);
+
+	sprintf(command, "ip link del %s",
+			token);
+	result = system(command);
+	YUMA_ASSERT(TRUE, NOP, "%s", command);
+
+	token = strtok(NULL, s);
+
+	last_delim = strchr(token, '-');
+	strncpy(ifIndex, token, last_delim - token);
+	ifIndex[last_delim - token] = '\0';
+
+	last_delim = strrchr(token, '-');
+	strcpy(vlan_id, token + (last_delim - token) + 1);
+
+	sprintf(command, "ip link del %s",
+			token);
+	result = system(command);
+	YUMA_ASSERT(TRUE, NOP, "%s", command);
+
+	free(fc_uuid_copy);
+	free(bridge_name);
+
+	res = free_service_id_from_fc_uuid(fc_uuid);
+	YUMA_ASSERT(res != NO_ERR, return NO_ERR, "failed to free service ID from fc_uuid=%s", fc_uuid);
+
+	return NO_ERR;
+}
+
+static char* get_next_free_service_id(const char *fc_uuid)
+{
+	for (int i = 0; i < 100; ++i)
+	{
+		if (service_mapping[i] == NULL)
+		{
+			service_mapping[i] = strdup(fc_uuid);
+
+			char resp[100];
+			sprintf(resp, "fcbr%d", i);
+
+			return strdup(resp);
+		}
+	}
+}
+static char* get_service_id_from_fc_uuid(const char *fc_uuid)
+{
+	for (int i = 0; i < 100; ++i)
+	{
+		if (!strcmp(fc_uuid, service_mapping[i]))
+		{
+			char resp[100];
+			sprintf(resp, "fcbr%d", i);
+
+			return strdup(resp);
+		}
+	}
+}
+
+static status_t	free_service_id_from_fc_uuid(const char *fc_uuid)
+{
+	for (int i = 0; i < 100; ++i)
+	{
+		if (!strcmp(fc_uuid, service_mapping[i]))
+		{
+			free(service_mapping[i]);
+			service_mapping[i] = NULL;
+
+			return NO_ERR;
+		}
+	}
+
+	return ERR_INTERNAL_VAL;
 }
 
 /* END u_core_model.c */

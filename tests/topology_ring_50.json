@@ -1,0 +1,3506 @@
+{
+  "network-elements" : [
+    {
+      "network-element" :
+      {
+        "uuid" : "NE1",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+			          { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+			          { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE2",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+			          { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+			          { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE3",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+			          { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+			          { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE4",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+			          { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+			          { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE5",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+			          { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+			          { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE6",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+			          { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+			          { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE7",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+			          { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+			          { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE8",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+			          { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+			          { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE9",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+			          { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+			          { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE10",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+			          { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+			          { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE11",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE12",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE13",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE14",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE15",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE16",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE17",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE18",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE19",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE20",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE21",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE22",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE23",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE24",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE25",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE26",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE27",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE28",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE29",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE30",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE31",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE32",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE33",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE34",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE35",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE36",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE37",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE38",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE39",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE40",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },    
+    {
+      "network-element" :
+      {
+        "uuid" : "NE41",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE42",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE43",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE44",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE45",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE46",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE47",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE48",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE49",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE50",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    }
+    ],
+  "topologies" : {
+    "mwps" : {
+      "links" : [
+        [{"uuid" : "NE1", "ltp" : "ai2", "radio-signal-id" : "26"}, {"uuid" : "NE2", "ltp" : "ai1", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE2", "ltp" : "ai2", "radio-signal-id" : "27"}, {"uuid" : "NE3", "ltp" : "ai1", "radio-signal-id" : "27"}],
+        [{"uuid" : "NE3", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE4", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE4", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE5", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE5", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE6", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE6", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE7", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE7", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE8", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE8", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE9", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE9", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE10", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE10", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE11", "ltp" : "ai1", "radio-signal-id" : "28"}],
+
+        [{"uuid" : "NE11", "ltp" : "ai2", "radio-signal-id" : "26"}, {"uuid" : "NE12", "ltp" : "ai1", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE12", "ltp" : "ai2", "radio-signal-id" : "27"}, {"uuid" : "NE13", "ltp" : "ai1", "radio-signal-id" : "27"}],
+        [{"uuid" : "NE13", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE14", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE14", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE15", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE15", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE16", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE16", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE17", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE17", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE18", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE18", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE19", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE19", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE20", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE20", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE21", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        
+        [{"uuid" : "NE21", "ltp" : "ai2", "radio-signal-id" : "26"}, {"uuid" : "NE22", "ltp" : "ai1", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE22", "ltp" : "ai2", "radio-signal-id" : "27"}, {"uuid" : "NE23", "ltp" : "ai1", "radio-signal-id" : "27"}],
+        [{"uuid" : "NE23", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE24", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE24", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE25", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE25", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE26", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE26", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE27", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE27", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE28", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE28", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE29", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE29", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE30", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE30", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE31", "ltp" : "ai1", "radio-signal-id" : "28"}],
+
+        [{"uuid" : "NE31", "ltp" : "ai2", "radio-signal-id" : "26"}, {"uuid" : "NE32", "ltp" : "ai1", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE32", "ltp" : "ai2", "radio-signal-id" : "27"}, {"uuid" : "NE33", "ltp" : "ai1", "radio-signal-id" : "27"}],
+        [{"uuid" : "NE33", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE34", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE34", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE35", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE35", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE36", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE36", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE37", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE37", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE38", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE38", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE39", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE39", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE40", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE40", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE41", "ltp" : "ai1", "radio-signal-id" : "28"}],
+
+        [{"uuid" : "NE41", "ltp" : "ai2", "radio-signal-id" : "26"}, {"uuid" : "NE42", "ltp" : "ai1", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE42", "ltp" : "ai2", "radio-signal-id" : "27"}, {"uuid" : "NE43", "ltp" : "ai1", "radio-signal-id" : "27"}],
+        [{"uuid" : "NE43", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE44", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE44", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE45", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE45", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE46", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE46", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE47", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE47", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE48", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE48", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE49", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE49", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE50", "ltp" : "ai1", "radio-signal-id" : "28"}],
+        [{"uuid" : "NE50", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE1", "ltp" : "ai1", "radio-signal-id" : "28"}]
+        ]
+    },
+    "ety" : {
+      "links" : [        
+      ]
+    }
+  }
+}

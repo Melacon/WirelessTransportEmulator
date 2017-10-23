@@ -180,26 +180,26 @@
         <administrative-state>unlocked</administrative-state>
         <lifecycle-state>installed</lifecycle-state>
         <fd>
-            <uuid>ethernet-switch</uuid>
+            <uuid>eth-switch</uuid>
             <layer-protocol-name>ETH</layer-protocol-name>
             <fc>LTP-ETY-02-ETH-56,LTP-ETC-06-ETH-56</fc>
             <ltp>LTP-ETY-02</ltp>
             <ltp>LTP-ETC-06</ltp>
             <local-id>
                 <value-name>fd-local-id</value-name>
-                <value>ethernet-switch</value>
+                <value>eth-switch</value>
             </local-id>
             <name>
                 <value-name>fd-name</value-name>
-                <value>ethernet-switch</value>
+                <value>eth-switch</value>
             </name>
             <label>
                 <value-name>fd-label</value-name>
-                <value>ethernet-switch</value>
+                <value>eth-switch</value>
             </label>
             <extension>
                 <value-name>fd-ex</value-name>
-                <value>ethernet-switch</value>
+                <value>eth-switch</value>
             </extension>
             <operational-state>enabled</operational-state>
             <administrative-control>unlock</administrative-control>
@@ -606,7 +606,7 @@
             <parent-port-identity>
                 <!--clock-identity=MASTER01 -->
                 <clock-identity>$PTPID(Boundary)</clock-identity>
-                <port-number>1</port-number>
+                <port-number>6</port-number>
             </parent-port-identity>
             <grandmaster-identity>$PTPID(PTP-GM01)</grandmaster-identity>
             <grandmaster-clock-quality>
@@ -625,11 +625,11 @@
             <ptp-timescale>true</ptp-timescale>
         </time-properties-ds>
         <port-ds-list>
-            <port-number>1</port-number>
+            <port-number>6</port-number>
             <port-identity>
                 <!--clock-identity=LOCAL-01 -->
                 <clock-identity>$PTPID(PTPSlave)</clock-identity>
-                <port-number>1</port-number>
+                <port-number>6</port-number>
             </port-identity>
             <port-state>SLAVE</port-state>
             <log-min-delay-req-interval>-4</log-min-delay-req-interval>
@@ -646,11 +646,11 @@
             <logical-termination-point xmlns="urn:onf:params:xml:ns:yang:onf-ptp-dataset">LTP-MWS-RADIO</logical-termination-point>
         </port-ds-list>
         <port-ds-list>
-            <port-number>2</port-number>
+            <port-number>33</port-number>
             <port-identity>
                 <!--clock-identity=LOCAL-02 -->
                 <clock-identity>$PTPID(PTPSlave)</clock-identity>
-                <port-number>2</port-number>
+                <port-number>33</port-number>
             </port-identity>
             <port-state>SLAVE</port-state>
             <log-min-delay-req-interval>-4</log-min-delay-req-interval>
@@ -2270,7 +2270,7 @@
         </fc-port>
         <fc-port>
             <uuid>FC-Port-ETH-02</uuid>
-            <ltp>LTP-ETY-06-ETH-56</ltp>
+            <ltp>LTP-ETY-02-ETH-56</ltp>
             <fc-port-direction>bidirectional</fc-port-direction>
             <is-internal-port>true</is-internal-port>
             <local-id>

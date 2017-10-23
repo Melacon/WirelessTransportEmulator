@@ -24204,7 +24204,7 @@ static uint32 get_channel_capacity_for_interface(const xmlChar* layer_protocol_n
 	double constant = 1.15; //value from Thorsten's formula
 	uint32_t capacity_int = 0;
 	interfaceInfo *interface = get_interface_from_name(layer_protocol_name);
-	YUMA_ASSERT(interface == NULL, return 0, "Could not find interface with name=%s", layer_protocol_name);
+	YUMA_ASSERT(interface == NULL, return 0, "get_channel_capacity_for_interface: Could not find interface with name=%s", layer_protocol_name);
 
 	double modulation = log(interface->modulation_current) / log(2); //log2(modulation_current)
 
@@ -24225,15 +24225,24 @@ static status_t set_capacity_for_interface(const xmlChar *k_mw_air_interface_pac
 	char interface_name[100], modulation_cur_str[100], channel_bandwidth_str[100], command[100];
 	int result;
 	interfaceInfo *interface = get_interface_from_name(k_mw_air_interface_pac_layer_protocol);
-	YUMA_ASSERT(interface == NULL, return NO_ERR, "Could not find interface with name=%s", k_mw_air_interface_pac_layer_protocol);
+	YUMA_ASSERT(interface == NULL, return NO_ERR, "set_capacity_for_interface: Could not find interface with name=%s", k_mw_air_interface_pac_layer_protocol);
 
-	sscanf(k_mw_air_interface_pac_layer_protocol, "lp-%s", interface_name, &result);
+	result = strlen(k_mw_air_interface_pac_layer_protocol) - 5;
+	strncpy(interface_name, k_mw_air_interface_pac_layer_protocol, result);
+	interface_name[result] = '\0';
+	//sscanf(k_mw_air_interface_pac_layer_protocol, "%s-%s-%d", interface_name, dummy_string, &result);
 
 	sprintf(modulation_cur_str, "%d", interface->modulation_current);
 
 	sprintf(xpathexpr, "/mw-air-interface-pac[layer-protocol=\"%s\"]/air-interface-status/modulation-cur",
 		k_mw_air_interface_pac_layer_protocol);
 	res = set_value_for_xpath(xpathexpr, modulation_cur_str);
+
+	u_microwave_model_attribute_value_changed_notification_send(attribute_value_changed_counter++,
+																dateAndTime,
+																k_mw_air_interface_pac_layer_protocol,
+																"modulation-cur",
+																modulation_cur_str);
 
 	sprintf(xpathexpr, "/mw-air-interface-pac[layer-protocol=\"%s\"]/air-interface-status/last-status-change",
 		k_mw_air_interface_pac_layer_protocol);
@@ -24311,7 +24320,15 @@ status_t set_channel_bandwidth_for_interface(const xmlChar* layer_protocol_name,
 	{
 		if (strcmp(interfaces[i].layer_protocol_name, layer_protocol_name) == 0)
 		{
-			interfaces[i].channel_bandwidth = channel_bandwidth;
+			//fix bug if channel_bandwidth comes as -1 (MAXINT)
+			if (channel_bandwidth > 1024000)
+			{
+				interfaces[i].channel_bandwidth = 1024000;
+			}
+			else
+			{
+				interfaces[i].channel_bandwidth = channel_bandwidth;
+			}
 		}
 	}
 	return NO_ERR;
@@ -24323,7 +24340,15 @@ status_t set_modulation_for_interface(const xmlChar* layer_protocol_name, uint32
 	{
 		if (strcmp(interfaces[i].layer_protocol_name, layer_protocol_name) == 0)
 		{
-			interfaces[i].modulation_current = modulation;
+			//fix bug if modulation comes as -1 (MAXINT)
+			if (modulation > 8192)
+			{
+				interfaces[i].modulation_current = 8192;
+			}
+			else
+			{
+				interfaces[i].modulation_current = modulation;
+			}
 		}
 	}
 	return NO_ERR;
@@ -24343,9 +24368,10 @@ status_t fill_interfaces_details()
 	for (int i = 0; i<num_of_keys; ++i)
 	{
 		interfaces[num_of_air_interfaces].layer_protocol_name = strdup(layer_protocol_keys[i]);
+		YUMA_ASSERT(TRUE, NOP, "Filled interface details with layer_protocol_name=%s", interfaces[num_of_air_interfaces].layer_protocol_name);
 		interfaces[num_of_air_interfaces].channel_bandwidth = 26000;
 		interfaces[num_of_air_interfaces].modulation_current = 2;
-		interfaces[num_of_air_interfaces].capacity_set = false;
+		interfaces[num_of_air_interfaces].capacity_set = true;
 		num_of_air_interfaces++;
 
 		char *supported_alarms;

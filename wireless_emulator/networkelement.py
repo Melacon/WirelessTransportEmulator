@@ -3,6 +3,7 @@ import subprocess
 import xml.etree.ElementTree as ET
 import copy
 import os
+from io import StringIO
 
 import wireless_emulator.emulator
 from wireless_emulator.utils import addCoreDefaultValuesToNode, printErrorAndExit, addCoreDefaultStatusValuesToNode
@@ -43,6 +44,8 @@ class NetworkElement:
         self.ethernetPacConfigXmlNode = None
         self.ptpInstanceListConfigXmlNode = None
         self.ptpPortDsListConfigXmlNode = None
+        self.forwardingDomainForwardingConstructXmlNode = None
+        self.fdLtpXmlNode = None
 
         # Status XML nodes
         self.xmlStatusTree = None
@@ -107,6 +110,9 @@ class NetworkElement:
         logger.info("Created NetworkElement object with uuid=%s and id=%s and IP=%s",
                     self.uuid, self.id, self.managementIPAddressString)
 
+        self.scriptIntf = StringIO()
+        self.scriptIntf.write('#!/bin/bash\n\n')
+
     def getNeId(self):
         return self.id
 
@@ -142,6 +148,15 @@ class NetworkElement:
         self.configRootXmlNode.remove(airInterface)
 
         self.networkElementConfigXmlNode = self.configRootXmlNode.find('core-model:network-element', self.namespaces)
+
+        forwardingDomain = self.networkElementConfigXmlNode.find('core-model:fd', self.namespaces)
+        fd_fc_xmlNode = forwardingDomain.find('core-model:fc', self.namespaces)
+        self.forwardingDomainForwardingConstructXmlNode = copy.deepcopy(fd_fc_xmlNode)
+        forwardingDomain.remove(fd_fc_xmlNode)
+
+        fdLtp = forwardingDomain.find('core-model:ltp', self.namespaces)
+        self.fdLtpXmlNode = copy.deepcopy(fdLtp)
+        forwardingDomain.remove(fdLtp)
 
         ltp = self.networkElementConfigXmlNode.find('core-model:ltp', self.namespaces)
         self.ltpConfigXmlNode = copy.deepcopy(ltp)
@@ -302,9 +317,9 @@ class NetworkElement:
         twoStepFlag.text = 'true'
 
         clockIdentity = defaultDs.find('ptp:clock-identity', self.namespaces)
-        byteRepr = ' '.join(format(ord(x), 'b') for x in 'PTPCLOCK')
-        byteRepr.replace(" ", "")
-        clockIdentity.text = byteRepr
+        # byteRepr = ' '.join(format(ord(x), 'b') for x in 'PTPCLOCK')
+        # byteRepr.replace(" ", "")
+        clockIdentity.text = 'UFRQU2xhdmU='
 
         numberPorts = defaultDs.find('ptp:number-ports', self.namespaces)
         numberPorts.text = '0'
@@ -331,9 +346,9 @@ class NetworkElement:
         parentPortIdentity = parentDs.find('ptp:parent-port-identity', self.namespaces)
 
         clockIdentity = parentPortIdentity.find('ptp:clock-identity', self.namespaces)
-        byteRepr = ' '.join(format(ord(x), 'b') for x in 'MASTER01')
-        byteRepr.replace(" ", "")
-        clockIdentity.text = byteRepr
+        # byteRepr = ' '.join(format(ord(x), 'b') for x in 'MASTER01')
+        # byteRepr.replace(" ", "")
+        clockIdentity.text = 'UEFSRU5UMDE='
 
         portNumber = parentPortIdentity.find('ptp:port-number', self.namespaces)
         portNumber.text = '1'
@@ -348,6 +363,9 @@ class NetworkElement:
 
         ptpTimescale = timePropertiesDs.find('ptp:ptp-timescale', self.namespaces)
         ptpTimescale.text = 'true'
+
+        grandmasterIdentity = parentDs.find('ptp:grandmaster-identity', self.namespaces)
+        grandmasterIdentity.text = 'R1JBTkQwMDE='
 
         node.append(self.ptpInstanceListConfigXmlNode)
 
@@ -543,19 +561,22 @@ class NetworkElement:
 
         self.startDockerContainer()
         if self.emEnv.registerToOdl == True:
-           try:
-               # registerNeToOdl(self.emEnv.controllerInfo, self.uuid, self.managementIPAddressString)
-               registerNeToOdlNewVersion(self.emEnv.controllerInfo, self.uuid, self.managementIPAddressString,
+           # registerNeToOdl(self.emEnv.controllerInfo, self.uuid, self.managementIPAddressString)
+           for controller in self.emEnv.controllerList:
+               try:
+                    registerNeToOdlNewVersion(controller, self.uuid, self.managementIPAddressString,
                                          self.netconfPortNumber)
-           except RuntimeError:
-               print("Failed to register NE=%s having IP=%s and port=%s to the ODL controller" %
-                     (self.uuid, self.managementIPAddressString, self.netconfPortNumber))
+                    break
+               except:
+                    print("Failed to register NE=%s having IP=%s and port=%s to the ODL controller having IP=%s" %
+                         (self.uuid, self.managementIPAddressString, self.netconfPortNumber, controller['ip-address']))
+                    continue
 
         self.saveNetworkNamespace()
 
         #debug
-        self.xmlConfigurationTree.write('output-config-' + self.dockerName + '.xml')
-        self.xmlStatusTree.write('output-status-' + self.dockerName + '.xml')
+        #self.xmlConfigurationTree.write('output-config-' + self.dockerName + '.xml')
+        #self.xmlStatusTree.write('output-status-' + self.dockerName + '.xml')
 
     def addInterfacesInDockerContainer(self):
 
@@ -699,3 +720,149 @@ class NetworkElement:
             raise RuntimeError
         for line in cmd.stdout:
             print(line.decode("utf-8").rstrip('\n'))
+
+    def getCpuUsage(self, interval, index, results):
+        cpu_percent = 0.0
+        for i in range(0, interval):
+            cmd = "ps -g `docker inspect -f '{{.State.Pid}}' %s` --no-headers -o \"pcpu\"" % self.dockerName
+            output = self.emEnv.executeCommandAndGetResultInOS(cmd)
+            for line in output:
+                cpu_percent += float(line)
+
+        cpu_percent /= float(interval)
+        results[index] = cpu_percent
+
+    def addInterfacesInDockerContainerToScript(self):
+
+        for intf in self.interfaceList:
+            if intf.layer == 'MWPS':
+                self.addDummyEthInterfaceToScript(intf)
+            elif intf.layer == 'MWS':
+                self.addMwsInterfaceToScript(intf)
+            elif intf.layer == 'ETC':
+                self.addMwEthContInterfaceToScript(intf)
+            elif intf.layer == 'ETY':
+                self.addEtyEthInterfaceToScript(intf)
+            elif intf.layer == 'ETH':
+                self.addEthCtpInterfaceToScript(intf)
+        for xconn in self.ethCrossConnectList:
+            xconn.addXConnToScript()
+
+        self.copyInterfaceScriptToDockerContainer()
+        self.runInterfaceScriptInDockerContainer()
+
+    def addMwsInterfaceToScript(self, interfaceObj):
+        command = "ip link add name %s type bond\n" % interfaceObj.getInterfaceName()
+        self.scriptIntf.write(command)
+
+        command = "echo 0 > /sys/class/net/%s/bonding/mode\n" % interfaceObj.getInterfaceName()
+        self.scriptIntf.write(command)
+
+        command = "echo 100 > /sys/class/net/%s/bonding/miimon\n" % interfaceObj.getInterfaceName()
+        self.scriptIntf.write(command)
+
+        for serverLtp in interfaceObj.serverLtpsList:
+            serverObj = self.getInterfaceFromInterfaceUuid(serverLtp)
+            serverName = serverObj.getInterfaceName()
+            command = "ip link set %s down\n" % serverName
+            self.scriptIntf.write(command)
+
+            command = "ip link set %s master %s\n" % (serverName, interfaceObj.getInterfaceName())
+            self.scriptIntf.write(command)
+
+        command = "ip link set %s up\n" % interfaceObj.getInterfaceName()
+        self.scriptIntf.write(command)
+
+    def addMwEthContInterfaceToScript(self, interfaceObj):
+
+        command = "ip link add name %s type bond\n" % interfaceObj.getInterfaceName()
+        self.scriptIntf.write(command)
+
+        command = "echo 0 > /sys/class/net/%s/bonding/mode\n" % interfaceObj.getInterfaceName()
+        self.scriptIntf.write(command)
+
+        command = "echo 100 > /sys/class/net/%s/bonding/miimon\n" % interfaceObj.getInterfaceName()
+        self.scriptIntf.write(command)
+
+        for serverLtp in interfaceObj.serverLtps:
+            serverObj = self.getInterfaceFromInterfaceUuid(serverLtp)
+            serverName = serverObj.getInterfaceName()
+
+            command = "ip link set %s down\n" % serverName
+            self.scriptIntf.write(command)
+
+            command = "ip link set %s master %s\n" % (serverName, interfaceObj.getInterfaceName())
+            self.scriptIntf.write(command)
+
+        command = "ip link set %s up\n" % interfaceObj.getInterfaceName()
+        self.scriptIntf.write(command)
+
+    def addEtyEthInterfaceToScript(self, interfaceObj):
+        if self.emEnv.isInterfaceObjPartOfLink(interfaceObj) is True:
+            pass
+        else:
+            command = "ip link add name %s type dummy\n" % interfaceObj.getInterfaceName()
+            self.scriptIntf.write(command)
+
+            command = "ip link set dev %s up\n" % interfaceObj.getInterfaceName()
+            self.scriptIntf.write(command)
+
+        command = "tc qdisc add dev %s root handle 5:0 hfsc default 1\n" % interfaceObj.getInterfaceName()
+        self.scriptIntf.write(command)
+        command = "tc class add dev %s parent 5:0 classid 5:1 hfsc sc rate 10Gbit ul rate 10Gbit\n" % interfaceObj.getInterfaceName()
+        self.scriptIntf.write(command)
+
+    def addEthCtpInterfaceToScript(self, interfaceObj):
+
+        if len(interfaceObj.serverLtpsList) != 1:
+            return
+
+        for serverLtp in interfaceObj.serverLtpsList:
+            serverObj = self.getInterfaceFromInterfaceUuid(serverLtp)
+            serverName = serverObj.getInterfaceName()
+
+            command = "ip link add name %s link %s type vlan id 0\n" % (interfaceObj.getInterfaceName(), serverName)
+            self.scriptIntf.write(command)
+
+            command = "ip link set dev %s up\n" % interfaceObj.getInterfaceName()
+            self.scriptIntf.write(command)
+
+    def addDummyEthInterfaceToScript(self, interfaceObj):
+        if self.emEnv.isInterfaceObjPartOfLink(interfaceObj) is True:
+            pass
+        else:
+            command = "ip link add name %s type dummy\n" % interfaceObj.getInterfaceName()
+            self.scriptIntf.write(command)
+
+            # command = "ip address add %s/30 dev %s" % (interfaceObj.getIpAddress(), interfaceObj.getInterfaceName())
+            # self.executeCommandInContainer(command)
+
+            command = "ip link set %s up\n" % interfaceObj.getInterfaceName()
+            self.scriptIntf.write(command)
+
+        command = "tc qdisc add dev %s root handle 5:0 hfsc default 1\n" % interfaceObj.getInterfaceName()
+        self.scriptIntf.write(command)
+        command = "tc class add dev %s parent 5:0 classid 5:1 hfsc sc rate 100Mbit ul rate 100Mbit\n" % interfaceObj.getInterfaceName()
+        self.scriptIntf.write(command)
+
+    def copyInterfaceScriptToDockerContainer(self):
+        outFileName = "buildIntf.sh"
+
+        f = open(outFileName, 'w+')
+        f.write(self.scriptIntf.getvalue())
+        f.close()
+
+        targetPath = "/usr/src/OpenYuma"
+
+        os.chmod('./buildIntf.sh', 777)
+
+        stringCmd = "docker cp %s %s:%s" % \
+                    (outFileName, self.dockerName, targetPath)
+        self.emEnv.executeCommandInOS(stringCmd)
+
+        stringCmd = "rm -f %s" % (outFileName)
+        self.emEnv.executeCommandInOS(stringCmd)
+
+    def runInterfaceScriptInDockerContainer(self):
+        cmd = "/usr/src/OpenYuma/buildIntf.sh"
+        self.executeCommandInContainer(cmd)

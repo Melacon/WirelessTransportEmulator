@@ -1469,7 +1469,7 @@
         <tdm-segment-size>2048</tdm-segment-size>
         <max-number-of-segments-reservable>100</max-number-of-segments-reservable>
       </structure-type>
-      <number-of-tdm-segments-to-be-reserved>2</number-of-tdm-segments-to-be-reserved>
+      <number-of-tdm-segments-to-be-reserved>5</number-of-tdm-segments-to-be-reserved>
     </hybrid-mw-structure-configuration>
     <hybrid-mw-structure-status>
       <segment-status-list>
@@ -1481,7 +1481,7 @@
       </segment-status-list>
       <segment-status-list>
         <segment-status-type-id>2</segment-status-type-id>
-        <segment-is-reserved-for-tdm>true</segment-is-reserved-for-tdm>
+        <segment-is-reserved-for-tdm>false</segment-is-reserved-for-tdm>
         <operational-status>enabled</operational-status>
         <obsolete-priority-class>2</obsolete-priority-class>
         <obsolete-drop-order-rank>1</obsolete-drop-order-rank>

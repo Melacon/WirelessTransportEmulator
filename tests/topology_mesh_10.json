@@ -1,0 +1,1797 @@
+{
+  "network-elements" : [
+    {
+      "network-element" :
+      {
+        "uuid" : "NE1",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+			                { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai3",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot4:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai4",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot5:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai5",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot6:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai6",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot7:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai7",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot8:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai8",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot9:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai9",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot10:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+			                { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe3",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai3"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe4",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai4"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe5",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai5"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe6",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai6"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe7",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai7"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe8",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai8"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe9",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai9"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me3",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe3"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me4",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe4"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me5",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe5"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me6",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe6"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me7",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe7"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me8",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe8"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me9",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe9"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE2",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai3",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot4:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai4",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot5:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai5",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot6:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai6",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot7:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai7",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot8:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai8",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot9:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai9",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot10:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe3",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai3"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe4",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai4"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe5",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai5"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe6",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai6"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe7",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai7"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe8",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai8"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe9",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai9"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me3",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe3"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me4",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe4"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me5",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe5"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me6",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe6"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me7",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe7"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me8",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe8"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me9",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe9"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE3",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai3",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot4:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai4",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot5:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai5",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot6:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai6",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot7:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai7",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot8:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai8",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot9:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai9",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot10:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe3",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai3"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe4",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai4"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe5",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai5"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe6",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai6"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe7",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai7"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe8",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai8"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe9",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai9"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me3",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe3"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me4",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe4"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me5",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe5"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me6",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe6"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me7",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe7"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me8",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe8"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me9",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe9"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE4",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai3",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot4:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai4",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot5:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai5",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot6:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai6",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot7:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai7",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot8:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai8",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot9:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai9",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot10:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe3",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai3"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe4",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai4"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe5",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai5"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe6",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai6"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe7",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai7"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe8",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai8"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe9",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai9"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me3",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe3"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me4",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe4"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me5",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe5"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me6",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe6"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me7",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe7"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me8",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe8"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me9",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe9"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE5",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai3",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot4:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai4",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot5:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai5",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot6:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai6",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot7:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai7",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot8:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai8",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot9:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai9",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot10:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe3",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai3"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe4",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai4"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe5",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai5"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe6",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai6"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe7",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai7"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe8",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai8"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe9",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai9"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me3",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe3"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me4",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe4"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me5",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe5"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me6",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe6"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me7",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe7"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me8",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe8"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me9",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe9"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE6",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai3",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot4:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai4",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot5:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai5",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot6:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai6",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot7:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai7",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot8:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai8",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot9:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai9",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot10:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe3",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai3"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe4",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai4"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe5",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai5"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe6",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai6"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe7",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai7"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe8",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai8"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe9",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai9"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me3",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe3"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me4",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe4"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me5",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe5"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me6",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe6"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me7",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe7"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me8",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe8"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me9",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe9"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE7",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai3",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot4:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai4",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot5:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai5",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot6:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai6",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot7:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai7",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot8:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai8",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot9:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai9",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot10:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe3",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai3"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe4",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai4"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe5",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai5"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe6",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai6"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe7",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai7"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe8",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai8"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe9",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai9"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me3",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe3"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me4",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe4"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me5",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe5"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me6",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe6"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me7",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe7"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me8",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe8"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me9",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe9"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE8",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai3",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot4:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai4",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot5:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai5",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot6:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai6",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot7:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai7",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot8:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai8",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot9:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai9",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot10:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe3",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai3"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe4",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai4"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe5",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai5"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe6",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai6"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe7",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai7"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe8",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai8"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe9",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai9"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me3",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe3"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me4",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe4"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me5",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe5"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me6",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe6"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me7",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe7"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me8",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe8"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me9",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe9"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE9",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai3",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot4:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai4",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot5:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai5",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot6:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai6",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot7:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai7",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot8:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai8",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot9:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai9",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot10:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe3",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai3"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe4",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai4"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe5",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai5"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe6",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai6"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe7",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai7"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe8",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai8"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe9",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai9"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me3",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe3"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me4",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe4"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me5",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe5"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me6",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe6"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me7",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe7"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me8",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe8"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me9",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe9"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "NE10",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot2:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai2",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot3:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai3",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot4:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai4",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot5:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai5",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot6:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai6",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot7:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai7",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot8:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai8",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot9:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      },
+                      { "id": "ai9",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "shelf1:slot10:card-type:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe2",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai2"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe3",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai3"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe4",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai4"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe5",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai5"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe6",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai6"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe7",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai7"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe8",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai8"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      },
+                      { "id" : "pe9",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai9"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "me1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me2",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe2"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me3",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe3"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me4",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe4"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me5",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe5"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me6",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe6"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me7",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe7"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me8",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe8"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      },
+                      { "id" : "me9",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "serverLTPs" : [{"id" : "pe9"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    }
+    ],
+  "topologies" : {
+    "mwps" : {
+      "links" : [
+        [{"uuid" : "NE1", "ltp" : "ai1", "radio-signal-id" : "26"}, {"uuid" : "NE2", "ltp" : "ai1", "radio-signal-id" : "26"}],        
+        [{"uuid" : "NE1", "ltp" : "ai2", "radio-signal-id" : "26"}, {"uuid" : "NE3", "ltp" : "ai1", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE1", "ltp" : "ai3", "radio-signal-id" : "26"}, {"uuid" : "NE4", "ltp" : "ai1", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE1", "ltp" : "ai4", "radio-signal-id" : "26"}, {"uuid" : "NE5", "ltp" : "ai1", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE1", "ltp" : "ai5", "radio-signal-id" : "26"}, {"uuid" : "NE6", "ltp" : "ai1", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE1", "ltp" : "ai6", "radio-signal-id" : "26"}, {"uuid" : "NE7", "ltp" : "ai1", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE1", "ltp" : "ai7", "radio-signal-id" : "26"}, {"uuid" : "NE8", "ltp" : "ai1", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE1", "ltp" : "ai8", "radio-signal-id" : "26"}, {"uuid" : "NE9", "ltp" : "ai1", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE1", "ltp" : "ai9", "radio-signal-id" : "26"}, {"uuid" : "NE10", "ltp" : "ai1", "radio-signal-id" : "26"}],
+
+        [{"uuid" : "NE2", "ltp" : "ai2", "radio-signal-id" : "26"}, {"uuid" : "NE3", "ltp" : "ai2", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE2", "ltp" : "ai3", "radio-signal-id" : "26"}, {"uuid" : "NE4", "ltp" : "ai2", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE2", "ltp" : "ai4", "radio-signal-id" : "26"}, {"uuid" : "NE5", "ltp" : "ai2", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE2", "ltp" : "ai5", "radio-signal-id" : "26"}, {"uuid" : "NE6", "ltp" : "ai2", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE2", "ltp" : "ai6", "radio-signal-id" : "26"}, {"uuid" : "NE7", "ltp" : "ai2", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE2", "ltp" : "ai7", "radio-signal-id" : "26"}, {"uuid" : "NE8", "ltp" : "ai2", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE2", "ltp" : "ai8", "radio-signal-id" : "26"}, {"uuid" : "NE9", "ltp" : "ai2", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE2", "ltp" : "ai9", "radio-signal-id" : "26"}, {"uuid" : "NE10", "ltp" : "ai2", "radio-signal-id" : "26"}],
+
+        [{"uuid" : "NE3", "ltp" : "ai3", "radio-signal-id" : "26"}, {"uuid" : "NE4", "ltp" : "ai3", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE3", "ltp" : "ai4", "radio-signal-id" : "26"}, {"uuid" : "NE5", "ltp" : "ai3", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE3", "ltp" : "ai5", "radio-signal-id" : "26"}, {"uuid" : "NE6", "ltp" : "ai3", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE3", "ltp" : "ai6", "radio-signal-id" : "26"}, {"uuid" : "NE7", "ltp" : "ai3", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE3", "ltp" : "ai7", "radio-signal-id" : "26"}, {"uuid" : "NE8", "ltp" : "ai3", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE3", "ltp" : "ai8", "radio-signal-id" : "26"}, {"uuid" : "NE9", "ltp" : "ai3", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE3", "ltp" : "ai9", "radio-signal-id" : "26"}, {"uuid" : "NE10", "ltp" : "ai3", "radio-signal-id" : "26"}],
+
+        [{"uuid" : "NE4", "ltp" : "ai4", "radio-signal-id" : "26"}, {"uuid" : "NE5", "ltp" : "ai4", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE4", "ltp" : "ai5", "radio-signal-id" : "26"}, {"uuid" : "NE6", "ltp" : "ai4", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE4", "ltp" : "ai6", "radio-signal-id" : "26"}, {"uuid" : "NE7", "ltp" : "ai4", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE4", "ltp" : "ai7", "radio-signal-id" : "26"}, {"uuid" : "NE8", "ltp" : "ai4", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE4", "ltp" : "ai8", "radio-signal-id" : "26"}, {"uuid" : "NE9", "ltp" : "ai4", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE4", "ltp" : "ai9", "radio-signal-id" : "26"}, {"uuid" : "NE10", "ltp" : "ai4", "radio-signal-id" : "26"}],
+
+        [{"uuid" : "NE5", "ltp" : "ai5", "radio-signal-id" : "26"}, {"uuid" : "NE6", "ltp" : "ai5", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE5", "ltp" : "ai6", "radio-signal-id" : "26"}, {"uuid" : "NE7", "ltp" : "ai5", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE5", "ltp" : "ai7", "radio-signal-id" : "26"}, {"uuid" : "NE8", "ltp" : "ai5", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE5", "ltp" : "ai8", "radio-signal-id" : "26"}, {"uuid" : "NE9", "ltp" : "ai5", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE5", "ltp" : "ai9", "radio-signal-id" : "26"}, {"uuid" : "NE10", "ltp" : "ai5", "radio-signal-id" : "26"}],
+
+        [{"uuid" : "NE6", "ltp" : "ai6", "radio-signal-id" : "26"}, {"uuid" : "NE7", "ltp" : "ai6", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE6", "ltp" : "ai7", "radio-signal-id" : "26"}, {"uuid" : "NE8", "ltp" : "ai6", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE6", "ltp" : "ai8", "radio-signal-id" : "26"}, {"uuid" : "NE9", "ltp" : "ai6", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE6", "ltp" : "ai9", "radio-signal-id" : "26"}, {"uuid" : "NE10", "ltp" : "ai6", "radio-signal-id" : "26"}],
+
+        [{"uuid" : "NE7", "ltp" : "ai7", "radio-signal-id" : "26"}, {"uuid" : "NE8", "ltp" : "ai7", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE7", "ltp" : "ai8", "radio-signal-id" : "26"}, {"uuid" : "NE9", "ltp" : "ai7", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE7", "ltp" : "ai9", "radio-signal-id" : "26"}, {"uuid" : "NE10", "ltp" : "ai7", "radio-signal-id" : "26"}],
+
+        [{"uuid" : "NE8", "ltp" : "ai8", "radio-signal-id" : "26"}, {"uuid" : "NE9", "ltp" : "ai8", "radio-signal-id" : "26"}],
+        [{"uuid" : "NE8", "ltp" : "ai9", "radio-signal-id" : "26"}, {"uuid" : "NE10", "ltp" : "ai8", "radio-signal-id" : "26"}],
+
+        [{"uuid" : "NE9", "ltp" : "ai9", "radio-signal-id" : "26"}, {"uuid" : "NE10", "ltp" : "ai9", "radio-signal-id" : "26"}]
+        ]
+    },
+    "ety" : {
+      "links" : [        
+      ]
+    }
+  }
+}

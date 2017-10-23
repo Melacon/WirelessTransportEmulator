@@ -302,9 +302,9 @@ class MwpsInterface:
 
         portIdentity = portDsList.find('ptp:port-identity', self.neObj.namespaces)
         clockIdentity = portIdentity.find('ptp:clock-identity', self.neObj.namespaces)
-        byteRepr = ' '.join(format(ord(x), 'b') for x in 'LOCAL-01')
-        byteRepr.replace(" ", "")
-        clockIdentity.text = byteRepr
+        # byteRepr = ' '.join(format(ord(x), 'b') for x in 'LOCAL-01')
+        # byteRepr.replace(" ", "")
+        clockIdentity.text = 'UFRQU2xhdmU='
         portNumber = portIdentity.find('ptp:port-number', self.neObj.namespaces)
         portNumber.text = str(self.id)
 
@@ -693,6 +693,13 @@ class MwEthContainerInterface:
 
     def buildCoreModelConfigXml(self):
         neNode = self.neObj.networkElementConfigXmlNode
+
+        fdLtp = copy.deepcopy(self.neObj.fdLtpXmlNode)
+        fdLtp.text = self.ltpUuid
+
+        forwardingDomain = neNode.find('core-model:fd', self.neObj.namespaces)
+        forwardingDomain.append(fdLtp)
+
         ltpNode = copy.deepcopy(self.neObj.ltpConfigXmlNode)
         uuid = ltpNode.find('core-model:uuid', self.neObj.namespaces)
         #ltpUuid = "ltp-" + self.interfaceName
@@ -980,6 +987,13 @@ class ElectricalEtyInterface:
 
     def buildCoreModelConfigXml(self):
         neNode = self.neObj.networkElementConfigXmlNode
+
+        fdLtp = copy.deepcopy(self.neObj.fdLtpXmlNode)
+        fdLtp.text = self.ltpUuid
+
+        forwardingDomain = neNode.find('core-model:fd', self.neObj.namespaces)
+        forwardingDomain.append(fdLtp)
+
         ltpNode = copy.deepcopy(self.neObj.ltpConfigXmlNode)
         uuid = ltpNode.find('core-model:uuid', self.neObj.namespaces)
         #ltpUuid = "ltp-" + self.interfaceName
@@ -1059,9 +1073,9 @@ class ElectricalEtyInterface:
 
         portIdentity = portDsList.find('ptp:port-identity', self.neObj.namespaces)
         clockIdentity = portIdentity.find('ptp:clock-identity', self.neObj.namespaces)
-        byteRepr = ' '.join(format(ord(x), 'b') for x in 'LOCAL-01')
-        byteRepr.replace(" ", "")
-        clockIdentity.text = byteRepr
+        # byteRepr = ' '.join(format(ord(x), 'b') for x in 'LOCAL-01')
+        # byteRepr.replace(" ", "")
+        clockIdentity.text = 'UFRQU2xhdmU='
         portNumber = portIdentity.find('ptp:port-number', self.neObj.namespaces)
         portNumber.text = str(self.id)
 
@@ -1160,7 +1174,7 @@ class EthCtpInterface:
                 return xconn['fcPorts'][0]['vlan-id']
             elif xconn['fcPorts'][1]['ltp'] == self.uuid:
                 return xconn['fcPorts'][1]['vlan-id']
-        return None
+        return '0'
 
     def buildCoreModelConfigXml(self):
         neNode = self.neObj.networkElementConfigXmlNode
