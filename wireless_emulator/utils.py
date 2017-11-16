@@ -106,3 +106,10 @@ def addCustomNeExtensions(neObj, node, namespaces):
     value.text = ""
     node.append(extensionNode)
 
+    extensionNode = copy.deepcopy(savedNode)
+    valName = extensionNode.find('core-model:value-name', namespaces)
+    valName.text = "top-level-equipment"
+    value = extensionNode.find('core-model:value', namespaces)
+    value.text = neObj.uuid + '-eq'
+    node.append(extensionNode)
+
