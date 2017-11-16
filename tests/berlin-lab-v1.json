@@ -3,7 +3,185 @@
     {
       "network-element" :
       {
-        "uuid" : "NE1",
+        "uuid" : "Nokia-eNodeB-1",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "ADVA-EthSwitch-1",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "ADVA-EthSwitch-2",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                      {"id" : "ety1", "physical-port-reference" : "shelf1:slot1:card-type:port1"},
+                      {"id" : "ety2", "physical-port-reference" : "shelf1:slot1:card-type:port2"}
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "ActionTec-mmW-A",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "box1:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "ety1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "physical-port-reference" : "box1:port2",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+    {
+      "network-element" :
+      {
+        "uuid" : "ActionTec-mmW-Z",
+        "type" : "OpenYuma",
+        "interfaces" : [
+          {
+            "layer" : "MWPS",
+            "LTPs" : [
+                      { "id": "ai1",
+                        "supportedAlarms" : "signalIsLost, rslIsExceeded, temperatureIsExceeded, modemIsFaulty, radioIsFaulty, modulationIsDownShifted",
+                        "physical-port-reference" : "box1:port1",
+                        "conditional-package" : "mw-air-interface-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "MWS",
+            "LTPs" : [
+                      { "id" : "pe1",
+                        "supportedAlarms" : "structureAlarm",
+                        "serverLTPs" : [{"id" : "ai1"}],
+                        "conditional-package" : "mw-pure-ethernet-structure-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETC",
+            "LTPs" : [
+                      { "id" : "ety1",
+                        "supportedAlarms" : "framingIsFaulty, containerIsDown",
+                        "physical-port-reference" : "box1:port2",
+                        "serverLTPs" : [{"id" : "pe1"}],
+                        "conditional-package" : "mw-ethernet-container-pac"
+                      }
+                    ]
+          },
+          {
+            "layer" : "ETY",
+            "LTPs" : [
+                    ]
+          },
+          {
+            "layer" : "ETH",
+            "LTPs" : [
+                    ]
+          }
+          ],
+        "eth-cross-connections" : [
+          
+          ]
+      }
+    },
+
+    {
+      "network-element" :
+      {
+        "uuid" : "ADVA-ROADM-A",
         "type" : "OpenYuma",
         "interfaces" : [
           {
@@ -72,7 +250,7 @@
     {
       "network-element" :
       {
-        "uuid" : "NE2",
+        "uuid" : "ADVA-ROADM-B",
         "type" : "OpenYuma",
         "interfaces" : [
           {
@@ -141,7 +319,7 @@
     {
       "network-element" :
       {
-        "uuid" : "NE3",
+        "uuid" : "ADVA-ROADM-C",
         "type" : "OpenYuma",
         "interfaces" : [
           {
@@ -211,9 +389,13 @@
   "topologies" : {
     "mwps" : {
       "links" : [
-        [{"uuid" : "NE1", "ltp" : "ai2", "radio-signal-id" : "26"}, {"uuid" : "NE2", "ltp" : "ai1", "radio-signal-id" : "26"}],
-        [{"uuid" : "NE2", "ltp" : "ai2", "radio-signal-id" : "27"}, {"uuid" : "NE3", "ltp" : "ai1", "radio-signal-id" : "27"}],
-        [{"uuid" : "NE3", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "NE1", "ltp" : "ai1", "radio-signal-id" : "28"}]
+        [{"uuid" : "Nokia-eNodeB-1", "ltp" : "ety1", "radio-signal-id" : "13"}, {"uuid" : "ADVA-ROADM-C", "ltp" : "ety1", "radio-signal-id" : "13"}],
+        [{"uuid" : "ADVA-EthSwitch-1", "ltp" : "ety1", "radio-signal-id" : "11"}, {"uuid" : "ADVA-ROADM-A", "ltp" : "ety1", "radio-signal-id" : "11"}],
+        [{"uuid" : "ADVA-EthSwitch-2", "ltp" : "ety1", "radio-signal-id" : "12"}, {"uuid" : "ADVA-ROADM-B", "ltp" : "ety1", "radio-signal-id" : "12"}],
+        [{"uuid" : "ActionTec-mmW-A", "ltp" : "ai1", "radio-signal-id" : "31"}, {"uuid" : "ActionTec-mmW-Z", "ltp" : "ai1", "radio-signal-id" : "31"}],
+        [{"uuid" : "ADVA-ROADM-A", "ltp" : "ai2", "radio-signal-id" : "26"}, {"uuid" : "ADVA-ROADM-B", "ltp" : "ai1", "radio-signal-id" : "26"}],
+        [{"uuid" : "ADVA-ROADM-B", "ltp" : "ai2", "radio-signal-id" : "27"}, {"uuid" : "ADVA-ROADM-C", "ltp" : "ai1", "radio-signal-id" : "27"}],
+        [{"uuid" : "ADVA-ROADM-C", "ltp" : "ai2", "radio-signal-id" : "28"}, {"uuid" : "ADVA-ROADM-A", "ltp" : "ai1", "radio-signal-id" : "28"}]
         ]
     },
     "ety" : {

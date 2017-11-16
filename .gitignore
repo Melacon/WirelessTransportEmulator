@@ -14,3 +14,6 @@ odlNewRegistration.xml
 .project
 .pydevproject
 .*md.html
+*-start.sh
+*-topology.json
+*-config.json
