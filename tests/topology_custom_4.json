@@ -260,10 +260,10 @@
   "topologies" : {
     "mwps" : {
       "links" : [
-        [{"uuid" : "Ceragon-A1", "ltp" : "268451969", "radio-signal-id" : "26"}, {"uuid" : "Ceragon-Z1", "ltp" : "268451969", "radio-signal-id" : "26"}],
-        [{"uuid" : "Ceragon-A1", "ltp" : "268451970", "radio-signal-id" : "26"}, {"uuid" : "Ceragon-Z1", "ltp" : "268451970", "radio-signal-id" : "26"}],
-        [{"uuid" : "Ceragon-A2", "ltp" : "268451969", "radio-signal-id" : "26"}, {"uuid" : "Ceragon-Z2", "ltp" : "268451969", "radio-signal-id" : "26"}],
-        [{"uuid" : "Ceragon-A2", "ltp" : "268451970", "radio-signal-id" : "26"}, {"uuid" : "Ceragon-Z2", "ltp" : "268451970", "radio-signal-id" : "26"}]
+        [{"uuid" : "Ceragon-A1", "ltp" : "268451969", "radio-signal-id" : "1"}, {"uuid" : "Ceragon-Z1", "ltp" : "268451969", "radio-signal-id" : "1"}],
+        [{"uuid" : "Ceragon-A1", "ltp" : "268451970", "radio-signal-id" : "2"}, {"uuid" : "Ceragon-Z1", "ltp" : "268451970", "radio-signal-id" : "2"}],
+        [{"uuid" : "Ceragon-A2", "ltp" : "268451969", "radio-signal-id" : "3"}, {"uuid" : "Ceragon-Z2", "ltp" : "268451969", "radio-signal-id" : "3"}],
+        [{"uuid" : "Ceragon-A2", "ltp" : "268451970", "radio-signal-id" : "4"}, {"uuid" : "Ceragon-Z2", "ltp" : "268451970", "radio-signal-id" : "4"}]
         ]
     },
     "ety" : {
