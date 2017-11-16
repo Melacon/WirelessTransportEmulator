@@ -46,6 +46,7 @@ class NetworkElement:
         self.ptpPortDsListConfigXmlNode = None
         self.forwardingDomainForwardingConstructXmlNode = None
         self.fdLtpXmlNode = None
+        self.equipmentConfigXmlNode = None
 
         # Status XML nodes
         self.xmlStatusTree = None
@@ -59,6 +60,7 @@ class NetworkElement:
         self.ethernetPacStatusXmlNode = None
         self.ptpInstanceListStatusXmlNode = None
         self.ptpPortDsListStatusXmlNode = None
+        self.equipmentStatusXmlNode = None
 
         # namespace from host, used when adding a veth pair from the host inside a container, for emulating a physical connection
         self.networkNamespace = None
@@ -185,6 +187,10 @@ class NetworkElement:
         self.ptpInstanceListConfigXmlNode.remove(ptpPortDsList)
         self.configRootXmlNode.remove(ptpInstanceList)
 
+        equipmentNode = self.configRootXmlNode.find('core-model:equipment', self.namespaces)
+        self.equipmentConfigXmlNode = copy.deepcopy(equipmentNode)
+        self.configRootXmlNode.remove(equipmentNode)
+
         uselessNode = self.configRootXmlNode.find('microwave-model:co-channel-group', self.namespaces)
         self.configRootXmlNode.remove(uselessNode)
 
@@ -204,9 +210,6 @@ class NetworkElement:
         self.configRootXmlNode.remove(uselessNode)
 
         uselessNode = self.configRootXmlNode.find('core-model:operation-envelope', self.namespaces)
-        self.configRootXmlNode.remove(uselessNode)
-
-        uselessNode = self.configRootXmlNode.find('core-model:equipment', self.namespaces)
         self.configRootXmlNode.remove(uselessNode)
 
         uselessNode = self.configRootXmlNode.find('ptp:transparent-clock-default-ds', self.namespaces)
@@ -252,6 +255,10 @@ class NetworkElement:
         self.ptpInstanceListStatusXmlNode.remove(ptpPortDsList)
         self.statusRootXmlNode.remove(ptpInstanceList)
 
+        equipmentNode = self.statusRootXmlNode.find('equipment')
+        self.equipmentStatusXmlNode = copy.deepcopy(equipmentNode)
+        self.statusRootXmlNode.remove(equipmentNode)
+
         uselessNode = self.statusRootXmlNode.find('co-channel-group')
         self.statusRootXmlNode.remove(uselessNode)
 
@@ -273,9 +280,6 @@ class NetworkElement:
         uselessNode = self.statusRootXmlNode.find('operation-envelope')
         self.statusRootXmlNode.remove(uselessNode)
 
-        uselessNode = self.statusRootXmlNode.find('equipment')
-        self.statusRootXmlNode.remove(uselessNode)
-
         uselessNode = self.statusRootXmlNode.find('transparent-clock-default-ds')
         self.statusRootXmlNode.remove(uselessNode)
 
@@ -283,6 +287,7 @@ class NetworkElement:
         self.statusRootXmlNode.remove(uselessNode)
 
     def buildCoreModelXml(self):
+        #network-element part here
         node = self.networkElementConfigXmlNode
 
         uuid = node.find('core-model:uuid', self.namespaces)
@@ -295,6 +300,49 @@ class NetworkElement:
         addCoreDefaultValuesToNode(fd, 'eth-switch', self.namespaces)
         addCoreDefaultValuesToNode(node,self.uuid, self.namespaces, self)
 
+        self.buildEquipmentModelXml()
+
+    def buildEquipmentModelXml(self):
+        # equipment model part here
+        node = copy.deepcopy(self.equipmentConfigXmlNode)
+
+        uuid = node.find('core-model:uuid', self.namespaces)
+        uuid.text = self.uuid + '-eq'
+        addCoreDefaultValuesToNode(node, self.uuid + '-eq', self.namespaces, None)
+
+        category = node.find('core-model:category', self.namespaces)
+        categoryIn = category.find('core-model:category', self.namespaces)
+        categoryIn.text = 'stand-alone-unit'
+
+        manufacturedThing = node.find('core-model:manufactured-thing', self.namespaces)
+        manufacturerProperties = manufacturedThing.find('core-model:manufacturer-properties', self.namespaces)
+
+        manufacturerIdentifier = manufacturerProperties.find('core-model:manufacturer-identifier', self.namespaces)
+        manufacturerIdentifier.text = 'ActionTech'
+
+        manufacturerName = manufacturerProperties.find('core-model:manufacturer-name', self.namespaces)
+        manufacturerName.text = 'Wireless Transport Emulator'
+
+        equipmentType = manufacturedThing.find('core-model:equipment-type', self.namespaces)
+        description = equipmentType.find('core-model:description', self.namespaces)
+        description.text = 'High capacity packet radio outdoor unit'
+        partTypeIdentifier = equipmentType.find('core-model:part-type-identifier', self.namespaces)
+        partTypeIdentifier.text = '123-345-543'
+        typeName = equipmentType.find('core-model:type-name', self.namespaces)
+        typeName.text = 'EmulatedDevice'
+        modelIdentifier = equipmentType.find('core-model:model-identifier', self.namespaces)
+        modelIdentifier.text = 'MOD001'
+        version = equipmentType.find('core-model:version', self.namespaces)
+        version.text = '1.0'
+
+        equipmentInstance = manufacturedThing.find('core-model:equipment-instance', self.namespaces)
+        manufactureDate = equipmentInstance.find('core-model:manufacture-date', self.namespaces)
+        manufactureDate.text = '2019-09-09T00:00:00.0Z'
+        serialNumber = equipmentInstance.find('core-model:serial-number', self.namespaces)
+        serialNumber.text = 'SN321123'
+
+        self.configRootXmlNode.append(node)
+
     def buildCoreModelStatusXml(self):
         node = self.networkElementStatusXmlNode
 
@@ -304,6 +352,17 @@ class NetworkElement:
         addCoreDefaultStatusValuesToNode(fd)
 
         addCoreDefaultStatusValuesToNode(node)
+
+        self.buildEquipmentModelStatusXml()
+
+    def buildEquipmentModelStatusXml(self):
+        node = copy.deepcopy(self.equipmentStatusXmlNode)
+
+        uuid = node.find('uuid')
+        uuid.text = self.uuid + '-eq'
+        addCoreDefaultStatusValuesToNode(node)
+
+        self.statusRootXmlNode.append(node)
 
     def buildPtpModelConfigXml(self):
         node = self.configRootXmlNode
@@ -575,8 +634,8 @@ class NetworkElement:
         self.saveNetworkNamespace()
 
         #debug
-        #self.xmlConfigurationTree.write('output-config-' + self.dockerName + '.xml')
-        #self.xmlStatusTree.write('output-status-' + self.dockerName + '.xml')
+        self.xmlConfigurationTree.write('output-config-' + self.dockerName + '.xml')
+        self.xmlStatusTree.write('output-status-' + self.dockerName + '.xml')
 
     def addInterfacesInDockerContainer(self):
 
