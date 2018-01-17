@@ -15,18 +15,7 @@
         <capability>urn:ietf:params:xml:ns:yang:ietf-system?module=ietf-system&amp;revision=2014-08-06&amp;features=radius,authentication,local-users,radius-authentication,ntp,ntp-udp-port,timezone-name,dns-udp-tcp-port</capability>
         <capability>urn:ietf:params:xml:ns:netconf:partial-lock:1.0?module=ietf-netconf-partial-lock&amp;revision=2009-10-19</capability>
         <capability>urn:ietf:params:xml:ns:netmod:notification?module=nc-notifications&amp;revision=2008-07-14</capability>
-        <!--<capability>urn:ietf:params:xml:ns:netconf:notification:1.0?module=notifications&amp;revision=2008-07-14</capability>  -->
-        <!--<capability>http://netconfcentral.org/ns/yuma-ncx?module=yuma-ncx&amp;revision=2012-01-13</capability>  -->
-        <!--<capability>urn:ietf:params:xml:ns:yang:iana-crypt-hash?module=iana-crypt-hash&amp;revision=2014-04-04&amp;features=crypt-hash-md5,crypt-hash-sha-256,crypt-hash-sha-512</capability>-->
         <capability>urn:ietf:params:xml:ns:netconf:notification:1.0?module=notifications&amp;revision=2008-07-14</capability>
-        <capability>http://netconfcentral.org/ns/yuma-app-common?module=yuma-app-common&amp;revision=2012-08-16</capability>
-        <capability>http://netconfcentral.org/ns/yuma-arp?module=yuma-arp&amp;revision=2012-01-13</capability>
-        <capability>http://netconfcentral.org/ns/yuma-mysession?module=yuma-mysession&amp;revision=2010-05-10</capability>
-        <capability>http://netconfcentral.org/ns/yuma-ncx?module=yuma-ncx&amp;revision=2012-01-13</capability>
-        <capability>http://netconfcentral.org/ns/yuma-proc?module=yuma-proc&amp;revision=2012-10-10</capability>
-        <capability>http://netconfcentral.org/ns/yuma-system?module=yuma-system&amp;revision=2014-11-27</capability>
-        <capability>http://netconfcentral.org/ns/yuma-time-filter?module=yuma-time-filter&amp;revision=2011-08-13</capability>
-        <capability>http://netconfcentral.org/ns/yuma-types?module=yuma-types&amp;revision=2012-06-01</capability>
     </capabilities>
     <netconf-state>
         <schemas>
@@ -119,62 +108,6 @@
                 <version>2008-07-14</version>
                 <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
                 <namespace>urn:ietf:params:xml:ns:netconf:notification:1.0</namespace>
-                <location>NETCONF</location>
-            </schema>
-            <schema>
-                <identifier>yuma-app-common</identifier>
-                <version>2012-08-16</version>
-                <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
-                <namespace>http://netconfcentral.org/ns/yuma-app-common</namespace>
-                <location>NETCONF</location>
-            </schema>
-            <schema>
-                <identifier>yuma-arp</identifier>
-                <version>2012-01-13</version>
-                <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
-                <namespace>http://netconfcentral.org/ns/yuma-arp</namespace>
-                <location>NETCONF</location>
-            </schema>
-            <schema>
-                <identifier>yuma-mysession</identifier>
-                <version>2010-05-10</version>
-                <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
-                <namespace>http://netconfcentral.org/ns/yuma-mysession</namespace>
-                <location>NETCONF</location>
-            </schema>
-            <schema>
-                <identifier>yuma-ncx</identifier>
-                <version>2012-01-13</version>
-                <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
-                <namespace>http://netconfcentral.org/ns/yuma-ncx</namespace>
-                <location>NETCONF</location>
-            </schema>
-            <schema>
-                <identifier>yuma-proc</identifier>
-                <version>2012-10-10</version>
-                <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
-                <namespace>http://netconfcentral.org/ns/yuma-proc</namespace>
-                <location>NETCONF</location>
-            </schema>
-            <schema>
-                <identifier>yuma-system</identifier>
-                <version>2014-11-27</version>
-                <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
-                <namespace>http://netconfcentral.org/ns/yuma-system</namespace>
-                <location>NETCONF</location>
-            </schema>
-            <schema>
-                <identifier>yuma-time-filter</identifier>
-                <version>2011-08-13</version>
-                <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
-                <namespace>http://netconfcentral.org/ns/yuma-time-filter</namespace>
-                <location>NETCONF</location>
-            </schema>
-            <schema>
-                <identifier>yuma-types</identifier>
-                <version>2012-06-01</version>
-                <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
-                <namespace>http://netconfcentral.org/ns/yuma-types</namespace>
                 <location>NETCONF</location>
             </schema>
         </schemas>
