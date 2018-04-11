@@ -1,1 +1,1 @@
-./NetconfServerSimulator.sh ../xmlNeModel/DVM_MWCore12_Tdm.xml 2226 ../yang/yangNeModel
+./NetconfServerSimulator.sh ../xmlNeModel/DVM_SIAE_TDM.xml 2226 ../yang/yangNeModel
