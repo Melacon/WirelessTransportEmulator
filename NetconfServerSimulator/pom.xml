@@ -20,12 +20,12 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>1.6</java.version>
+        <java.version>1.8</java.version>
         <!-- dependencies versions -->
         <netconf4j.version>0.0.9b</netconf4j.version>
         <pax-logging.version>1.6.10</pax-logging.version>
         <commons-io.version>1.4</commons-io.version>
-        <sshd.version>0.9.0</sshd.version>
+        <sshd.version>1.7.0</sshd.version>
         <junit.version>4.10</junit.version>
         <guava.version>17.0</guava.version>
     </properties>

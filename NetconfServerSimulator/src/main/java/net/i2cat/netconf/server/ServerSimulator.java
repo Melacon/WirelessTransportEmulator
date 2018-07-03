@@ -36,7 +36,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 import org.apache.log4j.RollingFileAppender;
-import org.apache.sshd.SshServer;
+import org.apache.sshd.server.SshServer;
 import org.apache.sshd.common.NamedFactory;
 import org.apache.sshd.server.Command;
 import org.apache.sshd.server.keyprovider.SimpleGeneratorHostKeyProvider;
@@ -92,7 +92,7 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
         LOG.info(staticCliOutput("Host: '" + host + "', listenig port: " + listeningPort));
 
         sshd.setPasswordAuthenticator(new AlwaysTruePasswordAuthenticator());
-        sshd.setKeyPairProvider(new SimpleGeneratorHostKeyProvider(""));
+        sshd.setKeyPairProvider(new SimpleGeneratorHostKeyProvider());
 
         List<NamedFactory<Command>> subsystemFactories = new ArrayList<NamedFactory<Command>>();
         subsystemFactories.add(NetconfSubsystem.Factory.createFactory(this, this, this, ne, this));
@@ -135,7 +135,7 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
         LOG.info(staticCliOutput("Stopping server..."));
         try {
             sshd.stop();
-        } catch (InterruptedException e) {
+        } catch (IOException e) {
             LOG.error(staticCliOutput("Error stopping server!"+e));
             throw new ServerException("Error stopping server", e);
         }
