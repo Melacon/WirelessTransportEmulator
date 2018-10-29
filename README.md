@@ -395,7 +395,7 @@ An example emulator configuration file `config.json` is shown below:
     "username" : "admin",
     "password" : "admin"
   }
-  ]
+  ],
   "managementIpNetwork" : "192.168.0.0/16",
   "hostIpNetwork" : "10.10.0.0/16",
   "notificationPeriod" : 10,
