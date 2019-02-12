@@ -88,9 +88,13 @@ In the *build* directory there are some examples for start commands.
 
 The docker container with the name "netconfserversimulator" is available in the local docker images repo after maven build.
 It can be started directly in interactive mode by using the image id listed by ```docker images``` output.
-Port 830 is used as netconf port.
+Port 830 is used as default netconf port. It can be changed by environment variable in the docker run command. 
 ```
-docker run -i -e "XMLFILE=xmlNeModel/DVM-ETY.xml" -t e18037c3e9cb
+docker run -ti -e "XMLFILE=xmlNeModel/DVM_MWCore12_BasicAir.xml" -e "PORT=2230" -p 2230:2230 netconfserversimulator
+```
+for executing in background
+```
+docker run -e "XMLFILE=xmlNeModel/DVM_MWCore12_BasicAir.xml" -e "PORT=2230" -p 2230:2230 -d netconfserversimulator
 ```
 
 
