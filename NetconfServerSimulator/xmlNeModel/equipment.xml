@@ -7171,6 +7171,16 @@
 			<object-id-ref>LP-MWPS-ifIndex1</object-id-ref>
 			<new-value>128</new-value>
 		</attribute-value-changed-notification>
+		<attribute-value-changed-notification xmlns="urn:onf:params:xml:ns:yang:microwave-model">
+			<attribute-name>/equipment-pac/equipment-current-problems</attribute-name>
+			<object-id-ref>CARD-1.1.1.0</object-id-ref>
+			<new-value></new-value>
+		</attribute-value-changed-notification>
+		<attribute-value-changed-notification xmlns="urn:onf:params:xml:ns:yang:microwave-model">
+			<attribute-name>/network-element/extension[value-name="top-level-equipment"]/value</attribute-name>
+			<object-id-ref>Hybrid-Z</object-id-ref>
+			<new-value>SHELF-1.1.0.0,IDU-1.55.0.0,ODU-1.56.0.0,IDU-1.65.0.0</new-value>
+		</attribute-value-changed-notification>
 	</mw-notifications>
 </data>
 

@@ -8,6 +8,7 @@
 
 package net.i2cat.netconf.server.netconf.types;
 
+import com.sun.istack.internal.Nullable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -17,8 +18,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -57,6 +60,9 @@ public class NetworkElement {
     private Document doc = null;
     private String nePath = null;
 
+    private enum Event { PROBLEM_NOTIFICATION, NOTIFICATION, ATTRIBUTE_VALUE_CHANGED_NOTIFICATION };
+
+
     /* ---------------------------------------------------------------
      * Constructor
      */
@@ -68,6 +74,7 @@ public class NetworkElement {
 
         FileInputStream fis = new FileInputStream(file);
         doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fis);
+        fis.close();
 
         TransformerFactory tf = TransformerFactory.newInstance();
         transformer = tf.newTransformer();
@@ -257,7 +264,7 @@ public class NetworkElement {
      * @return List with child nodes
      */
     private static List<Node> getChildElementNodes(Node node) {
-        List<Node> res = new ArrayList<Node>();
+        List<Node> res = new ArrayList<>();
         NodeList childs = node.getChildNodes();
         Node item;
         //System.out.println("Query node "+node.getNodeName());
@@ -303,7 +310,7 @@ public class NetworkElement {
      * @return List of strings with subtree content with one element for node of the expected list
      */
     private List<String> getXmlSubTreeAsStringList(String root) {
-        List<String> res = new ArrayList<String>();
+        List<String> res = new ArrayList<>();
         try {
             NodeList nodeList = getNodeList(doc, root);
 
@@ -357,7 +364,7 @@ public class NetworkElement {
      * @return HashSet with all id.
      */
     private static HashSet<String> getNodeIds(Document doc, String root, String attibuteName) {
-        HashSet<String> res = new HashSet<String>();
+        HashSet<String> res = new HashSet<>();
         try {
              final XPathExpression xpath = XPathFactory.newInstance().newXPath().compile(root);
              final NodeList nodeList = (NodeList) xpath.evaluate(doc, XPathConstants.NODESET);
@@ -390,7 +397,7 @@ public class NetworkElement {
      * @return All index matching criteria
      */
     private static HashSet<String> getStringInBoth(HashSet<String> indexListFirst, HashSet<String> indexListSecond) {
-        HashSet<String> res = new HashSet<String>();
+        HashSet<String> res = new HashSet<>();
         for (String value1 : indexListFirst) {
             for (String value2 : indexListSecond) {
                 if (value1.equals(value2)) {
@@ -409,7 +416,7 @@ public class NetworkElement {
      * @return All index matching criteria
      */
     private static HashSet<String> getStringInFirstNotInSecond(HashSet<String> indexListFirst, HashSet<String> indexListSecond) {
-        HashSet<String> res = new HashSet<String>();
+        HashSet<String> res = new HashSet<>();
         boolean found;
         for (String value1 : indexListFirst) {
             found = false;
@@ -645,7 +652,7 @@ public class NetworkElement {
 
         LOG.info("Start processing of edit-config");
 
-        List<String> res = new ArrayList<String>();
+        List<String> res = new ArrayList<>();
 
         try {
             final Document inDoc = loadXMLFromString(xml);
@@ -738,53 +745,98 @@ public class NetworkElement {
 
     /**
      * User action for sending notification
-     * @param command 'l' to list all notifications or number to send related notification
+     * @param command <br>
+     *            'l'        to list all notifications or number to send related notification<br>
+     *            'nnn' to referenced notification immediately<br>
      * @return XML content or null
      */
     public synchronized String doProcessUserAction(String command) {
 
         LOG.info("-- Notification start -- Command: '"+command+"'");
+        Map<Event, List<String>> enumMap = readAllEvents();
+
+        int idx = 0;
+        if (command.startsWith("x")) {
+            listNodesToConsole(doc, "//data", console);
+        } else if (command.startsWith("l")) {
+            consoleMessage("Lists of problems and changes");
+            for (Event event : enumMap.keySet()) {
+                for (String xmlString : enumMap.get(event)) {
+                    consoleMessage("["+idx+"]:"+xmlString);
+                    idx++;
+                }
+            }
+        } else {
+            String input = command.trim();
+            try {
+                idx = Integer.parseInt(input);
+                String xmlSubTree = getEvent(enumMap, idx);
+                if (xmlSubTree != null ) {
+                    return xmlSubTree;
+                } else {
+                    LOG.info("No element found for '"+input+"'");
+                }
+            } catch (NumberFormatException e) {
+                LOG.info("Not a number '"+input+"'");
+            }
+        }
+        LOG.info("-- Notification end --");
+        return null;
+    }
+
+    /**
+     * Get notification information from
+     * @param idx of notification from database
+     * @return string with xml data or null if not found
+     */
+    public synchronized @Nullable String getEvent(Integer idx) {
+        Map<Event, List<String>> enumMap = readAllEvents();
+        return getEvent(enumMap, idx);
+    }
+
+    /**
+     * Collect all events from document
+     * @return Map with all events
+     */
+    private Map<Event, List<String>> readAllEvents() {
 
         List<String> xmlSubTreeProblems = getXmlSubTreeAsStringList("//mw-notifications/problem-notification");
         xmlSubTreeProblems.addAll(getXmlSubTreeAsStringList("//MW_Notifications/ProblemNotification"));
         List<String> xmlSubTreeChanges = getXmlSubTreeAsStringList("//mw-notifications/attribute-value-changed-notification");
         xmlSubTreeChanges.addAll(getXmlSubTreeAsStringList("//MW_Notifications/AttributeValueChangedNotification"));
-        int idx = 0;
+        List<String> xmlSubTreeNotification = getXmlSubTreeAsStringList("//mw-notifications/notification");
 
-        if (command.startsWith("x")) {
+        Map<Event, List<String>> enumMap = new EnumMap<>(Event.class);
+        enumMap.put(Event.PROBLEM_NOTIFICATION, xmlSubTreeProblems);
+        enumMap.put(Event.ATTRIBUTE_VALUE_CHANGED_NOTIFICATION, xmlSubTreeChanges);
+        enumMap.put(Event.NOTIFICATION, xmlSubTreeNotification);
 
-            listNodesToConsole(doc, "//data", console);
+        return enumMap;
+    }
 
-        } else if (command.startsWith("l")) {
-            consoleMessage("Lists of problems and changes");
-            for (String xmlString : xmlSubTreeProblems) {
-                consoleMessage("["+idx+"]:"+xmlString);
-                idx++;
-            }
-            for (String xmlString : xmlSubTreeChanges) {
-                consoleMessage("["+idx+"]:"+xmlString);
-                idx++;
-            }
-         } else {
-
-            idx = Integer.parseInt(command.trim());
-            String xmlSubTree = null;
-
-            if (idx < xmlSubTreeProblems.size()) {
-                xmlSubTree = xmlSubTreeProblems.get(idx);
-            } else {
-                idx = idx - xmlSubTreeProblems.size();
-                if (idx < xmlSubTreeChanges.size()) {
-                    xmlSubTree = xmlSubTreeChanges.get(idx);
+    /**
+     * Get event from event table
+     * @param enumMap with all messages in doc
+     * @param idx of the message according to list
+     * @return xml message for index or null
+     */
+    private @Nullable String getEvent(Map<Event, List<String>> enumMap, int idx) {
+        for (Event event : enumMap.keySet()) {
+            List<String> xmlSubTreeEvents = enumMap.get(event);
+            if (idx < xmlSubTreeEvents.size()) {
+                String xmlMesg = xmlSubTreeEvents.get(idx);
+                if (event == Event.NOTIFICATION) {
+                    return xmlMesg;
+                } else {
+                    return assembleRpcNotification(xmlMesg);
                 }
-            }
-            if (xmlSubTree != null ) {
-                return assembleRpcNotification(xmlSubTree);
+            } else {
+                idx = idx - xmlSubTreeEvents.size();
             }
         }
-           LOG.info("-- Notification end --");
         return null;
     }
+
 
     /*-----------------------------------------------------------------------
      * Functions to create READ message content to deliver answers back to the SDN controller.
@@ -1126,5 +1178,6 @@ public class NetworkElement {
         appendXmlTagClose(res, name);
         return res;
     }
+
 
 }

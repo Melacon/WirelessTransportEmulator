@@ -59,7 +59,7 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
     // behaviours
     private List<Behaviour>     behaviours;
 
-    private final List<NetconfNotifyExecutor> netconfNotifyExecutor = new ArrayList<NetconfNotifyExecutor>();
+    private final List<NetconfNotifyExecutor> netconfNotifyExecutor = new ArrayList<>();
 
     // hide default constructor, forcing using factory method
     private ServerSimulator() {
@@ -71,7 +71,7 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
      */
     public static ServerSimulator createServer()  {
         ServerSimulator server = new ServerSimulator();
-        server.messages = new ArrayList<RPCElement>();
+        server.messages = new ArrayList<>();
         server.storeMessages = false;
 
         return server;
@@ -94,7 +94,7 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
         sshd.setPasswordAuthenticator(new AlwaysTruePasswordAuthenticator());
         sshd.setKeyPairProvider(new SimpleGeneratorHostKeyProvider());
 
-        List<NamedFactory<Command>> subsystemFactories = new ArrayList<NamedFactory<Command>>();
+        List<NamedFactory<Command>> subsystemFactories = new ArrayList<>();
         subsystemFactories.add(NetconfSubsystem.Factory.createFactory(this, this, this, ne, this));
         sshd.setSubsystemFactories(subsystemFactories);
         LOG.info(staticCliOutput("Server configured."));
@@ -103,7 +103,7 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
     @Override
     public void defineBehaviour(Behaviour behaviour) {
         if (behaviours == null) {
-            behaviours = new ArrayList<Behaviour>();
+            behaviours = new ArrayList<>();
         }
         synchronized (behaviours) {
             behaviours.add(behaviour);
@@ -167,7 +167,7 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
 
     private void notify(String command) {
         if (netconfNotifyExecutor.isEmpty()) {
-            staticCliOutput("No user command listerner registered.");
+            staticCliOutput("No user command listerner registered. No open SSH stream.");
         } else {
             for (NetconfNotifyExecutor executor : netconfNotifyExecutor) {
                 executor.notify(command);
@@ -279,7 +279,7 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
                     staticCliOutput("User command: "+notifyCommand);
                     server.notify(notifyCommand);
                 } else if (command.startsWith("h")) {
-                    staticCliOutput("NETCONF Simulator V4.0");
+                    staticCliOutput("NETCONF Simulator V4.1");
                     staticCliOutput("Available commands: status, quit, info, list, size, n[ZZ | l | x | dZZ]");
                     staticCliOutput("\tnl: list available notifications");
                     staticCliOutput("\tnZZ: send notification with number ZZ");
@@ -288,6 +288,10 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
                     staticCliOutput("\tndl: list actual delay and pattern");
                     staticCliOutput("\tndp??: set tag filter regex pattern (.* = any)");
                     staticCliOutput("\tndn: Discard next get message.");
+                    staticCliOutput("\tntZZ M S: send notification ZZ for M times every S seconds");
+                    staticCliOutput("\tnt: provide status");
+                    staticCliOutput("\tntx: stop execution");
+
                 } else {
                     staticCliOutput("Unknown command '"+command+"' (h for help)");
                 }

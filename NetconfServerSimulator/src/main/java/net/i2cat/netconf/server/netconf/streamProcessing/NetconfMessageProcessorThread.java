@@ -32,7 +32,7 @@ import net.i2cat.netconf.server.netconf.types.NetworkElement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class NetconfMessageProcessorThread extends Thread  {
+public class NetconfMessageProcessorThread extends Thread implements NetconfMessageProcessorThreadSender {
 
     private static final Log log  = LogFactory.getLog(NetconfMessageProcessorThread.class);
     private static final String TAG_PTPID1 = "$PTPID(";
@@ -56,6 +56,8 @@ public class NetconfMessageProcessorThread extends Thread  {
     private int msgToDiscardCounter = 0;
     private final Console console;
     private Pattern msgPattern = setPattern(null);
+    private final NotificationTask netconfNotificationTask;
+
 
     public NetconfMessageProcessorThread(String name, NetconfSessionStatusHolder status, NetconfSender sender,
             MessageQueue messageQueue, MessageStore messageStore, NetworkElement ne, Console console) {
@@ -66,6 +68,7 @@ public class NetconfMessageProcessorThread extends Thread  {
         this.messageStore = messageStore;
         this.theNe = ne;
         this.console = console;
+        this.netconfNotificationTask = new NotificationTask(this.theNe, this, console);
    }
 
     private static String substitudePtpId(String xml) {
@@ -88,7 +91,7 @@ public class NetconfMessageProcessorThread extends Thread  {
         return xml;
     }
 
-
+    @Override
     public void send(String xmlMessage) throws IOException {
 
         xmlMessage = xmlMessage
@@ -276,6 +279,10 @@ public class NetconfMessageProcessorThread extends Thread  {
             } catch (NumberFormatException e) {
                 consoleMessage("Not a number. Unchanged delay in seconds: "+msgDelaySeconds);
             }
+
+        } else if (command.startsWith("t")) {
+
+            netconfNotificationTask.doProcessUserAction(command.substring(1));
 
         } else {
             String msg = theNe.doProcessUserAction(receivedMessage.getCommand());
