@@ -54,7 +54,11 @@
             <artifactId>sshd-core</artifactId>
             <version>${sshd.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>3.0.2</version>
+        </dependency>
         <!-- Apache commons-io -->
 
         <!-- JUnit -->
@@ -196,7 +200,7 @@
             </plugin>
            <plugin>
               <artifactId>maven-antrun-plugin</artifactId>
-	      <version>1.8</version>
+          <version>1.8</version>
               <executions>
                 <execution>
                   <id>id1</id>

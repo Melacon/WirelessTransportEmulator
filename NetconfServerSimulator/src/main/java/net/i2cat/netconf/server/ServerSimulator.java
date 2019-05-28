@@ -176,6 +176,7 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
     }
 
     private static void initDebug( String debugFilename ) {
+
         BasicConfigurator.configure();
         Logger.getRootLogger().getLoggerRepository().resetConfiguration();
 
@@ -192,7 +193,8 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
         fa.setName("FileLogger");
         fa.setFile(debugFilename);
         fa.setLayout(new PatternLayout("%d %-5p [%c{1}] %m%n"));
-        fa.setThreshold(Level.ALL);
+        fa.setThreshold(Level.WARN);
+        fa.setMaxBackupIndex(10);
         fa.setMaximumFileSize(1000000);
         fa.setAppend(true);
 
@@ -208,7 +210,7 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
         return staticCliOutput(msg);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
 
         System.out.println("---------------------------------------");
@@ -237,8 +239,6 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
         staticCliOutput("\tYang files in directory: "+yangPath);
         staticCliOutput("\tUuid-parameter: '"+uuid+"'");
 
-
-
         try {
             ServerSimulator server = ServerSimulator.createServer();
             NetworkElement ne = new NetworkElement(xmlFilename, yangPath, uuid, server);
@@ -252,10 +252,8 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
 
             while (true) {
                 command = buffer.readLine();
-                if (command == null) {
-                    staticCliOutput("Command <null>");
-                } else if (command.isEmpty()) {
-                    //Do nothing
+                if (command == null || command.isEmpty()) {
+                    Thread.sleep(1000);
                 } else if (command.equals("list")) {
                     staticCliOutput("Messages received(" + server.getStoredMessages().size() + "):");
                     for (RPCElement rpcElement : server.getStoredMessages()) {

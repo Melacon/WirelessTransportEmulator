@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 
 # install required packages
 ENV DEBIAN_FRONTEND noninteractive
