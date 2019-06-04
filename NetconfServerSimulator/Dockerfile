@@ -2,8 +2,8 @@ FROM ubuntu:18.04
 
 # install required packages
 ENV DEBIAN_FRONTEND noninteractive
-RUN ["apt-get", "update"]
-RUN ["apt-get", "install", "-y", "net-tools", "openjdk-8-jre-headless", "openssh-server"]
+RUN apt-get update
+RUN apt-get -y install net-tools openjdk-8-jre-headless openssh-server
 
 # setup admin user that NetconfServerSimulator SSH connection will use
 RUN set -x -e; \
@@ -17,14 +17,8 @@ COPY xmlNeModel/* /usr/NetconfServerSimulator/xmlNeModel/
 COPY yang/yangNeModel/* /usr/NetconfServerSimulator/yang/yangNeModel/
 
 # startup command
-#java -classpath NESimServer.jar net.i2cat.netconf.server.Server ../xmlNeModel/DVM-ETY.xml 830 ../yang/yangNeModel
+COPY dockerstart.sh /root/dockerstart.sh
+RUN  chmod 0755 /root/dockerstart.sh
+
 WORKDIR /usr/NetconfServerSimulator
-RUN set -x -e; \
-    printf '#!/bin/bash\nset -e -x\nif [ -z "$PORT" ];then\n  PORT=830\nfi\njava -classpath NetconfServerSimulator.jar net.i2cat.netconf.server.ServerSimulator $XMLFILE $PORT yang/yangNeModel $UUID $SSHPORT\n' > /root/start.sh; \
-    chmod 0755 /root/start.sh
-CMD ["/root/start.sh"]
-
-
-# Ports for SSH telnet and NETCONF access
-EXPOSE 22
-EXPOSE 830
+ENTRYPOINT "/root/dockerstart.sh"

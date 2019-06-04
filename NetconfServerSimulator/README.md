@@ -96,13 +96,21 @@ Port 830 is used as default netconf port. It can be changed by environment varia
 ```
 docker run -ti -e "XMLFILE=xmlNeModel/DVM_MWCore12_BasicAir.xml" -e "PORT=2230" -p 2230:2230 netconfserversimulator
 ```
-for executing in background
+for executing in background with SSH Port access
 ```
-docker run -e "XMLFILE=xmlNeModel/DVM_MWCore12_BasicAir.xml" -e "PORT=2230" -p 2230:2230 -d netconfserversimulator
+docker run -ti -e "XMLFILE=xmlNeModel/DVM_MWCore12_BasicAir.xml" -e "PORT=2230" -e "SSHPORT=-sshport=8000" netconfserversimulator:latest
 ```
-Optional docker run environment parameters are with example:
-    "UUID=-uuid=NE1"
-    "SSHPORT=-sshport=8000" => additionally -p 8000:8000 to forward port to host.
+
+Optional further environment parameters (-e) are:
+
+   * "UUID=-uuid=NE1"
+   * "SSHPORT=-sshport=8000" => additionally -p 8000:8000 to forward port to host.
+
+Example for starting ssh connection if docker container active with IP: ssh -p8000 172.17.0.2
+
+   * <Enter>~. to end the session from client side without terminating the simulator
+   * help to get help
+
 
 ### Common information
 
