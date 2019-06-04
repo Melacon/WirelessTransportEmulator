@@ -125,8 +125,8 @@ public class NetconfStreamCodecThread implements Runnable, NetconfSender {
                 } catch (InterruptedException e) {
                 }
             }
-        } catch (Exception e) {
-            log.error("Exception caught in Netconf subsystem", e);
+        } catch (IOException | SAXException e) {
+            log.warn("Exception Netconf subsystem: {}"+e.getMessage());
         } finally {
             callback.onExit(0);
         }

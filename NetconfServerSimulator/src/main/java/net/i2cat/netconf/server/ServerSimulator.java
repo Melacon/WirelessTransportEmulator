@@ -9,11 +9,10 @@
 
 package net.i2cat.netconf.server;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -21,6 +20,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 import net.i2cat.netconf.rpc.RPCElement;
+import net.i2cat.netconf.server.cli.SimulatorCommandlineInterpreter;
+import net.i2cat.netconf.server.cli.CommandLineControl;
 import net.i2cat.netconf.server.exceptions.ServerException;
 import net.i2cat.netconf.server.netconf.control.NetconfNotifyExecutor;
 import net.i2cat.netconf.server.netconf.control.NetconfNotifyOriginator;
@@ -41,40 +42,40 @@ import org.apache.sshd.common.NamedFactory;
 import org.apache.sshd.server.Command;
 import org.apache.sshd.server.keyprovider.SimpleGeneratorHostKeyProvider;
 import org.xml.sax.SAXException;
-
+/**
+ * Command parameters of ServerSimulator
+ * args[]
+ *         0:xmlFilename
+ *         1:portnumber
+ *         2:yang-mode files directory
+ *         3:(o)-uuid=uuid
+ */
 public class ServerSimulator implements MessageStore, BehaviourContainer, NetconfNotifyOriginator, Console {
 
     private static final Log   LOG                = LogFactory.getLog(ServerSimulator.class);
     private static final SimpleDateFormat DATEFORMAT = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
     private static final String NAME = "NETCONF - NE Simulator";
-    private static final String VERSION = "3.0";
+    private static final String VERSION = "4.2";
+    private static final String SSHHOST = "0.0.0.0";
+    private static CommandLineControl cliSsh = null;
 
     private SshServer           sshd;
 
     // stored messages
     @SuppressWarnings("unused")
     private boolean             storeMessages    = false;
-    private List<RPCElement>    messages;
+    private final List<RPCElement>    messages;
 
     // behaviours
     private List<Behaviour>     behaviours;
 
     private final List<NetconfNotifyExecutor> netconfNotifyExecutor = new ArrayList<>();
 
+
     // hide default constructor, forcing using factory method
     private ServerSimulator() {
-    }
-
-    /**
-     * Creates a server and no not store messages
-     * @return a class representing the server
-     */
-    public static ServerSimulator createServer()  {
-        ServerSimulator server = new ServerSimulator();
-        server.messages = new ArrayList<>();
-        server.storeMessages = false;
-
-        return server;
+        messages = new ArrayList<>();
+        storeMessages = false;
     }
 
     /**
@@ -84,12 +85,12 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
     * @throws IllegalArgumentException if mandatory NE is null
     */
     private void initializeServer(String host, int listeningPort, NetworkElement ne) throws IllegalArgumentException {
-        LOG.info(staticCliOutput("Configuring server..."));
+        LOG.info(cliOutput("Configuring server..."));
         sshd = SshServer.setUpDefaultServer();
         sshd.setHost(host);
         sshd.setPort(listeningPort);
 
-        LOG.info(staticCliOutput("Host: '" + host + "', listenig port: " + listeningPort));
+        LOG.info(cliOutput("Host: '" + host + "', listenig port: " + listeningPort));
 
         sshd.setPasswordAuthenticator(new AlwaysTruePasswordAuthenticator());
         sshd.setKeyPairProvider(new SimpleGeneratorHostKeyProvider());
@@ -97,7 +98,7 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
         List<NamedFactory<Command>> subsystemFactories = new ArrayList<>();
         subsystemFactories.add(NetconfSubsystem.Factory.createFactory(this, this, this, ne, this));
         sshd.setSubsystemFactories(subsystemFactories);
-        LOG.info(staticCliOutput("Server configured."));
+        LOG.info(cliOutput("Server configured."));
     }
 
     @Override
@@ -121,25 +122,25 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
     }
 
     public void startServer() throws ServerException {
-        LOG.info(staticCliOutput("Starting server..."));
+        LOG.info(cliOutput("Starting server..."));
         try {
             sshd.start();
         } catch (IOException e) {
-            LOG.error(staticCliOutput("Error starting server!"+e.getMessage()));
+            LOG.error(cliOutput("Error starting server!"+e.getMessage()));
             throw new ServerException("Error starting server", e);
         }
-        LOG.info(staticCliOutput("Server started."));
+        LOG.info(cliOutput("Server started."));
     }
 
     public void stopServer() throws ServerException {
-        LOG.info(staticCliOutput("Stopping server..."));
+        LOG.info(cliOutput("Stopping server..."));
         try {
             sshd.stop();
         } catch (IOException e) {
-            LOG.error(staticCliOutput("Error stopping server!"+e));
+            LOG.error(cliOutput("Error stopping server!"+e));
             throw new ServerException("Error stopping server", e);
         }
-        LOG.info(staticCliOutput("Server stopped."));
+        LOG.info(cliOutput("Server stopped."));
     }
 
     @Override
@@ -162,12 +163,12 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
     @Override
     public synchronized void setNetconfNotifyExecutor(NetconfNotifyExecutor executor) {
         this.netconfNotifyExecutor.add(executor);
-        staticCliOutput("Register user command listener: "+executor.hashCode());
+        cliOutput("Register user command listener: "+executor.hashCode());
     }
 
-    private void notify(String command) {
+    public void notify(String command) {
         if (netconfNotifyExecutor.isEmpty()) {
-            staticCliOutput("No user command listerner registered. No open SSH stream.");
+            cliOutput("No user command listerner registered. No open SSH stream.");
         } else {
             for (NetconfNotifyExecutor executor : netconfNotifyExecutor) {
                 executor.notify(command);
@@ -175,7 +176,7 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
         }
     }
 
-    private static void initDebug( String debugFilename ) {
+    private void initDebug( String debugFilename ) {
 
         BasicConfigurator.configure();
         Logger.getRootLogger().getLoggerRepository().resetConfiguration();
@@ -207,115 +208,86 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
 
     @Override
     public String cliOutput(String msg) {
-        return staticCliOutput(msg);
+        String outputMessage = DATEFORMAT.format(new Date())+" "+msg;
+        if (cliSsh != null && cliSsh.isConnected()) {
+            cliSsh.println(outputMessage);
+        } else {
+            System.out.println(outputMessage);
+        }
+        return msg;
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public String getVersion() {
+        return VERSION;
+    }
 
+    private String getMainArg(String prefix, String defaulValue, String[] args) {
+        for (String arg : args) {
+            if (arg.startsWith(prefix)) {
+                return arg.substring(prefix.length());
+            }
+        }
+        return defaulValue;
+    }
 
+    public void serverMain(String[] args) {
         System.out.println("---------------------------------------");
         System.out.println(NAME);
         System.out.println("Version: "+VERSION);
         System.out.println("---------------------------------------");
 
         if (args.length < 3) {
-            staticCliOutput("To less parameters. Command: Server xmlFilename port [pathToYang]");
+            cliOutput("To less parameters. Command: Server xmlFilename port [pathToYang]");
             return;
         }
         int port = Integer.valueOf(args[1]);
         String xmlFilename = args[0];
-        String yangPath = args.length >= 3 ? args[2] : "yang/yangNeModel";
-        String uuid = args.length >= 4 ? args[3] : "";
+        String yangPath = args[2];
 
+        String[] optionalArgs = Arrays.copyOfRange(args, 1, args.length);
+        String uuid = getMainArg("-uuid=", "", optionalArgs);
+        int sshPort = Integer.valueOf(getMainArg("-sshport=", "-1", optionalArgs));
+
+        // Initialization
         String debugFile = "debug"+String.valueOf(port) +".log";
         initDebug(debugFile);
 
-        LOG.info(staticCliOutput(NAME+" Version: "+VERSION));
+        String startupParameters = NAME+" Version: "+VERSION+
+                "\nStart parameters are:"+
+                "\n\tFilename: "+xmlFilename+
+                "\n\tPort: "+port+
+                "\n\tDebuginfo and communication is in file: "+debugFile+
+                "\n\tYang files in directory: "+yangPath+
+                "\n\tUuid-parameter: '"+uuid+"'";
 
-        staticCliOutput("Start parameters are:");
-        staticCliOutput("\tFilename: "+xmlFilename);
-        staticCliOutput("\tPort: "+port);
-        staticCliOutput("\tDebuginfo and communication is in file: "+debugFile);
-        staticCliOutput("\tYang files in directory: "+yangPath);
-        staticCliOutput("\tUuid-parameter: '"+uuid+"'");
-
+        SimulatorCommandlineInterpreter simulatorCommandLine = new SimulatorCommandlineInterpreter(startupParameters);
+        simulatorCommandLine.setServer(this, this);
         try {
-            ServerSimulator server = ServerSimulator.createServer();
-            NetworkElement ne = new NetworkElement(xmlFilename, yangPath, uuid, server);
+            cliSsh = new CommandLineControl(SSHHOST, sshPort, simulatorCommandLine);
+            cliOutput(startupParameters);
 
-            server.initializeServer("0.0.0.0", port, ne);
-            server.startServer();
+            NetworkElement ne = new NetworkElement(xmlFilename, yangPath, uuid, this);
+            initializeServer(SSHHOST, port, ne);
+            startServer();
 
-            // read lines form input
-            BufferedReader buffer = new BufferedReader(new InputStreamReader(System.in));
-            String command;
+            cliSsh.doProcessCommandLine();
 
-            while (true) {
-                command = buffer.readLine();
-                if (command == null || command.isEmpty()) {
-                    Thread.sleep(1000);
-                } else if (command.equals("list")) {
-                    staticCliOutput("Messages received(" + server.getStoredMessages().size() + "):");
-                    for (RPCElement rpcElement : server.getStoredMessages()) {
-                        staticCliOutput("#####  BEGIN message #####\n" +
-                                rpcElement.toXML() + '\n' +
-                                "#####   END message  #####");
-                    }
-                } else  if (command.equals("size")) {
-                    staticCliOutput("Messages received(" + server.getStoredMessages().size() + "):");
-
-                } else  if (command.equals("quit")) {
-                    staticCliOutput("Stop server");
-                    server.stopServer();
-                    break;
-                } else  if (command.equals("info")) {
-                    staticCliOutput("Port: "+port+" File: "+xmlFilename);
-                } else  if (command.equals("status")) {
-                    staticCliOutput("Status: not implemented");
-                } else if (command.startsWith("n")) {
-                    String notifyCommand = command.substring(1);
-                    staticCliOutput("User command: "+notifyCommand);
-                    server.notify(notifyCommand);
-                } else if (command.startsWith("h")) {
-                    staticCliOutput("NETCONF Simulator V4.1");
-                    staticCliOutput("Available commands: status, quit, info, list, size, n[ZZ | l | x | dZZ]");
-                    staticCliOutput("\tnl: list available notifications");
-                    staticCliOutput("\tnZZ: send notification with number ZZ");
-                    staticCliOutput("\tnx: list internal XML doc tree");
-                    staticCliOutput("\tndZZ: Introduce delay of ZZ seconds before answer is send to next get-message");
-                    staticCliOutput("\tndl: list actual delay and pattern");
-                    staticCliOutput("\tndp??: set tag filter regex pattern (.* = any)");
-                    staticCliOutput("\tndn: Discard next get message.");
-                    staticCliOutput("\tntZZ M S: send notification ZZ for M times every S seconds");
-                    staticCliOutput("\tnt: provide status");
-                    staticCliOutput("\tntx: stop execution");
-
-                } else {
-                    staticCliOutput("Unknown command '"+command+"' (h for help)");
-                }
-            }
-        } catch (SAXException e) {
-            LOG.error(staticCliOutput("(..something..) failed"+e.getMessage()));
-        } catch (ParserConfigurationException e) {
-            LOG.error(staticCliOutput("(..something..) failed"+e.getMessage()));
-        } catch (TransformerConfigurationException e) {
-            LOG.error("(..something..) failed", e);
-        } catch (ServerException e) {
-            LOG.error("(..something..) failed", e);
-        } catch (XPathExpressionException e) {
-            LOG.error("(..something..) failed", e);
-        } catch (IOException e1) {
-            LOG.error("(..something..) failed", e1);
+        } catch (TransformerConfigurationException | XPathExpressionException | SAXException | IOException
+                | ParserConfigurationException | InterruptedException e) {
+            LOG.error("Failed", e);
         }
 
-        LOG.info(staticCliOutput("Exiting"));
+        LOG.info(cliOutput("Exiting"));
         System.exit(0);
     }
 
-    public static String staticCliOutput(String msg) {
-        System.out.println(DATEFORMAT.format(new Date())+" "+msg);
-        return msg;
-    }
+    /*----------------------------------------------------
+     * Static startup point
+     */
 
+    public static void main(String[] args) throws InterruptedException {
+        ServerSimulator server = new ServerSimulator();
+        server.serverMain(args);
+    }
 
 }

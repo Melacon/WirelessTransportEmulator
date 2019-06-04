@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -67,6 +68,12 @@ public class NotificationTask {
                 console("Status: Nothing to stop");
             }
         } else {
+            boolean randomize = false;
+            if (command.startsWith("r")) {
+                command = command.substring(1);
+                randomize = true;
+            }
+
             Matcher matcher = PATTERN_CLI.matcher(command);
             if (matcher.matches()) {
                 Integer idx = Integer.parseInt(matcher.group(1));
@@ -81,13 +88,13 @@ public class NotificationTask {
                         seconds = Long.parseLong(matcher.group(3));
                     }
                     if (!isTaskRunning()) {
-                        notificationTask = new NotificationRunnable(xmlSubTree, number);
+                        notificationTask = new NotificationRunnable(xmlSubTree, number, seconds, randomize);
                         notificationTask.setExecutor(notificationExecutor.scheduleAtFixedRate(notificationTask, 0L, seconds, TimeUnit.SECONDS));
                     }
                 }
             }
             if (isTaskRunning()) {
-                console("Status: Notification task running. To send "+notificationTask.getNumberToSend());
+                console("Status: Notification task running. Status: "+notificationTask.getStatus());
             } else {
                 console("Status: No notification task running");
             }
@@ -104,9 +111,27 @@ public class NotificationTask {
         private int numberToSend;
         private volatile ScheduledFuture<?> scheduleAtFixedRate = null;
 
-        private NotificationRunnable(String xmlMessage, int number) {
+        private final long seconds;
+
+        private final boolean randomize;
+
+        private NotificationRunnable(String xmlMessage, int number, long seconds, boolean randomize) {
             this.xmlMessage = xmlMessage;
             this.numberToSend = number;
+            this.seconds = seconds;
+            this.randomize = randomize;
+        }
+
+        /**
+         * @return status string for class
+         */
+        public String getStatus() {
+            StringBuffer statusMsg = new StringBuffer();
+            statusMsg.append("[NotificationsSender-numberToSend: ");
+            statusMsg.append(numberToSend);
+            statusMsg.append("Randomize: ");
+            statusMsg.append(randomize);
+            return statusMsg.toString();
         }
 
         public boolean isRunning() {
@@ -116,11 +141,7 @@ public class NotificationTask {
             return false;
         }
 
-        int getNumberToSend() {
-            return numberToSend;
-        }
-
-        /**
+       /**
          * Cancel tread
          */
         public void cancel() {
@@ -141,9 +162,13 @@ public class NotificationTask {
         @Override
         public void run() {
             try {
+                if (randomize) {
+                    long randomSeconds = ThreadLocalRandom.current().nextLong(0, seconds);
+                    Thread.sleep(TimeUnit.SECONDS.toMillis(randomSeconds));
+                }
                 sender.send(xmlMessage);
                 console("Tasks notification: "+xmlMessage);
-            } catch (IOException e) {
+            } catch (IOException | InterruptedException e) {
                 LOG.info("Can not send notification "+e.getMessage());
             }
             if (numberToSend-- <= 0) {

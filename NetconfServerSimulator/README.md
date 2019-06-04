@@ -70,11 +70,15 @@ The jar proved a command line after it is started. Type "help" to get a list of 
 #### Stand alone JAR
 
 The NetconfServerSimulator can be directly started from the command line. It is recommended to use screen for remote ssh/putty sessions.
-The jar parameter are:
-    1. filename (mandatory) with xml definition of the simulated NE
-    2. port (mandatory) number to access the simulator
-    3. directory (mandatory) with all yang files, used by the simulation
-    4. uuid (optional) to provide an individual id
+
+The jar parameters are:
+
+   1. filename (mandatory) with xml definition of the simulated NE
+   2. port (mandatory) number to access the simulator
+   3. directory (mandatory) with all yang files, used by the simulation
+   4. -uuid (optional) to provide an individual id
+   5. -sshport=8000 (optional) Range > 1024 to provide port to login with SSH to running simulator.
+      USername/Password are admin/admin.
 
 ```Script
 java -classpath NetconfServerSimulator.jar net.i2cat.netconf.server.ServerSimulator $1 $2 $3 $4
@@ -88,7 +92,7 @@ In the *build* directory there are some examples for start commands.
 
 The docker container with the name "netconfserversimulator" is available in the local docker images repo after maven build.
 It can be started directly in interactive mode by using the image id listed by ```docker images``` output.
-Port 830 is used as default netconf port. It can be changed by environment variable in the docker run command. 
+Port 830 is used as default netconf port. It can be changed by environment variable in the docker run command.
 ```
 docker run -ti -e "XMLFILE=xmlNeModel/DVM_MWCore12_BasicAir.xml" -e "PORT=2230" -p 2230:2230 netconfserversimulator
 ```
@@ -96,7 +100,9 @@ for executing in background
 ```
 docker run -e "XMLFILE=xmlNeModel/DVM_MWCore12_BasicAir.xml" -e "PORT=2230" -p 2230:2230 -d netconfserversimulator
 ```
-
+Optional docker run environment parameters are with example:
+    "UUID=-uuid=NE1"
+    "SSHPORT=-sshport=8000" => additionally -p 8000:8000 to forward port to host.
 
 ### Common information
 
