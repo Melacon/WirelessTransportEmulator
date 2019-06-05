@@ -1901,11 +1901,15 @@
             <problem>signalIsLost</problem>
             <object-id-ref>LP-MWPS-RADIO</object-id-ref>
             <severity>critical</severity>
+            <counter>$COUNTER</counter>
+            <time-stamp>$TIME</time-stamp>
         </problem-notification>
         <problem-notification xmlns="urn:onf:params:xml:ns:yang:microwave-model">
             <problem>signalIsLost</problem>
             <object-id-ref>LP-MWPS-RADIO</object-id-ref>
             <severity>non-alarmed</severity>
+            <counter>$COUNTER</counter>
+            <time-stamp>$TIME</time-stamp>
         </problem-notification>
         <attribute-value-changed-notification xmlns="urn:onf:params:xml:ns:yang:microwave-model">
             <attribute-name>airInterfaceStatus/modulationCur</attribute-name>
