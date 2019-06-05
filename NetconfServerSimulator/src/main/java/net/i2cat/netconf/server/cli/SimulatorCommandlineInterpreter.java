@@ -46,8 +46,9 @@ public class SimulatorCommandlineInterpreter implements CommandLineProcessor {
         } else if (command.equals("status")) {
             console.cliOutput("Status: not implemented");
         } else if (server == null) {
-            console.cliOutput("Server not running jet");
-        } else {
+            console.cliOutput("Server not running jet.");
+        } else
+            //Server required for Commands below
             if (command.equals("list")) {
                 console.cliOutput("Messages received(" + server.getStoredMessages().size() + "):");
                 for (RPCElement rpcElement : server.getStoredMessages()) {
@@ -55,19 +56,18 @@ public class SimulatorCommandlineInterpreter implements CommandLineProcessor {
                             rpcElement.toXML() + '\n' +
                             "#####   END message  #####");
                 }
-            } else if (command.equals("size")) {
-                console.cliOutput("Messages received(" + server.getStoredMessages().size() + "):");
-
-            } else if (command.equals("quit")) {
-                console.cliOutput("Stop server");
-                server.stopServer();
-                quit = true;
-            } else if (command.startsWith("n")) {
-                String notifyCommand = command.substring(1);
-                console.cliOutput("User command: "+notifyCommand);
-                server.notify(notifyCommand);
-                console.cliOutput("Unknown command '"+command+"' (h for help)");
-            }
+        } else if (command.equals("size")) {
+            console.cliOutput("Messages received(" + server.getStoredMessages().size() + "):");
+        } else if (command.equals("quit")) {
+            console.cliOutput("Stop server");
+            server.stopServer();
+            quit = true;
+        } else if (command.startsWith("n")) {
+            String notifyCommand = command.substring(1);
+            console.cliOutput("User command: "+notifyCommand);
+            server.notify(notifyCommand);
+        } else {
+            console.cliOutput("Unknown command '"+command+"' (h for help)");
         }
     }
 
