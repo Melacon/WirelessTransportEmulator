@@ -186,6 +186,8 @@
 			<administrative-state>unlocked</administrative-state>
 			<lifecycle-state>installed</lifecycle-state>
 			<client-ltp>LTP-MWS-TTP-01</client-ltp>
+			<!-- SDNC-774: list contains 0 .. N references to related "equipment" objects -->
+			<physical-port-reference>a2.module-1.65.1.2</physical-port-reference>
 			<lp>
 				<local-id>
 					<value-name>lp-local-id</value-name>
