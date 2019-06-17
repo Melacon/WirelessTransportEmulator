@@ -1919,6 +1919,60 @@
             <counter>$COUNTER</counter>
             <time-stamp>$TIME</time-stamp>
         </problem-notification>
+
+        <problem-notification xmlns="urn:onf:params:xml:ns:yang:microwave-model">
+            <problem>signalIsLostMajor</problem>
+            <object-id-ref>LP-MWPS-RADIO</object-id-ref>
+            <severity>major</severity>
+            <counter>$COUNTER</counter>
+            <time-stamp>$TIME</time-stamp>
+        </problem-notification>
+        <problem-notification xmlns="urn:onf:params:xml:ns:yang:microwave-model">
+            <problem>signalIsLostMajor</problem>
+            <object-id-ref>LP-MWPS-RADIO</object-id-ref>
+            <severity>non-alarmed</severity>
+            <counter>$COUNTER</counter>
+            <time-stamp>$TIME</time-stamp>
+        </problem-notification>
+
+        <problem-notification xmlns="urn:onf:params:xml:ns:yang:microwave-model">
+            <problem>signalIsLostMinor</problem>
+            <object-id-ref>LP-MWPS-RADIO</object-id-ref>
+            <severity>minor</severity>
+            <counter>$COUNTER</counter>
+            <time-stamp>$TIME</time-stamp>
+        </problem-notification>
+        <problem-notification xmlns="urn:onf:params:xml:ns:yang:microwave-model">
+            <problem>signalIsLostMinor</problem>
+            <object-id-ref>LP-MWPS-RADIO</object-id-ref>
+            <severity>non-alarmed</severity>
+            <counter>$COUNTER</counter>
+            <time-stamp>$TIME</time-stamp>
+        </problem-notification>
+
+        <problem-notification xmlns="urn:onf:params:xml:ns:yang:microwave-model">
+            <problem>signalIsLostWarning</problem>
+            <object-id-ref>LP-MWPS-RADIO</object-id-ref>
+            <severity>warning</severity>
+            <counter>$COUNTER</counter>
+            <time-stamp>$TIME</time-stamp>
+        </problem-notification>
+        <problem-notification xmlns="urn:onf:params:xml:ns:yang:microwave-model">
+            <problem>signalIsLostWarning</problem>
+            <object-id-ref>LP-MWPS-RADIO</object-id-ref>
+            <severity>non-alarmed</severity>
+            <counter>$COUNTER</counter>
+            <time-stamp>$TIME</time-stamp>
+        </problem-notification>
+
+        <problem-notification xmlns="urn:onf:params:xml:ns:yang:microwave-model">
+            <problem>signalIsLost</problem>
+            <object-id-ref>LP-MWPS-RADIO</object-id-ref>
+            <severity>non-alarmed</severity>
+            <counter>$COUNTER</counter>
+            <time-stamp>$TIME</time-stamp>
+        </problem-notification>
+
         <attribute-value-changed-notification xmlns="urn:onf:params:xml:ns:yang:microwave-model">
             <attribute-name>airInterfaceStatus/modulationCur</attribute-name>
             <object-id-ref>LP-MWPS-ifIndex1</object-id-ref>
