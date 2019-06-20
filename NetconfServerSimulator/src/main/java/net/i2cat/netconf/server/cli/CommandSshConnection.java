@@ -34,7 +34,12 @@ public class CommandSshConnection implements Command {
     private Thread thread = null;
     private boolean runThread = true;
 
-
+    /**
+     * Manage a SSL Command line connection
+     * @param connections List of existing connection to add this session.
+     * @param cmdQueue If to add the input commands.
+     * @param commandLineProcessor Processor to execute a command.
+     */
     public CommandSshConnection(Queue<CommandSshConnection> connections, Queue<String> cmdQueue, CommandLineProcessor commandLineProcessor) {
         this.cmdQueue = cmdQueue;
         this.connections = connections;

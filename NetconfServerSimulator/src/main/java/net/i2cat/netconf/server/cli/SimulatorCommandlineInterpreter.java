@@ -41,6 +41,8 @@ public class SimulatorCommandlineInterpreter implements CommandLineProcessor {
             console.cliOutput("\tntrZZ M S: send notification ZZ for M times every S seconds with randomized delay");
             console.cliOutput("\tnt: provide status");
             console.cliOutput("\tntx: stop execution");
+            console.cliOutput("\tncp: print number of notifications");
+            console.cliOutput("\tncr: print and reset number of notifications");
         } else if (command.equals("info")) {
             console.cliOutput(info);
         } else if (command.equals("status")) {

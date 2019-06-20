@@ -57,6 +57,7 @@ public class NetconfMessageProcessorThread extends Thread implements NetconfMess
     private final Console console;
     private Pattern msgPattern = setPattern(null);
     private final NotificationTask netconfNotificationTask;
+    private long notificationCounter = 0;
 
 
     public NetconfMessageProcessorThread(String name, NetconfSessionStatusHolder status, NetconfSender sender,
@@ -284,9 +285,17 @@ public class NetconfMessageProcessorThread extends Thread implements NetconfMess
 
             netconfNotificationTask.doProcessUserAction(command.substring(1));
 
+        } else if (command.startsWith("c")) {
+
+        	consoleMessage("Notifications sended: "+notificationCounter);
+            if (command.startsWith("cr")) {
+            	notificationCounter = 0;
+            }
+
         } else {
             String msg = theNe.doProcessUserAction(receivedMessage.getCommand());
             if (msg != null) {
+            	notificationCounter++;
                 send( msg );        //Test purpose
                 consoleMessage("Notification: "+msg);
             }
