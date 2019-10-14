@@ -3812,7 +3812,7 @@
 			</current-problem-list>
 		</equipment-current-problems>
 	</equipment-pac>
-	<mw-air-interface-pac xmlns="urn:onf:params:xml:ns:yang:microwave-model">
+	<mw-air-interface-pac>
 		<layer-protocol>LP-MWPS-TTP-01</layer-protocol>
 		<air-interface-capability>
 			<type-of-equipment>ALFO80HD (High)</type-of-equipment>
@@ -5072,7 +5072,7 @@
 			</historical-performance-data-list>
 		</air-interface-historical-performances>
 	</mw-air-interface-pac>
-	<mw-air-interface-pac xmlns="urn:onf:params:xml:ns:yang:microwave-model">
+	<mw-air-interface-pac>
 		<layer-protocol>LP-MWPS-TTP-02</layer-protocol>
 		<air-interface-capability>
 			<type-of-equipment>ALFO80HD (High)</type-of-equipment>
