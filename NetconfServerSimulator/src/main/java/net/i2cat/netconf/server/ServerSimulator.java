@@ -55,7 +55,7 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
     private static final Log   LOG                = LogFactory.getLog(ServerSimulator.class);
     private static final SimpleDateFormat DATEFORMAT = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
     private static final String NAME = "NETCONF - NE Simulator";
-    private static final String VERSION = "4.2.2";
+    private static final String VERSION = "4.2.3";
     private static final String SSHHOST = "0.0.0.0";
     private static CommandLineControl cliSsh = null;
 

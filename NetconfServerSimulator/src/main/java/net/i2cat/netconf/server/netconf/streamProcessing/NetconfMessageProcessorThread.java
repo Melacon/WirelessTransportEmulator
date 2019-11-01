@@ -221,7 +221,8 @@ public class NetconfMessageProcessorThread extends Thread implements NetconfMess
             send( theNe.assembleRpcReplyOk(
                     receivedMessage.getMessageId()) );
 
-        } else if (receivedMessage.isRpcEditConfigTargetRunningDefaultOperationConfig()){
+        } else if (receivedMessage.isRpcEditConfigTargetRunningDefaultOperationConfig() ||
+        		receivedMessage.isRpcEditConfigTargetRunningReplaceConfig()){
             consoleMessage("Edit-config ["+receivedMessage.getMessageId()+"] message");
             send( theNe.editconfigElement(
                     receivedMessage.getMessageId(),

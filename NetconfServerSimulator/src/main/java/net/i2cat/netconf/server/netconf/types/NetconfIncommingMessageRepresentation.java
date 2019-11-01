@@ -97,6 +97,10 @@ public class NetconfIncommingMessageRepresentation extends RPCElement {
         return messageType.equals("rpc") && tags.checkTags("edit-config","target","running","default-operation", "config");
     }
 
+    public boolean isRpcEditConfigTargetRunningReplaceConfig() {
+        return messageType.equals("rpc") && tags.checkTags("edit-config","target","running","replace", "config");
+    }
+
     public boolean isRpcLockTargetRunning() {
         return messageType.equals("rpc") && tags.checkTags("lock","target","running");
     }

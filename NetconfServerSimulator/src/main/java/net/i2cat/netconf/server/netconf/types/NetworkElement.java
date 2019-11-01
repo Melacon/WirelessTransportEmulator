@@ -923,7 +923,11 @@ public class NetworkElement {
         StringBuffer res = new StringBuffer();
         appendXmlMessageRpcReplyOpen(res, id);
         res.append("<data/>\n");
-        res.append(xmlSubTree.replaceFirst(name, name+" xmlns=\""+namespace+"\""));
+        if (xmlSubTree.contains(namespace)) {
+        	res.append(xmlSubTree);
+        } else {
+        	res.append(xmlSubTree.replaceFirst(name, name+" xmlns=\""+namespace+"\""));
+        }
         res.append("</data>\n");
         appendXmlMessageRpcReplyClose(res);
         return res.toString();
