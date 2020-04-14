@@ -1350,6 +1350,49 @@
           </stream>
     </streams>
   </netconf>
+  <network-element>
+        <local-id>
+            <value-name>ne-local-id</value-name>
+            <value>XpdrA</value>
+        </local-id>
+        <uuid>XpdrA</uuid>
+        <name>
+            <value-name>ne-name</value-name>
+            <value>XpdrA</value>
+        </name>
+        <label>
+            <value-name>ne-label</value-name>
+            <value>XpdrA</value>
+        </label>
+        <extension>
+            <value-name>ne-extension</value-name>
+            <value>XpdrA</value>
+        </extension>
+        <extension>
+            <value-name>neIpAddress</value-name>
+            <value>10.42.213.72</value>
+        </extension>
+        <extension>
+            <value-name>webUri</value-name>
+            <value>https://10.42.213.72/</value>
+        </extension>
+        <extension>
+            <value-name>cliAddress</value-name>
+            <value>cli@10.42.213.72</value>
+        </extension>
+        <extension>
+            <value-name>appCommand</value-name>
+            <value />
+        </extension>
+        <extension>
+            <value-name>neExtension</value-name>
+            <value>XpdrA</value>
+        </extension>
+        <operational-state>enabled</operational-state>
+        <administrative-control>unlock</administrative-control>
+        <administrative-state>unlocked</administrative-state>
+        <lifecycle-state>installed</lifecycle-state>
+    </network-element>
   <org-openroadm-device xmlns="http://org/openroadm/device">
     <info>
       <node-id>XPDR-A1</node-id>
