@@ -78,6 +78,9 @@ public class NotificationTask {
             if (matcher.matches()) {
                 Integer idx = Integer.parseInt(matcher.group(1));
                 String xmlSubTree = theNe.getEvent(idx);
+                if(xmlSubTree == null) {
+                	xmlSubTree = theNe.getEventOpenRoadm(idx);
+                }
                 if (xmlSubTree != null) {
                     int number = 1;
                     if (matcher.group(2) != null && !matcher.group(2).isEmpty()) {

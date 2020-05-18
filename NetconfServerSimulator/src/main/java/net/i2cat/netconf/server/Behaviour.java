@@ -3,6 +3,9 @@ package net.i2cat.netconf.server;
 import net.i2cat.netconf.rpc.Query;
 import net.i2cat.netconf.rpc.Reply;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * Netconf behaviour defined by a {@link Query} and a {@link Reply}
  *
@@ -15,7 +18,7 @@ public class Behaviour {
     private final Reply    reply;
 
     private final boolean    consume;
-
+    private static final Log   log  = LogFactory.getLog(Behaviour.class);
     /**
      * Creates a Behaviour that NOT consumes itself
      *
@@ -24,6 +27,8 @@ public class Behaviour {
      */
     public Behaviour(Query query, Reply reply) {
         this.query = query;
+        log.debug("sending QUERY"); 
+        log.debug(this.query.toXML());
         this.reply = reply;
         this.consume = false;
     }
@@ -38,7 +43,11 @@ public class Behaviour {
      */
     public Behaviour(Query query, Reply reply, boolean consume) {
         this.query = query;
+        log.debug("sending QUERY"); 
+        log.debug(this.query.toXML());
+//        log.info("Query:{}", this.query)
         this.reply = reply;
+//        log.info("Reply:{}", this.reply)
         this.consume = consume;
     }
 

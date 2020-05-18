@@ -25,131 +25,132 @@ import org.apache.sshd.server.session.ServerSession;
 
 public class NetconfSubsystem implements Command, SessionAware {
 
-    private static final Log    log                    = LogFactory.getLog(NetconfSubsystem.class);
+	private static final Log log = LogFactory.getLog(NetconfSubsystem.class);
 
-    // subsystem fields
-    private ExitCallback        callback;
-    private InputStream         in;
-    private OutputStream        out;
-    private OutputStream        err;
+	// subsystem fields
+	private ExitCallback callback;
+	private InputStream in;
+	private OutputStream out;
+	private OutputStream err;
 
-    @SuppressWarnings("unused")
-    private Environment            env;
-    @SuppressWarnings("unused")
-    private ServerSession        session;
-    @SuppressWarnings("unused")
-    private final BehaviourContainer  behaviourContainer;
+	@SuppressWarnings("unused")
+	private Environment env;
+	@SuppressWarnings("unused")
+	private ServerSession session;
+	@SuppressWarnings("unused")
+	private final BehaviourContainer behaviourContainer;
 
-    private final MessageStore    messageStore;
-    private final NetworkElement ne;
+	private final MessageStore messageStore;
+	private final NetworkElement ne;
 
-    private NetconfController    netconfProcessor;
-    private final NetconfNotifyOriginator netconfNotifyExecutor;
-    private final Console console;
+	private NetconfController netconfProcessor;
+	private final NetconfNotifyOriginator netconfNotifyExecutor;
+	private final Console console;
 
-    public NetconfSubsystem(MessageStore messageStore, BehaviourContainer behaviourContainer, NetconfNotifyOriginator netconfNotifyExecutor, NetworkElement ne, Console console) {
-        this.messageStore = messageStore;
-        this.behaviourContainer = behaviourContainer;
-        this.ne = ne;
-        this.netconfNotifyExecutor = netconfNotifyExecutor;
-        this.console = console;
-    }
+	public NetconfSubsystem(MessageStore messageStore, BehaviourContainer behaviourContainer,
+			NetconfNotifyOriginator netconfNotifyExecutor, NetworkElement ne, Console console) {
+		this.messageStore = messageStore;
+		this.behaviourContainer = behaviourContainer;
+		this.ne = ne;
+		this.netconfNotifyExecutor = netconfNotifyExecutor;
+		this.console = console;
+	}
 
-    public InputStream getInputStream() {
-        return in;
-    }
+	public InputStream getInputStream() {
+		return in;
+	}
 
-    @Override
-    public void setInputStream(InputStream in) {
-        this.in = in;
-    }
+	@Override
+	public void setInputStream(InputStream in) {
+		this.in = in;
+	}
 
-    public OutputStream getOutputStream() {
-        return out;
-    }
+	public OutputStream getOutputStream() {
+		return out;
+	}
 
-    @Override
-    public void setOutputStream(OutputStream out) {
-        this.out = out;
-    }
+	@Override
+	public void setOutputStream(OutputStream out) {
+		this.out = out;
+	}
 
-    public OutputStream getErrorStream() {
-        return err;
-    }
+	public OutputStream getErrorStream() {
+		return err;
+	}
 
-    @Override
-    public void setErrorStream(OutputStream err) {
-        this.err = err;
-    }
+	@Override
+	public void setErrorStream(OutputStream err) {
+		this.err = err;
+	}
 
-    @Override
-    public void setExitCallback(ExitCallback callback) {
-        this.callback = callback;
-    }
+	@Override
+	public void setExitCallback(ExitCallback callback) {
+		this.callback = callback;
+	}
 
-    @Override
-    public void start(Environment envParam) throws IOException {
-        this.env = envParam;
+	@Override
+	public void start(Environment envParam) throws IOException {
+		this.env = envParam;
 
-        // initialize Netconf processor
-        netconfProcessor = new NetconfController(in, out, err, callback);
+		// initialize Netconf processor
+		netconfProcessor = new NetconfController(in, out, err, callback);
 
-        log.info("Starting new client thread...");
-        netconfProcessor.start(messageStore, ne, console);
-        netconfNotifyExecutor.setNetconfNotifyExecutor(netconfProcessor);
+		log.info("Starting new client thread...");
+		netconfProcessor.start(messageStore, ne, console);
+		netconfNotifyExecutor.setNetconfNotifyExecutor(netconfProcessor);
 
-    }
+	}
 
-    @Override
-    public void destroy() {
-        netconfProcessor.destroy();
-    }
+	@Override
+	public void destroy() {
+		netconfProcessor.destroy();
+	}
 
-    @Override
-    public void setSession(ServerSession session) {
-        this.session = session;
-    }
+	@Override
+	public void setSession(ServerSession session) {
+		this.session = session;
+	}
 
+	/**
+	 * Netconf Subsystem Factory
+	 *
+	 * @author Julio Carlos Barrera
+	 *
+	 */
+	public static class Factory implements NamedFactory<Command> {
+		private static final Log log2 = LogFactory.getLog(Factory.class);
 
+		private final MessageStore messageStore;
+		private final BehaviourContainer behaviourContainer;
+		private final NetworkElement ne;
+		private final NetconfNotifyOriginator notifyFunction;
+		private final Console console;
 
-    /**
-     * Netconf Subsystem Factory
-     *
-     * @author Julio Carlos Barrera
-     *
-     */
-    public static class Factory implements NamedFactory<Command> {
-        private static final Log log2  = LogFactory.getLog(Factory.class);
+		private Factory(MessageStore messageStore, BehaviourContainer behaviourContainer,
+				NetconfNotifyOriginator notifyFunction, NetworkElement ne, Console console) {
+			this.messageStore = messageStore;
+			this.behaviourContainer = behaviourContainer;
+			this.ne = ne;
+			this.notifyFunction = notifyFunction;
+			this.console = console;
+		}
 
-        private final MessageStore        messageStore;
-        private final BehaviourContainer  behaviourContainer;
-        private final NetworkElement      ne;
-        private final NetconfNotifyOriginator       notifyFunction;
-        private final Console console;
+		public static Factory createFactory(MessageStore messageStore, BehaviourContainer behaviourContainer,
+				NetconfNotifyOriginator notifyFunction, NetworkElement ne, Console console) {
+			return new Factory(messageStore, behaviourContainer, notifyFunction, ne, console);
+		}
 
-        private Factory(MessageStore messageStore, BehaviourContainer behaviourContainer, NetconfNotifyOriginator notifyFunction, NetworkElement ne, Console console) {
-            this.messageStore = messageStore;
-            this.behaviourContainer = behaviourContainer;
-            this.ne = ne;
-            this.notifyFunction = notifyFunction;
-            this.console = console;
-        }
+		@Override
+		public Command create() {
+			log2.info("Creating Netconf Subsystem Factory");
+			return new NetconfSubsystem(messageStore, behaviourContainer, notifyFunction, ne, console);
+		}
 
-        public static Factory createFactory(MessageStore messageStore, BehaviourContainer behaviourContainer, NetconfNotifyOriginator notifyFunction, NetworkElement ne, Console console) {
-            return new Factory(messageStore, behaviourContainer, notifyFunction, ne, console);
-        }
+		@Override
+		public String getName() {
+			return "netconf";
+		}
 
-        @Override
-        public Command create() {
-            log2.info("Creating Netconf Subsystem Factory");
-            return new NetconfSubsystem(messageStore, behaviourContainer, notifyFunction, ne, console);
-        }
-
-        @Override
-        public String getName() {
-            return "netconf";
-        }
-
-    }
+	}
 
 }

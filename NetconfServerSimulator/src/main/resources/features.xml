@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <features>
 	<repository>mvn:net.i2cat.netconf/netconf4j/${netconf4j.version}/xml/features</repository>
-	
+
 	<feature name="netconf-server" version="${project.version}">
 		<feature version="${netconf4j.version}">netconf4j</feature>
 		<bundle dependency="true">mvn:org.ops4j.pax.logging/pax-logging-api/${pax-logging.version}</bundle>
 		<bundle dependency="true">mvn:commons-io/commons-io/${commons-io.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.sshd/sshd-core/${sshd.version}</bundle>
-		
+
 		<bundle>mvn:net.i2cat/netconf-server/${project.version}</bundle>
 	</feature>
 </features>

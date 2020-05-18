@@ -148,6 +148,7 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
         if (messages != null) {
             synchronized (messages) {
                 LOG.info("Storing message "+message.getMessageId());
+
                 messages.add(message);
             }
         }
@@ -185,7 +186,7 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
         //configure the appender
         String PATTERN = "%d [%p|%c|%C{1}] %m%n";
         console.setLayout(new PatternLayout(PATTERN));
-        console.setThreshold(Level.WARN);
+        console.setThreshold(Level.DEBUG);
         console.activateOptions();
         //add appender to any Logger (here is root)
         Logger.getRootLogger().addAppender(console);
@@ -194,7 +195,7 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
         fa.setName("FileLogger");
         fa.setFile(debugFilename);
         fa.setLayout(new PatternLayout("%d %-5p [%c{1}] %m%n"));
-        fa.setThreshold(Level.WARN);
+        fa.setThreshold(Level.DEBUG);
         fa.setMaxBackupIndex(10);
         fa.setMaximumFileSize(1000000);
         fa.setAppend(true);

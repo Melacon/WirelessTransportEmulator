@@ -78,7 +78,8 @@ module openconfig-telemetry-types {
     identity STREAM_PROTOCOL {
       base 
       description
-        "Base identity for a telemetry stream protocol";
+    	  "Base identity for a telemetry stream protocol";
+
     }
 
     identity STREAM_SSH {

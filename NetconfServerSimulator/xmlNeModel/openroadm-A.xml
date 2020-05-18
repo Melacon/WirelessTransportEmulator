@@ -1,39 +1,24 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
 <data xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
-  <netconf-state xmlns="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">
-    <capabilities>
-      <capability>urn:ietf:params:netconf:base:1.0</capability>
-      <capability>urn:ietf:params:netconf:base:1.1</capability>
-      <capability>urn:ietf:params:netconf:capability:writable-running:1.0</capability>
-      <capability>urn:ietf:params:netconf:capability:candidate:1.0</capability>
-      <capability>urn:ietf:params:netconf:capability:confirmed-commit:1.1</capability>
-      <capability>urn:ietf:params:netconf:capability:rollback-on-error:1.0</capability>
-      <capability>urn:ietf:params:netconf:capability:validate:1.1</capability>
-      <capability>urn:ietf:params:netconf:capability:startup:1.0</capability>
-      <capability>urn:ietf:params:netconf:capability:url:1.0</capability>
-      <capability>urn:ietf:params:netconf:capability:xpath:1.0</capability>
-      <capability>urn:ietf:params:netconf:capability:with-defaults:1.0?basic-mode=explicit&amp;also-supported=report-all,report-all-tagged,trim,explicit</capability>
-      <capability>urn:ietf:params:netconf:capability:notification:1.0</capability>
-      <capability>urn:ietf:params:netconf:capability:interleave:1.0</capability>
-      <capability>urn:ietf:params:xml:ns:yang:ietf-yang-metadata?module=ietf-yang-metadata&amp;revision=2016-08-05</capability>
-      <capability>urn:ietf:params:xml:ns:yang:1?module=yang&amp;revision=2017-02-20</capability>
-      <capability>urn:ietf:params:xml:ns:yang:ietf-inet-types?module=ietf-inet-types&amp;revision=2013-07-15</capability>
-      <capability>urn:ietf:params:xml:ns:yang:ietf-yang-types?module=ietf-yang-types&amp;revision=2013-07-15</capability>
-      <capability>urn:ietf:params:netconf:capability:yang-library:1.0?revision=2019-01-04&amp;module-set-id=90</capability>
-      <capability>urn:ietf:params:xml:ns:yang:ietf-netconf-acm?module=ietf-netconf-acm&amp;revision=2018-02-14</capability>
-      <capability>urn:ietf:params:xml:ns:netconf:base:1.0?module=ietf-netconf&amp;revision=2011-06-01&amp;features=writable-running,candidate,confirmed-commit,rollback-on-error,validate,startup,url,xpath</capability>
-      <capability>urn:ietf:params:xml:ns:yang:ietf-netconf-notifications?module=ietf-netconf-notifications&amp;revision=2012-02-06</capability>
-      <capability>urn:ietf:params:xml:ns:netconf:notification:1.0?module=notifications&amp;revision=2008-07-14</capability>
-      <capability>urn:ietf:params:xml:ns:netmod:notification?module=nc-notifications&amp;revision=2008-07-14</capability>
-      <capability>urn:ietf:params:xml:ns:yang:ietf-x509-cert-to-name?module=ietf-x509-cert-to-name&amp;revision=2014-12-10</capability>
-      <capability>urn:ietf:params:xml:ns:yang:ietf-netconf-with-defaults?module=ietf-netconf-with-defaults&amp;revision=2011-06-01</capability>
-      <capability>urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring?module=ietf-netconf-monitoring&amp;revision=2010-10-04</capability>
-      <capability>urn:ietf:params:xml:ns:yang:iana-crypt-hash?module=iana-crypt-hash&amp;revision=2014-08-06</capability>
-      <capability>urn:ietf:params:xml:ns:yang:ietf-system?module=ietf-system&amp;revision=2014-08-06&amp;features=authentication,local-users</capability>
-      <capability>urn:ietf:params:xml:ns:yang:iana-afn-safi?module=iana-afn-safi&amp;revision=2013-07-04</capability>
-      <capability>http://openconfig.net/yang/openconfig-ext?module=openconfig-extensions&amp;revision=2017-04-11</capability>
+ <netconf-state>
+	<capabilities>
+       <capability>urn:ietf:params:netconf:base:1.0</capability>
+       <capability>urn:ietf:params:netconf:capability:notification:1.0</capability>
+       <capability>urn:ietf:params:netconf:capability:writable-running:1.0</capability>
+       <capability>urn:ietf:params:xml:ns:yang:ietf-inet-types?module=ietf-inet-types&amp;revision=2013-07-15</capability>
+       <capability>urn:ietf:params:xml:ns:yang:ietf-yang-types?module=ietf-yang-types&amp;revision=2013-07-15</capability>
+       <capability>urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring?module=ietf-netconf-monitoring&amp;revision=2010-10-04</capability>
+       <capability>urn:ietf:params:xml:ns:yang:ietf-netconf-acm?module=ietf-netconf-acm&amp;revision=2018-02-14</capability>
+       <capability>urn:ietf:params:xml:ns:netconf:base:1.0?module=ietf-netconf&amp;revision=2011-06-01</capability>
+       <capability>urn:ietf:params:xml:ns:yang:ietf-netconf-with-defaults?module=ietf-netconf-with-defaults&amp;revision=2011-06-01</capability>
+       <capability>urn:ietf:params:xml:ns:yang:ietf-system?module=ietf-system&amp;revision=2014-08-06&amp;features=radius,authentication,local-users,radius-authentication,ntp,ntp-udp-port,timezone-name,dns-udp-tcp-port</capability>
+       <capability>urn:ietf:params:xml:ns:yang:ietf-netconf-notifications?module=ietf-netconf-notifications&amp;revision=2012-02-06</capability>
+       <capability>urn:ietf:params:xml:ns:netmod:notification?module=nc-notifications&amp;revision=2008-07-14</capability>
+       <capability>urn:ietf:params:xml:ns:netconf:notification:1.0?module=notifications&amp;revision=2008-07-14</capability>
       <capability>http://org/openroadm/common-alarm-pm-types?module=org-openroadm-common-alarm-pm-types&amp;revision=2019-11-29</capability>
-      <capability>http://org/openroadm/common-amplifier-types?module=org-openroadm-common-amplifier-types&amp;revision=2019-11-29</capability>
+      <capability>urn:ietf:params:xml:ns:yang:iana-crypt-hash?module=iana-crypt-hash&amp;revision=2014-08-06</capability>
+	  <capability>http://org/openroadm/common-amplifier-types?module=org-openroadm-common-amplifier-types&amp;revision=2019-11-29</capability>
+      <capability>http://openconfig.net/yang/openconfig-ext?module=openconfig-extensions&amp;revision=2017-04-11</capability>
       <capability>http://org/openroadm/common-equipment-types?module=org-openroadm-common-equipment-types&amp;revision=2019-11-29</capability>
       <capability>http://org/openroadm/common-link-types?module=org-openroadm-common-link-types&amp;revision=2019-11-29</capability>
       <capability>http://org/openroadm/common-node-types?module=org-openroadm-common-node-types&amp;revision=2019-11-29</capability>
@@ -93,275 +78,9 @@
       <capability>http://org/openroadm/port-capability?module=org-openroadm-port-capability&amp;revision=2019-11-29</capability>
       <capability>http://org/openroadm/otn-otu-interfaces?module=org-openroadm-otn-otu-interfaces&amp;revision=2019-11-29</capability>
       <capability>http://org/openroadm/otsigroup-capability?module=org-openroadm-otsigroup-capability&amp;revision=2019-11-29</capability>
-    </capabilities>
-    <schemas>
-      <schema>
-        <identifier>ietf-yang-metadata</identifier>
-        <version>2016-08-05</version>
-        <format>yang</format>
-        <namespace>urn:ietf:params:xml:ns:yang:ietf-yang-metadata</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>ietf-yang-metadata</identifier>
-        <version>2016-08-05</version>
-        <format>yin</format>
-        <namespace>urn:ietf:params:xml:ns:yang:ietf-yang-metadata</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>yang</identifier>
-        <version>2017-02-20</version>
-        <format>yang</format>
-        <namespace>urn:ietf:params:xml:ns:yang:1</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>yang</identifier>
-        <version>2017-02-20</version>
-        <format>yin</format>
-        <namespace>urn:ietf:params:xml:ns:yang:1</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>ietf-inet-types</identifier>
-        <version>2013-07-15</version>
-        <format>yang</format>
-        <namespace>urn:ietf:params:xml:ns:yang:ietf-inet-types</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>ietf-inet-types</identifier>
-        <version>2013-07-15</version>
-        <format>yin</format>
-        <namespace>urn:ietf:params:xml:ns:yang:ietf-inet-types</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>ietf-yang-types</identifier>
-        <version>2013-07-15</version>
-        <format>yang</format>
-        <namespace>urn:ietf:params:xml:ns:yang:ietf-yang-types</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>ietf-yang-types</identifier>
-        <version>2013-07-15</version>
-        <format>yin</format>
-        <namespace>urn:ietf:params:xml:ns:yang:ietf-yang-types</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>ietf-datastores</identifier>
-        <version>2017-08-17</version>
-        <format>yang</format>
-        <namespace>urn:ietf:params:xml:ns:yang:ietf-datastores</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>ietf-datastores</identifier>
-        <version>2017-08-17</version>
-        <format>yin</format>
-        <namespace>urn:ietf:params:xml:ns:yang:ietf-datastores</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>ietf-yang-library</identifier>
-        <version>2019-01-04</version>
-        <format>yang</format>
-        <namespace>urn:ietf:params:xml:ns:yang:ietf-yang-library</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>ietf-yang-library</identifier>
-        <version>2019-01-04</version>
-        <format>yin</format>
-        <namespace>urn:ietf:params:xml:ns:yang:ietf-yang-library</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>ietf-netconf-acm</identifier>
-        <version>2018-02-14</version>
-        <format>yang</format>
-        <namespace>urn:ietf:params:xml:ns:yang:ietf-netconf-acm</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>ietf-netconf-acm</identifier>
-        <version>2018-02-14</version>
-        <format>yin</format>
-        <namespace>urn:ietf:params:xml:ns:yang:ietf-netconf-acm</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>ietf-netconf</identifier>
-        <version>2011-06-01</version>
-        <format>yang</format>
-        <namespace>urn:ietf:params:xml:ns:netconf:base:1.0</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>ietf-netconf</identifier>
-        <version>2011-06-01</version>
-        <format>yin</format>
-        <namespace>urn:ietf:params:xml:ns:netconf:base:1.0</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>ietf-netconf-notifications</identifier>
-        <version>2012-02-06</version>
-        <format>yang</format>
-        <namespace>urn:ietf:params:xml:ns:yang:ietf-netconf-notifications</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>ietf-netconf-notifications</identifier>
-        <version>2012-02-06</version>
-        <format>yin</format>
-        <namespace>urn:ietf:params:xml:ns:yang:ietf-netconf-notifications</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>notifications</identifier>
-        <version>2008-07-14</version>
-        <format>yang</format>
-        <namespace>urn:ietf:params:xml:ns:netconf:notification:1.0</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>notifications</identifier>
-        <version>2008-07-14</version>
-        <format>yin</format>
-        <namespace>urn:ietf:params:xml:ns:netconf:notification:1.0</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>nc-notifications</identifier>
-        <version>2008-07-14</version>
-        <format>yang</format>
-        <namespace>urn:ietf:params:xml:ns:netmod:notification</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>nc-notifications</identifier>
-        <version>2008-07-14</version>
-        <format>yin</format>
-        <namespace>urn:ietf:params:xml:ns:netmod:notification</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>ietf-x509-cert-to-name</identifier>
-        <version>2014-12-10</version>
-        <format>yang</format>
-        <namespace>urn:ietf:params:xml:ns:yang:ietf-x509-cert-to-name</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>ietf-x509-cert-to-name</identifier>
-        <version>2014-12-10</version>
-        <format>yin</format>
-        <namespace>urn:ietf:params:xml:ns:yang:ietf-x509-cert-to-name</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>ietf-keystore</identifier>
-        <version>2016-10-31</version>
-        <format>yang</format>
-        <namespace>urn:ietf:params:xml:ns:yang:ietf-keystore</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>ietf-keystore</identifier>
-        <version>2016-10-31</version>
-        <format>yin</format>
-        <namespace>urn:ietf:params:xml:ns:yang:ietf-keystore</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>ietf-netconf-with-defaults</identifier>
-        <version>2011-06-01</version>
-        <format>yang</format>
-        <namespace>urn:ietf:params:xml:ns:yang:ietf-netconf-with-defaults</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>ietf-netconf-with-defaults</identifier>
-        <version>2011-06-01</version>
-        <format>yin</format>
-        <namespace>urn:ietf:params:xml:ns:yang:ietf-netconf-with-defaults</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>ietf-netconf-monitoring</identifier>
-        <version>2010-10-04</version>
-        <format>yang</format>
-        <namespace>urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>ietf-netconf-monitoring</identifier>
-        <version>2010-10-04</version>
-        <format>yin</format>
-        <namespace>urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>ietf-crypto-types</identifier>
-        <version>2019-10-18</version>
-        <format>yang</format>
-        <namespace>urn:ietf:params:xml:ns:yang:ietf-crypto-types</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>ietf-crypto-types</identifier>
-        <version>2019-10-18</version>
-        <format>yin</format>
-        <namespace>urn:ietf:params:xml:ns:yang:ietf-crypto-types</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>ietf-ssh-server</identifier>
-        <version>2016-11-02</version>
-        <format>yang</format>
-        <namespace>urn:ietf:params:xml:ns:yang:ietf-ssh-server</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>ietf-ssh-server</identifier>
-        <version>2016-11-02</version>
-        <format>yin</format>
-        <namespace>urn:ietf:params:xml:ns:yang:ietf-ssh-server</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>ietf-tls-server</identifier>
-        <version>2016-11-02</version>
-        <format>yang</format>
-        <namespace>urn:ietf:params:xml:ns:yang:ietf-tls-server</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>ietf-tls-server</identifier>
-        <version>2016-11-02</version>
-        <format>yin</format>
-        <namespace>urn:ietf:params:xml:ns:yang:ietf-tls-server</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>ietf-netconf-server</identifier>
-        <version>2016-11-02</version>
-        <format>yang</format>
-        <namespace>urn:ietf:params:xml:ns:yang:ietf-netconf-server</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>ietf-netconf-server</identifier>
-        <version>2016-11-02</version>
-        <format>yin</format>
-        <namespace>urn:ietf:params:xml:ns:yang:ietf-netconf-server</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
+	</capabilities>
+	<schemas>
+	  <schema>
         <identifier>iana-crypt-hash</identifier>
         <version>2014-08-06</version>
         <format>yang</format>
@@ -376,11 +95,46 @@
         <location>NETCONF</location>
       </schema>
       <schema>
-        <identifier>ietf-system</identifier>
-        <version>2014-08-06</version>
-        <format>yang</format>
-        <namespace>urn:ietf:params:xml:ns:yang:ietf-system</namespace>
-        <location>NETCONF</location>
+         <identifier>ietf-inet-types</identifier>
+         <version>2013-07-15</version>
+         <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
+         <namespace>urn:ietf:params:xml:ns:yang:ietf-inet-types</namespace>
+         <location>NETCONF</location>
+      </schema>
+      <schema>
+         <identifier>ietf-netconf-acm</identifier>
+         <version>2018-02-14</version>
+         <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
+         <namespace>urn:ietf:params:xml:ns:yang:ietf-netconf-acm</namespace>
+         <location>NETCONF</location>
+      </schema>
+      <schema>
+         <identifier>ietf-netconf-monitoring</identifier>
+         <version>2010-10-04</version>
+         <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
+         <namespace>urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring</namespace>
+         <location>NETCONF</location>
+      </schema>
+      <schema>
+         <identifier>ietf-netconf</identifier>
+         <version>2011-06-01</version>
+         <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
+         <namespace>urn:ietf:params:xml:ns:netconf:base:1.0</namespace>
+         <location>NETCONF</location>
+      </schema>
+      <schema>
+         <identifier>ietf-netconf-with-defaults</identifier>
+         <version>2011-06-01</version>
+         <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
+         <namespace>urn:ietf:params:xml:ns:yang:ietf-netconf-with-defaults</namespace>
+         <location>NETCONF</location>
+      </schema>
+      <schema>
+         <identifier>ietf-system</identifier>
+         <version>2014-08-06</version>
+         <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
+         <namespace>urn:ietf:params:xml:ns:yang:ietf-system</namespace>
+         <location>NETCONF</location>
       </schema>
       <schema>
         <identifier>ietf-system</identifier>
@@ -388,33 +142,82 @@
         <format>yin</format>
         <namespace>urn:ietf:params:xml:ns:yang:ietf-system</namespace>
         <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>iana-afn-safi</identifier>
-        <version>2013-07-04</version>
-        <format>yang</format>
-        <namespace>urn:ietf:params:xml:ns:yang:iana-afn-safi</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>iana-afn-safi</identifier>
-        <version>2013-07-04</version>
+   	 </schema>
+     <schema>
+         <identifier>ietf-yang-types</identifier>
+         <version>2013-07-15</version>
+         <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
+         <namespace>urn:ietf:params:xml:ns:yang:ietf-yang-types</namespace>
+         <location>NETCONF</location>
+     </schema>
+     <schema>
+         <identifier>nc-notifications</identifier>
+         <version>2008-07-14</version>
+         <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
+         <namespace>urn:ietf:params:xml:ns:netmod:notification</namespace>
+         <location>NETCONF</location>
+     </schema>
+     <schema>
+        <identifier>nc-notifications</identifier>
+        <version>2008-07-14</version>
         <format>yin</format>
-        <namespace>urn:ietf:params:xml:ns:yang:iana-afn-safi</namespace>
+        <namespace>urn:ietf:params:xml:ns:netmod:notification</namespace>
         <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>openconfig-extensions</identifier>
-        <version>2017-04-11</version>
-        <format>yang</format>
-        <namespace>http://openconfig.net/yang/openconfig-ext</namespace>
+   	</schema>
+    <schema>
+        <identifier>notifications</identifier>
+        <version>2008-07-14</version>
+        <format xmlns:ncm="urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring">ncm:yang</format>
+        <namespace>urn:ietf:params:xml:ns:netconf:notification:1.0</namespace>
         <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>openconfig-extensions</identifier>
-        <version>2017-04-11</version>
+     </schema>
+     <schema>
+        <identifier>notifications</identifier>
+        <version>2008-07-14</version>
         <format>yin</format>
-        <namespace>http://openconfig.net/yang/openconfig-ext</namespace>
+        <namespace>urn:ietf:params:xml:ns:netconf:notification:1.0</namespace>
+        <location>NETCONF</location>
+     </schema>
+     <schema>
+        <identifier>ietf-netconf-notifications</identifier>
+        <version>2012-02-06</version>
+        <format>yang</format>
+        <namespace>urn:ietf:params:xml:ns:yang:ietf-netconf-notifications</namespace>
+        <location>NETCONF</location>
+      </schema>
+      <schema>
+        <identifier>ietf-netconf-notifications</identifier>
+        <version>2012-02-06</version>
+        <format>yin</format>
+        <namespace>urn:ietf:params:xml:ns:yang:ietf-netconf-notifications</namespace>
+        <location>NETCONF</location>
+      </schema>
+     <schema>
+		<identifier>openconfig-extensions</identifier>
+		<version>2017-04-11</version>
+		<format>yang</format>
+		<namespace>http://openconfig.net/yang/openconfig-ext</namespace>
+		<location>NETCONF</location>
+	</schema>
+	<schema>
+		<identifier>openconfig-extensions</identifier>
+		<version>2017-04-11</version>
+		<format>yin</format>
+		<namespace>http://openconfig.net/yang/openconfig-ext</namespace>
+		<location>NETCONF</location>
+	</schema>
+	<schema>
+        <identifier>openconfig-telemetry-types</identifier>
+        <version>2017-08-24</version>
+        <format>yang</format>
+        <namespace>http://openconfig.net/yang/telemetry-types</namespace>
+        <location>NETCONF</location>
+      </schema>
+      <schema>
+        <identifier>openconfig-telemetry-types</identifier>
+        <version>2017-08-24</version>
+        <format>yin</format>
+        <namespace>http://openconfig.net/yang/telemetry-types</namespace>
         <location>NETCONF</location>
       </schema>
       <schema>
@@ -723,20 +526,6 @@
         <version>2017-08-24</version>
         <format>yin</format>
         <namespace>http://openconfig.net/yang/types/inet</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>openconfig-telemetry-types</identifier>
-        <version>2017-08-24</version>
-        <format>yang</format>
-        <namespace>http://openconfig.net/yang/telemetry-types</namespace>
-        <location>NETCONF</location>
-      </schema>
-      <schema>
-        <identifier>openconfig-telemetry-types</identifier>
-        <version>2017-08-24</version>
-        <format>yin</format>
-        <namespace>http://openconfig.net/yang/telemetry-types</namespace>
         <location>NETCONF</location>
       </schema>
       <schema>
@@ -1341,64 +1130,65 @@
         <namespace>http://org/openroadm/otsigroup-capability</namespace>
         <location>NETCONF</location>
       </schema>
-    </schemas>
-  </netconf-state>
-  <netconf xmlns="urn:ietf:params:xml:ns:netmod:notification">
-      <streams>
-          <stream>
-              <name>OPENROADM</name>
-          </stream>
-    </streams>
-  </netconf>
-    <network-element>
-        <local-id>
-            <value-name>ne-local-id</value-name>
-            <value>RoadmA</value>
-        </local-id>
-        <uuid>RoadmA</uuid>
-        <name>
-            <value-name>ne-name</value-name>
-            <value>RoadmA</value>
-        </name>
-        <label>
-            <value-name>ne-label</value-name>
-            <value>RoadmA</value>
-        </label>
-        <extension>
-            <value-name>ne-extension</value-name>
-            <value>RoadmA</value>
-        </extension>
-        <extension>
-            <value-name>neIpAddress</value-name>
-            <value>10.42.213.72</value>
-        </extension>
-        <extension>
-            <value-name>webUri</value-name>
-            <value>https://10.42.213.72/</value>
-        </extension>
-        <extension>
-            <value-name>cliAddress</value-name>
-            <value>cli@10.42.213.72</value>
-        </extension>
-        <extension>
-            <value-name>appCommand</value-name>
-            <value />
-        </extension>
-        <extension>
-            <value-name>neExtension</value-name>
-            <value>RoadmA</value>
-        </extension>
-        <operational-state>enabled</operational-state>
-        <administrative-control>unlock</administrative-control>
-        <administrative-state>unlocked</administrative-state>
-        <lifecycle-state>installed</lifecycle-state>
-    </network-element>
-  <org-openroadm-device xmlns="http://org/openroadm/device">
+	</schemas>
+</netconf-state>
+<netconf xmlns="urn:ietf:params:xml:ns:netmod:notification">
+	<streams>
+		<stream>
+			<name>NETCONF</name>
+		</stream>
+	</streams>
+</netconf>
+<network-element>
+	<local-id>
+		<value-name>ne-local-id</value-name>
+		<value>RoadmA</value>
+	</local-id>
+	<uuid>RoadmA</uuid>
+	<name>
+		<value-name>ne-name</value-name>
+		<value>RoadmA</value>
+	</name>
+	<label>
+		<value-name>ne-label</value-name>
+		<value>RoadmA</value>
+	</label>
+	<extension>
+		<value-name>ne-extension</value-name>
+		<value>RoadmA</value>
+	</extension>
+	<extension>
+		<value-name>neIpAddress</value-name>
+		<value>10.42.213.72</value>
+	</extension>
+	<extension>
+		<value-name>webUri</value-name>
+		<value>https://10.42.213.72/</value>
+	</extension>
+	<extension>
+		<value-name>cliAddress</value-name>
+		<value>cli@10.42.213.72</value>
+	</extension>
+	<extension>
+		<value-name>appCommand</value-name>
+		<value />
+	</extension>
+	<extension>
+		<value-name>neExtension</value-name>
+		<value>RoadmA</value>
+	</extension>
+
+	<operational-state>enabled</operational-state>
+	<administrative-control>unlock</administrative-control>
+	<administrative-state>unlocked</administrative-state>
+	<lifecycle-state>installed</lifecycle-state>
+</network-element>
+<org-openroadm-device>
      <info>
-      <node-id>ROADM-A1</node-id>
-      <node-number>2</node-number>
+      <node-id>ROADM-B1</node-id>
+      <node-number>3</node-number>
       <node-type>rdm</node-type>
-      <clli>NodeA</clli>
+      <clli>NodeB</clli>
       <vendor>vendorA</vendor>
       <model>model2</model>
       <serial-id>0002</serial-id>
@@ -1600,7 +1390,7 @@
       <model>WSS9</model>
       <serial-id>nodeid-1234</serial-id>
       <type>Dir2</type>
-      <product-code>DegTxRx</product-code>
+      <product-code>DegRxTx</product-code>
       <manufacture-date>2017-08-08T10:47:04.698808+00:00</manufacture-date>
       <clei>wss1</clei>
       <hardware-version>0.1</hardware-version>
@@ -1684,12 +1474,6 @@
         <supported-interface-capability xmlns:x="http://org/openroadm/port/types">x:if-OTS</supported-interface-capability>
         <supported-interface-capability xmlns:x="http://org/openroadm/port/types">x:if-OMS</supported-interface-capability>
         <supported-interface-capability xmlns:x="http://org/openroadm/port/types">x:if-OCH</supported-interface-capability>
-        <interfaces>
-          <interface-name>OTS-DEG2-TTP-TXRX</interface-name>
-        </interfaces>
-        <interfaces>
-          <interface-name>OMS-DEG2-TTP-TXRX</interface-name>
-        </interfaces>
       </ports>
     </circuit-packs>
     <circuit-packs>
@@ -1697,7 +1481,7 @@
       <circuit-pack-type>port</circuit-pack-type>
       <circuit-pack-product-code>Eth</circuit-pack-product-code>
       <administrative-state>inService</administrative-state>
-      <vendor>VENDORA</vendor>
+      <vendor>VendorA</vendor>
       <model>GIGAETHMGT</model>
       <serial-id>nodeid-1234</serial-id>
       <type>eth</type>
@@ -1712,7 +1496,7 @@
       <equipment-state>not-reserved-available</equipment-state>
       <circuit-pack-mode>inServiceMode</circuit-pack-mode>
       <shelf>1</shelf>
-      <slot>1</slot>
+      <slot>2</slot>
       <subSlot>0</subSlot>
       <parent-circuit-pack>
         <circuit-pack-name>2/0</circuit-pack-name>
@@ -1741,8 +1525,8 @@
       <hardware-version>01</hardware-version>
       <equipment-state>not-reserved-available</equipment-state>
       <circuit-pack-mode>NORMAL</circuit-pack-mode>
-      <shelf>2</shelf>
-      <slot>0</slot>
+      <shelf>1</shelf>
+      <slot>2</slot>
       <subSlot>0</subSlot>
       <parent-circuit-pack>
         <circuit-pack-name>2/0</circuit-pack-name>
@@ -1758,218 +1542,6 @@
         <operational-state>inService</operational-state>
       </ports>
     </circuit-packs>
-    <circuit-packs>
-      <circuit-pack-name>3/0</circuit-pack-name>
-      <circuit-pack-type>ADDDROP</circuit-pack-type>
-      <circuit-pack-product-code>SRGRx</circuit-pack-product-code>
-      <administrative-state>inService</administrative-state>
-      <vendor>vendorA</vendor>
-      <model>WSS</model>
-      <serial-id>nodeid-1234</serial-id>
-      <type>SRG1</type>
-      <product-code>SRGRx</product-code>
-      <manufacture-date>2007-10-10T00:00:00Z</manufacture-date>
-      <clei>12345678901</clei>
-      <hardware-version>0.1</hardware-version>
-      <operational-state>inService</operational-state>
-      <circuit-pack-category>
-        <type>circuitPack</type>
-      </circuit-pack-category>
-      <equipment-state>reserved-for-facility-available</equipment-state>
-      <circuit-pack-mode>inServiceMode</circuit-pack-mode>
-      <shelf>1</shelf>
-      <slot>2</slot>
-      <ports>
-        <port-name>C1</port-name>
-        <port-type>Client</port-type>
-        <port-qual>roadm-external</port-qual>
-        <port-wavelength-type>wavelength</port-wavelength-type>
-        <port-direction>bidirectional</port-direction>
-        <label>SRG1-client port 1</label>
-        <circuit-id>SRG1</circuit-id>
-        <administrative-state>inService</administrative-state>
-        <operational-state>inService</operational-state>
-        <partner-port>
-          <circuit-pack-name></circuit-pack-name>
-          <port-name></port-name>
-        </partner-port>
-        <logical-connection-point>SRG1-PP1</logical-connection-point>
-      </ports>
-      <ports>
-        <port-name>C2</port-name>
-        <port-type>Client</port-type>
-        <port-qual>roadm-external</port-qual>
-        <port-wavelength-type>wavelength</port-wavelength-type>
-        <port-direction>bidirectional</port-direction>
-        <label>SRG1-client port 2</label>
-        <circuit-id>SRG1</circuit-id>
-        <administrative-state>inService</administrative-state>
-        <operational-state>inService</operational-state>
-        <partner-port>
-          <circuit-pack-name></circuit-pack-name>
-          <port-name></port-name>
-        </partner-port>
-        <logical-connection-point>SRG1-PP2</logical-connection-point>
-      </ports>
-      <ports>
-        <port-name>C3</port-name>
-        <port-type>Client</port-type>
-        <port-qual>roadm-external</port-qual>
-        <port-wavelength-type>wavelength</port-wavelength-type>
-        <port-direction>bidirectional</port-direction>
-        <label>SRG1-client port 3</label>
-        <circuit-id>SRG1</circuit-id>
-        <administrative-state>inService</administrative-state>
-        <operational-state>inService</operational-state>
-        <partner-port>
-          <circuit-pack-name></circuit-pack-name>
-          <port-name></port-name>
-        </partner-port>
-        <logical-connection-point>SRG1-PP3</logical-connection-point>
-      </ports>
-      <ports>
-        <port-name>C4</port-name>
-        <port-type>Client</port-type>
-        <port-qual>roadm-external</port-qual>
-        <port-wavelength-type>wavelength</port-wavelength-type>
-        <port-direction>bidirectional</port-direction>
-        <label>SRG1-client port 4</label>
-        <circuit-id>SRG1</circuit-id>
-        <administrative-state>inService</administrative-state>
-        <operational-state>inService</operational-state>
-        <partner-port>
-          <circuit-pack-name></circuit-pack-name>
-          <port-name></port-name>
-        </partner-port>
-        <logical-connection-point>SRG1-PP4</logical-connection-point>
-      </ports>
-      <ports>
-        <port-name>AD-DEG1</port-name>
-        <port-type>Edge</port-type>
-        <port-qual>roadm-internal</port-qual>
-        <port-wavelength-type>multi-wavelength</port-wavelength-type>
-        <port-direction>bidirectional</port-direction>
-        <administrative-state>inService</administrative-state>
-        <operational-state>inService</operational-state>
-        <logical-connection-point>SRG1-CP-TXRX</logical-connection-point>
-      </ports>
-      <ports>
-        <port-name>AD-DEG2</port-name>
-        <port-type>Edge</port-type>
-        <port-qual>roadm-internal</port-qual>
-        <port-wavelength-type>multi-wavelength</port-wavelength-type>
-        <port-direction>bidirectional</port-direction>
-        <administrative-state>inService</administrative-state>
-        <operational-state>inService</operational-state>
-        <logical-connection-point>SRG1-CP-TXRX</logical-connection-point>
-      </ports>
-    </circuit-packs>
-    <circuit-packs>
-      <circuit-pack-name>5/0</circuit-pack-name>
-      <circuit-pack-type>ADDDROP</circuit-pack-type>
-      <circuit-pack-product-code>SRGRx</circuit-pack-product-code>
-      <administrative-state>inService</administrative-state>
-      <vendor>vendorA</vendor>
-      <model>WSS</model>
-      <serial-id>nodeid-1234</serial-id>
-      <type>SRG1</type>
-      <product-code>SRGRx</product-code>
-      <manufacture-date>2007-10-10T00:00:00Z</manufacture-date>
-      <clei>12345678901</clei>
-      <hardware-version>0.1</hardware-version>
-      <operational-state>inService</operational-state>
-      <circuit-pack-category>
-        <type>circuitPack</type>
-      </circuit-pack-category>
-      <equipment-state>reserved-for-facility-available</equipment-state>
-      <circuit-pack-mode>inServiceMode</circuit-pack-mode>
-      <shelf>1</shelf>
-      <slot>2</slot>
-      <ports>
-        <port-name>C1</port-name>
-        <port-type>Client</port-type>
-        <port-qual>roadm-external</port-qual>
-        <port-wavelength-type>wavelength</port-wavelength-type>
-        <port-direction>bidirectional</port-direction>
-        <label>SRG1-client port 1</label>
-        <circuit-id>SRG1</circuit-id>
-        <administrative-state>inService</administrative-state>
-        <operational-state>inService</operational-state>
-        <partner-port>
-          <circuit-pack-name></circuit-pack-name>
-          <port-name></port-name>
-        </partner-port>
-        <logical-connection-point>SRG3-PP1</logical-connection-point>
-      </ports>
-      <ports>
-        <port-name>C2</port-name>
-        <port-type>Client</port-type>
-        <port-qual>roadm-external</port-qual>
-        <port-wavelength-type>wavelength</port-wavelength-type>
-        <port-direction>bidirectional</port-direction>
-        <label>SRG1-client port 2</label>
-        <circuit-id>SRG1</circuit-id>
-        <administrative-state>inService</administrative-state>
-        <operational-state>inService</operational-state>
-        <partner-port>
-          <circuit-pack-name></circuit-pack-name>
-          <port-name></port-name>
-        </partner-port>
-        <logical-connection-point>SRG3-PP2</logical-connection-point>
-      </ports>
-      <ports>
-        <port-name>C3</port-name>
-        <port-type>Client</port-type>
-        <port-qual>roadm-external</port-qual>
-        <port-wavelength-type>wavelength</port-wavelength-type>
-        <port-direction>bidirectional</port-direction>
-        <label>SRG1-client port 3</label>
-        <circuit-id>SRG1</circuit-id>
-        <administrative-state>inService</administrative-state>
-        <operational-state>inService</operational-state>
-        <partner-port>
-          <circuit-pack-name></circuit-pack-name>
-          <port-name></port-name>
-        </partner-port>
-        <logical-connection-point>SRG3-PP3</logical-connection-point>
-      </ports>
-      <ports>
-        <port-name>C4</port-name>
-        <port-type>Client</port-type>
-        <port-qual>roadm-external</port-qual>
-        <port-wavelength-type>wavelength</port-wavelength-type>
-        <port-direction>bidirectional</port-direction>
-        <label>SRG1-client port 4</label>
-        <circuit-id>SRG1</circuit-id>
-        <administrative-state>inService</administrative-state>
-        <operational-state>inService</operational-state>
-        <partner-port>
-          <circuit-pack-name></circuit-pack-name>
-          <port-name></port-name>
-        </partner-port>
-        <logical-connection-point>SRG3-PP4</logical-connection-point>
-      </ports>
-      <ports>
-        <port-name>AD-DEG1</port-name>
-        <port-type>Edge</port-type>
-        <port-qual>roadm-internal</port-qual>
-        <port-wavelength-type>multi-wavelength</port-wavelength-type>
-        <port-direction>bidirectional</port-direction>
-        <administrative-state>inService</administrative-state>
-        <operational-state>inService</operational-state>
-        <logical-connection-point>SRG3-CP-TXRX</logical-connection-point>
-      </ports>
-      <ports>
-        <port-name>AD-DEG2</port-name>
-        <port-type>Edge</port-type>
-        <port-qual>roadm-internal</port-qual>
-        <port-wavelength-type>multi-wavelength</port-wavelength-type>
-        <port-direction>bidirectional</port-direction>
-        <administrative-state>inService</administrative-state>
-        <operational-state>inService</operational-state>
-        <logical-connection-point>SRG3-CP-TXRX</logical-connection-point>
-      </ports>
-    </circuit-packs>
 
     <interface>
       <name>1GE-interface-1</name>
@@ -1981,13 +1553,12 @@
       <ethernet xmlns="http://org/openroadm/ethernet-interfaces">
         <speed>1000</speed>
         <duplex>full</duplex>
-        <mtu>1800</mtu>
         <auto-negotiation>enabled</auto-negotiation>
         <curr-speed>1000</curr-speed>
         <curr-duplex>FULL</curr-duplex>
       </ethernet>
    </interface>
-    <interface>
+   <interface>
       <name>1GE-interface-2</name>
       <supporting-circuit-pack-name>2/0/ETH-PLUG</supporting-circuit-pack-name>
       <supporting-port>ETH-PLUG</supporting-port>
@@ -1997,39 +1568,12 @@
       <ethernet xmlns="http://org/openroadm/ethernet-interfaces">
         <speed>1000</speed>
         <duplex>full</duplex>
-        <mtu>1800</mtu>
         <auto-negotiation>enabled</auto-negotiation>
         <curr-speed>1000</curr-speed>
         <curr-duplex>FULL</curr-duplex>
       </ethernet>
    </interface>
-    <interface>
-      <name>OTS-DEG2-TTP-TXRX</name>
-      <supporting-circuit-pack-name>2/0</supporting-circuit-pack-name>
-      <supporting-port>L1</supporting-port>
-      <type xmlns:openROADM-if="http://org/openroadm/interfaces">openROADM-if:opticalTransport</type>
-      <operational-state>inService</operational-state>
-      <administrative-state>inService</administrative-state>
-      <ots xmlns="http://org/openroadm/optical-transport-interfaces">
-        <fiber-type>smf</fiber-type>
-        <span-loss-transmit>6</span-loss-transmit>
-        <span-loss-receive>15</span-loss-receive>
-        <ingress-span-loss-aging-margin>0</ingress-span-loss-aging-margin>
-      </ots>
-   </interface>
-    <interface>
-      <name>OMS-DEG2-TTP-TXRX</name>
-      <supporting-circuit-pack-name>2/0</supporting-circuit-pack-name>
-      <supporting-port>L1</supporting-port>
-      <supporting-interface>OTS-DEG2-TTP-TXRX</supporting-interface>      
-      <type xmlns:openROADM-if="http://org/openroadm/interfaces">openROADM-if:openROADMOpticalMultiplex</type> 
-      <description>TBD</description>      
-      <circuit-id>TBD</circuit-id>
-      <operational-state>inService</operational-state>
-      <administrative-state>inService</administrative-state>      
-    </interface>
-
-    <protocols>
+<!--    <protocols>
       <lldp xmlns="http://org/openroadm/lldp">
         <global-config>
           <adminStatus>enable</adminStatus>
@@ -2039,7 +1583,7 @@
         <nbr-list>
           <if-name>
             <ifName>1GE-interface-1</ifName>
-            <remoteSysName>ROADM-B1</remoteSysName>
+            <remoteSysName>ROADM-A1</remoteSysName>
             <remoteMgmtAddress>1.1.1.1</remoteMgmtAddress>
             <remoteChassisId>1?</remoteChassisId>
             <remotePortId>1GE-interface-1</remotePortId>
@@ -2052,7 +1596,7 @@
             <remoteSysName>ROADM-C1</remoteSysName>
             <remoteMgmtAddress>1.1.1.1</remoteMgmtAddress>
             <remoteChassisId>1?</remoteChassisId>
-            <remotePortId>1GE-interface-1</remotePortId>
+            <remotePortId>1GE-interface-2</remotePortId>
             <remoteChassisIdSubType>chassiscomponent</remoteChassisIdSubType>
             <remotePortIdSubType>ifalias</remotePortIdSubType>
             <remoteMgmtAddressSubType>ipV4</remoteMgmtAddressSubType>
@@ -2067,7 +1611,7 @@
           <adminStatus>txandrx</adminStatus>
         </port-config>
       </lldp>
-    </protocols>
+    </protocols> -->
 
     <degree>
       <degree-number>1</degree-number>
@@ -2103,88 +1647,163 @@
         <port-name>L1</port-name>
       </connection-ports>
     </degree>
-    <shared-risk-group>
-      <srg-number>1</srg-number>
-      <max-add-drop-ports>4</max-add-drop-ports>
-      <wavelength-duplication>one-per-srg</wavelength-duplication>
-      <circuit-packs>
-        <index>1</index>
-        <circuit-pack-name>3/0</circuit-pack-name>
-      </circuit-packs>
-      <current-provisioned-add-drop-ports>4</current-provisioned-add-drop-ports>
-    </shared-risk-group>
-    <shared-risk-group>
-      <srg-number>3</srg-number>
-      <max-add-drop-ports>4</max-add-drop-ports>
-      <wavelength-duplication>one-per-srg</wavelength-duplication>
-      <circuit-packs>
-        <index>1</index>
-        <circuit-pack-name>5/0</circuit-pack-name>
-      </circuit-packs>
-      <current-provisioned-add-drop-ports>4</current-provisioned-add-drop-ports>
-    </shared-risk-group>
   </org-openroadm-device>
-
-  <current-pm-list xmlns="http://org/openroadm/pm">
-  <current-pm-entry>
-    <pm-resource-instance xmlns:d="http://org/openroadm/device">/d:org-openroadm-device/d:interface[d:name='OTS-DEG2-TTP-TXRX']</pm-resource-instance>
-    <pm-resource-type>interface</pm-resource-type>
-    <pm-resource-type-extension></pm-resource-type-extension>
-    <retrieval-time>2018-06-07T13:22:58+00:00</retrieval-time>
-    <current-pm>
-      <type>opticalPowerOutput</type>
-      <extension></extension>
+  <active-alarm-list>
+  <activeAlarms>
+    <id>sghhjks</id>
+    <resource>
+      <device>
+        <node-id>PcaNMnv</node-id>
+      </device>
+      <resource>
+        <interface-name>70j0rky7rjy</interface-name>
+      </resource>
+      <resourceType>
+        <type>xponder</type>
+        <extension>oooQQeQQeQQeoQo</extension>
+      </resourceType>
+    </resource>
+    <probableCause>
+      <cause>lockedDefectTCM6-up</cause>
+      <extension>8yy8FFFyyxFx</extension>
+      <direction>rx</direction>
       <location>nearEnd</location>
+      <type>qualityOfService</type>
+    </probableCause>
+    <raiseTime>2020-04-11T07:49:56.1Z</raiseTime>
+    <severity>major</severity>
+    <circuit-id>rk3r3OOrOrkk3</circuit-id>
+    <additional-detail>3tT3J1xJ</additional-detail>
+    <corrective-action>llllllll</corrective-action>
+  </activeAlarms>
+  <activeAlarms>
+    <id>ssssss</id>
+    <resource>
+      <device>
+        <node-id>Sdghanng</node-id>
+      </device>
+      <resource>
+        <interface-name>79jsdguzed</interface-name>
+      </resource>
+      <resourceType>
+        <type>interface</type>
+        <extension>oooQQeQQeQQeoQo</extension>
+      </resourceType>
+    </resource>
+    <probableCause>
+      <cause>lockedDefectTCM6-down</cause>
+      <extension>8yy8FFFyyxFx</extension>
+      <direction>tx</direction>
+      <location>farEnd</location>
+      <type>qualityOfService</type>
+    </probableCause>
+    <raiseTime>2020-04-11T08:49:56.1Z</raiseTime>
+    <severity>minor</severity>
+    <circuit-id>gwdwuwiwez</circuit-id>
+    <additional-detail>4tz3473</additional-detail>
+    <corrective-action>w2234rds</corrective-action>
+  </activeAlarms>
+</active-alarm-list>
+<historical-pm-list>
+  <historical-pm-entry>
+    <pm-resource-type>line-amplifier</pm-resource-type>
+    <pm-resource-type-extension>ReRy5eRGeRReeeyGyR</pm-resource-type-extension>
+    <pm-resource-instance xmlns:org-openroadm-device="http://org/openroadm/device">/org-openroadm-device:org-openroadm-device/org-openroadm-device:info</pm-resource-instance>
+    <historical-pm>
+      <type>erroredBlockCountTCM6-down</type>
+      <extension>cUBcM</extension>
+      <location>farEnd</location>
       <direction>tx</direction>
       <measurement>
-        <granularity>15min</granularity>
-        <pmParameterValue>2.5</pmParameterValue>
-        <pmParameterUnit>dBm</pmParameterUnit>
-        <validity>complete</validity>
-      </measurement>
-      <measurement>
         <granularity>24Hour</granularity>
-        <pmParameterValue>2.23</pmParameterValue>
-        <pmParameterUnit>dBm</pmParameterUnit>
+        <bin-number>2894</bin-number>
+        <pmParameterValue>6824545199534863756</pmParameterValue>
+        <pmParameterUnit>BswBw7F77FsBs7Fw7wBw</pmParameterUnit>
         <validity>complete</validity>
+        <completion-time>2020-04-13T16:08:58.4Z</completion-time>
       </measurement>
-    </current-pm>
-    <current-pm>
-      <type>opticalPowerInput</type>
-      <extension></extension>
-      <location>nearEnd</location>
+    </historical-pm>
+  </historical-pm-entry>
+</historical-pm-list>
+<notifications>
+	<alarm-notification xmlns="http://org/openroadm/alarm">
+<id>Notify1</id>
+    <resource>
+      <device>
+        <node-id>RoadmAA</node-id>
+      </device>
+      <resource>
+        <interface-name>70j0rky7rjy</interface-name>
+      </resource>
+      <resourceType>
+        <type>xponder</type>
+        <extension>oooQQeQQeQQeoQo</extension>
+      </resourceType>
+    </resource>
+    <probableCause>
+      <cause>lockedDefectTCM6-up</cause>
+      <extension>8yy8FFFyyxFx</extension>
       <direction>rx</direction>
-      <measurement>
-        <granularity>15min</granularity>
-        <pmParameterValue>-21.1</pmParameterValue>
-        <pmParameterUnit>dBm</pmParameterUnit>
-        <validity>complete</validity>
-      </measurement>
-      <measurement>
-        <granularity>24Hour</granularity>
-        <pmParameterValue>-49.3</pmParameterValue>
-        <pmParameterUnit>dBm</pmParameterUnit>
-        <validity>complete</validity>
-      </measurement>
-    </current-pm>
-    <current-pm>
-      <type>opticalReturnLoss</type>
-      <extension></extension>
       <location>nearEnd</location>
+      <type>qualityOfService</type>
+    </probableCause>
+    <raiseTime>2020-04-11T07:49:56.1Z</raiseTime>
+    <severity>major</severity>
+    <circuit-id>rk3r3OOrOrkk3</circuit-id>
+    <additional-detail>3tT3J1xJ</additional-detail>
+    <corrective-action>llllllll</corrective-action>
+	</alarm-notification>
+	<alarm-notification xmlns="http://org/openroadm/alarm">
+<id>Notify2</id>
+    <resource>
+      <device>
+        <node-id>RoadmAA</node-id>
+      </device>
+      <resource>
+        <interface-name>70j0rky7rjy</interface-name>
+      </resource>
+      <resourceType>
+        <type>xponder</type>
+        <extension>oooQQeQQeQQeoQo</extension>
+      </resourceType>
+    </resource>
+    <probableCause>
+      <cause>lockedDefectTCM6-up</cause>
+      <extension>8yy8FFFyyxFx</extension>
       <direction>rx</direction>
-      <measurement>
-        <granularity>15min</granularity>
-        <pmParameterValue>40</pmParameterValue>
-        <pmParameterUnit>dBm</pmParameterUnit>
-        <validity>complete</validity>
-      </measurement>
-      <measurement>
-        <granularity>24Hour</granularity>
-        <pmParameterValue>44</pmParameterValue>
-        <pmParameterUnit>dBm</pmParameterUnit>
-        <validity>complete</validity>
-      </measurement>
-    </current-pm>
-  </current-pm-entry>
-  </current-pm-list>
+      <location>nearEnd</location>
+      <type>qualityOfService</type>
+    </probableCause>
+    <raiseTime>2020-04-11T07:49:56.1Z</raiseTime>
+    <severity>major</severity>
+    <circuit-id>rk3r3OOrOrkk3</circuit-id>
+    <additional-detail>3tT3J1xJ</additional-detail>
+    <corrective-action>llllllll</corrective-action>
+</alarm-notification>
+<change-notification xmlns ="http://org/openroadm/device">
+<change-time>2020-05-12T07:49:56.1Z</change-time>
+<datastore>running</datastore>
+<edit>
+<target xmlns:d="http://org/openroadm/device">/d:org-openroadm-device/d:interface[d:name='1GE-interface-1']
+<!-- <target xmlns:org-openroadm-device="http://org/openroadm/device">/org-openroadm-device:org-openroadm-device/org-openroadm-device:interface/</target> -->
+<!-- <config> -->
+<!--  <interface> -->
+ <name>1GE-interface-1</name>
+  <type xmlns:openROADM-if="http://org/openroadm/interfaces">openROADM-if:ethernetCsmacd</type>
+      <operational-state>inService</operational-state>
+      <administrative-state>inService</administrative-state>
+      <ethernet xmlns="http://org/openroadm/ethernet-interfaces">
+        <speed>1000</speed>
+        <duplex>full</duplex>
+        <auto-negotiation>enabled</auto-negotiation>
+        <curr-speed>1000</curr-speed>
+        <curr-duplex>FULL</curr-duplex>
+      </ethernet>
+<!--  </interface> -->
+ </target>
+<operation>merge</operation>
+<!-- </config> -->
+</edit>
+</change-notification>
+</notifications>
 </data>
