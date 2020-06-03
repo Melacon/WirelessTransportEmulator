@@ -112,6 +112,83 @@ public class NetconfIncommingMessageRepresentation extends RPCElement {
     public boolean isRpcGetSchema() {
         return messageType.equals("rpc") && tags.checkTags("get-schema");
     }
+    
+//    For OpenRoadm specific RPCs
+    public boolean isRpcCommonTypes() {
+    	if(messageType.equals("rpc")) {
+    		if(tags.checkTags("led-control") || tags.checkTags("disable-automatic-shutoff") ||tags.checkTags("start-scan") || tags.checkTags("set-current-datetime")) {
+    			return true;
+    		}
+    		return false;
+    		
+    	}
+    	else {
+    		return false;
+    	}
+       
+    }
+    public boolean isCreateTechInfo() {
+        return messageType.equals("rpc") && tags.checkTags("create-tech-info");
+    }
+    public boolean isConnectionPortTrail() {
+        return messageType.equals("rpc") && tags.checkTags("get-connection-port-trail");
+    } 
+    public boolean isSoftwareManagement() {
+    	
+    	if(messageType.equals("rpc")) {
+    		if(tags.checkTags("sw-activate") || tags.checkTags("sw-stage") || tags.checkTags("cancel-validation-timer")) {
+    			return true;
+    		}
+    		return false;
+    	}
+    	
+    	else {
+    		return false;
+    	}
+        
+    } 
+    public boolean isFileOperations() {
+    	
+    	if(messageType.equals("rpc")) {
+    		if(tags.checkTags("transfer") || tags.checkTags("show-file") || tags.checkTags("delete-file")) {
+    			return true;
+    		}
+    		return false;
+    	}
+    	
+    	else {
+    		return false;
+    	}
+    	
+        
+    }
+    public boolean isOpenRoadmfwdl() {
+        return messageType.equals("rpc") && tags.checkTags("fw-update");
+    }
+    public boolean isOpenRoadmPm() {
+    	if(messageType.equals("rpc")) {
+    		if(tags.checkTags("collect-historical-pm-file") || tags.checkTags("clear-pm")) {
+    			return true;
+    		}
+    		return false;
+    	}
+        return false;
+    }
+    public boolean isOpenRoadmDeOperationsl() {
+        return messageType.equals("rpc") && tags.checkTags("restart");
+    }
+    
+    
+
+
+//    public boolean isStartScan() {
+//        return messageType.equals("rpc") && tags.checkTags("start-scan");
+//    }
+//    public boolean isSetCurrentDateTime() {
+//        return messageType.equals("rpc") && tags.checkTags("set-current-datetime");
+//    }
+    
+
 
     /*----------------------------------------------------------------
      * Required but not really used

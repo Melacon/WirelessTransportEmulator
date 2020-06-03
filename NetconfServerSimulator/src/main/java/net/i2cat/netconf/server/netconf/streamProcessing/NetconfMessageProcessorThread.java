@@ -196,7 +196,7 @@ public class NetconfMessageProcessorThread extends Thread implements NetconfMess
                     msgDelaySeconds = 0;
                     consoleMessage("Proceed");
                 }
-                send( theNe.assembleRpcReplyFromFilterMessage(
+                send(theNe.assembleRpcReplyFromFilterMessage(
                         receivedMessage.getMessageId(),
                         receivedMessage.getFilterTags() ));
             }
@@ -232,7 +232,47 @@ public class NetconfMessageProcessorThread extends Thread implements NetconfMess
             send( theNe.getSchema(
                     receivedMessage.getMessageId(),
                     receivedMessage.getXmlSourceMessage()) );
-        } else {
+        } else if(receivedMessage.isRpcCommonTypes()){
+        	consoleMessage(receivedMessage.getMessageId()+"] message");
+        	consoleMessage("Source [" +receivedMessage.getXmlSourceMessage()+"]");
+        	consoleMessage("Type [" +receivedMessage.getMessageType()+"]");
+        	consoleMessage("URI [" +receivedMessage.getMessageUri()+"]");
+        	consoleMessage("tree [" +receivedMessage.getFilterTags().getTagsPath()+"]");
+        	consoleMessage("tree [" +receivedMessage.getFilterTags().getSubTreePath()+"]");
+
+        	
+            send(theNe.assembleRpcResponseOpenRoadm(receivedMessage.getMessageId(),1));
+
+        }
+        else if(receivedMessage.isCreateTechInfo()) {
+        	consoleMessage(receivedMessage.getMessageId()+"] message");
+        	consoleMessage("Source [" +receivedMessage.getXmlSourceMessage()+"]");
+        	consoleMessage("Type [" +receivedMessage.getMessageType()+"]");
+        	consoleMessage("URI [" +receivedMessage.getMessageUri()+"]");
+        	consoleMessage("tree [" +receivedMessage.getFilterTags().getTagsPath()+"]");
+        	consoleMessage("Value [" +receivedMessage.getFilterTags().getSubTreePath().toString()+"]");
+        	send(theNe.assembleRpcResponseOpenRoadmCreateTechInfo(receivedMessage.getMessageId(),receivedMessage.getFilterTags(),1));
+        }
+        
+        else if(receivedMessage.isConnectionPortTrail()) {
+        	send(theNe.assembleRpcResponseOpenRoadmCOnnPortTrail(receivedMessage.getMessageId(),1));
+        }
+        else if (receivedMessage.isSoftwareManagement()) {
+        	send(theNe.assembleRpcResponseOpenRoadm(receivedMessage.getMessageId(),2));
+        }
+        else if(receivedMessage.isFileOperations()) {
+        	send(theNe.assembleRpcResponseOpenRoadm(receivedMessage.getMessageId(),3));
+        }
+        else if(receivedMessage.isOpenRoadmfwdl()) {
+        	send(theNe.assembleRpcResponseOpenRoadm(receivedMessage.getMessageId(),4));
+        }
+        else if(receivedMessage.isOpenRoadmPm()) {
+        	send(theNe.assembleRpcResponsePmData(receivedMessage.getMessageId(),receivedMessage.getFilterTags(),5));
+        }
+        else if(receivedMessage.isOpenRoadmDeOperationsl()) {
+        	send(theNe.assembleRpcResponseOpenRoadm(receivedMessage.getMessageId(),6));
+        }
+        else {
             consoleMessage("NO RULE for source message with id "+receivedMessage.getMessageId());
             consoleMessage(receivedMessage.getXmlSourceMessage());
         }

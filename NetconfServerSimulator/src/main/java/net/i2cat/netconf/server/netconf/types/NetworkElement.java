@@ -59,6 +59,7 @@ public class NetworkElement {
 	private final Console console;
 	private Document doc = null;
 	private String nePath = null;
+	private int roadmRpcType=0;
 
 	private enum Event {
 		PROBLEM_NOTIFICATION, NOTIFICATION, ATTRIBUTE_VALUE_CHANGED_NOTIFICATION
@@ -1126,6 +1127,7 @@ public class NetworkElement {
 			LOG.info("Subtreepath=" + xmlSubTreePath);
 			String xmlSubTree = getXmlSubTreeAsString("//data/" + xmlSubTreePath);
 
+
 			/*
 			 * consoleMessage("Tags: "+tags.asCompactString());
 			 * consoleMessage("Ends with leaf: "+tags.endsWithLeave());
@@ -1145,7 +1147,101 @@ public class NetworkElement {
 			return res.toString();
 		}
 	}
+// RPC response for openRoadm Specific RPCs such as led-control
+	public synchronized String assembleRpcResponseOpenRoadm(String id,int i) {
+		StringBuffer res = new StringBuffer();
+		appendXmlMessageRpcReplyOpen(res, id);
 
+		res.append(rpcResponseStatus(i));
+		appendXmlMessageRpcReplyClose(res);
+//    	String xmlSubTreePath = "org-openroadm-device/circuit-packs";
+//    	String xmlSubTree = getXmlSubTreeAsString("//data/" + "org-openroadm-device/circuit-packs");
+//    	
+//    	LOG.info("TestingXML " + xmlSubTree );
+// xmlns=\"http://org/openroadm/device\"
+		return res.toString();
+
+		/*
+		 * return
+		 * "<rpc-reply xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\" xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\" last-modified=\"2017-03-07T19:32:31Z\" message-id=\""
+		 * +id+"\">\n" + "  <data/>\n" + "<ok/>\n" + "</rpc-reply>\n";/
+		 **/
+	}
+	
+	public synchronized String assembleRpcResponseOpenRoadmCreateTechInfo(String id, NetconfTagList tags,int i) {
+		
+		StringBuffer res = new StringBuffer();
+		NetconfTag tag = tags.getList().get(1);
+		appendXmlMessageRpcReplyOpen(res, id);		
+		res.append("<shelf-id xmlns=\"http://org/openroadm/device\">" + tag.getValue() +"</shelf-id>");
+		res.append(rpcResponseStatus(i));
+		appendXmlMessageRpcReplyClose(res);
+		return res.toString();
+
+	}
+	public synchronized String assembleRpcResponseOpenRoadmCOnnPortTrail(String id, int i) {
+		StringBuffer res = new StringBuffer();
+
+		appendXmlMessageRpcReplyOpen(res, id);		
+
+		res.append(rpcResponseStatus(i));
+		res.append(getXmlSubTreeAsString("//data/" + "org-openroadm-device/circuit-packs/circuit-pack-name:1/0"));
+		appendXmlMessageRpcReplyClose(res);
+		return res.toString();
+		
+	}
+	
+	public synchronized String assembleRpcResponsePmData(String id, NetconfTagList tags, int i) {
+		StringBuffer res = new StringBuffer();
+		appendXmlMessageRpcReplyOpen(res, id);	
+		if(tags.checkTags("collect-historical-pm-file")) {
+			res.append("<pm-filename xmlns=\"http://org/openroadm/pm\">opt/dev/historical-pm.xml</pm-filename>\n");
+		}
+		res.append(rpcResponseStatus(i));		
+		appendXmlMessageRpcReplyClose(res);
+		return res.toString();
+		
+	}
+	
+
+	
+	private String rpcResponseStatus(int i) {
+		StringBuffer res = new StringBuffer();
+		switch(i) {
+		case 1: 
+			res.append("<status xmlns=\"http://org/openroadm/device\">Successful</status>\n");
+			res.append("<status-message xmlns=\"http://org/openroadm/device\">test</status-message>\n");
+			break;
+		case 2:
+			res.append("<status xmlns=\"http://org/openroadm/de/swdl\">Successful</status>\n");
+			res.append("<status-message xmlns=\"http://org/openroadm/de/swdl\">test</status-message>\n");
+			break;
+		
+		case 3:
+			res.append("<status xmlns=\"http://org/openroadm/file-transfer\">Successful</status>\n");
+			res.append("<status-message xmlns=\"http://org/openroadm/file-transfer\">test</status-message>\n");
+			break;
+		case 4:
+			res.append("<status xmlns=\"http://org/openroadm/fwdl\">Successful</status>\n");
+			res.append("<status-message xmlns=\"http://org/openroadm/fwdl\">test</status-message>\n");
+			break;
+		case 5:
+			res.append("<status xmlns=\"http://org/openroadm/pm\">Successful</status>\n");
+			res.append("<status-message xmlns=\"http://org/openroadm/pm\">test</status-message>\n");
+			break;	
+		case 6:
+			res.append("<status xmlns=\"http://org/openroadm/de/operations\">Successful</status>\n");
+			res.append("<status-message xmlns=\"http://org/openroadm/de/operations\">test</status-message>\n");
+			break;	
+			
+			
+		}
+
+		return res.toString();
+	
+	}
+	
+	
 	/**
 	 * Add content according to tag sequence
 	 * 
@@ -1175,8 +1271,9 @@ public class NetworkElement {
 
 			if (last) {
 				// Leaf
+				consoleMessage("lastLeaf" + content);
 				sb.append(content.replaceFirst(tag.getName(), tag.getName() + " xmlns=\"" + tag.getNamespace() + "\""));
-
+				
 			} else {
 				// Wrapper
 				// Wrap Begin
@@ -1185,9 +1282,13 @@ public class NetworkElement {
 					recuresAddContent(tags, sb, content, idx + 1);
 					// Wrap1 End
 					appendXmlTagClose(sb, tag.getName());
+					consoleMessage("Content"+ content);
+				
 				} else {
 					appendXml(sb, tag.getName(), tag.getValue());
 					recuresAddContent(tags, sb, content, idx + 1);
+					consoleMessage("Content2" +content);
+		
 				}
 			}
 		}
