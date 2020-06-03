@@ -71,7 +71,7 @@
       <capability>http://org/openroadm/optical-transport-interfaces?module=org-openroadm-optical-transport-interfaces&amp;revision=2019-11-29</capability>
       <capability>http://org/openroadm/otsi-group-interfaces?module=org-openroadm-otsi-group-interfaces&amp;revision=2019-11-29</capability>
       <capability>http://org/openroadm/ppp-interfaces?module=org-openroadm-ppp-interfaces&amp;revision=2019-11-29</capability>
-      <capability>http://org/openroadm/prot/otn-linear-aps?module=org-openroadm-prot-otn-linear-aps&amp;revision=2019-11-29</capability>
+<!--     <capability>http://org/openroadm/prot/otn-linear-aps?module=org-openroadm-prot-otn-linear-aps&amp;revision=2019-11-29</capability> -->
       <capability>http://org/openroadm/rstp?module=org-openroadm-rstp&amp;revision=2019-11-29</capability>
       <capability>http://org/openroadm/optical-channel-interfaces?module=org-openroadm-optical-channel-interfaces&amp;revision=2019-11-29</capability>
       <capability>http://org/openroadm/optical-channel-tributary-signal-interfaces?module=org-openroadm-optical-tributary-signal-interfaces&amp;revision=2019-11-29</capability>
@@ -977,7 +977,7 @@
         <namespace>http://org/openroadm/ppp-interfaces</namespace>
         <location>NETCONF</location>
       </schema>
-      <schema>
+      <!-- <schema>
         <identifier>org-openroadm-prot-otn-linear-aps</identifier>
         <version>2019-11-29</version>
         <format>yang</format>
@@ -990,7 +990,7 @@
         <format>yin</format>
         <namespace>http://org/openroadm/prot/otn-linear-aps</namespace>
         <location>NETCONF</location>
-      </schema>
+      </schema> -->
       <schema>
         <identifier>org-openroadm-rstp</identifier>
         <version>2019-11-29</version>
