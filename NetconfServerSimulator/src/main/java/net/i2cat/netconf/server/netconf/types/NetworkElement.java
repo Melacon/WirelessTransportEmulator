@@ -59,14 +59,14 @@ public class NetworkElement {
 	private final Console console;
 	private Document doc = null;
 	private String nePath = null;
-	private int roadmRpcType=0;
+
 
 	private enum Event {
 		PROBLEM_NOTIFICATION, NOTIFICATION, ATTRIBUTE_VALUE_CHANGED_NOTIFICATION
 	};
 
 	private enum EventOpenRoadm {
-		ALARM_NOTIFICATION, NOTIFICATION, ATTRIBUTE_VALUE_CHANGED_NOTIFICATION
+		ALARM_NOTIFICATION, NOTIFICATION, ATTRIBUTE_VALUE_CHANGED_NOTIFICATION, CREATE_TECH_INFO_NOTIFICATION
 	};
 
 	/*
@@ -936,11 +936,16 @@ public class NetworkElement {
 		xmlSubTreeProblems.addAll(getXmlSubTreeAsStringList("//Notifications/AlarmNotification"));
 		List<String> xmlSubTreeChanges = getXmlSubTreeAsStringList("//notifications/change-notification");
 		xmlSubTreeChanges.addAll(getXmlSubTreeAsStringList("//Notifications/ChangeNotification"));
+		
+		List<String> xmlSubTreecreateTechInfo = getXmlSubTreeAsStringList("//notifications/create-tech-info-notification");
+		xmlSubTreecreateTechInfo.addAll(getXmlSubTreeAsStringList("//Notifications/CreateTechInfoNotification"));
 		List<String> xmlSubTreeNotification = getXmlSubTreeAsStringList("//notifications/notification");
 
 		Map<EventOpenRoadm, List<String>> enumMapOpenRoadm = new EnumMap<>(EventOpenRoadm.class);
 		enumMapOpenRoadm.put(EventOpenRoadm.ALARM_NOTIFICATION, xmlSubTreeProblems);
 		enumMapOpenRoadm.put(EventOpenRoadm.ATTRIBUTE_VALUE_CHANGED_NOTIFICATION, xmlSubTreeChanges);
+		enumMapOpenRoadm.put(EventOpenRoadm.CREATE_TECH_INFO_NOTIFICATION, xmlSubTreecreateTechInfo);
+		
 		enumMapOpenRoadm.put(EventOpenRoadm.NOTIFICATION, xmlSubTreeNotification);
 
 		return enumMapOpenRoadm;

@@ -89,13 +89,10 @@ module org-openroadm-device {
     "OpenROADM.org";
   description
     "YANG definitions of ROADM device
-
      Copyright of the Members of the Open ROADM MSA Agreement dated (c) 2016,
      All other rights reserved.
-
      Redistribution and use in source and binary forms, with or without modification,
      are permitted provided that the following conditions are met:
-
      * Redistributions of source code must retain the above copyright notice, this
        list of conditions and the following disclaimer.
      * Redistributions in binary form must reproduce the above copyright notice,
@@ -104,7 +101,6 @@ module org-openroadm-device {
      * Neither the Members of the Open ROADM MSA Agreement nor the names of its
        contributors may be used to endorse or promote products derived from this software
        without specific prior written permission.
-
      THIS SOFTWARE IS PROVIDED BY THE MEMBERS OF THE OPEN ROADM MSA  AGREEMENT ''AS IS''
      AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
      WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
@@ -115,13 +111,10 @@ module org-openroadm-device {
      WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
      ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
      POSSIBILITY OF SUCH DAMAGE.
-
      Also contains code components extracted from IETF netconf.  These code components
      are copyrighted and licensed as follows:
-
      Copyright (c) 2016 IETF Trust and the persons identified as the document authors.
      All rights reserved.
-
      This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating
      to IETF Documents (http://trustee.ietf.org/license-info) in effect on the date of
      publication of this document. Please review these documents carefully, as they
@@ -554,7 +547,13 @@ module org-openroadm-device {
         "Software version running on the circuit pack.";
     }
     list circuit-pack-features {
+      key "to-be-deleted";
       config false;
+      leaf to-be-deleted {
+        type string;
+        description
+        "Key to be deleted.";
+      }
       container feature {
         description
           "List of features supported by the installed load and indications on whether the features have been applied or not.";
@@ -576,7 +575,13 @@ module org-openroadm-device {
       }
     }
     list circuit-pack-components {
+      key "to-be-deleted";
       config false;
+      leaf to-be-deleted {
+        type string;
+        description
+        "Key to be deleted.";
+      }
       container component {
         description
           "Optional list of components on the circuit-pack and the load information applicable to those components.  If a load is not up to date and will upgrade when a cold restart occurs, the version that will be applied should also be listed.  If there is no misalignment, this does not need to be reported.";
@@ -691,7 +696,7 @@ module org-openroadm-device {
     container parent-circuit-pack {
       description
         "In the case of circuit packs that contain other equipment (modules or pluggables), this captures the hierarchy of that equipment.  It is a vendor specific design decision if the ports for single-port pluggables are modeled as children of the parent circuit-pack, or as children of the pluggable circuit-pack contained in the parent circuit-pack.  For modules with multiple ports, it is recommended that ports be children of the module and not the carrier, to help in fault correlation and isolation in the case of a module failure.";
-      uses circuit-pack-name;
+      uses circuit-pack-name-g;
       leaf cp-slot-name {
         type string;
         description
@@ -869,7 +874,7 @@ module org-openroadm-device {
       leaf index {
         type uint32;
       }
-      uses circuit-pack-name {
+      uses circuit-pack-name-g {
         refine "circuit-pack-name" {
           mandatory true;
         }
@@ -1150,7 +1155,7 @@ module org-openroadm-device {
       leaf index {
         type uint32;
       }
-      uses circuit-pack-name {
+      uses circuit-pack-name-g {
         refine "circuit-pack-name" {
           mandatory true;
         }
@@ -1218,7 +1223,7 @@ module org-openroadm-device {
     }
   }
 
-  grouping circuit-pack-name {
+  grouping circuit-pack-name-g {
     leaf circuit-pack-name {
       type leafref {
         path "/org-openroadm-device/circuit-packs/circuit-pack-name";
@@ -1229,7 +1234,7 @@ module org-openroadm-device {
   }
 
   grouping port-name {
-    uses circuit-pack-name;
+    uses circuit-pack-name-g;
     leaf port-name {
       type leafref {
         path "/org-openroadm-device/circuit-packs[circuit-pack-name=current()/../circuit-pack-name]/ports/port-name";
@@ -1489,6 +1494,7 @@ module org-openroadm-device {
       uses port-name;
     }
     list interfaces {
+      key "interface-name";
       config false;
       description
         "List of the interfaces this port supports.  This is a list of names of instances in the flat instance list.  Implementations must provide the list of interfaces for port that has interfaces provisioned on that port.";
@@ -1497,7 +1503,7 @@ module org-openroadm-device {
     uses mc-capabilities-grp;
   }
 
-  grouping org-openroadm-device-container {
+  // grouping org-openroadm-device-container-g {
     container org-openroadm-device {
       container info {
         uses device-common;
@@ -1582,7 +1588,7 @@ module org-openroadm-device {
           leaf index {
             type uint32;
           }
-          uses circuit-pack-name {
+          uses circuit-pack-name-g {
             refine "circuit-pack-name" {
               mandatory true;
             }
@@ -1860,7 +1866,7 @@ module org-openroadm-device {
         }
       }
     }
-  }
+  // }
 
   grouping common-session-parms {
     description
@@ -2169,5 +2175,5 @@ module org-openroadm-device {
       }
     }
   }
-  uses org-openroadm-device-container;
+ // uses org-openroadm-device-container-g;
 }

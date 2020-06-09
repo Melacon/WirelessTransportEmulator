@@ -1220,6 +1220,28 @@
         <group>sudo</group>
       </user>
     </users>
+      <shelves>
+    <shelf-name>1</shelf-name>
+    <shelf-type>pizza</shelf-type>
+    <rack>XYZ</rack>
+    <shelf-position>1</shelf-position>
+    <administrative-state>inService</administrative-state>
+    <vendor>vendorA</vendor>
+    <model>1</model>
+    <serial-id>nodeid-1</serial-id>
+    <type>pizza</type>
+    <product-code>zzz</product-code>
+    <manufacture-date>2017-04-01T00:00:00+00:00</manufacture-date>
+    <clei>1234567890</clei>
+    <hardware-version>0.1</hardware-version>
+    <operational-state>inService</operational-state>
+    <due-date>2017-02-24T15:56:10+00:00</due-date>
+    <slots>
+      <slot-name>1</slot-name>
+      <label>1</label>
+      <provisioned-circuit-pack>1/0</provisioned-circuit-pack>
+    </slots>
+  </shelves>
     <circuit-packs>
       <circuit-pack-name>1/0</circuit-pack-name>
       <circuit-pack-type>WSSDEG</circuit-pack-type>
@@ -1726,7 +1748,7 @@
   </historical-pm-entry>
 </historical-pm-list>
 <notifications>
-	<alarm-notification xmlns="http://org/openroadm/alarm">
+<alarm-notification xmlns="http://org/openroadm/alarm">
 <id>Notify1</id>
     <resource>
       <device>
@@ -1780,15 +1802,17 @@
     <additional-detail>3tT3J1xJ</additional-detail>
     <corrective-action>llllllll</corrective-action>
 </alarm-notification>
+
 <change-notification xmlns ="http://org/openroadm/device">
 <change-time>2020-05-12T07:49:56.1Z</change-time>
 <datastore>running</datastore>
 <edit>
-<target xmlns:d="http://org/openroadm/device">/d:org-openroadm-device/d:interface[d:name='1GE-interface-1']
+<target xmlns:d="http://org/openroadm/device">/d:org-openroadm-device/d:interface[d:name='1GE-interface-1']</target>
+<!-- /d:org-openroadm-device/d:interface[d:name='1GE-interface-1'] -->
 <!-- <target xmlns:org-openroadm-device="http://org/openroadm/device">/org-openroadm-device:org-openroadm-device/org-openroadm-device:interface/</target> -->
 <!-- <config> -->
 <!--  <interface> -->
- <name>1GE-interface-1</name>
+<!--  <name>1GE-interface-1</name>
   <type xmlns:openROADM-if="http://org/openroadm/interfaces">openROADM-if:ethernetCsmacd</type>
       <operational-state>inService</operational-state>
       <administrative-state>inService</administrative-state>
@@ -1798,12 +1822,19 @@
         <auto-negotiation>enabled</auto-negotiation>
         <curr-speed>1000</curr-speed>
         <curr-duplex>FULL</curr-duplex>
-      </ethernet>
+      </ethernet> -->
 <!--  </interface> -->
- </target>
+
 <operation>merge</operation>
 <!-- </config> -->
 </edit>
 </change-notification>
+<create-tech-info-notification xmlns ="http://org/openroadm/device">
+<shelf-id xmlns="http://org/openroadm/device">Shelf1</shelf-id>
+<!-- /d:org-openroadm-device/d:shelves[d:shelf-name='1'] -->
+<status>Successful</status>
+<status-message>test</status-message>
+</create-tech-info-notification>
+
 </notifications>
 </data>
