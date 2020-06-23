@@ -15,12 +15,15 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import javax.annotation.Nullable;
 import javax.xml.parsers.DocumentBuilder;
@@ -608,9 +611,14 @@ public class NetworkElement {
 	 * @return String with content
 	 * @throws IOException if problem during read.
 	 */
-	private static String readFile(String path) throws IOException {
-		byte[] encoded = Files.readAllBytes(Paths.get(path));
-		return new String(encoded, StandardCharsets.UTF_8);
+	private static String readFile(String pathString) throws IOException {
+		Path path = Paths.get(pathString);
+		if (path.toFile().canRead()) {
+			byte[] encoded = Files.readAllBytes(path);
+			return new String(encoded, StandardCharsets.UTF_8);
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -766,23 +774,30 @@ public class NetworkElement {
 
 				String fileName = getFilenameFromNode(schemaPath, schema);
 				consoleMessage("Load schema: " + fileName);
+				
 				String yang = readFile(fileName);
-				// Assemble message
-				res = new StringBuffer();
-				res.append("<rpc-reply message-id=\"" + sessionId
-						+ "\" xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\">\n");
-				res.append("<data xmlns=\"urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring\">\n");
-				res.append("<![CDATA[");
-				res.append(yang);
-				res.append("]]>");
-				res.append("\n</data>\n");
-				appendXmlMessageRpcReplyClose(res);
+				if (yang != null) {
+					// Assemble message
+					res = new StringBuffer();
+					res.append("<rpc-reply message-id=\"" + sessionId
+							+ "\" xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\">\n");
+					res.append("<data xmlns=\"urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring\">\n");
+					res.append("<![CDATA[");
+					res.append(yang);
+					res.append("]]>");
+					res.append("\n</data>\n");
+					appendXmlMessageRpcReplyClose(res);
+				} else {
+					String msg = "Can not find schema file: "+fileName;
+					LOG.warn(msg);
+					res = assembleRpcReplyError("invalid-value", msg);
+				}
 			} else {
-				LOG.warn("Can not find get-schema node");
-				res = assembleRpcReplyError("invalid-value", "Can not find get-schma node");
+				String msg = "Can not find get-schema node";
+				LOG.warn(msg);
+				res = assembleRpcReplyError("invalid-value", msg);
 			}
 		} catch (Exception e) {
-
 			LOG.warn("(..something..) failed", e);
 			res = assembleRpcReplyError("invalid-value", e.getMessage());
 		}
@@ -1276,7 +1291,8 @@ public class NetworkElement {
 
 			if (last) {
 				// Leaf
-				consoleMessage("lastLeaf" + content);
+				LOG.debug("lastLeaf" + content);
+				//consoleMessage("lastLeaf" + content); <<-- Debug info not to console
 				sb.append(content.replaceFirst(tag.getName(), tag.getName() + " xmlns=\"" + tag.getNamespace() + "\""));
 				
 			} else {
@@ -1287,12 +1303,14 @@ public class NetworkElement {
 					recuresAddContent(tags, sb, content, idx + 1);
 					// Wrap1 End
 					appendXmlTagClose(sb, tag.getName());
-					consoleMessage("Content"+ content);
+					LOG.debug("Content"+ content);
+					//consoleMessage();
 				
 				} else {
 					appendXml(sb, tag.getName(), tag.getValue());
 					recuresAddContent(tags, sb, content, idx + 1);
-					consoleMessage("Content2" +content);
+					LOG.debug("Content2" +content);
+					//consoleMessage("Content2" +content);
 		
 				}
 			}

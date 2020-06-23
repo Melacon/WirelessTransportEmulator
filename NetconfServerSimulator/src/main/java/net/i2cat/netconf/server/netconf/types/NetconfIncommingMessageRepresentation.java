@@ -10,11 +10,16 @@
 package net.i2cat.netconf.server.netconf.types;
 
 import java.util.HashMap;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import net.i2cat.netconf.rpc.RPCElement;
 
 
 public class NetconfIncommingMessageRepresentation extends RPCElement {
 
+    private final Log log = LogFactory.getLog(NetconfIncommingMessageRepresentation.class);
     private static final long serialVersionUID = 1887817430908834282L;
     private final static String NOTSET = "NotSet";
 
@@ -51,16 +56,18 @@ public class NetconfIncommingMessageRepresentation extends RPCElement {
     }
 
     public void addCollectionValue(int level, String value ) {
-
+        value = value.trim();
         if (! (value.isEmpty() || value.equals("\n"))) {
-            //Method 1
+            //used to manage list access
+            //Method 1 add the value
             tags.addTagsValue(value);
 
-            //Method 2
+            //Method 2 add the key and value
             String res = tags.getTagsPath();
             String key = res;
             int idx=1;
             while ( content.containsKey(key) ) {
+            	//Generate a new unique key .. that is not in the content
                 key = res + "." + String.valueOf(idx++);
             }
             content.put(key, value);

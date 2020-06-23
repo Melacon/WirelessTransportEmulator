@@ -13,8 +13,6 @@ import org.apache.commons.logging.LogFactory;
 
 public class NetconfTag {
 
-    private static final Log log  = LogFactory.getLog(NetconfTagList.class);
-
     private final String namespace;
     private final String name;
     private final List<String> values = new ArrayList<String>();

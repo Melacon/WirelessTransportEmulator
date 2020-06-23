@@ -55,7 +55,7 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
     private static final Log   LOG                = LogFactory.getLog(ServerSimulator.class);
     private static final SimpleDateFormat DATEFORMAT = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
     private static final String NAME = "NETCONF - NE Simulator";
-    private static final String VERSION = "4.2.4";
+    private static final String VERSION = "4.2.5";
     private static final String SSHHOST = "0.0.0.0";
     private static CommandLineControl cliSsh = null;
 
@@ -186,7 +186,7 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
         //configure the appender
         String PATTERN = "%d [%p|%c|%C{1}] %m%n";
         console.setLayout(new PatternLayout(PATTERN));
-        console.setThreshold(Level.DEBUG);
+        console.setThreshold(Level.WARN);
         console.activateOptions();
         //add appender to any Logger (here is root)
         Logger.getRootLogger().addAppender(console);
@@ -195,7 +195,7 @@ public class ServerSimulator implements MessageStore, BehaviourContainer, Netcon
         fa.setName("FileLogger");
         fa.setFile(debugFilename);
         fa.setLayout(new PatternLayout("%d %-5p [%c{1}] %m%n"));
-        fa.setThreshold(Level.DEBUG);
+        fa.setThreshold(Level.WARN);
         fa.setMaxBackupIndex(10);
         fa.setMaximumFileSize(1000000);
         fa.setAppend(true);
